@@ -113,7 +113,13 @@ Follow the phases in `docs/plans/interference-dismissal-sync.md` in order.
 
 > The executor must NOT fill this in — leave the `{placeholder}` values untouched. After the run, the human reviewer reconstructs this section from the commit trail at archive time (the `snapshot:` commit, the `cleanup:`/`fix:` follow-ups) and moves both plan + prompt to `completed/`. See `.kiro/steering/architect-workflow.md` → Post-Execution Review Protocol.
 
-- **Attempts:** {1 (clean) / N (root cause of failures)}
-- **Tests added:** {count}
-- **Prompt improvements for next time:** {what to add/change}
-- **Steering updates needed:** {yes/no, what}
+> Reconstructed from the commit trail at archive time: plan `c194d842` → snapshot `3ec315ab`; zero
+> `cleanup:`/`fix:` commits touch the slice files after the snapshot. Shipped to production via push to
+> `main` (`9b8a43ff..3ec315ab`) after local integration was verified; the Forge deploy ran the migration
+> successfully. Cross-app agreement codified afterward in the root contract
+> `contracts/prism-logger/__tests__/prism-interference-dismissal.test.js`.
+
+- **Attempts:** 1 (clean). All 7 phases landed in one snapshot; the Prism sync suite was green at snapshot time (58 tests, 307 assertions), with no follow-up fixes. The mandatory `/changes` cursor fold (both `max(updated_at)` and `max(deleted_at)`) landed correctly on the first pass, as did `string(512)`, the `prism-write` route group, and the one-to-one copy of the exercise-overlay upsert/tombstone action.
+- **Tests added:** 14 (`InterferenceDismissalSyncTest` 9, `InterferenceDismissalChangesTest` 5). `PrismChangesTest` was adjusted, not extended: its expected response shape now includes the `dismissals` key.
+- **Prompt improvements for next time:** Spell out empty-payload semantics for any new write endpoint. The plan said nothing about a payload with neither `dismissals` nor `removals`. The executor chose `present|array` on both, so an empty-both payload is accepted as a no-op. That diverges from `StorePrismCellsRequest`, which rejects empty. It's harmless, but it only surfaced at contract-authoring time. A one-line "empty payload: accept as no-op / reject" in the plan would have made it a decision instead of an emergent choice.
+- **Steering updates needed:** No. The divergence is pinned and documented in the root contract (`cross-app-contracts.md` → `prism-interference-dismissal.json`), so nobody will "fix" it to match cells.
