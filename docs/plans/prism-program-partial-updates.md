@@ -401,7 +401,13 @@ publishing with a service account or refresh token (moves away from the browser-
 
 ## 9. Prism follow-ups (separate repo; listed for order, not part of this change)
 
-1. **Local conversion on load** (§6.2): profiles and the sync queue.
+1. **Local conversion on load** (§6.2): profiles and the sync queue, **then reset the pull cursor** so the
+   next pull is a full re-read of programs **and cells**. This is required, not an optimisation:
+   - The §6.1 backfill does not bump `updated_at`, so `start_date` only reaches a device through a full re-read.
+   - While an old-build tab has a 503-held program item queued, `hasPendingProgramsPush`
+     (`syncService.js:289`) makes `resolveSyncPull` skip **all** incoming programs and cells for the gym, but the
+     cursor still advances (`syncService.js:343`). Other coaches' workout edits from that window are therefore
+     skipped permanently on that device unless the cursor is reset.
 2. **Partial program pushes:**
    - rename ⇒ `{ name }`
    - start date ⇒ `{ start_date }`
@@ -418,7 +424,16 @@ publishing with a service account or refresh token (moves away from the browser-
    - persist the link after export through the destinations endpoint;
    - apply the `destinations` feed section;
    - publish into the linked sheet instead of creating a new one;
-   - handle the §8 Picker grant and "no access" states.
+   - handle the §8 Picker grant and "no access" states;
+   - only send a destination upsert when the link actually changes (different `spreadsheet_id` or
+     `sheet_id`). The Logger stamps `linked_by_user_id` / `linked_at` on **every** upsert, so re-sending an
+     unchanged link (e.g. after coach B's Picker grant, or a re-export) would relabel it "linked by B".
+
+   **Decided (2026-10-31), implemented in Logger:** `UpsertPrismProgramDestinationsAction` keeps
+   `linked_by_user_id` / `linked_at` when a live link is re-sent with the same `spreadsheet_id` and `sheet_id`
+   (only `title` may change). A different target, or re-linking after an unlink, re-stamps them. So the
+   attribution is correct whatever the client does; the "only send on change" rule above is still good
+   practice but no longer required for correctness.
 
 ---
 

@@ -33,12 +33,26 @@ class UpsertPrismProgramDestinationsAction
                 'type' => $item['type'],
             ]);
 
+            $spreadsheetId = $item['spreadsheet_id'] ?? null;
+            $sheetId = $item['sheet_id'] ?? null;
+
+            // Re-sending the same live link (e.g. after another coach's Picker grant or a re-export)
+            // must not relabel who linked it. Only a new target, or re-linking after an unlink,
+            // re-stamps the attribution.
+            $sameLiveLink = $destination->exists
+                && $destination->deleted_at === null
+                && $destination->spreadsheet_id === $spreadsheetId
+                && $destination->sheet_id === $sheetId;
+
+            if (! $sameLiveLink) {
+                $destination->linked_by_user_id = $userId;
+                $destination->linked_at = $destination->freshTimestamp();
+            }
+
             $destination->fill([
-                'spreadsheet_id' => $item['spreadsheet_id'] ?? null,
-                'sheet_id' => $item['sheet_id'] ?? null,
+                'spreadsheet_id' => $spreadsheetId,
+                'sheet_id' => $sheetId,
                 'title' => $item['title'] ?? null,
-                'linked_by_user_id' => $userId,
-                'linked_at' => $destination->freshTimestamp(),
                 'device_id' => $deviceId,
                 'deleted_at' => null,
             ]);

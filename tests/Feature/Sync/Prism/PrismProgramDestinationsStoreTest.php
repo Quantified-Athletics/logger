@@ -88,6 +88,50 @@ class PrismProgramDestinationsStoreTest extends TestCase
         $this->assertNull($destination->deleted_at);
     }
 
+    public function test_resending_the_same_link_keeps_original_attribution(): void
+    {
+        $this->pushDestinations([$this->sheet()])->assertStatus(200);
+        $original = PrismProgramDestination::firstOrFail();
+
+        $coachB = User::factory()->create(['name' => 'Coach B']);
+        Sanctum::actingAs($coachB);
+        Carbon::setTestNow(now()->addMinute());
+        try {
+            // Same spreadsheet + tab; only the display title changed.
+            $this->pushDestinations([$this->sheet(['title' => 'Renamed tab'])])->assertStatus(200);
+        } finally {
+            Carbon::setTestNow();
+        }
+
+        $destination = PrismProgramDestination::firstOrFail();
+        $this->assertSame($this->coach->id, $destination->linked_by_user_id);
+        $this->assertTrue($original->linked_at->eq($destination->linked_at));
+        $this->assertSame('Renamed tab', $destination->title);
+    }
+
+    public function test_linking_a_different_sheet_restamps_attribution(): void
+    {
+        $this->pushDestinations([$this->sheet()])->assertStatus(200);
+
+        $coachB = User::factory()->create(['name' => 'Coach B']);
+        Sanctum::actingAs($coachB);
+        $this->pushDestinations([$this->sheet(['sheet_id' => 9])])->assertStatus(200);
+
+        $this->assertSame($coachB->id, PrismProgramDestination::firstOrFail()->linked_by_user_id);
+    }
+
+    public function test_relinking_the_same_sheet_after_unlink_restamps_attribution(): void
+    {
+        $this->pushDestinations([$this->sheet()])->assertStatus(200);
+        $this->pushDestinations([], [['type' => 'google_sheets']])->assertStatus(200);
+
+        $coachB = User::factory()->create(['name' => 'Coach B']);
+        Sanctum::actingAs($coachB);
+        $this->pushDestinations([$this->sheet()])->assertStatus(200);
+
+        $this->assertSame($coachB->id, PrismProgramDestination::firstOrFail()->linked_by_user_id);
+    }
+
     public function test_unlink_writes_tombstone(): void
     {
         $this->pushDestinations([$this->sheet()])->assertStatus(200);
