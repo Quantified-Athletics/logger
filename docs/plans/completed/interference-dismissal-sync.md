@@ -1,6 +1,6 @@
 # Interference-Dismissal Sync (Logger slice)
 
-**Status:** plan (ready for prompt). **Pairing:** Prism ↔ Logger. **Slice:** Logger.
+**Status:** shipped (snapshot `3ec315ab`, released to production). **Pairing:** Prism ↔ Logger. **Slice:** Logger.
 **Design-of-record:** `squirby/docs/sync/prism-logger/design.md` (root). **Problem statement:**
 `squirby/docs/sync/prism-logger/interference-resolution-sync-problem.md` (root).
 

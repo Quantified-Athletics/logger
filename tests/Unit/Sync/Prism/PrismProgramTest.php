@@ -30,7 +30,7 @@ class PrismProgramTest extends TestCase
             'program_uuid' => 'prog-uuid-1',
             'name' => 'Hypertrophy Block A',
             'week_count' => 6,
-            'metadata' => ['tags' => ['hypertrophy', 'upper-lower'], 'coach' => 'Alex'],
+            'start_date' => '2026-11-02',
             'device_id' => 'dev-uuid-123',
         ]);
 
@@ -42,7 +42,7 @@ class PrismProgramTest extends TestCase
             'device_id' => 'dev-uuid-123',
         ]);
 
-        // 2. Read returns row with array cast hydrated
+        // 2. Read returns the row; start_date is a plain YYYY-MM-DD date
         $found = PrismProgram::where('gym_id', 'the-cove')
             ->where('program_uuid', 'prog-uuid-1')
             ->first();
@@ -50,15 +50,13 @@ class PrismProgramTest extends TestCase
         $this->assertNotNull($found);
         $this->assertSame('Hypertrophy Block A', $found->name);
         $this->assertSame(6, $found->week_count);
-        $this->assertIsArray($found->metadata);
-        $this->assertSame('Alex', $found->metadata['coach']);
-        $this->assertSame(['hypertrophy', 'upper-lower'], $found->metadata['tags']);
+        $this->assertSame('2026-11-02', substr((string) $found->start_date, 0, 10));
 
         // 3. Update mutates in place
         $found->update([
             'name' => 'Hypertrophy Block B',
             'week_count' => 8,
-            'metadata' => ['tags' => ['full-body']],
+            'start_date' => null,
             'archived_at' => '2026-10-21T10:00:00Z',
         ]);
 
@@ -66,7 +64,7 @@ class PrismProgramTest extends TestCase
         $fresh = $found->fresh();
         $this->assertSame('Hypertrophy Block B', $fresh->name);
         $this->assertSame(8, $fresh->week_count);
-        $this->assertSame(['tags' => ['full-body']], $fresh->metadata);
+        $this->assertNull($fresh->start_date);
         $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $fresh->archived_at);
         $this->assertSame('2026-10-21 10:00:00', $fresh->archived_at->format('Y-m-d H:i:s'));
 
@@ -78,19 +76,19 @@ class PrismProgramTest extends TestCase
                     'program_uuid' => 'prog-uuid-1',
                     'name' => 'Hypertrophy Block Final',
                     'week_count' => 10,
-                    'metadata' => json_encode(['version' => 2]),
+                    'start_date' => '2026-12-07',
                     'device_id' => 'dev-uuid-456',
                 ],
             ],
             ['gym_id', 'program_uuid'],
-            ['name', 'week_count', 'metadata', 'device_id']
+            ['name', 'week_count', 'start_date', 'device_id']
         );
 
         $this->assertSame(1, PrismProgram::where('gym_id', 'the-cove')->where('program_uuid', 'prog-uuid-1')->count());
         $upserted = PrismProgram::where('gym_id', 'the-cove')->where('program_uuid', 'prog-uuid-1')->first();
         $this->assertSame('Hypertrophy Block Final', $upserted->name);
         $this->assertSame(10, $upserted->week_count);
-        $this->assertSame(['version' => 2], $upserted->metadata);
+        $this->assertSame('2026-12-07', substr((string) $upserted->start_date, 0, 10));
         $this->assertSame('dev-uuid-456', $upserted->device_id);
     }
 }

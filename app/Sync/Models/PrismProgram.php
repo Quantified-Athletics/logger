@@ -14,15 +14,18 @@ class PrismProgram extends Model
         'program_uuid',
         'name',
         'week_count',
-        'metadata',
+        'start_date',
         'archived_at',
         'device_id',
     ];
 
+    /**
+     * start_date is intentionally not cast: it is a plain calendar date (YYYY-MM-DD) with no
+     * time or timezone, and it is stored and returned exactly as the client sent it.
+     */
     protected function casts(): array
     {
         return [
-            'metadata' => 'array',
             'archived_at' => 'datetime',
         ];
     }

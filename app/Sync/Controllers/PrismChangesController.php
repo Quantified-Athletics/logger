@@ -8,6 +8,7 @@ use App\Sync\Models\PrismInterferenceDismissal;
 use App\Sync\Models\PrismPreference;
 use App\Sync\Models\PrismProgram;
 use App\Sync\Models\PrismProgramCell;
+use App\Sync\Models\PrismProgramDestination;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -43,7 +44,7 @@ class PrismChangesController
                 'program_uuid' => $program->program_uuid,
                 'name' => $program->name,
                 'week_count' => (int) $program->week_count,
-                'metadata' => $program->metadata,
+                'start_date' => $program->start_date === null ? null : substr((string) $program->start_date, 0, 10),
                 'archived_at' => $program->archived_at?->toIso8601String(),
                 'updated_at' => $program->updated_at->toIso8601String(),
             ];
@@ -102,12 +103,35 @@ class PrismChangesController
             ];
         })->values()->all();
 
-        // 6. Compute cursor high-water-mark across all gym rows
+        // 6. Program destinations (publish links + tombstones)
+        $destinationsQuery = PrismProgramDestination::where('gym_id', $gym)->with('linkedBy:id,name');
+        if ($since !== null) {
+            $destinationsQuery->where('updated_at', '>=', $since);
+        }
+        $destinations = $destinationsQuery->get()->map(function (PrismProgramDestination $destination) {
+            return [
+                'program_uuid' => $destination->program_uuid,
+                'type' => $destination->type,
+                'spreadsheet_id' => $destination->spreadsheet_id,
+                'sheet_id' => $destination->sheet_id,
+                'title' => $destination->title,
+                'linked_by' => $destination->linkedBy === null ? null : [
+                    'id' => $destination->linkedBy->id,
+                    'name' => $destination->linkedBy->name,
+                ],
+                'linked_at' => $destination->linked_at?->toIso8601String(),
+                'deleted_at' => $destination->deleted_at?->toIso8601String(),
+                'updated_at' => $destination->updated_at->toIso8601String(),
+            ];
+        })->values()->all();
+
+        // 7. Compute cursor high-water-mark across all gym rows
         $maxProgramUpdated = PrismProgram::where('gym_id', $gym)->max('updated_at');
         $maxCellUpdated = PrismProgramCell::where('gym_id', $gym)->max('updated_at');
         $maxExerciseUpdated = PrismExerciseOverlayRecord::where('gym_id', $gym)->max('updated_at');
         $maxPreferenceUpdated = PrismPreference::where('gym_id', $gym)->max('updated_at');
         $maxDismissalUpdated = PrismInterferenceDismissal::where('gym_id', $gym)->max('updated_at');
+        $maxDestinationUpdated = PrismProgramDestination::where('gym_id', $gym)->max('updated_at');
 
         $updatedInstants = array_filter([
             $maxProgramUpdated ? Carbon::parse($maxProgramUpdated) : null,
@@ -115,6 +139,7 @@ class PrismChangesController
             $maxExerciseUpdated ? Carbon::parse($maxExerciseUpdated) : null,
             $maxPreferenceUpdated ? Carbon::parse($maxPreferenceUpdated) : null,
             $maxDismissalUpdated ? Carbon::parse($maxDismissalUpdated) : null,
+            $maxDestinationUpdated ? Carbon::parse($maxDestinationUpdated) : null,
         ]);
 
         $maxUpdated = null;
@@ -134,10 +159,15 @@ class PrismChangesController
             ->whereNotNull('deleted_at')
             ->max('deleted_at');
 
+        $rawMaxDestinationDeleted = PrismProgramDestination::where('gym_id', $gym)
+            ->whereNotNull('deleted_at')
+            ->max('deleted_at');
+
         $deletedInstants = array_filter([
             $rawMaxExerciseDeleted ? Carbon::parse($rawMaxExerciseDeleted) : null,
             $rawMaxCellDeleted ? Carbon::parse($rawMaxCellDeleted) : null,
             $rawMaxDismissalDeleted ? Carbon::parse($rawMaxDismissalDeleted) : null,
+            $rawMaxDestinationDeleted ? Carbon::parse($rawMaxDestinationDeleted) : null,
         ]);
 
         $maxDeleted = null;
@@ -172,6 +202,7 @@ class PrismChangesController
             'exercises' => $exercises,
             'preferences' => $preferences,
             'dismissals' => $dismissals,
+            'destinations' => $destinations,
         ]);
     }
 }
