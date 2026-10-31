@@ -8,6 +8,7 @@ use App\Sync\Models\PrismExerciseOverlayRecord;
 use App\Sync\Models\PrismPreference;
 use App\Sync\Models\PrismProgram;
 use App\Sync\Models\PrismProgramCell;
+use App\Sync\Models\PrismProgramDestination;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\Sanctum;
@@ -36,7 +37,7 @@ class PrismChangesTest extends TestCase
             'program_uuid' => 'prog-1',
             'name' => 'Strength Cycle',
             'week_count' => 4,
-            'metadata' => ['author' => 'Coach'],
+            'start_date' => '2026-11-02',
             'device_id' => 'dev-1',
         ]);
         PrismProgram::where('id', $program->id)->update(['updated_at' => $t]);
@@ -79,7 +80,7 @@ class PrismChangesTest extends TestCase
             ->getJson('/api/sync/prism/the-cove/changes');
 
         $response->assertStatus(200)
-            ->assertJsonStructure(['status', 'cursor', 'programs', 'cells', 'exercises', 'preferences', 'dismissals']);
+            ->assertJsonStructure(['status', 'cursor', 'programs', 'cells', 'exercises', 'preferences', 'dismissals', 'destinations']);
 
         $this->assertEquals('ok', $response->json('status'));
         $this->assertEquals($t->toIso8601String(), $response->json('cursor'));
@@ -90,7 +91,7 @@ class PrismChangesTest extends TestCase
             'program_uuid' => 'prog-1',
             'name' => 'Strength Cycle',
             'week_count' => 4,
-            'metadata' => ['author' => 'Coach'],
+            'start_date' => '2026-11-02',
             'archived_at' => null,
             'updated_at' => $t->toIso8601String(),
         ], $programs[0]);
@@ -129,7 +130,6 @@ class PrismChangesTest extends TestCase
             'program_uuid' => 'prog-old',
             'name' => 'Old Program',
             'week_count' => 1,
-            'metadata' => null,
         ]);
         PrismProgram::where('id', $progOld->id)->update(['updated_at' => $tBefore]);
 
@@ -138,7 +138,6 @@ class PrismChangesTest extends TestCase
             'program_uuid' => 'prog-new',
             'name' => 'New Program',
             'week_count' => 2,
-            'metadata' => null,
         ]);
         PrismProgram::where('id', $progNew->id)->update(['updated_at' => $tAfter]);
 
@@ -413,8 +412,17 @@ class PrismChangesTest extends TestCase
             'program_uuid' => 'prog-small-1',
             'name' => 'Small Program',
             'week_count' => 1,
-            'metadata' => ['note' => 'small'],
+            'start_date' => '2026-11-02',
             'device_id' => 'dev-1',
+        ]);
+
+        PrismProgramDestination::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-small-1',
+            'type' => 'google_sheets',
+            'spreadsheet_id' => 'sheet-small',
+            'sheet_id' => 0,
+            'linked_by_user_id' => $user->id,
         ]);
 
         for ($i = 1; $i <= 2; $i++) {
@@ -457,8 +465,18 @@ class PrismChangesTest extends TestCase
                 'program_uuid' => "prog-large-{$p}",
                 'name' => "Large Program {$p}",
                 'week_count' => 5,
-                'metadata' => ['note' => "large-{$p}"],
+                'start_date' => '2026-11-02',
                 'device_id' => 'dev-1',
+            ]);
+
+            // Each destination linked by a different user: an N+1 on linked_by would show up here.
+            PrismProgramDestination::create([
+                'gym_id' => 'the-cove',
+                'program_uuid' => "prog-large-{$p}",
+                'type' => 'google_sheets',
+                'spreadsheet_id' => 'sheet-large',
+                'sheet_id' => $p,
+                'linked_by_user_id' => User::factory()->create()->id,
             ]);
         }
 
@@ -490,9 +508,10 @@ class PrismChangesTest extends TestCase
 
         $responseLarge->assertStatus(200);
 
-        // 3. Assert counts are equal and small (<= 15)
+        // 3. Assert counts are equal and small (<= 19; destinations add 4 constant queries:
+        //    rows, eager-loaded linked_by users, max updated_at, max deleted_at)
         $this->assertSame($smallCount, $largeCount);
-        $this->assertLessThanOrEqual(15, $smallCount);
+        $this->assertLessThanOrEqual(19, $smallCount);
     }
 
     public function test_changes_programs_carry_archived_at_and_archive_appears_in_since_delta(): void
@@ -510,7 +529,6 @@ class PrismChangesTest extends TestCase
             'program_uuid' => 'prog-archived',
             'name' => 'To Be Archived',
             'week_count' => 4,
-            'metadata' => null,
             'archived_at' => null,
         ]);
         PrismProgram::where('id', $program->id)->update(['updated_at' => $t1]);
@@ -642,5 +660,100 @@ class PrismChangesTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertEquals($tTombstone->toIso8601String(), $response->json('cursor'));
+    }
+
+    public function test_changes_carry_destinations_with_linked_by_and_tombstones_since_cursor(): void
+    {
+        $coach = User::factory()->create(['name' => 'Coach A']);
+        Sanctum::actingAs($coach);
+
+        $tz = config('app.timezone');
+        $tOld = Carbon::parse('2026-10-01 12:00:00', $tz);
+        $tLink = Carbon::parse('2026-10-31 15:04:00', $tz);
+        $tUnlink = Carbon::parse('2026-10-31 16:00:00', $tz);
+
+        $old = PrismProgramDestination::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-old',
+            'type' => 'google_sheets',
+            'spreadsheet_id' => 'sheet-old',
+            'sheet_id' => 0,
+        ]);
+        PrismProgramDestination::where('id', $old->id)->update(['updated_at' => $tOld]);
+
+        $linked = PrismProgramDestination::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-1',
+            'type' => 'google_sheets',
+            'spreadsheet_id' => '1AbC',
+            'sheet_id' => 0,
+            'title' => 'Spring Block 2026',
+            'linked_by_user_id' => $coach->id,
+            'linked_at' => $tLink,
+        ]);
+        PrismProgramDestination::where('id', $linked->id)->update(['updated_at' => $tLink]);
+
+        $unlinked = PrismProgramDestination::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-2',
+            'type' => 'google_sheets',
+            'spreadsheet_id' => '1AbC',
+            'sheet_id' => 5,
+            'linked_by_user_id' => null,
+            'deleted_at' => $tUnlink,
+        ]);
+        PrismProgramDestination::where('id', $unlinked->id)->update(['updated_at' => $tUnlink]);
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes?since=' . urlencode($tLink->toIso8601String()));
+
+        $response->assertStatus(200);
+        $this->assertSame($tUnlink->toIso8601String(), $response->json('cursor'));
+
+        $destinations = collect($response->json('destinations'))->keyBy('program_uuid');
+        $this->assertSame(['prog-1', 'prog-2'], $destinations->keys()->sort()->values()->all());
+
+        $this->assertEquals([
+            'program_uuid' => 'prog-1',
+            'type' => 'google_sheets',
+            'spreadsheet_id' => '1AbC',
+            'sheet_id' => 0,
+            'title' => 'Spring Block 2026',
+            'linked_by' => ['id' => $coach->id, 'name' => 'Coach A'],
+            'linked_at' => $tLink->toIso8601String(),
+            'deleted_at' => null,
+            'updated_at' => $tLink->toIso8601String(),
+        ], $destinations['prog-1']);
+
+        $this->assertNull($destinations['prog-2']['linked_by']);
+        $this->assertSame($tUnlink->toIso8601String(), $destinations['prog-2']['deleted_at']);
+    }
+
+    public function test_changes_programs_carry_start_date_and_no_metadata(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        PrismProgram::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-dated',
+            'name' => 'Dated',
+            'week_count' => 4,
+            'start_date' => '2026-11-02',
+        ]);
+        PrismProgram::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-undated',
+            'name' => 'Undated',
+            'week_count' => 4,
+        ]);
+
+        $programs = collect($this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes')
+            ->assertStatus(200)
+            ->json('programs'))->keyBy('program_uuid');
+
+        $this->assertSame('2026-11-02', $programs['prog-dated']['start_date']);
+        $this->assertNull($programs['prog-undated']['start_date']);
+        $this->assertArrayNotHasKey('metadata', $programs['prog-dated']);
     }
 }

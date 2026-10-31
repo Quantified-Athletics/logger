@@ -10,6 +10,7 @@ use App\Sync\Controllers\PrismExerciseController;
 use App\Sync\Controllers\PrismInterferenceDismissalController;
 use App\Sync\Controllers\PrismPreferencesController;
 use App\Sync\Controllers\PrismProgramController;
+use App\Sync\Controllers\PrismProgramDestinationController;
 use App\Sync\Controllers\RestoreController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,7 @@ Route::middleware(['auth:sanctum', 'throttle:sync-batch', 'device-id', 'log-sync
 Route::middleware(['auth:sanctum', 'throttle:prism-write', 'device-id', 'log-sync-request'])->group(function () {
     Route::post('/prism/{gym}/programs/{program_uuid}', [PrismProgramController::class, 'storeProgram']);
     Route::post('/prism/{gym}/programs/{program_uuid}/cells', [PrismProgramController::class, 'storeCells']);
+    Route::post('/prism/{gym}/programs/{program_uuid}/destinations', [PrismProgramDestinationController::class, 'store']);
     Route::post('/prism/{gym}/exercises', [PrismExerciseController::class, 'store']);
     Route::post('/prism/{gym}/preferences', [PrismPreferencesController::class, 'store']);
     Route::post('/prism/{gym}/interference-dismissals', [PrismInterferenceDismissalController::class, 'store']);

@@ -1,6 +1,6 @@
 # Prism Programs — First-Class Fields, Partial Updates, Publish Destinations (Multi-User Safe)
 
-**Status:** proposed (not yet applied). **Repo:** `logger` (this change). Prism follow-ups are listed in §9;
+**Status:** Logger side implemented on branch `feat/prism-program-first-class-fields` (not yet deployed; Prism follow-ups in §9 pending). **Repo:** `logger` (this change). Prism follow-ups are listed in §9;
 they live in the Prism repo and are out of scope here.
 
 **Driver:** several coaches in the same gym can have the same Prism program open at once. Program-level data
