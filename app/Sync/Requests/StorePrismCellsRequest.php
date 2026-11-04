@@ -51,6 +51,7 @@ class StorePrismCellsRequest extends FormRequest
             'cells' => ['present', 'array'],
             'cells.*.cell_id' => ['required', 'string', 'max:16'],
             'cells.*.text' => ['present', 'string'],
+            'cells.*.workout_uuid' => ['sometimes', 'nullable', 'string', 'uuid'],
             'removals' => ['present', 'array'],
             'removals.*.cell_id' => ['required', 'string', 'max:16'],
             'device_id' => ['nullable', 'string', 'max:36'],

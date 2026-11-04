@@ -281,4 +281,89 @@ class PrismCellsStoreTest extends TestCase
                 'message' => 'Gym not found.',
             ]);
     }
+
+    private function postCells(array $payload, string $device = 'dev-uuid-1')
+    {
+        return $this->withHeaders(['X-Device-Id' => $device])
+            ->postJson('/api/sync/prism/the-cove/programs/prog-123/cells', $payload);
+    }
+
+    public function test_a_cell_with_a_workout_uuid_stores_it(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->postCells(['cells' => [
+            ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => '7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f'],
+        ]])->assertStatus(200);
+
+        $this->assertEquals('7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f', PrismProgramCell::first()->workout_uuid);
+    }
+
+    public function test_a_cell_without_a_workout_uuid_keeps_the_stored_one(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->postCells(['cells' => [
+            ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => '7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f'],
+        ]])->assertStatus(200);
+        $this->postCells(['cells' => [
+            ['cell_id' => 'w1d1', 'text' => 'Back Squat 5x5'],
+        ]], 'old-client')->assertStatus(200);
+
+        $cell = PrismProgramCell::first();
+        $this->assertEquals('Back Squat 5x5', $cell->text);
+        $this->assertEquals('7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f', $cell->workout_uuid);
+    }
+
+    public function test_a_new_workout_uuid_replaces_the_stored_one(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->postCells(['cells' => [
+            ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => '7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f'],
+        ]])->assertStatus(200);
+        $this->postCells(['cells' => [
+            ['cell_id' => 'w1d1', 'text' => 'Bench Press 3x5', 'workout_uuid' => '0b1c2d3e-4f5a-4b6c-8d7e-9f0a1b2c3d4e'],
+        ]])->assertStatus(200);
+
+        $this->assertEquals('0b1c2d3e-4f5a-4b6c-8d7e-9f0a1b2c3d4e', PrismProgramCell::first()->workout_uuid);
+    }
+
+    public function test_a_removal_clears_the_workout_uuid(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->postCells(['cells' => [
+            ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => '7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f'],
+        ]])->assertStatus(200);
+        $this->postCells(['cells' => [], 'removals' => [['cell_id' => 'w1d1']]])->assertStatus(200);
+
+        $cell = PrismProgramCell::first();
+        $this->assertNotNull($cell->deleted_at);
+        $this->assertNull($cell->workout_uuid);
+    }
+
+    public function test_a_malformed_workout_uuid_is_rejected(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->postCells(['cells' => [
+            ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => 'not-a-uuid'],
+        ]])->assertStatus(422);
+
+        $this->assertDatabaseCount('prism_program_cells', 0);
+    }
+
+    public function test_a_batch_mixing_cells_with_and_without_a_uuid_stores_both(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->postCells(['cells' => [
+            ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => '7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f'],
+            ['cell_id' => 'w1d2', 'text' => 'Bench Press 3x5'],
+        ]])->assertStatus(200);
+
+        $this->assertEquals('7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f', PrismProgramCell::where('cell_id', 'w1d1')->first()->workout_uuid);
+        $this->assertNull(PrismProgramCell::where('cell_id', 'w1d2')->first()->workout_uuid);
+    }
 }

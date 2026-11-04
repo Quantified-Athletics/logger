@@ -15,7 +15,10 @@ class UpsertPrismCellsAction
      * re-created cell un-tombstones. A removal flips deleted_at non-null while
      * keeping the row (and its cell_id) for the unique key.
      *
-     * @param  array<int, array{cell_id: string, text: string}>  $cells
+     * A cell that carries a `workout_uuid` stores it; a cell without one (an older client) leaves the
+     * stored uuid alone. A removal clears it: the workout at that position is gone.
+     *
+     * @param  array<int, array{cell_id: string, text: string, workout_uuid?: string|null}>  $cells
      * @param  array<int, array{cell_id: string}>  $removals
      */
     public function execute(string $gymId, string $programUuid, array $cells, array $removals, ?string $deviceId): Carbon
@@ -28,11 +31,14 @@ class UpsertPrismCellsAction
         $now = Carbon::now();
 
         if (! empty($cells)) {
-            $upsertRows = [];
+            // Upsert updates a fixed column list per call, so cells with and without a workout_uuid go in
+            // separate batches: only the first may overwrite the stored uuid.
+            $withUuid = [];
+            $withoutUuid = [];
             foreach ($cells as $cell) {
                 $cellId = (string) $cell['cell_id'];
                 $touchedCellIds[] = $cellId;
-                $upsertRows[] = [
+                $row = [
                     'gym_id' => $gymId,
                     'program_uuid' => $programUuid,
                     'cell_id' => $cellId,
@@ -40,13 +46,28 @@ class UpsertPrismCellsAction
                     'device_id' => $deviceId,
                     'deleted_at' => null,
                 ];
+                if (! empty($cell['workout_uuid'])) {
+                    $withUuid[] = $row + ['workout_uuid' => (string) $cell['workout_uuid']];
+                } else {
+                    $withoutUuid[] = $row;
+                }
             }
 
-            PrismProgramCell::upsert(
-                $upsertRows,
-                ['gym_id', 'program_uuid', 'cell_id'],
-                ['text', 'device_id', 'deleted_at']
-            );
+            if (! empty($withUuid)) {
+                PrismProgramCell::upsert(
+                    $withUuid,
+                    ['gym_id', 'program_uuid', 'cell_id'],
+                    ['text', 'workout_uuid', 'device_id', 'deleted_at']
+                );
+            }
+
+            if (! empty($withoutUuid)) {
+                PrismProgramCell::upsert(
+                    $withoutUuid,
+                    ['gym_id', 'program_uuid', 'cell_id'],
+                    ['text', 'device_id', 'deleted_at']
+                );
+            }
         }
 
         if (! empty($removals)) {
@@ -60,6 +81,7 @@ class UpsertPrismCellsAction
                     'program_uuid' => $programUuid,
                     'cell_id' => $cellId,
                     'text' => '',
+                    'workout_uuid' => null,
                     'device_id' => $deviceId,
                     'deleted_at' => $nowFormatted,
                 ];
@@ -68,7 +90,7 @@ class UpsertPrismCellsAction
             PrismProgramCell::upsert(
                 $removalRows,
                 ['gym_id', 'program_uuid', 'cell_id'],
-                ['text', 'device_id', 'deleted_at']
+                ['text', 'workout_uuid', 'device_id', 'deleted_at']
             );
         }
 

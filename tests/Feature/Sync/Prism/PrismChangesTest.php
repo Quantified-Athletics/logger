@@ -756,4 +756,35 @@ class PrismChangesTest extends TestCase
         $this->assertNull($programs['prog-undated']['start_date']);
         $this->assertArrayNotHasKey('metadata', $programs['prog-dated']);
     }
+
+    public function test_changes_return_each_cells_workout_uuid(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        PrismProgramCell::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-id',
+            'cell_id' => 'w1d1',
+            'workout_uuid' => '7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f',
+            'text' => 'Back Squat 3x5',
+            'device_id' => 'dev-1',
+        ]);
+        PrismProgramCell::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-id',
+            'cell_id' => 'w1d2',
+            'text' => 'Bench Press 3x5',
+            'device_id' => 'dev-1',
+        ]);
+
+        $cells = collect($this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes')
+            ->assertStatus(200)
+            ->json('cells'))->keyBy('cell_id');
+
+        $this->assertEquals('7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f', $cells['w1d1']['workout_uuid']);
+        $this->assertArrayHasKey('workout_uuid', $cells['w1d2']);
+        $this->assertNull($cells['w1d2']['workout_uuid']);
+    }
 }

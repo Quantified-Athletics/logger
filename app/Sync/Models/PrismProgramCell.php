@@ -13,6 +13,7 @@ class PrismProgramCell extends Model
         'gym_id',
         'program_uuid',
         'cell_id',
+        'workout_uuid',
         'text',
         'device_id',
         'deleted_at',

@@ -59,6 +59,7 @@ class PrismChangesController
             return [
                 'program_uuid' => $cell->program_uuid,
                 'cell_id' => $cell->cell_id,
+                'workout_uuid' => $cell->workout_uuid,
                 'text' => $cell->text,
                 'deleted_at' => $cell->deleted_at?->toIso8601String(),
                 'updated_at' => $cell->updated_at->toIso8601String(),
