@@ -8,6 +8,7 @@ use App\Sync\Models\PrismInterferenceDismissal;
 use App\Sync\Models\PrismPreference;
 use App\Sync\Models\PrismProgram;
 use App\Sync\Models\PrismProgramCell;
+use App\Sync\Models\PrismProgramComment;
 use App\Sync\Models\PrismProgramDestination;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -126,13 +127,33 @@ class PrismChangesController
             ];
         })->values()->all();
 
-        // 7. Compute cursor high-water-mark across all gym rows
+        // 7. Comments (coach comments on workouts + tombstones), with the author's full name
+        $commentsQuery = PrismProgramComment::where('gym_id', $gym)->with('author:id,name,email');
+        if ($since !== null) {
+            $commentsQuery->where('updated_at', '>=', $since);
+        }
+        $comments = $commentsQuery->get()->map(function (PrismProgramComment $comment) {
+            return [
+                'uuid' => $comment->uuid,
+                'program_uuid' => $comment->program_uuid,
+                'workout_uuid' => $comment->workout_uuid,
+                'body' => $comment->body,
+                'author_name' => $comment->author?->name,
+                'author_email' => $comment->author?->email,
+                'created_at' => $comment->created_at->toIso8601String(),
+                'deleted_at' => $comment->deleted_at?->toIso8601String(),
+                'updated_at' => $comment->updated_at->toIso8601String(),
+            ];
+        })->values()->all();
+
+        // 8. Compute cursor high-water-mark across all gym rows
         $maxProgramUpdated = PrismProgram::where('gym_id', $gym)->max('updated_at');
         $maxCellUpdated = PrismProgramCell::where('gym_id', $gym)->max('updated_at');
         $maxExerciseUpdated = PrismExerciseOverlayRecord::where('gym_id', $gym)->max('updated_at');
         $maxPreferenceUpdated = PrismPreference::where('gym_id', $gym)->max('updated_at');
         $maxDismissalUpdated = PrismInterferenceDismissal::where('gym_id', $gym)->max('updated_at');
         $maxDestinationUpdated = PrismProgramDestination::where('gym_id', $gym)->max('updated_at');
+        $maxCommentUpdated = PrismProgramComment::where('gym_id', $gym)->max('updated_at');
 
         $updatedInstants = array_filter([
             $maxProgramUpdated ? Carbon::parse($maxProgramUpdated) : null,
@@ -141,6 +162,7 @@ class PrismChangesController
             $maxPreferenceUpdated ? Carbon::parse($maxPreferenceUpdated) : null,
             $maxDismissalUpdated ? Carbon::parse($maxDismissalUpdated) : null,
             $maxDestinationUpdated ? Carbon::parse($maxDestinationUpdated) : null,
+            $maxCommentUpdated ? Carbon::parse($maxCommentUpdated) : null,
         ]);
 
         $maxUpdated = null;
@@ -204,6 +226,7 @@ class PrismChangesController
             'preferences' => $preferences,
             'dismissals' => $dismissals,
             'destinations' => $destinations,
+            'comments' => $comments,
         ]);
     }
 }

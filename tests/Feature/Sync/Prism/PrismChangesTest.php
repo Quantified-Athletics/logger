@@ -508,10 +508,11 @@ class PrismChangesTest extends TestCase
 
         $responseLarge->assertStatus(200);
 
-        // 3. Assert counts are equal and small (<= 19; destinations add 4 constant queries:
-        //    rows, eager-loaded linked_by users, max updated_at, max deleted_at)
+        // 3. Assert counts are equal and small (<= 22; destinations add 4 constant queries:
+        //    rows, eager-loaded linked_by users, max updated_at, max deleted_at; comments add 3:
+        //    rows, eager-loaded authors, max updated_at)
         $this->assertSame($smallCount, $largeCount);
-        $this->assertLessThanOrEqual(19, $smallCount);
+        $this->assertLessThanOrEqual(22, $smallCount);
     }
 
     public function test_changes_programs_carry_archived_at_and_archive_appears_in_since_delta(): void
