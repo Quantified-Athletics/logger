@@ -3,6 +3,9 @@
 namespace App\Sync\Controllers;
 
 use App\Sync\Controllers\Concerns\ValidatesGym;
+use App\Sync\Models\PrismExerciseCap;
+use App\Sync\Models\PrismExerciseFamily;
+use App\Sync\Models\PrismExerciseFamilyMember;
 use App\Sync\Models\PrismExerciseOverlayRecord;
 use App\Sync\Models\PrismInterferenceDismissal;
 use App\Sync\Models\PrismPreference;
@@ -146,7 +149,53 @@ class PrismChangesController
             ];
         })->values()->all();
 
-        // 8. Compute cursor high-water-mark across all gym rows
+        // 8. Exercise families (family names, caps and tombstones)
+        $exerciseFamiliesQuery = PrismExerciseFamily::where('gym_id', $gym);
+        if ($since !== null) {
+            $exerciseFamiliesQuery->where('updated_at', '>=', $since);
+        }
+        $exerciseFamilies = $exerciseFamiliesQuery->get()->map(function (PrismExerciseFamily $family) {
+            return [
+                'family_id' => $family->family_id,
+                'name' => $family->name,
+                'cap_count' => $family->cap_count,
+                'cap_period' => $family->cap_period,
+                'deleted_at' => $family->deleted_at?->toIso8601String(),
+                'updated_at' => $family->updated_at->toIso8601String(),
+            ];
+        })->values()->all();
+
+        // 9. Exercise family members (membership and tombstones)
+        $exerciseFamilyMembersQuery = PrismExerciseFamilyMember::where('gym_id', $gym);
+        if ($since !== null) {
+            $exerciseFamilyMembersQuery->where('updated_at', '>=', $since);
+        }
+        $exerciseFamilyMembers = $exerciseFamilyMembersQuery->get()->map(function (PrismExerciseFamilyMember $member) {
+            return [
+                'exercise_id' => $member->exercise_id,
+                'family_id' => $member->family_id,
+                'is_member' => $member->is_member,
+                'deleted_at' => $member->deleted_at?->toIso8601String(),
+                'updated_at' => $member->updated_at->toIso8601String(),
+            ];
+        })->values()->all();
+
+        // 10. Exercise caps (frequency caps and tombstones)
+        $exerciseCapsQuery = PrismExerciseCap::where('gym_id', $gym);
+        if ($since !== null) {
+            $exerciseCapsQuery->where('updated_at', '>=', $since);
+        }
+        $exerciseCaps = $exerciseCapsQuery->get()->map(function (PrismExerciseCap $cap) {
+            return [
+                'exercise_id' => $cap->exercise_id,
+                'cap_count' => $cap->cap_count,
+                'cap_period' => $cap->cap_period,
+                'deleted_at' => $cap->deleted_at?->toIso8601String(),
+                'updated_at' => $cap->updated_at->toIso8601String(),
+            ];
+        })->values()->all();
+
+        // 11. Compute cursor high-water-mark across all gym rows
         $maxProgramUpdated = PrismProgram::where('gym_id', $gym)->max('updated_at');
         $maxCellUpdated = PrismProgramCell::where('gym_id', $gym)->max('updated_at');
         $maxExerciseUpdated = PrismExerciseOverlayRecord::where('gym_id', $gym)->max('updated_at');
@@ -154,6 +203,9 @@ class PrismChangesController
         $maxDismissalUpdated = PrismInterferenceDismissal::where('gym_id', $gym)->max('updated_at');
         $maxDestinationUpdated = PrismProgramDestination::where('gym_id', $gym)->max('updated_at');
         $maxCommentUpdated = PrismProgramComment::where('gym_id', $gym)->max('updated_at');
+        $maxFamilyUpdated = PrismExerciseFamily::where('gym_id', $gym)->max('updated_at');
+        $maxFamilyMemberUpdated = PrismExerciseFamilyMember::where('gym_id', $gym)->max('updated_at');
+        $maxExerciseCapUpdated = PrismExerciseCap::where('gym_id', $gym)->max('updated_at');
 
         $updatedInstants = array_filter([
             $maxProgramUpdated ? Carbon::parse($maxProgramUpdated) : null,
@@ -163,6 +215,9 @@ class PrismChangesController
             $maxDismissalUpdated ? Carbon::parse($maxDismissalUpdated) : null,
             $maxDestinationUpdated ? Carbon::parse($maxDestinationUpdated) : null,
             $maxCommentUpdated ? Carbon::parse($maxCommentUpdated) : null,
+            $maxFamilyUpdated ? Carbon::parse($maxFamilyUpdated) : null,
+            $maxFamilyMemberUpdated ? Carbon::parse($maxFamilyMemberUpdated) : null,
+            $maxExerciseCapUpdated ? Carbon::parse($maxExerciseCapUpdated) : null,
         ]);
 
         $maxUpdated = null;
@@ -186,11 +241,24 @@ class PrismChangesController
             ->whereNotNull('deleted_at')
             ->max('deleted_at');
 
+        $rawMaxFamilyDeleted = PrismExerciseFamily::where('gym_id', $gym)
+            ->whereNotNull('deleted_at')
+            ->max('deleted_at');
+        $rawMaxFamilyMemberDeleted = PrismExerciseFamilyMember::where('gym_id', $gym)
+            ->whereNotNull('deleted_at')
+            ->max('deleted_at');
+        $rawMaxExerciseCapDeleted = PrismExerciseCap::where('gym_id', $gym)
+            ->whereNotNull('deleted_at')
+            ->max('deleted_at');
+
         $deletedInstants = array_filter([
             $rawMaxExerciseDeleted ? Carbon::parse($rawMaxExerciseDeleted) : null,
             $rawMaxCellDeleted ? Carbon::parse($rawMaxCellDeleted) : null,
             $rawMaxDismissalDeleted ? Carbon::parse($rawMaxDismissalDeleted) : null,
             $rawMaxDestinationDeleted ? Carbon::parse($rawMaxDestinationDeleted) : null,
+            $rawMaxFamilyDeleted ? Carbon::parse($rawMaxFamilyDeleted) : null,
+            $rawMaxFamilyMemberDeleted ? Carbon::parse($rawMaxFamilyMemberDeleted) : null,
+            $rawMaxExerciseCapDeleted ? Carbon::parse($rawMaxExerciseCapDeleted) : null,
         ]);
 
         $maxDeleted = null;
@@ -227,6 +295,9 @@ class PrismChangesController
             'dismissals' => $dismissals,
             'destinations' => $destinations,
             'comments' => $comments,
+            'exercise_families' => $exerciseFamilies,
+            'exercise_family_members' => $exerciseFamilyMembers,
+            'exercise_caps' => $exerciseCaps,
         ]);
     }
 }

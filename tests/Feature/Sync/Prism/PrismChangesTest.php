@@ -4,6 +4,9 @@ namespace Tests\Feature\Sync\Prism;
 
 use App\Models\User;
 use App\Sync\Models\Gym;
+use App\Sync\Models\PrismExerciseCap;
+use App\Sync\Models\PrismExerciseFamily;
+use App\Sync\Models\PrismExerciseFamilyMember;
 use App\Sync\Models\PrismExerciseOverlayRecord;
 use App\Sync\Models\PrismPreference;
 use App\Sync\Models\PrismProgram;
@@ -12,6 +15,7 @@ use App\Sync\Models\PrismProgramDestination;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Laravel\Sanctum\Sanctum;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 class PrismChangesTest extends TestCase
@@ -451,6 +455,29 @@ class PrismChangesTest extends TestCase
             'device_id' => 'dev-1',
         ]);
 
+        for ($i = 1; $i <= 2; $i++) {
+            PrismExerciseFamily::create([
+                'gym_id' => 'the-cove',
+                'family_id' => "small-family-{$i}",
+                'name' => "Small family {$i}",
+                'device_id' => 'dev-1',
+            ]);
+            PrismExerciseFamilyMember::create([
+                'gym_id' => 'the-cove',
+                'family_id' => 'small-family-1',
+                'exercise_id' => "small-member-{$i}",
+                'is_member' => true,
+                'device_id' => 'dev-1',
+            ]);
+            PrismExerciseCap::create([
+                'gym_id' => 'the-cove',
+                'exercise_id' => "small-cap-{$i}",
+                'cap_count' => 1,
+                'cap_period' => 'week',
+                'device_id' => 'dev-1',
+            ]);
+        }
+
         \Illuminate\Support\Facades\DB::flushQueryLog();
         $responseSmall = $this->withHeaders(['X-Device-Id' => 'dev-1'])
             ->getJson('/api/sync/prism/the-cove/changes');
@@ -499,6 +526,29 @@ class PrismChangesTest extends TestCase
                 'device_id' => 'dev-1',
                 'deleted_at' => ($e % 5 === 0) ? now() : null,
             ]);
+            PrismExerciseFamily::create([
+                'gym_id' => 'the-cove',
+                'family_id' => "large-family-{$e}",
+                'name' => "Large family {$e}",
+                'device_id' => 'dev-1',
+                'deleted_at' => ($e % 5 === 0) ? now() : null,
+            ]);
+            PrismExerciseFamilyMember::create([
+                'gym_id' => 'the-cove',
+                'family_id' => 'large-family-1',
+                'exercise_id' => "large-member-{$e}",
+                'is_member' => true,
+                'device_id' => 'dev-1',
+                'deleted_at' => ($e % 5 === 0) ? now() : null,
+            ]);
+            PrismExerciseCap::create([
+                'gym_id' => 'the-cove',
+                'exercise_id' => "large-cap-{$e}",
+                'cap_count' => 2,
+                'cap_period' => 'program',
+                'device_id' => 'dev-1',
+                'deleted_at' => ($e % 5 === 0) ? now() : null,
+            ]);
         }
 
         \Illuminate\Support\Facades\DB::flushQueryLog();
@@ -508,11 +558,12 @@ class PrismChangesTest extends TestCase
 
         $responseLarge->assertStatus(200);
 
-        // 3. Assert counts are equal and small (<= 22; destinations add 4 constant queries:
+        // 3. Assert counts are equal and small (<= 31; destinations add 4 constant queries:
         //    rows, eager-loaded linked_by users, max updated_at, max deleted_at; comments add 3:
-        //    rows, eager-loaded authors, max updated_at)
+        //    rows, eager-loaded authors, max updated_at; the exercise family, member and cap
+        //    tables add 9 more: rows, max updated_at, max deleted_at for each)
         $this->assertSame($smallCount, $largeCount);
-        $this->assertLessThanOrEqual(22, $smallCount);
+        $this->assertLessThanOrEqual(31, $smallCount);
     }
 
     public function test_changes_programs_carry_archived_at_and_archive_appears_in_since_delta(): void
@@ -787,5 +838,172 @@ class PrismChangesTest extends TestCase
         $this->assertEquals('7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f', $cells['w1d1']['workout_uuid']);
         $this->assertArrayHasKey('workout_uuid', $cells['w1d2']);
         $this->assertNull($cells['w1d2']['workout_uuid']);
+    }
+
+    /**
+     * @return array<string, array{0: class-string, 1: array<string, mixed>, 2: string}>
+     */
+    public static function exerciseLimitRows(): array
+    {
+        return [
+            'family' => [PrismExerciseFamily::class, ['gym_id' => 'the-cove', 'family_id' => 'burpees', 'name' => 'Burpees', 'cap_count' => 2, 'cap_period' => 'week', 'device_id' => 'dev-1'], 'exercise_families'],
+            'member' => [PrismExerciseFamilyMember::class, ['gym_id' => 'the-cove', 'exercise_id' => 'clean-and-jerk', 'family_id' => 'clean', 'is_member' => true, 'device_id' => 'dev-1'], 'exercise_family_members'],
+            'cap' => [PrismExerciseCap::class, ['gym_id' => 'the-cove', 'exercise_id' => 'burpee-box-jump', 'cap_count' => 1, 'cap_period' => 'program', 'device_id' => 'dev-1'], 'exercise_caps'],
+        ];
+    }
+
+    /**
+     * @param  class-string  $modelClass
+     * @param  array<string, mixed>  $attributes
+     */
+    private function createAtTime(string $modelClass, array $attributes, string $updatedAt): void
+    {
+        $row = $modelClass::create($attributes);
+        $modelClass::where('id', $row->id)->update(['updated_at' => $updatedAt]);
+    }
+
+    public function test_changes_carry_exercise_limit_rows_with_exact_shapes(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $tz = config('app.timezone');
+        $t1 = Carbon::parse('2026-09-01 10:00:00', $tz)->toIso8601String();
+
+        $this->createAtTime(PrismExerciseFamily::class, ['gym_id' => 'the-cove', 'family_id' => 'burpees', 'name' => 'Burpees', 'cap_count' => 2, 'cap_period' => 'week', 'device_id' => 'dev-1'], '2026-09-01 10:00:00');
+        $this->createAtTime(PrismExerciseFamilyMember::class, ['gym_id' => 'the-cove', 'exercise_id' => 'clean-and-jerk', 'family_id' => 'clean', 'is_member' => true, 'device_id' => 'dev-1'], '2026-09-01 10:00:00');
+        $this->createAtTime(PrismExerciseCap::class, ['gym_id' => 'the-cove', 'exercise_id' => 'burpee-box-jump', 'cap_count' => 1, 'cap_period' => 'program', 'device_id' => 'dev-1'], '2026-09-01 10:00:00');
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $response->assertStatus(200);
+        $this->assertSame([
+            'family_id' => 'burpees',
+            'name' => 'Burpees',
+            'cap_count' => 2,
+            'cap_period' => 'week',
+            'deleted_at' => null,
+            'updated_at' => $t1,
+        ], $response->json('exercise_families.0'));
+        $this->assertSame([
+            'exercise_id' => 'clean-and-jerk',
+            'family_id' => 'clean',
+            'is_member' => true,
+            'deleted_at' => null,
+            'updated_at' => $t1,
+        ], $response->json('exercise_family_members.0'));
+        $this->assertSame([
+            'exercise_id' => 'burpee-box-jump',
+            'cap_count' => 1,
+            'cap_period' => 'program',
+            'deleted_at' => null,
+            'updated_at' => $t1,
+        ], $response->json('exercise_caps.0'));
+    }
+
+    public function test_empty_gym_returns_empty_exercise_limit_lists(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $response->assertStatus(200);
+        $this->assertSame([], $response->json('exercise_families'));
+        $this->assertSame([], $response->json('exercise_family_members'));
+        $this->assertSame([], $response->json('exercise_caps'));
+    }
+
+    public function test_since_filters_exercise_limit_rows(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->createAtTime(PrismExerciseFamily::class, ['gym_id' => 'the-cove', 'family_id' => 'old-family', 'name' => 'Old', 'device_id' => 'dev-1'], '2026-09-01 10:00:00');
+        $this->createAtTime(PrismExerciseFamily::class, ['gym_id' => 'the-cove', 'family_id' => 'new-family', 'name' => 'New', 'device_id' => 'dev-1'], '2026-09-01 12:00:00');
+        $this->createAtTime(PrismExerciseFamilyMember::class, ['gym_id' => 'the-cove', 'exercise_id' => 'old-member', 'family_id' => 'f', 'is_member' => true, 'device_id' => 'dev-1'], '2026-09-01 10:00:00');
+        $this->createAtTime(PrismExerciseFamilyMember::class, ['gym_id' => 'the-cove', 'exercise_id' => 'new-member', 'family_id' => 'f', 'is_member' => true, 'device_id' => 'dev-1'], '2026-09-01 12:00:00');
+        $this->createAtTime(PrismExerciseCap::class, ['gym_id' => 'the-cove', 'exercise_id' => 'old-cap', 'cap_count' => 1, 'cap_period' => 'week', 'device_id' => 'dev-1'], '2026-09-01 10:00:00');
+        $this->createAtTime(PrismExerciseCap::class, ['gym_id' => 'the-cove', 'exercise_id' => 'new-cap', 'cap_count' => 1, 'cap_period' => 'week', 'device_id' => 'dev-1'], '2026-09-01 12:00:00');
+
+        $since = urlencode('2026-09-01T11:00:00+00:00');
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson("/api/sync/prism/the-cove/changes?since={$since}");
+
+        $response->assertStatus(200);
+        $this->assertSame(['new-family'], array_column($response->json('exercise_families'), 'family_id'));
+        $this->assertSame(['new-member'], array_column($response->json('exercise_family_members'), 'exercise_id'));
+        $this->assertSame(['new-cap'], array_column($response->json('exercise_caps'), 'exercise_id'));
+    }
+
+    #[DataProvider('exerciseLimitRows')]
+    public function test_exercise_limit_tombstones_are_delivered_in_delta(string $modelClass, array $attributes, string $feedKey): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $tombstone = Carbon::parse('2026-09-01 12:00:00', config('app.timezone'));
+        $this->createAtTime($modelClass, array_merge($attributes, ['deleted_at' => $tombstone]), '2026-09-01 12:00:00');
+
+        $since = urlencode('2026-09-01T11:00:00+00:00');
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson("/api/sync/prism/the-cove/changes?since={$since}");
+
+        $response->assertStatus(200);
+        $rows = $response->json($feedKey);
+        $this->assertCount(1, $rows);
+        $this->assertNotNull($rows[0]['deleted_at']);
+    }
+
+    #[DataProvider('exerciseLimitRows')]
+    public function test_cursor_advances_on_exercise_limit_update(string $modelClass, array $attributes, string $feedKey): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $tz = config('app.timezone');
+        $t15 = Carbon::parse('2026-09-01 15:00:00', $tz);
+        $this->createAtTime($modelClass, $attributes, '2026-09-01 15:00:00');
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $response->assertStatus(200);
+        $this->assertEquals($t15->toIso8601String(), $response->json('cursor'));
+    }
+
+    #[DataProvider('exerciseLimitRows')]
+    public function test_cursor_advances_on_exercise_limit_removal(string $modelClass, array $attributes, string $feedKey): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $tz = config('app.timezone');
+        $t15 = Carbon::parse('2026-09-01 15:00:00', $tz);
+        $this->createAtTime($modelClass, array_merge($attributes, ['deleted_at' => $t15]), '2026-09-01 10:00:00');
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $response->assertStatus(200);
+        $this->assertEquals($t15->toIso8601String(), $response->json('cursor'));
+    }
+
+    public function test_other_gyms_exercise_limit_rows_never_appear(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+        Gym::create(['id' => 'other-gym', 'name' => 'Other Gym']);
+
+        $this->createAtTime(PrismExerciseFamily::class, ['gym_id' => 'other-gym', 'family_id' => 'other-family', 'name' => 'Other', 'device_id' => 'dev-1'], '2026-09-01 15:00:00');
+        $this->createAtTime(PrismExerciseFamilyMember::class, ['gym_id' => 'other-gym', 'exercise_id' => 'other-member', 'family_id' => 'f', 'is_member' => true, 'device_id' => 'dev-1'], '2026-09-01 15:00:00');
+        $this->createAtTime(PrismExerciseCap::class, ['gym_id' => 'other-gym', 'exercise_id' => 'other-cap', 'cap_count' => 1, 'cap_period' => 'week', 'device_id' => 'dev-1'], '2026-09-01 15:00:00');
+        $this->createAtTime(PrismExerciseFamily::class, ['gym_id' => 'the-cove', 'family_id' => 'cove-family', 'name' => 'Cove', 'device_id' => 'dev-1'], '2026-09-01 10:00:00');
+        $this->createAtTime(PrismExerciseFamilyMember::class, ['gym_id' => 'the-cove', 'exercise_id' => 'cove-member', 'family_id' => 'f', 'is_member' => true, 'device_id' => 'dev-1'], '2026-09-01 10:00:00');
+        $this->createAtTime(PrismExerciseCap::class, ['gym_id' => 'the-cove', 'exercise_id' => 'cove-cap', 'cap_count' => 1, 'cap_period' => 'week', 'device_id' => 'dev-1'], '2026-09-01 10:00:00');
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $response->assertStatus(200);
+        $this->assertSame(['cove-family'], array_column($response->json('exercise_families'), 'family_id'));
+        $this->assertSame(['cove-member'], array_column($response->json('exercise_family_members'), 'exercise_id'));
+        $this->assertSame(['cove-cap'], array_column($response->json('exercise_caps'), 'exercise_id'));
+        $this->assertEquals(Carbon::parse('2026-09-01 10:00:00', config('app.timezone'))->toIso8601String(), $response->json('cursor'));
     }
 }
