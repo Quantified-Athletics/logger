@@ -7,10 +7,10 @@ Read these first:
 ### Steering (project rules — always follow)
 ```
 docs/antigravity-steering.md              → delegated-run rules: no git, no Pint, bash safety, migration operating rule
-.kiro/steering/safe-operations.md         → protected files, artisan safety, Pint ban
-.kiro/steering/project-conventions.md     → data integrity, domain folders, naming
-.kiro/steering/laravel-boost.md           → PHP/Eloquent/testing conventions
-.kiro/steering/sync-api-context.md        → sync API + lift_sets/band_color context
+.claude/rules/safe-operations.md         → protected files, artisan safety, Pint ban
+.claude/rules/project-conventions.md     → data integrity, domain folders, naming
+.claude/rules/laravel-boost.md           → PHP/Eloquent/testing conventions
+.claude/rules/sync-api-context.md        → sync API + lift_sets/band_color context
 ```
 
 ### The frozen shared spec (reference — the source of truth this slice mirrors)

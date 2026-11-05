@@ -19,10 +19,10 @@ Read in order:
 ### 1. Steering (project rules — always follow)
 ```
 docs/antigravity-steering.md            → no git, no Pint, bash safety, MIGRATION operating rule (§6/§8), Consumer Impact Trace (§13)
-.kiro/steering/safe-operations.md       → protected files, artisan safety, Pint ban
-.kiro/steering/project-conventions.md   → data integrity, naming, migrations forward-only
-.kiro/steering/laravel-boost.md         → PHP/Eloquent/testing conventions
-.kiro/steering/sync-api-context.md      → sync API + lift_sets/band_color context
+.claude/rules/safe-operations.md       → protected files, artisan safety, Pint ban
+.claude/rules/project-conventions.md   → data integrity, naming, migrations forward-only
+.claude/rules/laravel-boost.md         → PHP/Eloquent/testing conventions
+.claude/rules/sync-api-context.md      → sync API + lift_sets/band_color context
 ```
 
 ### 2. The plan (context — NOT execution steps)

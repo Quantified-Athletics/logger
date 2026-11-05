@@ -1,0 +1,45 @@
+# Project Conventions
+
+Architectural principles specific to this Laravel app. These apply to all work, not just specific features.
+
+## Data Integrity
+
+- **Never repurpose a column for something it wasn't designed for.** If you need to store distance, add a `distance` column. Don't stuff it into `reps` and rely on context to interpret it. New features get proper schema.
+- **Don't duplicate data across columns.** One source of truth per datum. If you need the same information in a different shape, derive it at read time — don't store it twice. Two copies desync.
+- **Migrations are forward-only in production.** Never modify a migration that has been run. Create a new migration to alter the schema. Rollback is for development only.
+- **A migration is not "done" until it has RUN.** Authoring a migration and passing its feature test (which uses in-memory SQLite via `RefreshDatabase`) is NOT the same as the migration having run against the real MySQL DB. A committed-but-Pending migration silently leaves the app on pre-migration behavior for the affected rows. (Learned when a re-type migration sat Pending and the app kept dispatching the old exercise-type strategy, producing a cross-app PR mismatch that looked like a code bug.)
+- **Migrations run AUTOMATICALLY on deploy.** Forge is configured to run migrations as part of the Logger deploy pipeline, and Forge auto-deploys on push to `main`. So a merged migration runs against production MySQL as part of that deploy — you do NOT run `php artisan migrate` by hand. Verification shifts accordingly: after the deploy, confirm `php artisan migrate:status` shows it **Ran** (or trust the deploy log). The risk is no longer "forgot to run it" but "pushed a bad/irreversible migration that auto-runs on prod" — so a migration MUST be safe to auto-apply (additive/nullable, reversible `down()`, no destructive data ops without explicit intent) BEFORE it reaches `main`.
+- **Deleting rows in a data migration: mind SoftDeletes and self-referential FKs.** Two traps, both real:
+  - **SoftDeletes:** most core models (`LiftLog`, `LiftSet`, `Exercise`, `PersonalRecord`, …) use `SoftDeletes`, so an Eloquent `->delete()` (including inside services like `PRRecalculationService::recalculateAllPRsForExercise`) only sets `deleted_at` — the row is NOT physically removed. If a migration must eliminate rows (e.g. before dropping an enum value they use), hard-delete via the query builder (`DB::table('...')->where(...)->delete()`), which also bypasses the soft-delete scope. A raw `DB::table()->count()` still sees soft-deleted rows, so asserts built on it will trip over them.
+  - **Self-referential FKs:** `personal_records.previous_pr_id` is a self-FK with `ON DELETE NO ACTION`. MySQL checks it row-by-row mid-statement, so a bulk `DELETE ... WHERE pr_type IN (...)` that removes a parent before its child in the same statement fails with a 1451 integrity violation — even when the end state would be consistent. Null out the inbound references first (`UPDATE ... SET previous_pr_id = NULL WHERE previous_pr_id IN (<ids to delete>)`), THEN delete. (SQLite in tests does not enforce this the same way, so the test can pass while MySQL fails — see the "run it" rule above.)
+
+## Architecture
+
+- **Domain folders for isolated features.** New feature modules that don't belong in the existing web UI flow get their own `app/X/` directory (controllers, actions, services, models, middleware, commands). Don't scatter new feature code across `app/Http/Controllers/`, `app/Services/`, etc. unless it's genuinely shared.
+- **Existing web UI behavior is sacred.** Changes to shared models (LiftLog, LiftSet, User, Exercise) must not break existing views, controllers, or tests. If you modify a shared model, run the full test suite to verify.
+- **Dispatch events, don't inline side effects.** When an action has downstream consequences (PR detection, notifications), dispatch an event. Don't inline the logic in the controller or action. The event system decouples concerns.
+
+## Infrastructure
+
+- **Logger's request path is scarce.** Logger runs on Forge Hobby, sharing the box with the production database. Reporting, dashboard and analytics work must be cheap on the request path: treat server CPU and memory as contended with real users.
+
+## Naming
+
+- **No brand names in code.** Class names, URLs, and route prefixes describe function, not marketing. The product may be renamed at any time. Use descriptive, generic names.
+- **Descriptive over clever.** `ExerciseResolverService` not `Resolver`. `StoreSyncLogAction` not `StoreAction`. The name should tell you what it does without reading the code.
+
+## Shared Model Changes
+
+When adding columns to existing tables (`lift_logs`, `lift_sets`, `users`, `exercises`):
+
+1. Make new columns nullable (don't break existing rows)
+2. Add to the model's `$fillable` array
+3. Add appropriate casts if needed
+4. Verify existing functionality still works (tests pass, web UI unaffected)
+5. If the column changes how existing data is interpreted (like moving cardio distance from `reps` to `distance`), update all upstream readers in the same PR
+
+## Local Environment & Dev Server
+
+- **Local dev loads `.env.local`, not `.env`.** This box has a complete, self-contained `.env.local` (its own `APP_KEY`, DB config, and `APP_URL=http://dev.quantifiedathletics.com:8000`). When adding or changing a dev-only setting, edit **`.env.local`** — editing `.env` alone will appear to work on the CLI (e.g. `php artisan config:show`, `tinker`) while the running HTTP server, which booted from `.env.local`, ignores it. To be safe, keep the key in both files. (Learned chasing a CORS failure where `.env` had the right value and `tinker` confirmed it, but the server kept using the hardcoded config fallback because `.env.local` lacked the key.)
+- **CORS allowed origins live in `CORS_ALLOWED_ORIGINS`** (comma-separated), read by `config/cors.php`. The Athlete app's dev server must be in this list or its sync/telemetry calls get blocked by CORS. When the Athlete dev server runs on a non-default port (e.g. `5500` instead of Vite's `5173`), add that `http://localhost:<port>` origin to `CORS_ALLOWED_ORIGINS` in `.env.local`. Wildcards are not usable here: telemetry is flushed with credentialed requests, so the response must echo a concrete origin.
+- **`artisan serve` reads env only at boot.** It does NOT hot-reload `.env`/`.env.local` changes. After editing env, you must restart the server process for it to take effect — a frontend (Vite) reload does nothing for the backend. If multiple `artisan serve` instances race for port 8000, the first to bind wins and the others fail silently, so make sure only one is running.

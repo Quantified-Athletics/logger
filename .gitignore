@@ -35,3 +35,8 @@ debug_local
 debug_production
 PROMPTS
 /logger-source-code*
+# tq: the executor's handoff summary and the agent hand-off file (tq reads and deletes both)
+.execute-handoff.md
+.turn-result.json
+# Test output captured during a run; deleted at the end of it
+.test-output.txt

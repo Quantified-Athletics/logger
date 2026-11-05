@@ -4,10 +4,10 @@ Look in `docs/plans/` for the most recently modified file matching `*-prompt.md`
 
 **Before reading the prompt**, always read these steering files first:
 ```
-.kiro/steering/git-workflow.md
-.kiro/steering/safe-operations.md
-.kiro/steering/project-conventions.md
-.kiro/steering/laravel-boost.md
+.claude/rules/git-workflow.md
+.claude/rules/safe-operations.md
+.claude/rules/project-conventions.md
+.claude/rules/laravel-boost.md
 ```
 
 ## Rules

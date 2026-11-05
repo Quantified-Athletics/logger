@@ -2,52 +2,38 @@
 
 Standard rules and context for any external LLM implementing a plan from this project. Read this file first, then read the specific plan document.
 
-This app is the durable sync backend and coaching web app for the Squirby platform (Laravel 11+, PHP 8.4, MySQL, Blade + Alpine.js + Tailwind, Breeze session auth for web, Sanctum token auth for the API).
+This app is the durable sync backend and coaching web app for the Squirby platform (Laravel 12, PHP 8.4, MySQL, Blade + Alpine.js + Tailwind, Breeze session auth for web, Sanctum token auth for the API).
 
 ---
 
-## 1. Project Steering Files (Always Read First)
-
-These contain project-wide rules. Read them before starting any work.
+## 1. Required Reading (Always Read First)
 
 ```
-.kiro/steering/safe-operations.md        → files never to edit, bash safety, artisan safety, Pint ban
-.kiro/steering/project-conventions.md    → data integrity, domain folders, event dispatch, naming
-.kiro/steering/git-workflow.md           → branch assumptions, no push, no merge to main
-.kiro/steering/laravel-boost.md          → Laravel 12 conventions (PHP style, Eloquent, testing)
+CLAUDE.md                               → what this app is, hard rules, where things live
+.claude/rules/safe-operations.md        → files never to edit, command safety, artisan safety, Pint ban
+.claude/rules/project-conventions.md    → data integrity, domain folders, event dispatch, naming
+.claude/rules/laravel-boost.md          → Laravel 12 conventions (PHP style, Eloquent, testing)
 ```
 
-When working on the Sync API specifically, also read (manual-inclusion) context:
-
-```
-.kiro/steering/sync-api-context.md       → sync API architecture, data model, cardio migration, app/Sync/ layout
-```
-
-> **Precedence note on Pint:** `laravel-boost.md` mentions running `vendor/bin/pint --dirty`. `safe-operations.md` bans Pint entirely. For delegated antigravity runs, **safe-operations wins — never run Pint.** The user runs formatting.
+When working on the Sync API specifically, also read `.claude/rules/sync-api-context.md` (sync API
+architecture, data model, cardio migration, `app/Sync/` layout).
 
 ---
 
-## 2. Tool & Bash Safety Rules
+## 2. Safety Rules
 
-These rules prevent the most common failure modes when working in this codebase.
-
-### File Operations
-
-- **NEVER use bash commands (echo, cat, printf, heredocs, `>`, `>>`, tee) to create or write file content.** Always use fsWrite/fsAppend tools. Bash with quoted content causes hanging processes (shell waits for the closing quote).
-- **NEVER use `sed`, `awk`, or `perl` one-liners to modify file content** — and never `sed -i` on config files. Use strReplace/edit tools instead.
-- **NEVER use inline interpreter commands** (`php -r`, `node -e`). If you need a throwaway script, write a temporary `.php` file, run it with `php`, then delete it. For read-only DB inspection, prefer `php artisan tinker` with a read query.
-- **NEVER use `grep` via bash.** Use the grep/search tool instead.
 - **Always pass `--no-interaction`** to artisan commands so they never hang on a prompt.
+- For read-only DB inspection, prefer `php artisan tinker` with a read query.
 
 ### Protected Files (Never Edit)
 
-- `.env`, `.env.backup`, `.env.local` — production credentials. Never read into output, never modify.
-- `vendor/`, `node_modules/` — managed by Composer/npm.
-- `composer.lock` — only changed by Composer.
-- `*.sql` root backups — production database dumps. Never modify, delete, or echo contents.
-- `storage/logs/` — read for debugging only; never write or delete manually.
-- **Existing migrations that have run in production** — never modify. Create a new migration instead.
-- **Existing tests** — never delete or significantly alter without approval. Add new tests freely.
+- `.env`, `.env.backup`, `.env.local`: credentials. Never read into output, never modify. The one in your worktree holds example values only; never open the ones in the owner's checkout.
+- `vendor/`, `node_modules/`: managed by Composer/npm.
+- `composer.lock`: only changed by Composer.
+- `*.sql` root backups: production database dumps. Never read, modify, delete, or echo them. Never run `pull_mysql_db.sh` or `pull_storage.sh`.
+- `storage/logs/`: read for debugging only; never write or delete manually.
+- **Existing migrations that have run in production:** never modify. Create a new migration instead.
+- **Existing tests:** never delete or significantly alter without approval. Add new tests freely.
 
 ### Files that need explicit approval before editing
 
@@ -55,12 +41,22 @@ These rules prevent the most common failure modes when working in this codebase.
 
 ---
 
-## 3. Git Rules
+## 3. Workspace & Git Rules
 
-- **NEVER commit or push.** Do not run `git commit`, `git add`, `git push`, or any git command. The user handles all version control.
-- No exceptions. Do not commit "for convenience" or "to save progress."
+The automation runs you in an isolated git worktree, already checked out to the issue's branch. Work **in
+place** in this worktree: do NOT create a clone or another worktree, and do not `cd` elsewhere. **You do
+not commit or push: when you exit, the automation commits everything you left in the worktree, verbatim, as
+the `snapshot:` and pushes it.**
 
-> This overrides `.kiro/steering/git-workflow.md` (which allows committing at your discretion) **for delegated antigravity runs only.** When a human is driving the session interactively, git-workflow.md applies. When antigravity is executing a prompt, this rule applies: never touch git.
+- **Work only on the branch you are given. Never create, rename, or switch a branch.** Branching is the
+  automation's job, never yours.
+- **Leave your result in the worktree; the automation commits it.** Everything in the worktree that git doesn't
+  ignore becomes the snapshot, so the cleanup sweep matters: delete temp scripts and scratch files first. The
+  snapshot is verbatim executor output, never amended.
+- **If you stop early, your work is still kept.** The automation saves whatever you leave as a `wip:` commit,
+  and a retry starts with a `RESUME:` note naming that commit: continue from it, never redo or revert it.
+- **Do NOT open, promote, or merge a PR, and never touch `main`.** A push to `main` deploys to production.
+- **Never add, remove, or create GitHub labels.** The automation owns every label and status comment.
 
 ---
 
@@ -115,12 +111,11 @@ This loop is non-negotiable. Never report a failure and stop. Never ask for help
 - If a test failure is caused by YOUR changes — fix it immediately.
 - If a test was already failing before your changes (pre-existing, unrelated) — note it and continue. Never silence or delete existing tests.
 
-### Post-Execution Retro — do NOT write it
+### Post-Execution Retro (leave untouched)
 
-Do NOT fill in the `## Post-Execution Retro` section of the prompt. The retro is reconstructed from the
-commit trail by the human reviewer at archive time (see `.kiro/steering/architect-workflow.md` →
-Post-Execution Review Protocol). Leave the `{placeholder}` values untouched. Your only end-of-run
-obligation is the cleanup sweep, then the completion signal.
+The prompt `.md` file ends with a `## Post-Execution Retro` section containing `{placeholder}` values.
+**Do NOT fill it in.** It is populated later, after execution, from the version-control history. Your
+obligation ends at a clean End-of-Run Cleanup Sweep and the handoff file, then the completion signal.
 
 ### End-of-Run Cleanup Sweep (MANDATORY — before AGY_COMPLETE)
 
@@ -128,7 +123,7 @@ The "No dead code" principle (§10) is a pass/fail GATE, not a hope. Before prin
 you MUST sweep the files you touched — a green PHPUnit suite does NOT prove the absence of dead code (an
 unused method, an orphaned class, or a compat shim all pass).
 
-> **Tooling note:** Pint is BANNED for antigravity runs (`safe-operations.md`), and this project has no
+> **Tooling note:** Pint is BANNED (`safe-operations.md`), and this project has no
 > PHPStan/Larastan configured. So this sweep is done by INSPECTION + grep, NOT by running a linter. Do
 > not run Pint or any formatter.
 
@@ -139,15 +134,48 @@ unused method, an orphaned class, or a compat shim all pass).
    `use` you no longer reference.
 3. **No fallback / backward-compat shims.** No `?? $oldColumn` dual-reads, no "just in case" branches, no
    commented-out old code, no TODO/FIXME. If a boundary/migration is done correctly the old shape is
-   unreachable — a surviving fallback is dead code by construction (see §13 Consumer Impact Trace).
+   unreachable — a surviving fallback is dead code by construction (see §12 Consumer Impact Trace).
 4. **No leftover artifacts.** Delete any temporary `.php` scripts you wrote; no stray `dd()`/`dump()`/
    `Log::` debug noise beyond intended logging; delete `.test-output.txt`.
 
 If it finds nothing, say so. If it finds something, fix it and re-run the affected tests BEFORE AGY_COMPLETE.
 
+### Reviewer Handoff File (MANDATORY — write before AGY_COMPLETE)
+
+The automation posts this file verbatim as the turn-end comment on the issue. You are the only agent that knows
+the change, so before `AGY_COMPLETE`, write `.execute-handoff.md` at the repo root (always this exact name; it
+is gitignored).
+
+Write it for a person: start with what the change does, keep file paths, class names and spec ids out of the
+main text, and put technical detail in a collapsed `<details>` block at the end. Use exactly these sections:
+
+```markdown
+## What changed
+- 1–3 plain-language bullets: what the change does and why. Not a changelog of every line.
+
+## Verify
+- A concrete walkthrough of the behavior to confirm: what to do and what the owner should see, in the web UI or
+  through the API. For a pure refactor, say nothing visible changed and give the invariant to confirm.
+
+## Migrations
+- Whether this change contains a migration. If it does: what it does to production data when it auto-runs on
+  deploy, and why that's safe. Otherwise, "None".
+
+## Evidence
+- Full-suite result (e.g. "2294 passed"), cleanup-sweep result.
+
+<details><summary>Details</summary>
+
+- File paths, class names or spec ids that help a code reviewer.
+</details>
+```
+
+Keep the whole file well under a screen. If the change alters a shape other apps depend on (the sync API, a log
+type, a field mapping), say so under **What changed**: cross-app contract tests aren't part of this run.
+
 ### Completion Signal
 
-After all milestones pass, the retro is written, AND the cleanup sweep is clean, print exactly this line as your final output:
+After all milestones pass, the cleanup sweep is clean, AND `.execute-handoff.md` is written, print exactly this line as your final output:
 
 ```
 AGY_COMPLETE: All milestones passed.
@@ -168,6 +196,7 @@ Do not print it prematurely. Do not print it if any milestone has not passed.
 
 - **Migrations are forward-only in production.** Never modify a migration that has already run. Create a new migration to alter the schema.
 - **NEVER run destructive database commands** — no `migrate:fresh`, `migrate:reset`, `db:wipe`. Use `migrate` (forward-only). `migrate:rollback`, `db:seed`, and `tinker` writes require approval.
+- **A migration must be safe to auto-apply.** Forge runs it on production when the PR merges: additive and nullable, a reversible `down()`, no destructive data operation without explicit intent. Your SQLite tests don't prove it on MySQL.
 - **New columns on existing tables must be nullable**, added to the model's `$fillable`, and given casts in the `casts()` method where needed. If a column changes how existing data is interpreted, update all upstream readers in the same milestone.
 - **Never repurpose a column** for something it wasn't designed for. New features get proper schema.
 - **One source of truth per datum.** Don't store the same information in two shapes — derive it at read time.
@@ -268,21 +297,7 @@ If you've read more than 15 full files in one milestone, or you're re-reading a 
 
 ---
 
-## 12. Prototype-First Mandate for Shared UI
-
-When a task unifies two or more existing Blade views/components into one shared implementation, or builds a component serving ≥2 consumers with different visual themes:
-
-1. **Prototype before production.** Build a standalone HTML mockup demonstrating the shared structure before touching production Blade. The mockup is the visual contract.
-2. **Human review gate.** The prompt must include an `AGY_PAUSE` signal after the prototype milestone. Do not proceed to production integration without explicit human permission.
-3. **Visual parity = literal Tailwind classes, not prose.** "Match existing appearance" is not a spec — `border-2 border-white dark:border-neutral-700` is a spec. Provide a per-consumer, per-state class table.
-4. **Per-consumer themes, not shared styles.** When two consumers have different visual vocabularies, the logic layer is shared; the CSS mapping is injected per consumer.
-5. **Emit events, don't internalize logic.** A shared component emits raw interaction events; the parent decides what each means.
-
-> *Rationale: this rule set was hardened in the athlete app after a shared-component refactor shipped without a prototype, guessed at styling, and had to be fully reverted. The rule ports here as a principle — logger has no such incident of its own.*
-
----
-
-## 13. Consumer Impact Trace — Mandatory for Data Shape Changes
+## 12. Consumer Impact Trace — Mandatory for Data Shape Changes
 
 When a plan changes any data shape — adding/removing model columns, changing a cast, altering an API response body, moving a value between columns (like the cardio `reps` → `distance` migration), or changing an event payload — the prompt **must** include a consumer trace before the change is executed.
 
@@ -296,7 +311,7 @@ For each changed structure, answer:
 
 ---
 
-## 14. Logic Belongs Where Its Dependencies Live
+## 13. Logic Belongs Where Its Dependencies Live
 
 Place new behavior in the layer that already owns all the dependencies it needs (models, services, events, config). Never route a decision through an extra parameter or callback just to reach a dependency that lives elsewhere.
 
@@ -306,7 +321,7 @@ For the Actions pattern this usually means: business logic lives in the Action (
 
 ---
 
-## 15. Prompt Decomposition for Large Features
+## 14. Prompt Decomposition for Large Features
 
 A single prompt should not introduce new behavior that requires modifying more than **3 existing consumer components** (controllers, shared models, strategies, views) in one shot. If a feature needs more integration points, decompose into sequential prompts:
 

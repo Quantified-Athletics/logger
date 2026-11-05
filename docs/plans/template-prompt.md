@@ -1,4 +1,32 @@
-# {Feature Name} — Prompt for Antigravity CLI
+---
+# Global Execution Rules
+
+1. Execute this plan sequentially, pausing to test ONLY at the designated Milestone checkpoints.
+
+2. CRITICAL SELF-CORRECTION LOOP: When you reach a testing step, run `php artisan test --parallel`. If the tests fail, immediately read the error output, fix the code, and re-run them.
+
+3. Do not finish your execution turn or yield control back to the shell until the tests for the current milestone pass completely.
+
+4. When ALL milestones are complete and all success criteria are met AND the End-of-Run Cleanup Sweep is clean, write `.execute-handoff.md`, then print exactly this line as your final output. Do NOT commit or push: the automation commits what you leave in the worktree as the snapshot (`docs/antigravity-steering.md` §3):
+   ```
+   AGY_COMPLETE: All milestones passed.
+   ```
+   (Do NOT open/promote/merge a PR or touch `main`. Do NOT touch the Post-Execution Retro section: leave its `{placeholder}` values as-is; it is filled in later from the version-control history.)
+
+5. CONTEXT BUDGET: Your context window is finite. If a milestone applies the same mechanical pattern to more than 5 files, write a temporary script, run it once, and delete it (`docs/antigravity-steering.md` §11).
+
+---
+
+# {Feature Name} — Implementation Prompt
+
+## Feature Classification
+
+> Pick ONE. This determines which traces below are required.
+
+- [ ] **Pure Refactor** — zero behavioral change. No traces required.
+- [ ] **Isolated Logic** — a new Action or service with one consumer. Entity Defaults required if creating stored records.
+- [ ] **Integrated Feature** — new logic consumed by 2–3 existing components. Entity Defaults required if creating stored records.
+- [ ] **Data Shape Change** — a column, cast, API response or event payload changes. Consumer Impact Trace required; if it has a migration, state why it's safe to auto-apply.
 
 ## Before You Start
 
@@ -6,10 +34,10 @@ Read these files in order. They contain everything you need to implement this fe
 
 ### 1. Steering (project rules — always follow)
 ```
-.kiro/steering/git-workflow.md          → commit freely, NEVER push, NEVER merge into main
-.kiro/steering/safe-operations.md       → files to never touch, bash safety, artisan safety
-.kiro/steering/project-conventions.md   → architectural principles for this project
-.kiro/steering/laravel-boost.md         → Laravel framework conventions (PHP style, testing, Pint)
+docs/antigravity-steering.md            → executor rules: worktree, testing, handoff, data integrity
+.claude/rules/safe-operations.md        → files to never touch, command safety, artisan safety
+.claude/rules/project-conventions.md    → architectural principles for this project
+.claude/rules/laravel-boost.md          → Laravel framework conventions (PHP style, testing)
 ```
 
 ### 2. Feature Spec (what to build)
@@ -35,6 +63,12 @@ Read these files in order. They contain everything you need to implement this fe
 
 ---
 
+## Traces
+
+{Consumer Impact Trace, Entity Defaults: whichever the classification requires. Delete this section for a Pure Refactor.}
+
+---
+
 ## Execution Plan
 
 Follow the tasks in `{spec or plan path}` in order. Each numbered section is a phase.
@@ -50,9 +84,8 @@ Follow the tasks in `{spec or plan path}` in order. Each numbered section is a p
 
 ## HARD RULES — NEVER VIOLATE THESE:
 
-- **NEVER commit.** Do not run `git commit`, `git add`, or any git command.
+- **NEVER commit or push.** The automation commits what you leave in the worktree.
 - **NEVER run Pint.** Do not run `vendor/bin/pint` in any form.
-- **NEVER push.** Do not run `git push` under any circumstances.
 - **NEVER run destructive database commands.** No `migrate:fresh`, `migrate:reset`, `db:wipe`.
 
 ---
@@ -61,7 +94,7 @@ Follow the tasks in `{spec or plan path}` in order. Each numbered section is a p
 
 - **All new code goes in `{target namespace}`** — e.g., `app/Sync/` for sync features.
 - **Routes go in `{route file}`** — e.g., `routes/sync.php`.
-- **Always use `php artisan test --parallel` when running tests.** This project has 2000+ tests; parallel execution takes ~11 seconds vs 100+ sequential.
+- **Always use `php artisan test --parallel` when running tests.** This project has 2000+ tests; parallel execution takes well under a minute.
 - **To run a specific test file:** `php artisan test --parallel tests/Feature/Path/SomeTest.php`
 - **To filter by name:** `php artisan test --parallel --filter=testName`
 - **Never use `DB::` facade** — use Eloquent models and relationships.
@@ -76,7 +109,7 @@ Follow the tasks in `{spec or plan path}` in order. Each numbered section is a p
 - [ ] {Concrete, verifiable criterion}
 - [ ] {Another criterion}
 - [ ] All tests pass (`php artisan test --parallel`)
-- [ ] No git commits made
+- [ ] `.execute-handoff.md` written
 - [ ] No new composer dependencies (unless specified)
 
 ---
@@ -93,7 +126,7 @@ Follow the tasks in `{spec or plan path}` in order. Each numbered section is a p
 
 ## Post-Execution Retro (authored by the REVIEWER, not the executor)
 
-> The executor must NOT fill this in — leave the `{placeholder}` values untouched. After the run, the human reviewer reconstructs this section from the commit trail at archive time (the `snapshot:` commit, the `cleanup:`/`fix:` follow-ups, any phased slices) and moves both plan + prompt to `completed/`. See `.kiro/steering/architect-workflow.md` → Post-Execution Review Protocol.
+> The executor must NOT fill this in — leave the `{placeholder}` values untouched. After the run, the human reviewer reconstructs this section from the commit trail at archive time (the `snapshot:` commit, the `cleanup:`/`fix:` follow-ups, any phased slices) and moves both plan + prompt to `completed/`. See `docs/architect-workflow.md` → Post-Execution Review Protocol.
 
 - **Attempts:** {1 (clean) / N (root cause of failures)}
 - **Tests added:** {count}
