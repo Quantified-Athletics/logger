@@ -44,4 +44,26 @@ class PrismWriteThrottleTest extends TestCase
             $response->assertStatus(200);
         }
     }
+
+    public function test_exercise_limits_writes_are_throttled(): void
+    {
+        config(['rate_limits.prism_write.per_minute' => 2]);
+        Sanctum::actingAs(User::factory()->create());
+
+        $emptyPayload = [
+            'families' => ['upserts' => [], 'removals' => []],
+            'members' => ['upserts' => [], 'removals' => []],
+            'caps' => ['upserts' => [], 'removals' => []],
+        ];
+
+        $this->withHeaders(['X-Device-Id' => 'dev-throttle-test'])
+            ->postJson('/api/sync/prism/the-cove/exercise-limits', $emptyPayload)
+            ->assertStatus(200);
+        $this->withHeaders(['X-Device-Id' => 'dev-throttle-test'])
+            ->postJson('/api/sync/prism/the-cove/exercise-limits', $emptyPayload)
+            ->assertStatus(200);
+        $this->withHeaders(['X-Device-Id' => 'dev-throttle-test'])
+            ->postJson('/api/sync/prism/the-cove/exercise-limits', $emptyPayload)
+            ->assertStatus(429);
+    }
 }
