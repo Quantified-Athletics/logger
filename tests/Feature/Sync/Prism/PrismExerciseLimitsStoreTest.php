@@ -39,7 +39,7 @@ class PrismExerciseLimitsStoreTest extends TestCase
         unset($withoutRemovals['members']['removals']);
 
         return [
-            'family count zero' => ['families.upserts.0.cap_count', self::limitsPayload(['families' => ['upserts' => [['family_id' => 'f', 'name' => 'F', 'cap_count' => 0, 'cap_period' => 'week']]]])],
+            'family count negative' => ['families.upserts.0.cap_count', self::limitsPayload(['families' => ['upserts' => [['family_id' => 'f', 'name' => 'F', 'cap_count' => -1, 'cap_period' => 'week']]]])],
             'family count as string' => ['families.upserts.0.cap_count', self::limitsPayload(['families' => ['upserts' => [['family_id' => 'f', 'name' => 'F', 'cap_count' => '2', 'cap_period' => 'week']]]])],
             'family count without period and without count key' => ['families.upserts.0.cap_count', self::limitsPayload(['families' => ['upserts' => [$noCapCountKey]]])],
             'cap count negative' => ['caps.upserts.0.cap_count', self::limitsPayload(['caps' => ['upserts' => [['exercise_id' => 'e', 'cap_count' => -1, 'cap_period' => 'week']]]])],
@@ -260,6 +260,41 @@ class PrismExerciseLimitsStoreTest extends TestCase
 
         $cap = PrismExerciseCap::query()->where('exercise_id', 'e')->firstOrFail();
         $this->assertNull($cap->cap_count);
+        $this->assertNull($cap->deleted_at);
+    }
+
+    public function test_zero_cap_is_stored_and_reaches_the_feed_as_zero(): void
+    {
+        $this->postLimits(self::limitsPayload([
+            'families' => ['upserts' => [['family_id' => 'f', 'name' => 'F', 'cap_count' => 0, 'cap_period' => 'week']]],
+            'caps' => ['upserts' => [['exercise_id' => 'e', 'cap_count' => 0, 'cap_period' => 'program']]],
+        ]))->assertOk();
+
+        $this->assertSame(0, PrismExerciseFamily::query()->where('family_id', 'f')->firstOrFail()->cap_count);
+        $cap = PrismExerciseCap::query()->where('exercise_id', 'e')->firstOrFail();
+        $this->assertSame(0, $cap->cap_count);
+        $this->assertNull($cap->deleted_at);
+
+        $feed = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes')
+            ->assertOk();
+
+        $this->assertSame(0, $feed->json('exercise_families.0.cap_count'));
+        $this->assertSame(0, $feed->json('exercise_caps.0.cap_count'));
+    }
+
+    public function test_zero_cap_overwrites_an_existing_cap_in_place(): void
+    {
+        $this->postLimits(self::limitsPayload([
+            'caps' => ['upserts' => [['exercise_id' => 'e', 'cap_count' => 2, 'cap_period' => 'week']]],
+        ]))->assertOk();
+
+        $this->postLimits(self::limitsPayload([
+            'caps' => ['upserts' => [['exercise_id' => 'e', 'cap_count' => 0, 'cap_period' => 'week']]],
+        ]))->assertOk();
+
+        $cap = PrismExerciseCap::query()->where('exercise_id', 'e')->sole();
+        $this->assertSame(0, $cap->cap_count);
         $this->assertNull($cap->deleted_at);
     }
 

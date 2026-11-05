@@ -53,7 +53,7 @@ class StorePrismExerciseLimitsRequest extends FormRequest
     private function capRules(string $prefix): array
     {
         return [
-            "{$prefix}.cap_count" => ['present', 'nullable', 'integer:strict', 'min:1', 'max:4294967295', "required_with:{$prefix}.cap_period"],
+            "{$prefix}.cap_count" => ['present', 'nullable', 'integer:strict', 'min:0', 'max:4294967295', "required_with:{$prefix}.cap_period"],
             "{$prefix}.cap_period" => ['present', 'nullable', 'in:week,program', "required_with:{$prefix}.cap_count"],
         ];
     }

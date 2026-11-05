@@ -110,7 +110,7 @@ tombstone the other fields mean nothing.
 | `*.family_id`, `*.exercise_id` (upserts and removals) | `required`, `string`, `max:255` |
 | `families.upserts.*.name` | `required`, `string`, `max:255` |
 | `members.upserts.*.is_member` | `required`, `boolean:strict` |
-| `cap_count` (families and caps upserts) | `present`, `nullable`, `integer:strict`, `min:1`, `max:4294967295`, `required_with:<sibling cap_period>` |
+| `cap_count` (families and caps upserts) | `present`, `nullable`, `integer:strict`, `min:0` (0 means never suggested), `max:4294967295`, `required_with:<sibling cap_period>` |
 | `cap_period` (families and caps upserts) | `present`, `nullable`, `in:week,program`, `required_with:<sibling cap_count>` |
 | `device_id` | `nullable`, `string`, `max:36` |
 
