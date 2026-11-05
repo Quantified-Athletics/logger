@@ -4,6 +4,7 @@ namespace Tests\Feature\Sync\Prism;
 
 use App\Models\User;
 use App\Sync\Models\Gym;
+use App\Sync\Models\PrismExerciseFamily;
 use App\Sync\Models\PrismExerciseOverlayRecord;
 use App\Sync\Models\PrismPreference;
 use App\Sync\Models\PrismProgram;
@@ -445,6 +446,16 @@ class PrismChangesTest extends TestCase
             ]);
         }
 
+        for ($i = 1; $i <= 2; $i++) {
+            PrismExerciseFamily::create([
+                'gym_id' => 'the-cove',
+                'family_id' => "family-small-{$i}",
+                'record' => ['name' => "Family {$i}"],
+                'device_id' => 'dev-1',
+                'deleted_at' => null,
+            ]);
+        }
+
         PrismPreference::create([
             'gym_id' => 'the-cove',
             'data' => ['color' => 'blue'],
@@ -501,6 +512,16 @@ class PrismChangesTest extends TestCase
             ]);
         }
 
+        for ($f = 1; $f <= 30; $f++) {
+            PrismExerciseFamily::create([
+                'gym_id' => 'the-cove',
+                'family_id' => "family-large-{$f}",
+                'record' => ['name' => "Family {$f}"],
+                'device_id' => 'dev-1',
+                'deleted_at' => ($f % 5 === 0) ? now() : null,
+            ]);
+        }
+
         \Illuminate\Support\Facades\DB::flushQueryLog();
         $responseLarge = $this->withHeaders(['X-Device-Id' => 'dev-1'])
             ->getJson('/api/sync/prism/the-cove/changes');
@@ -508,11 +529,12 @@ class PrismChangesTest extends TestCase
 
         $responseLarge->assertStatus(200);
 
-        // 3. Assert counts are equal and small (<= 22; destinations add 4 constant queries:
+        // 3. Assert counts are equal and small (<= 25; destinations add 4 constant queries:
         //    rows, eager-loaded linked_by users, max updated_at, max deleted_at; comments add 3:
-        //    rows, eager-loaded authors, max updated_at)
+        //    rows, eager-loaded authors, max updated_at; exercise families add 3 constant
+        //    queries: rows, max updated_at, max deleted_at)
         $this->assertSame($smallCount, $largeCount);
-        $this->assertLessThanOrEqual(22, $smallCount);
+        $this->assertLessThanOrEqual(25, $smallCount);
     }
 
     public function test_changes_programs_carry_archived_at_and_archive_appears_in_since_delta(): void
@@ -787,5 +809,240 @@ class PrismChangesTest extends TestCase
         $this->assertEquals('7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f', $cells['w1d1']['workout_uuid']);
         $this->assertArrayHasKey('workout_uuid', $cells['w1d2']);
         $this->assertNull($cells['w1d2']['workout_uuid']);
+    }
+
+    public function test_changes_carry_exercise_families_with_exact_row_shape(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $t = Carbon::parse('2026-09-01 12:00:00', config('app.timezone'));
+
+        $family = PrismExerciseFamily::create([
+            'gym_id' => 'the-cove',
+            'family_id' => 'burpees',
+            'record' => ['id' => 'burpees', 'name' => 'Burpees'],
+            'device_id' => 'dev-1',
+            'deleted_at' => null,
+        ]);
+        PrismExerciseFamily::where('id', $family->id)->update(['updated_at' => $t]);
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $response->assertStatus(200);
+
+        $families = $response->json('exercise_families');
+        $this->assertCount(1, $families);
+        $this->assertEquals('burpees', $families[0]['family_id']);
+        $this->assertEquals(['id' => 'burpees', 'name' => 'Burpees'], $families[0]['record']);
+        $this->assertNull($families[0]['deleted_at']);
+        $this->assertEquals($t->toIso8601String(), $families[0]['updated_at']);
+        $this->assertArrayNotHasKey('device_id', $families[0]);
+    }
+
+    public function test_changes_since_filters_exercise_families(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $tz = config('app.timezone');
+        $tBefore = Carbon::parse('2026-09-01 10:00:00', $tz);
+        $tSince = Carbon::parse('2026-09-01 12:00:00', $tz);
+        $tAfter = Carbon::parse('2026-09-01 14:00:00', $tz);
+
+        foreach ([['before', $tBefore], ['boundary', $tSince], ['after', $tAfter]] as [$familyId, $at]) {
+            $family = PrismExerciseFamily::create([
+                'gym_id' => 'the-cove',
+                'family_id' => $familyId,
+                'record' => ['id' => $familyId],
+                'device_id' => 'dev-1',
+                'deleted_at' => null,
+            ]);
+            PrismExerciseFamily::where('id', $family->id)->update(['updated_at' => $at]);
+        }
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes?since=' . urlencode($tSince->toIso8601String()));
+
+        $response->assertStatus(200);
+
+        $familyIds = collect($response->json('exercise_families'))->pluck('family_id')->sort()->values()->all();
+        $this->assertSame(['after', 'boundary'], $familyIds);
+    }
+
+    public function test_exercise_family_tombstone_is_delivered_in_delta(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $tz = config('app.timezone');
+        $tSince = Carbon::parse('2026-09-01 12:00:00', $tz);
+        $tRemoved = Carbon::parse('2026-09-01 14:00:00', $tz);
+
+        $removed = PrismExerciseFamily::create([
+            'gym_id' => 'the-cove',
+            'family_id' => 'removed',
+            'record' => null,
+            'device_id' => 'dev-1',
+            'deleted_at' => $tRemoved,
+        ]);
+        PrismExerciseFamily::where('id', $removed->id)->update([
+            'updated_at' => $tRemoved,
+            'deleted_at' => $tRemoved,
+        ]);
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes?since=' . urlencode($tSince->toIso8601String()));
+
+        $response->assertStatus(200);
+
+        $families = $response->json('exercise_families');
+        $this->assertCount(1, $families);
+        $this->assertEquals('removed', $families[0]['family_id']);
+        $this->assertNull($families[0]['record']);
+        $this->assertEquals($tRemoved->toIso8601String(), $families[0]['deleted_at']);
+        $this->assertEquals($tRemoved->toIso8601String(), $families[0]['updated_at']);
+    }
+
+    public function test_cursor_advances_on_exercise_family_update(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $tz = config('app.timezone');
+        $t1 = Carbon::parse('2026-09-01 10:00:00', $tz);
+        $t2 = Carbon::parse('2026-09-01 11:00:00', $tz);
+        $t3 = Carbon::parse('2026-09-01 12:00:00', $tz);
+
+        $cell = PrismProgramCell::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-1',
+            'cell_id' => 'w1d1',
+            'text' => 'Content',
+            'device_id' => 'dev-1',
+        ]);
+        PrismProgramCell::where('id', $cell->id)->update(['updated_at' => $t1]);
+
+        $family = PrismExerciseFamily::create([
+            'gym_id' => 'the-cove',
+            'family_id' => 'burpees',
+            'record' => ['id' => 'burpees'],
+            'device_id' => 'dev-1',
+            'deleted_at' => null,
+        ]);
+        PrismExerciseFamily::where('id', $family->id)->update(['updated_at' => $t2]);
+
+        $first = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+        $this->assertEquals($t2->toIso8601String(), $first->json('cursor'));
+
+        PrismExerciseFamily::where('id', $family->id)->update(['updated_at' => $t3]);
+
+        $second = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+        $this->assertEquals($t3->toIso8601String(), $second->json('cursor'));
+    }
+
+    public function test_cursor_advances_on_exercise_family_removal(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $tz = config('app.timezone');
+        $t1 = Carbon::parse('2026-09-01 10:00:00', $tz);
+        $tRemoved = Carbon::parse('2026-09-01 15:00:00', $tz);
+
+        $cell = PrismProgramCell::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-1',
+            'cell_id' => 'w1d1',
+            'text' => 'Content',
+            'device_id' => 'dev-1',
+        ]);
+        PrismProgramCell::where('id', $cell->id)->update(['updated_at' => $t1]);
+
+        $family = PrismExerciseFamily::create([
+            'gym_id' => 'the-cove',
+            'family_id' => 'burpees',
+            'record' => null,
+            'device_id' => 'dev-1',
+            'deleted_at' => $tRemoved,
+        ]);
+        PrismExerciseFamily::where('id', $family->id)->update([
+            'updated_at' => $t1,
+            'deleted_at' => $tRemoved,
+        ]);
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $this->assertEquals($tRemoved->toIso8601String(), $response->json('cursor'));
+    }
+
+    public function test_changes_exclude_other_gyms_exercise_families(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+        Gym::create(['id' => 'flagship', 'name' => 'Flagship']);
+
+        PrismExerciseFamily::create([
+            'gym_id' => 'flagship',
+            'family_id' => 'other',
+            'record' => ['id' => 'other'],
+            'device_id' => 'dev-1',
+            'deleted_at' => null,
+        ]);
+        PrismExerciseFamily::create([
+            'gym_id' => 'the-cove',
+            'family_id' => 'mine',
+            'record' => ['id' => 'mine'],
+            'device_id' => 'dev-1',
+            'deleted_at' => null,
+        ]);
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $response->assertStatus(200);
+        $this->assertSame(['mine'], collect($response->json('exercise_families'))->pluck('family_id')->all());
+    }
+
+    public function test_empty_gym_returns_empty_exercise_families(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $response->assertStatus(200);
+        $this->assertSame([], $response->json('exercise_families'));
+    }
+
+    public function test_exercise_family_round_trips_from_write_route_to_feed(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->postJson('/api/sync/prism/the-cove/exercise-families', [
+                'upserts' => [['family_id' => 'burpees', 'record' => ['id' => 'burpees', 'futureField' => 'kept']]],
+                'removals' => [],
+            ])->assertStatus(200);
+
+        $first = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $first->assertStatus(200);
+        $this->assertCount(1, $first->json('exercise_families'));
+        $this->assertEquals(['id' => 'burpees', 'futureField' => 'kept'], $first->json('exercise_families.0.record'));
+        $this->assertNull($first->json('exercise_families.0.deleted_at'));
+
+        $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->postJson('/api/sync/prism/the-cove/exercise-families', [
+                'upserts' => [],
+                'removals' => [['family_id' => 'burpees']],
+            ])->assertStatus(200);
+
+        $second = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $second->assertStatus(200);
+        $this->assertCount(1, $second->json('exercise_families'));
+        $this->assertNull($second->json('exercise_families.0.record'));
+        $this->assertNotNull($second->json('exercise_families.0.deleted_at'));
     }
 }

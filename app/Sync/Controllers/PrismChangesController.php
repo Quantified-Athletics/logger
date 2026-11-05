@@ -3,6 +3,7 @@
 namespace App\Sync\Controllers;
 
 use App\Sync\Controllers\Concerns\ValidatesGym;
+use App\Sync\Models\PrismExerciseFamily;
 use App\Sync\Models\PrismExerciseOverlayRecord;
 use App\Sync\Models\PrismInterferenceDismissal;
 use App\Sync\Models\PrismPreference;
@@ -146,7 +147,21 @@ class PrismChangesController
             ];
         })->values()->all();
 
-        // 8. Compute cursor high-water-mark across all gym rows
+        // 8. Exercise families (records + tombstones)
+        $exerciseFamiliesQuery = PrismExerciseFamily::where('gym_id', $gym);
+        if ($since !== null) {
+            $exerciseFamiliesQuery->where('updated_at', '>=', $since);
+        }
+        $exerciseFamilies = $exerciseFamiliesQuery->get()->map(function (PrismExerciseFamily $family) {
+            return [
+                'family_id' => $family->family_id,
+                'record' => $family->record,
+                'deleted_at' => $family->deleted_at?->toIso8601String(),
+                'updated_at' => $family->updated_at->toIso8601String(),
+            ];
+        })->values()->all();
+
+        // 9. Compute cursor high-water-mark across all gym rows
         $maxProgramUpdated = PrismProgram::where('gym_id', $gym)->max('updated_at');
         $maxCellUpdated = PrismProgramCell::where('gym_id', $gym)->max('updated_at');
         $maxExerciseUpdated = PrismExerciseOverlayRecord::where('gym_id', $gym)->max('updated_at');
@@ -154,6 +169,7 @@ class PrismChangesController
         $maxDismissalUpdated = PrismInterferenceDismissal::where('gym_id', $gym)->max('updated_at');
         $maxDestinationUpdated = PrismProgramDestination::where('gym_id', $gym)->max('updated_at');
         $maxCommentUpdated = PrismProgramComment::where('gym_id', $gym)->max('updated_at');
+        $maxFamilyUpdated = PrismExerciseFamily::where('gym_id', $gym)->max('updated_at');
 
         $updatedInstants = array_filter([
             $maxProgramUpdated ? Carbon::parse($maxProgramUpdated) : null,
@@ -163,6 +179,7 @@ class PrismChangesController
             $maxDismissalUpdated ? Carbon::parse($maxDismissalUpdated) : null,
             $maxDestinationUpdated ? Carbon::parse($maxDestinationUpdated) : null,
             $maxCommentUpdated ? Carbon::parse($maxCommentUpdated) : null,
+            $maxFamilyUpdated ? Carbon::parse($maxFamilyUpdated) : null,
         ]);
 
         $maxUpdated = null;
@@ -186,11 +203,16 @@ class PrismChangesController
             ->whereNotNull('deleted_at')
             ->max('deleted_at');
 
+        $rawMaxFamilyDeleted = PrismExerciseFamily::where('gym_id', $gym)
+            ->whereNotNull('deleted_at')
+            ->max('deleted_at');
+
         $deletedInstants = array_filter([
             $rawMaxExerciseDeleted ? Carbon::parse($rawMaxExerciseDeleted) : null,
             $rawMaxCellDeleted ? Carbon::parse($rawMaxCellDeleted) : null,
             $rawMaxDismissalDeleted ? Carbon::parse($rawMaxDismissalDeleted) : null,
             $rawMaxDestinationDeleted ? Carbon::parse($rawMaxDestinationDeleted) : null,
+            $rawMaxFamilyDeleted ? Carbon::parse($rawMaxFamilyDeleted) : null,
         ]);
 
         $maxDeleted = null;
@@ -227,6 +249,7 @@ class PrismChangesController
             'dismissals' => $dismissals,
             'destinations' => $destinations,
             'comments' => $comments,
+            'exercise_families' => $exerciseFamilies,
         ]);
     }
 }
