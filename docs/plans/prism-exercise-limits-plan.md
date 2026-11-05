@@ -240,6 +240,14 @@ No commits, no Pint, no destructive database command outside the scratch block a
 - Evaluate caps or resolve inheritance in Logger.
 - Widen `exercise_id` or `family_id` (finding 3).
 
+## Revision note for the author (2026-11-05)
+
+The first execution never started. The launcher passes the prompt as `claude -p <prompt>`, and the CLI rejects text
+beginning with `---` as an unknown option. Change one thing in
+`docs/plans/prism-exercise-limits-p1-rows-route-feed-prompt.md`: delete line 1 (the leading `---`), so the file opens
+with `# Global Execution Rules`. The template has had the same line removed, so the rules still match it verbatim.
+Nothing else in the prompt changes. A prompt must never start with `-`.
+
 ## Post-Execution Retro
 
 Left empty on handoff.

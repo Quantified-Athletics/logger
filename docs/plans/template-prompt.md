@@ -1,4 +1,3 @@
----
 # Global Execution Rules
 
 1. Execute this plan sequentially, pausing to test ONLY at the designated Milestone checkpoints.
