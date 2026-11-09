@@ -50,6 +50,7 @@ class PrismChangesController
                 'week_count' => (int) $program->week_count,
                 'start_date' => $program->start_date === null ? null : substr((string) $program->start_date, 0, 10),
                 'archived_at' => $program->archived_at?->toIso8601String(),
+                'tab_position' => $program->tab_position,
                 'updated_at' => $program->updated_at->toIso8601String(),
             ];
         })->values()->all();

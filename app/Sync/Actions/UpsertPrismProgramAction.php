@@ -10,7 +10,7 @@ use Illuminate\Validation\ValidationException;
 class UpsertPrismProgramAction
 {
     /** Program fields a client may write. Absent ⇒ untouched; present (incl. null) ⇒ overwrite. */
-    private const WRITABLE_FIELDS = ['name', 'week_count', 'start_date', 'archived_at'];
+    private const WRITABLE_FIELDS = ['name', 'week_count', 'start_date', 'archived_at', 'tab_position'];
 
     /**
      * Partially create or update a Prism program.
