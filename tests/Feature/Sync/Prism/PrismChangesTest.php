@@ -97,6 +97,7 @@ class PrismChangesTest extends TestCase
             'week_count' => 4,
             'start_date' => '2026-11-02',
             'archived_at' => null,
+            'tab_position' => null,
             'updated_at' => $t->toIso8601String(),
         ], $programs[0]);
 
@@ -613,6 +614,56 @@ class PrismChangesTest extends TestCase
         $this->assertSame('prog-archived', $programs[0]['program_uuid']);
         $this->assertSame($tArchive->toIso8601String(), $programs[0]['archived_at']);
         $this->assertSame($tArchive->toIso8601String(), $programs[0]['updated_at']);
+    }
+
+    public function test_changes_programs_carry_tab_position_and_a_move_appears_in_since_delta(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $tz = config('app.timezone');
+        $t1 = Carbon::parse('2026-09-01 10:00:00', $tz);
+        $tSince = Carbon::parse('2026-09-01 12:00:00', $tz);
+        $tMove = Carbon::parse('2026-09-01 14:00:00', $tz);
+
+        $tabbed = PrismProgram::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-tabbed',
+            'name' => 'Tabbed',
+            'week_count' => 4,
+            'tab_position' => 'a0V',
+        ]);
+        $untabbed = PrismProgram::create([
+            'gym_id' => 'the-cove',
+            'program_uuid' => 'prog-untabbed',
+            'name' => 'Untabbed',
+            'week_count' => 4,
+        ]);
+        PrismProgram::whereIn('id', [$tabbed->id, $untabbed->id])->update(['updated_at' => $t1]);
+
+        $cold = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+        $cold->assertStatus(200);
+        $coldPrograms = collect($cold->json('programs'))->keyBy('program_uuid');
+        $this->assertSame('a0V', $coldPrograms['prog-tabbed']['tab_position']);
+        $this->assertArrayHasKey('tab_position', $coldPrograms['prog-untabbed']);
+        $this->assertNull($coldPrograms['prog-untabbed']['tab_position']);
+
+        Carbon::setTestNow($tMove);
+        try {
+            $this->withHeaders(['X-Device-Id' => 'dev-1'])
+                ->postJson('/api/sync/prism/the-cove/programs/prog-untabbed', ['tab_position' => 'b'])
+                ->assertStatus(200);
+        } finally {
+            Carbon::setTestNow();
+        }
+
+        $delta = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes?since=' . urlencode($tSince->toIso8601String()));
+        $delta->assertStatus(200);
+        $programs = $delta->json('programs');
+        $this->assertCount(1, $programs);
+        $this->assertSame('prog-untabbed', $programs[0]['program_uuid']);
+        $this->assertSame('b', $programs[0]['tab_position']);
     }
 
     public function test_cell_tombstone_is_delivered_in_delta(): void

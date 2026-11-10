@@ -16,6 +16,7 @@ class PrismProgram extends Model
         'week_count',
         'start_date',
         'archived_at',
+        'tab_position',
         'device_id',
     ];
 

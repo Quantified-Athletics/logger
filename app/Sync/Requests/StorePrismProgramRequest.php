@@ -57,6 +57,7 @@ class StorePrismProgramRequest extends FormRequest
             'week_count' => ['sometimes', 'required', 'integer', 'min:0', 'max:65535'],
             'start_date' => ['sometimes', 'nullable', 'date_format:Y-m-d'],
             'archived_at' => ['sometimes', 'nullable', 'date'],
+            'tab_position' => ['bail', 'sometimes', 'nullable', 'string', 'max:64', 'ascii'],
             'device_id' => ['nullable', 'string', 'max:36'],
         ];
     }

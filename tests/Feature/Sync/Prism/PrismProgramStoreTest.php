@@ -245,6 +245,93 @@ class PrismProgramStoreTest extends TestCase
         $this->assertSame('2026-11-02', substr((string) $program->start_date, 0, 10));
     }
 
+    public function test_tab_position_is_stored_on_create_and_kept_verbatim(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->pushProgram(['name' => 'Tabbed', 'week_count' => 4, 'tab_position' => 'a0V'])
+            ->assertStatus(200);
+
+        $this->assertSame('a0V', PrismProgram::firstOrFail()->tab_position);
+    }
+
+    public function test_tab_position_only_write_changes_only_that_field(): void
+    {
+        $program = $this->seedProgram();
+        $before = $program->updated_at;
+
+        Carbon::setTestNow($before->copy()->addSeconds(5));
+        try {
+            $response = $this->pushProgram(['tab_position' => 'b'], 'dev-uuid-2')->assertStatus(200);
+        } finally {
+            Carbon::setTestNow();
+        }
+
+        $program->refresh();
+        $this->assertSame('b', $program->tab_position);
+        $this->assertSame('Spring Block', $program->name);
+        $this->assertSame(6, $program->week_count);
+        $this->assertSame('2026-11-02', substr((string) $program->start_date, 0, 10));
+        $this->assertNotNull($program->archived_at);
+        $this->assertTrue($program->updated_at->gt($before));
+        $this->assertSame('dev-uuid-2', $program->device_id);
+        $this->assertSame($program->updated_at->toIso8601String(), $response->json('updated_at'));
+    }
+
+    public function test_write_without_tab_position_leaves_it_untouched(): void
+    {
+        $this->seedProgram();
+
+        $this->pushProgram(['tab_position' => 'a0'])->assertStatus(200);
+        $this->pushProgram(['name' => 'Renamed'])->assertStatus(200);
+
+        $program = PrismProgram::firstOrFail();
+        $this->assertSame('Renamed', $program->name);
+        $this->assertSame('a0', $program->tab_position);
+    }
+
+    public function test_null_tab_position_clears_it(): void
+    {
+        $this->seedProgram();
+
+        $this->pushProgram(['tab_position' => 'a0'])->assertStatus(200);
+        $this->pushProgram(['tab_position' => null])->assertStatus(200);
+
+        $this->assertNull(PrismProgram::firstOrFail()->tab_position);
+    }
+
+    public function test_tab_position_of_64_ascii_characters_is_accepted(): void
+    {
+        $this->seedProgram();
+        $value = str_repeat('z', 64);
+
+        $this->pushProgram(['tab_position' => $value])->assertStatus(200);
+
+        $this->assertSame($value, PrismProgram::firstOrFail()->tab_position);
+    }
+
+    public function test_invalid_tab_position_returns_422_and_writes_nothing(): void
+    {
+        $this->seedProgram();
+        $this->pushProgram(['tab_position' => 'a0'])->assertStatus(200);
+
+        $this->pushProgram(['tab_position' => str_repeat('z', 65)])->assertStatus(422);
+        $this->pushProgram(['tab_position' => 123])->assertStatus(422);
+        $this->pushProgram(['tab_position' => ['a0']])->assertStatus(422);
+        $this->pushProgram(['tab_position' => 'añ'])->assertStatus(422);
+
+        $this->assertSame('a0', PrismProgram::firstOrFail()->tab_position);
+    }
+
+    public function test_tab_position_only_write_to_unknown_program_returns_422(): void
+    {
+        Sanctum::actingAs(User::factory()->create());
+
+        $this->pushProgram(['tab_position' => 'a0'])->assertStatus(422);
+
+        $this->assertDatabaseCount('prism_programs', 0);
+    }
+
     public function test_unknown_gym_returns_404(): void
     {
         Sanctum::actingAs(User::factory()->create());
