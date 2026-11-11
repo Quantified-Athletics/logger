@@ -6,8 +6,10 @@ use App\Models\User;
 use App\Sync\Models\Gym;
 use App\Sync\Models\PrismProgram;
 use App\Sync\Models\PrismProgramDestination;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Testing\TestResponse;
 use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
@@ -45,6 +47,17 @@ class PrismProgramDestinationsStoreTest extends TestCase
             'spreadsheet_id' => '1AbC',
             'sheet_id' => 0,
             'title' => 'Spring Block 2026',
+        ], $overrides);
+    }
+
+    private function momence(array $overrides = []): array
+    {
+        return array_merge([
+            'type' => 'momence',
+            'momence_track' => 'peak',
+            'momence_cycle_prefix' => 'Peak Cycle',
+            'momence_bridge_prefix' => 'Peak Bridge',
+            'momence_bridge_weeks' => 2,
         ], $overrides);
     }
 
@@ -239,5 +252,116 @@ class PrismProgramDestinationsStoreTest extends TestCase
         $this->withHeaders(['X-Device-Id' => 'dev-a'])
             ->postJson('/api/sync/prism/the-cove/programs/prog-1/destinations', ['upserts' => [], 'removals' => []])
             ->assertStatus(401);
+    }
+
+    public function test_valid_momence_upsert_is_stored_beside_the_sheets_row(): void
+    {
+        $this->pushDestinations([$this->sheet(), $this->momence()])->assertStatus(200);
+
+        $this->assertDatabaseCount('prism_program_destinations', 2);
+        $momence = PrismProgramDestination::where('type', 'momence')->firstOrFail();
+        $this->assertSame('the-cove', $momence->gym_id);
+        $this->assertSame('prog-1', $momence->program_uuid);
+        $this->assertSame($this->coach->id, $momence->linked_by_user_id);
+        $this->assertNotNull($momence->linked_at);
+        $this->assertSame('dev-a', $momence->device_id);
+        $this->assertNull($momence->deleted_at);
+        $this->assertNull($momence->spreadsheet_id);
+        $this->assertNull($momence->sheet_id);
+    }
+
+    public function test_momence_track_is_required_and_must_be_peak_or_sa(): void
+    {
+        $this->pushDestinations([$this->momence(['momence_track' => null])])->assertStatus(422)->assertJson(['status' => 'error']);
+        $this->pushDestinations([array_diff_key($this->momence(), ['momence_track' => true])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_track' => 'gold'])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_track' => 'PEAK'])])->assertStatus(422);
+
+        $this->assertDatabaseCount('prism_program_destinations', 0);
+    }
+
+    public function test_momence_track_sa_is_accepted(): void
+    {
+        $this->pushDestinations([$this->momence(['momence_track' => 'sa'])])->assertStatus(200);
+
+        $this->assertDatabaseCount('prism_program_destinations', 1);
+    }
+
+    public function test_momence_cycle_prefix_is_required_and_non_empty_after_trim(): void
+    {
+        $this->pushDestinations([array_diff_key($this->momence(), ['momence_cycle_prefix' => true])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_cycle_prefix' => ''])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_cycle_prefix' => '   '])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_cycle_prefix' => str_repeat('a', 256)])])->assertStatus(422);
+
+        $this->assertDatabaseCount('prism_program_destinations', 0);
+    }
+
+    public function test_momence_bridge_prefix_is_required_and_non_empty_after_trim(): void
+    {
+        $this->pushDestinations([array_diff_key($this->momence(), ['momence_bridge_prefix' => true])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_bridge_prefix' => ''])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_bridge_prefix' => '   '])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_bridge_prefix' => str_repeat('a', 256)])])->assertStatus(422);
+
+        $this->assertDatabaseCount('prism_program_destinations', 0);
+    }
+
+    public function test_momence_bridge_weeks_is_required_integer_at_least_one(): void
+    {
+        $this->pushDestinations([array_diff_key($this->momence(), ['momence_bridge_weeks' => true])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_bridge_weeks' => null])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_bridge_weeks' => 0])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_bridge_weeks' => -1])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_bridge_weeks' => 1.5])])->assertStatus(422);
+        $this->pushDestinations([$this->momence(['momence_bridge_weeks' => 'two'])])->assertStatus(422);
+
+        $this->assertDatabaseCount('prism_program_destinations', 0);
+    }
+
+    public function test_invalid_momence_item_refuses_the_whole_batch(): void
+    {
+        $this->pushDestinations([$this->sheet(), $this->momence(['momence_track' => null])])->assertStatus(422);
+
+        $this->assertDatabaseCount('prism_program_destinations', 0);
+    }
+
+    public function test_sheets_upsert_does_not_need_momence_fields(): void
+    {
+        $this->pushDestinations([$this->sheet()])->assertStatus(200);
+
+        $this->assertDatabaseCount('prism_program_destinations', 1);
+    }
+
+    public function test_momence_upsert_does_not_need_sheets_fields(): void
+    {
+        $this->pushDestinations([$this->momence()])->assertStatus(200);
+
+        $this->assertDatabaseCount('prism_program_destinations', 1);
+    }
+
+    public function test_momence_bridge_weeks_is_cast_to_integer(): void
+    {
+        $destination = new PrismProgramDestination(['momence_bridge_weeks' => '3']);
+
+        $this->assertSame(3, $destination->momence_bridge_weeks);
+    }
+
+    public function test_momence_columns_migration_runs_down_and_up(): void
+    {
+        /** @var Migration $migration */
+        $migration = require database_path('migrations/2026_11_11_120000_add_momence_fields_to_prism_program_destinations_table.php');
+        $columns = ['momence_track', 'momence_cycle_prefix', 'momence_bridge_prefix', 'momence_bridge_weeks'];
+
+        $this->assertTrue(Schema::hasColumns('prism_program_destinations', $columns));
+
+        $migration->down();
+        foreach ($columns as $column) {
+            $this->assertFalse(Schema::hasColumn('prism_program_destinations', $column), $column);
+        }
+        $this->assertTrue(Schema::hasColumns('prism_program_destinations', ['spreadsheet_id', 'sheet_id', 'title']));
+
+        $migration->up();
+        $this->assertTrue(Schema::hasColumns('prism_program_destinations', $columns));
     }
 }
