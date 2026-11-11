@@ -121,6 +121,10 @@ class PrismChangesController
                 'spreadsheet_id' => $destination->spreadsheet_id,
                 'sheet_id' => $destination->sheet_id,
                 'title' => $destination->title,
+                'momence_track' => $destination->momence_track,
+                'momence_cycle_prefix' => $destination->momence_cycle_prefix,
+                'momence_bridge_prefix' => $destination->momence_bridge_prefix,
+                'momence_bridge_weeks' => $destination->momence_bridge_weeks,
                 'linked_by' => $destination->linkedBy === null ? null : [
                     'id' => $destination->linkedBy->id,
                     'name' => $destination->linkedBy->name,
