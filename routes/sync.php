@@ -14,6 +14,7 @@ use App\Sync\Controllers\PrismPreferencesController;
 use App\Sync\Controllers\PrismProgramController;
 use App\Sync\Controllers\PrismProgramDestinationController;
 use App\Sync\Controllers\RestoreController;
+use App\Sync\Controllers\WhoAmIController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register');
@@ -34,6 +35,7 @@ Route::middleware(['auth:sanctum', 'throttle:sync-per-user', 'throttle:sync-glob
     Route::post('/preferences', [PreferencesController::class, 'store']);
     Route::get('/restore', [RestoreController::class, 'index']);
     Route::get('/changes', [ChangesController::class, 'index']);
+    Route::get('/me', [WhoAmIController::class, 'show']);
     Route::post('/exercises', [\App\Sync\Controllers\ExerciseController::class, 'store']);
 });
 
