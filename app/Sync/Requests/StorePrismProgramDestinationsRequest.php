@@ -19,6 +19,7 @@ class StorePrismProgramDestinationsRequest extends FormRequest
     public function rules(): array
     {
         $googleSheets = PrismProgramDestination::TYPE_GOOGLE_SHEETS;
+        $momence = PrismProgramDestination::TYPE_MOMENCE;
 
         return [
             'upserts' => ['present', 'array'],
@@ -26,6 +27,10 @@ class StorePrismProgramDestinationsRequest extends FormRequest
             'upserts.*.spreadsheet_id' => ["required_if:upserts.*.type,{$googleSheets}", 'string', 'max:255'],
             'upserts.*.sheet_id' => ["required_if:upserts.*.type,{$googleSheets}", 'integer', 'min:0'],
             'upserts.*.title' => ['nullable', 'string', 'max:255'],
+            'upserts.*.momence_track' => ["required_if:upserts.*.type,{$momence}", 'nullable', 'string', Rule::in(PrismProgramDestination::MOMENCE_TRACKS)],
+            'upserts.*.momence_cycle_prefix' => ["required_if:upserts.*.type,{$momence}", 'nullable', 'string', 'max:255'],
+            'upserts.*.momence_bridge_prefix' => ["required_if:upserts.*.type,{$momence}", 'nullable', 'string', 'max:255'],
+            'upserts.*.momence_bridge_weeks' => ["required_if:upserts.*.type,{$momence}", 'nullable', 'integer', 'min:1', 'max:65535'],
             'removals' => ['present', 'array'],
             'removals.*.type' => ['required', 'string', 'max:32'],
             'device_id' => ['nullable', 'string', 'max:36'],

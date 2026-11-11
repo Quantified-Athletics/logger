@@ -822,6 +822,10 @@ class PrismChangesTest extends TestCase
             'spreadsheet_id' => '1AbC',
             'sheet_id' => 0,
             'title' => 'Spring Block 2026',
+            'momence_track' => null,
+            'momence_cycle_prefix' => null,
+            'momence_bridge_prefix' => null,
+            'momence_bridge_weeks' => null,
             'linked_by' => ['id' => $coach->id, 'name' => 'Coach A'],
             'linked_at' => $tLink->toIso8601String(),
             'deleted_at' => null,
@@ -830,6 +834,52 @@ class PrismChangesTest extends TestCase
 
         $this->assertNull($destinations['prog-2']['linked_by']);
         $this->assertSame($tUnlink->toIso8601String(), $destinations['prog-2']['deleted_at']);
+    }
+
+    public function test_changes_carry_momence_destination_with_all_four_fields(): void
+    {
+        $coach = User::factory()->create(['name' => 'Coach A']);
+        Sanctum::actingAs($coach);
+
+        $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->postJson('/api/sync/prism/the-cove/programs/prog-1/destinations', [
+                'upserts' => [
+                    ['type' => 'google_sheets', 'spreadsheet_id' => '1AbC', 'sheet_id' => 0, 'title' => 'Spring'],
+                    [
+                        'type' => 'momence',
+                        'momence_track' => 'sa',
+                        'momence_cycle_prefix' => 'SA Cycle',
+                        'momence_bridge_prefix' => 'SA Bridge',
+                        'momence_bridge_weeks' => 2,
+                    ],
+                ],
+                'removals' => [],
+            ])
+            ->assertStatus(200);
+
+        $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
+            ->getJson('/api/sync/prism/the-cove/changes');
+
+        $response->assertStatus(200);
+        $destinations = collect($response->json('destinations'))->keyBy('type');
+
+        $momence = $destinations['momence'];
+        $this->assertSame('prog-1', $momence['program_uuid']);
+        $this->assertSame('sa', $momence['momence_track']);
+        $this->assertSame('SA Cycle', $momence['momence_cycle_prefix']);
+        $this->assertSame('SA Bridge', $momence['momence_bridge_prefix']);
+        $this->assertSame(2, $momence['momence_bridge_weeks']);
+        $this->assertNull($momence['spreadsheet_id']);
+        $this->assertNull($momence['sheet_id']);
+        $this->assertNull($momence['title']);
+        $this->assertSame(['id' => $coach->id, 'name' => 'Coach A'], $momence['linked_by']);
+        $this->assertNull($momence['deleted_at']);
+
+        $sheets = $destinations['google_sheets'];
+        foreach (['momence_track', 'momence_cycle_prefix', 'momence_bridge_prefix', 'momence_bridge_weeks'] as $field) {
+            $this->assertArrayHasKey($field, $sheets);
+            $this->assertNull($sheets[$field], $field);
+        }
     }
 
     public function test_changes_programs_carry_start_date_and_no_metadata(): void
