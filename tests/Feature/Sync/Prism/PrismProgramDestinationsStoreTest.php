@@ -12,6 +12,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Testing\TestResponse;
 use Laravel\Sanctum\Sanctum;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
@@ -363,5 +364,109 @@ class PrismProgramDestinationsStoreTest extends TestCase
 
         $migration->up();
         $this->assertTrue(Schema::hasColumns('prism_program_destinations', $columns));
+    }
+
+    public function test_momence_upsert_stores_all_four_fields(): void
+    {
+        $this->pushDestinations([$this->momence(['momence_track' => 'sa'])])->assertStatus(200);
+
+        $destination = PrismProgramDestination::where('type', 'momence')->firstOrFail();
+        $this->assertSame('sa', $destination->momence_track);
+        $this->assertSame('Peak Cycle', $destination->momence_cycle_prefix);
+        $this->assertSame('Peak Bridge', $destination->momence_bridge_prefix);
+        $this->assertSame(2, $destination->momence_bridge_weeks);
+        $this->assertNull($destination->title);
+    }
+
+    public function test_each_type_stores_only_its_own_fields(): void
+    {
+        $momenceFields = array_diff_key($this->momence(), ['type' => true]);
+        $sheetsFields = array_diff_key($this->sheet(), ['type' => true]);
+
+        $this->pushDestinations([
+            array_merge($this->sheet(), $momenceFields),
+            array_merge($this->momence(), $sheetsFields),
+        ])->assertStatus(200);
+
+        $sheets = PrismProgramDestination::where('type', 'google_sheets')->firstOrFail();
+        $this->assertSame('1AbC', $sheets->spreadsheet_id);
+        $this->assertNull($sheets->momence_track);
+        $this->assertNull($sheets->momence_cycle_prefix);
+        $this->assertNull($sheets->momence_bridge_prefix);
+        $this->assertNull($sheets->momence_bridge_weeks);
+
+        $momence = PrismProgramDestination::where('type', 'momence')->firstOrFail();
+        $this->assertSame('peak', $momence->momence_track);
+        $this->assertNull($momence->spreadsheet_id);
+        $this->assertNull($momence->sheet_id);
+        $this->assertNull($momence->title);
+    }
+
+    public function test_resending_the_same_momence_values_changes_nothing(): void
+    {
+        $this->pushDestinations([$this->momence()])->assertStatus(200);
+        $original = PrismProgramDestination::firstOrFail();
+
+        $coachB = User::factory()->create(['name' => 'Coach B']);
+        Sanctum::actingAs($coachB);
+        Carbon::setTestNow(now()->addMinute());
+        try {
+            $this->pushDestinations([$this->momence()])->assertStatus(200);
+        } finally {
+            Carbon::setTestNow();
+        }
+
+        $destination = PrismProgramDestination::firstOrFail();
+        $this->assertTrue($original->updated_at->eq($destination->updated_at));
+        $this->assertTrue($original->linked_at->eq($destination->linked_at));
+        $this->assertSame($this->coach->id, $destination->linked_by_user_id);
+    }
+
+    /**
+     * @return array<string, array{string, string|int}>
+     */
+    public static function changedMomenceFieldProvider(): array
+    {
+        return [
+            'track' => ['momence_track', 'sa'],
+            'cycle prefix' => ['momence_cycle_prefix', 'Peak Cycle B'],
+            'bridge prefix' => ['momence_bridge_prefix', 'Peak Bridge B'],
+            'bridge weeks' => ['momence_bridge_weeks', 3],
+        ];
+    }
+
+    #[DataProvider('changedMomenceFieldProvider')]
+    public function test_changing_one_momence_field_bumps_updated_at_and_restamps_attribution(string $field, string|int $value): void
+    {
+        $this->pushDestinations([$this->momence()])->assertStatus(200);
+        $original = PrismProgramDestination::firstOrFail();
+
+        $coachB = User::factory()->create(['name' => 'Coach B']);
+        Sanctum::actingAs($coachB);
+        Carbon::setTestNow(now()->addMinute());
+        try {
+            $this->pushDestinations([$this->momence([$field => $value])])->assertStatus(200);
+        } finally {
+            Carbon::setTestNow();
+        }
+
+        $destination = PrismProgramDestination::firstOrFail();
+        $this->assertSame($value, $destination->{$field});
+        $this->assertTrue($destination->updated_at->gt($original->updated_at));
+        $this->assertSame($coachB->id, $destination->linked_by_user_id);
+        $this->assertTrue($destination->linked_at->gt($original->linked_at));
+    }
+
+    public function test_removing_momence_soft_deletes_only_that_row(): void
+    {
+        $this->pushDestinations([$this->sheet(), $this->momence()])->assertStatus(200);
+
+        $this->pushDestinations([], [['type' => 'momence']])->assertStatus(200);
+
+        $this->assertDatabaseCount('prism_program_destinations', 2);
+        $momence = PrismProgramDestination::where('type', 'momence')->firstOrFail();
+        $this->assertNotNull($momence->deleted_at);
+        $this->assertSame('peak', $momence->momence_track, 'tombstone keeps the row for other devices');
+        $this->assertNull(PrismProgramDestination::where('type', 'google_sheets')->firstOrFail()->deleted_at);
     }
 }
