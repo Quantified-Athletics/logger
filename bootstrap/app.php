@@ -23,6 +23,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'log-sync-request' => \App\Sync\Middleware\LogSyncRequest::class,
         ]);
 
+        $isAthletePublicationStore = fn (\Illuminate\Http\Request $request): bool => $request->isMethod('POST')
+            && preg_match('#^api/sync/prism/[^/]+/programs/[^/]+/athlete-publications$#', $request->path()) === 1;
+
+        $middleware->convertEmptyStringsToNull(except: [$isAthletePublicationStore]);
+        $middleware->trimStrings(except: [$isAthletePublicationStore]);
+
         $middleware->web(append: [
             \App\Http\Middleware\EnableQueryLogForAdmin::class,
             \App\Http\Middleware\LogActivity::class,

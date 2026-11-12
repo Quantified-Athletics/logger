@@ -123,6 +123,27 @@ class PrismAthletePublicationsReadTest extends TestCase
         ]);
     }
 
+    public function test_published_blank_and_padded_lines_come_back_from_the_feed_unchanged(): void
+    {
+        $raw = self::raw();
+        $raw['workouts'][0]['text'] = ['Back Squat 5x5', '', '  Row 3x10  ', ''];
+        $raw['workouts'][0]['_formatting']['formattedText'] = ['**Back Squat** 5x5', '', '  Row 3x10  ', ''];
+        \Laravel\Sanctum\Sanctum::actingAs($this->admin, ['*']);
+        $this->withHeaders(['X-Device-Id' => 'dev-a'])
+            ->postJson('/api/sync/prism/the-cove/programs/prog-1/athlete-publications', [
+                'track' => 'peak', 'start_date' => '2026-11-16', 'raw' => $raw,
+            ])
+            ->assertStatus(201);
+
+        $feed = $this->asToken($this->mintToken(), 'GET', '/api/sync/athlete-publications')->assertOk();
+
+        $returned = $feed->json('publications.0.raw');
+        $this->assertSame(json_decode(json_encode($raw), true), $returned);
+        $this->assertSame(['Back Squat 5x5', '', '  Row 3x10  ', ''], $returned['workouts'][0]['text']);
+        $this->assertSame(['**Back Squat** 5x5', '', '  Row 3x10  ', ''], $returned['workouts'][0]['_formatting']['formattedText']);
+        $this->assertStringContainsString('"empty":{}', $feed->getContent());
+    }
+
     public function test_raw_keeps_empty_objects_as_objects(): void
     {
         $this->publication();

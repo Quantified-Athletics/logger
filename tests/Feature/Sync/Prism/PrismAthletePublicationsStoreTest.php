@@ -230,6 +230,83 @@ class PrismAthletePublicationsStoreTest extends TestCase
         $this->assertDatabaseCount('prism_athlete_publications', 0);
     }
 
+    /**
+     * @return array<string, mixed>
+     */
+    private static function rawWithBlankAndPaddedLines(): array
+    {
+        $raw = self::validRaw();
+        $raw['workouts'][0]['text'] = ['Back Squat 5x5', '', '  Row 3x10  ', ''];
+        $raw['workouts'][0]['_formatting']['formattedText'] = ['**Back Squat** 5x5', '', '  Row 3x10  ', ''];
+
+        return $raw;
+    }
+
+    public function test_blank_and_padded_lines_are_stored_exactly_as_sent(): void
+    {
+        Sanctum::actingAs($this->admin, ['*']);
+        $raw = self::rawWithBlankAndPaddedLines();
+
+        $this->publish(['track' => 'peak', 'start_date' => '2026-11-16', 'raw' => $raw])->assertStatus(201);
+
+        $stored = json_decode(PrismAthletePublication::firstOrFail()->getRawOriginal('raw'), true);
+        $this->assertSame($raw, $stored);
+        $this->assertSame('', $stored['workouts'][0]['text'][1]);
+        $this->assertSame('  Row 3x10  ', $stored['workouts'][0]['text'][2]);
+        $this->assertSame('', $stored['workouts'][0]['_formatting']['formattedText'][1]);
+        $this->assertSame('  Row 3x10  ', $stored['workouts'][0]['_formatting']['formattedText'][2]);
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: mixed}>
+     */
+    public static function nonStringLines(): array
+    {
+        return [
+            'text line null' => ['text', null],
+            'text line a number' => ['text', 5],
+            'formattedText line null' => ['_formatting.formattedText', null],
+            'formattedText line a number' => ['_formatting.formattedText', 5],
+        ];
+    }
+
+    #[DataProvider('nonStringLines')]
+    public function test_a_non_string_line_is_still_refused_next_to_blank_lines(string $key, mixed $line): void
+    {
+        Sanctum::actingAs($this->admin, ['*']);
+        $body = ['track' => 'peak', 'start_date' => '2026-11-16', 'raw' => self::rawWithBlankAndPaddedLines()];
+        data_set($body, "raw.workouts.0.{$key}.1", $line);
+
+        $this->publish($body)->assertStatus(422);
+
+        $this->assertDatabaseCount('prism_athlete_publications', 0);
+    }
+
+    /**
+     * @return array<string, array{0: string, 1: string}>
+     */
+    public static function otherRoutes(): array
+    {
+        return [
+            'sibling route under the same program' => ['post', '/api/sync/prism/the-cove/programs/prog-1/input-probe'],
+            'longer path ending the same way' => ['post', '/api/sync/prism/the-cove/programs/prog-1/extra/athlete-publications'],
+            'same path, other method' => ['put', '/api/sync/prism/the-cove/programs/prog-1/athlete-publications'],
+            'another sync route' => ['post', '/api/sync/input-probe'],
+            'a web route' => ['post', '/input-probe'],
+        ];
+    }
+
+    #[DataProvider('otherRoutes')]
+    public function test_other_routes_still_convert_empty_strings_and_trim(string $method, string $uri): void
+    {
+        \Illuminate\Support\Facades\Route::$method($uri, fn (\Illuminate\Http\Request $request) => response()->json(['input' => $request->all()]));
+
+        $response = $this->json(strtoupper($method), $uri, ['blank' => '', 'padded' => '  x  ', 'lines' => ['', ' y ']]);
+
+        $response->assertOk();
+        $this->assertSame(['blank' => null, 'padded' => 'x', 'lines' => [null, 'y']], $response->json('input'));
+    }
+
     public function test_raw_over_two_megabytes_is_refused(): void
     {
         Sanctum::actingAs($this->admin, ['*']);
