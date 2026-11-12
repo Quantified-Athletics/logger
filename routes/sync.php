@@ -5,6 +5,7 @@ use App\Sync\Controllers\BlueprintController;
 use App\Sync\Controllers\ChangesController;
 use App\Sync\Controllers\LogController;
 use App\Sync\Controllers\PreferencesController;
+use App\Sync\Controllers\PrismAthletePublicationController;
 use App\Sync\Controllers\PrismChangesController;
 use App\Sync\Controllers\PrismCommentController;
 use App\Sync\Controllers\PrismExerciseController;
@@ -47,6 +48,7 @@ Route::middleware(['auth:sanctum', 'throttle:prism-write', 'device-id', 'log-syn
     Route::post('/prism/{gym}/programs/{program_uuid}', [PrismProgramController::class, 'storeProgram']);
     Route::post('/prism/{gym}/programs/{program_uuid}/cells', [PrismProgramController::class, 'storeCells']);
     Route::post('/prism/{gym}/programs/{program_uuid}/destinations', [PrismProgramDestinationController::class, 'store']);
+    Route::post('/prism/{gym}/programs/{program_uuid}/athlete-publications', [PrismAthletePublicationController::class, 'store']);
     Route::post('/prism/{gym}/programs/{program_uuid}/comments', [PrismCommentController::class, 'store']);
     Route::post('/prism/{gym}/exercises', [PrismExerciseController::class, 'store']);
     Route::post('/prism/{gym}/preferences', [PrismPreferencesController::class, 'store']);
