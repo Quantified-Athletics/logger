@@ -29,7 +29,7 @@ class PrismProgramDestinationsStoreTest extends TestCase
         parent::setUp();
         Gym::create(['id' => 'the-cove', 'name' => 'The Cove']);
         $this->coach = User::factory()->create(['name' => 'Coach A']);
-        Sanctum::actingAs($this->coach);
+        Sanctum::actingAs($this->coach, ['*']);
     }
 
     private function pushDestinations(array $upserts, array $removals = [], string $programUuid = 'prog-1', string $gym = 'the-cove'): TestResponse
@@ -89,7 +89,7 @@ class PrismProgramDestinationsStoreTest extends TestCase
         $this->assertNotNull(PrismProgramDestination::firstOrFail()->deleted_at);
 
         $coachB = User::factory()->create(['name' => 'Coach B']);
-        Sanctum::actingAs($coachB);
+        Sanctum::actingAs($coachB, ['*']);
         $this->pushDestinations([$this->sheet(['spreadsheet_id' => '2XyZ', 'sheet_id' => 7, 'title' => null])])
             ->assertStatus(200);
 
@@ -108,7 +108,7 @@ class PrismProgramDestinationsStoreTest extends TestCase
         $original = PrismProgramDestination::firstOrFail();
 
         $coachB = User::factory()->create(['name' => 'Coach B']);
-        Sanctum::actingAs($coachB);
+        Sanctum::actingAs($coachB, ['*']);
         Carbon::setTestNow(now()->addMinute());
         try {
             // Same spreadsheet + tab; only the display title changed.
@@ -128,7 +128,7 @@ class PrismProgramDestinationsStoreTest extends TestCase
         $this->pushDestinations([$this->sheet()])->assertStatus(200);
 
         $coachB = User::factory()->create(['name' => 'Coach B']);
-        Sanctum::actingAs($coachB);
+        Sanctum::actingAs($coachB, ['*']);
         $this->pushDestinations([$this->sheet(['sheet_id' => 9])])->assertStatus(200);
 
         $this->assertSame($coachB->id, PrismProgramDestination::firstOrFail()->linked_by_user_id);
@@ -140,7 +140,7 @@ class PrismProgramDestinationsStoreTest extends TestCase
         $this->pushDestinations([], [['type' => 'google_sheets']])->assertStatus(200);
 
         $coachB = User::factory()->create(['name' => 'Coach B']);
-        Sanctum::actingAs($coachB);
+        Sanctum::actingAs($coachB, ['*']);
         $this->pushDestinations([$this->sheet()])->assertStatus(200);
 
         $this->assertSame($coachB->id, PrismProgramDestination::firstOrFail()->linked_by_user_id);
@@ -408,7 +408,7 @@ class PrismProgramDestinationsStoreTest extends TestCase
         $original = PrismProgramDestination::firstOrFail();
 
         $coachB = User::factory()->create(['name' => 'Coach B']);
-        Sanctum::actingAs($coachB);
+        Sanctum::actingAs($coachB, ['*']);
         Carbon::setTestNow(now()->addMinute());
         try {
             $this->pushDestinations([$this->momence()])->assertStatus(200);
@@ -442,7 +442,7 @@ class PrismProgramDestinationsStoreTest extends TestCase
         $original = PrismProgramDestination::firstOrFail();
 
         $coachB = User::factory()->create(['name' => 'Coach B']);
-        Sanctum::actingAs($coachB);
+        Sanctum::actingAs($coachB, ['*']);
         Carbon::setTestNow(now()->addMinute());
         try {
             $this->pushDestinations([$this->momence([$field => $value])])->assertStatus(200);

@@ -16,7 +16,7 @@ class ChangesControllerRehydrationTest extends TestCase
     public function test_user_without_signal_has_no_rehydrate_key(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->getJson('/api/sync/changes');
 
@@ -27,7 +27,7 @@ class ChangesControllerRehydrationTest extends TestCase
     public function test_user_with_signal_emits_rehydrate_token_and_reason(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         app(RehydrationService::class)->raiseForUsers([$user->id], 'exercise-merge');
 
@@ -47,7 +47,7 @@ class ChangesControllerRehydrationTest extends TestCase
     public function test_global_signal_reaches_user_without_personal_signal(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         RehydrationSignal::create([
             'user_id' => null,

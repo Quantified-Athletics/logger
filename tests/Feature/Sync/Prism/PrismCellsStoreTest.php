@@ -22,7 +22,7 @@ class PrismCellsStoreTest extends TestCase
     public function test_posting_cells_creates_rows(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $payload = [
             'cells' => [
@@ -53,7 +53,7 @@ class PrismCellsStoreTest extends TestCase
     public function test_reposting_one_cell_with_new_text_updates_in_place(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/the-cove/programs/prog-123/cells', [
@@ -85,7 +85,7 @@ class PrismCellsStoreTest extends TestCase
     public function test_empty_string_text_is_accepted_as_emptied_cell(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/the-cove/programs/prog-123/cells', [
@@ -104,7 +104,7 @@ class PrismCellsStoreTest extends TestCase
     public function test_unknown_gym_returns_404(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/nonexistent-gym/programs/prog-123/cells', [
@@ -139,7 +139,7 @@ class PrismCellsStoreTest extends TestCase
     public function test_missing_cells_and_removals_returns_422(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/the-cove/programs/prog-123/cells', []);
@@ -153,7 +153,7 @@ class PrismCellsStoreTest extends TestCase
     public function test_removals_only_payload_is_accepted(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/the-cove/programs/prog-123/cells', [
@@ -171,7 +171,7 @@ class PrismCellsStoreTest extends TestCase
     public function test_removal_writes_tombstone(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         // Pre-create a cell
         PrismProgramCell::create([
@@ -206,7 +206,7 @@ class PrismCellsStoreTest extends TestCase
     public function test_removing_a_nonexistent_cell_inserts_a_tombstone(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/the-cove/programs/prog-123/cells', [
@@ -229,7 +229,7 @@ class PrismCellsStoreTest extends TestCase
     public function test_re_upserting_tombstoned_cell_clears_deleted_at(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         // First remove (tombstone)
         $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
@@ -265,7 +265,7 @@ class PrismCellsStoreTest extends TestCase
     public function test_unknown_gym_with_removal_returns_404(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/nonexistent-gym/programs/prog-123/cells', [
@@ -290,7 +290,7 @@ class PrismCellsStoreTest extends TestCase
 
     public function test_a_cell_with_a_workout_uuid_stores_it(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->postCells(['cells' => [
             ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => '7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f'],
@@ -301,7 +301,7 @@ class PrismCellsStoreTest extends TestCase
 
     public function test_a_cell_without_a_workout_uuid_keeps_the_stored_one(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->postCells(['cells' => [
             ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => '7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f'],
@@ -317,7 +317,7 @@ class PrismCellsStoreTest extends TestCase
 
     public function test_a_new_workout_uuid_replaces_the_stored_one(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->postCells(['cells' => [
             ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => '7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f'],
@@ -331,7 +331,7 @@ class PrismCellsStoreTest extends TestCase
 
     public function test_a_removal_clears_the_workout_uuid(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->postCells(['cells' => [
             ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => '7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f'],
@@ -345,7 +345,7 @@ class PrismCellsStoreTest extends TestCase
 
     public function test_a_malformed_workout_uuid_is_rejected(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->postCells(['cells' => [
             ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => 'not-a-uuid'],
@@ -356,7 +356,7 @@ class PrismCellsStoreTest extends TestCase
 
     public function test_a_batch_mixing_cells_with_and_without_a_uuid_stores_both(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->postCells(['cells' => [
             ['cell_id' => 'w1d1', 'text' => 'Back Squat 3x5', 'workout_uuid' => '7d9f2c1e-8a4b-4c3d-9e2f-1a2b3c4d5e6f'],

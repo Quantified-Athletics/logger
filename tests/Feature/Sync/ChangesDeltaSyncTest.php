@@ -18,7 +18,7 @@ class ChangesDeltaSyncTest extends TestCase
     public function test_since_omitted_returns_full_dump_and_cursor(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $exercise = Exercise::factory()->create();
 
@@ -50,7 +50,7 @@ class ChangesDeltaSyncTest extends TestCase
     public function test_since_filters_live_logs_and_tombstones(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $exercise = Exercise::factory()->create();
 
@@ -92,7 +92,7 @@ class ChangesDeltaSyncTest extends TestCase
     public function test_since_inclusive_boundary(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $exercise = Exercise::factory()->create();
         $t = Carbon::parse('2026-09-01T12:00:00Z');
@@ -122,7 +122,7 @@ class ChangesDeltaSyncTest extends TestCase
     public function test_cursor_computation(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $exercise = Exercise::factory()->create();
 
@@ -152,7 +152,7 @@ class ChangesDeltaSyncTest extends TestCase
     public function test_old_tombstone_forever_fix(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $exercise = Exercise::factory()->create();
 

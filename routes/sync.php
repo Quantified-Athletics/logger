@@ -1,10 +1,12 @@
 <?php
 
+use App\Sync\Controllers\AthletePublicationFeedController;
 use App\Sync\Controllers\AuthController;
 use App\Sync\Controllers\BlueprintController;
 use App\Sync\Controllers\ChangesController;
 use App\Sync\Controllers\LogController;
 use App\Sync\Controllers\PreferencesController;
+use App\Sync\Controllers\PrismAthletePublicationController;
 use App\Sync\Controllers\PrismChangesController;
 use App\Sync\Controllers\PrismCommentController;
 use App\Sync\Controllers\PrismExerciseController;
@@ -15,6 +17,8 @@ use App\Sync\Controllers\PrismProgramController;
 use App\Sync\Controllers\PrismProgramDestinationController;
 use App\Sync\Controllers\RestoreController;
 use App\Sync\Controllers\WhoAmIController;
+use App\Sync\Middleware\EnsureAthletePublicationsReadToken;
+use App\Sync\Middleware\EnsureFullAccessToken;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:register');
@@ -28,7 +32,7 @@ Route::post('/telemetry', [\App\Sync\Controllers\TelemetryController::class, 'st
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
-Route::middleware(['auth:sanctum', 'throttle:sync-per-user', 'throttle:sync-global', 'device-id', 'log-sync-request'])->group(function () {
+Route::middleware(['auth:sanctum', EnsureFullAccessToken::class, 'throttle:sync-per-user', 'throttle:sync-global', 'device-id', 'log-sync-request'])->group(function () {
     Route::post('/logs', [LogController::class, 'store']);
     Route::delete('/logs/{liftLog}', [LogController::class, 'destroy']);
     Route::post('/blueprint', [BlueprintController::class, 'store']);
@@ -39,14 +43,15 @@ Route::middleware(['auth:sanctum', 'throttle:sync-per-user', 'throttle:sync-glob
     Route::post('/exercises', [\App\Sync\Controllers\ExerciseController::class, 'store']);
 });
 
-Route::middleware(['auth:sanctum', 'throttle:sync-batch', 'device-id', 'log-sync-request'])->group(function () {
+Route::middleware(['auth:sanctum', EnsureFullAccessToken::class, 'throttle:sync-batch', 'device-id', 'log-sync-request'])->group(function () {
     Route::post('/logs/batch', [LogController::class, 'batch']);
 });
 
-Route::middleware(['auth:sanctum', 'throttle:prism-write', 'device-id', 'log-sync-request'])->group(function () {
+Route::middleware(['auth:sanctum', EnsureFullAccessToken::class, 'throttle:prism-write', 'device-id', 'log-sync-request'])->group(function () {
     Route::post('/prism/{gym}/programs/{program_uuid}', [PrismProgramController::class, 'storeProgram']);
     Route::post('/prism/{gym}/programs/{program_uuid}/cells', [PrismProgramController::class, 'storeCells']);
     Route::post('/prism/{gym}/programs/{program_uuid}/destinations', [PrismProgramDestinationController::class, 'store']);
+    Route::post('/prism/{gym}/programs/{program_uuid}/athlete-publications', [PrismAthletePublicationController::class, 'store']);
     Route::post('/prism/{gym}/programs/{program_uuid}/comments', [PrismCommentController::class, 'store']);
     Route::post('/prism/{gym}/exercises', [PrismExerciseController::class, 'store']);
     Route::post('/prism/{gym}/preferences', [PrismPreferencesController::class, 'store']);
@@ -54,6 +59,10 @@ Route::middleware(['auth:sanctum', 'throttle:prism-write', 'device-id', 'log-syn
     Route::post('/prism/{gym}/exercise-limits', [PrismExerciseLimitsController::class, 'store']);
 });
 
-Route::middleware(['auth:sanctum', 'throttle:prism-poll', 'device-id', 'log-sync-request'])->group(function () {
+Route::middleware(['auth:sanctum', EnsureFullAccessToken::class, 'throttle:prism-poll', 'device-id', 'log-sync-request'])->group(function () {
     Route::get('/prism/{gym}/changes', [PrismChangesController::class, 'index']);
+});
+
+Route::middleware(['auth:sanctum', EnsureAthletePublicationsReadToken::class, 'throttle:prism-poll', 'log-sync-request'])->group(function () {
+    Route::get('/athlete-publications', [AthletePublicationFeedController::class, 'index']);
 });

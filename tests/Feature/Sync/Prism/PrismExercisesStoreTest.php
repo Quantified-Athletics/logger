@@ -22,7 +22,7 @@ class PrismExercisesStoreTest extends TestCase
     public function test_upserts_creates_overlay_rows_with_deleted_at_null(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $payload = [
             'upserts' => [
@@ -54,7 +54,7 @@ class PrismExercisesStoreTest extends TestCase
     public function test_removals_writes_tombstone(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         // Pre-create an exercise overlay
         PrismExerciseOverlayRecord::create([
@@ -89,7 +89,7 @@ class PrismExercisesStoreTest extends TestCase
     public function test_re_upserting_tombstoned_exercise_clears_deleted_at(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         // First remove (tombstone)
         $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
@@ -128,7 +128,7 @@ class PrismExercisesStoreTest extends TestCase
     public function test_unknown_gym_returns_404(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/nonexistent-gym/exercises', [
@@ -161,7 +161,7 @@ class PrismExercisesStoreTest extends TestCase
     public function test_missing_upserts_and_removals_returns_422(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/the-cove/exercises', []);
