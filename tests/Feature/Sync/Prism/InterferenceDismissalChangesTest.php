@@ -24,7 +24,7 @@ class InterferenceDismissalChangesTest extends TestCase
     public function test_changes_includes_dismissals_section_on_cold_start(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $tz = config('app.timezone');
         $t = Carbon::parse('2026-09-01 12:00:00', $tz);
@@ -55,7 +55,7 @@ class InterferenceDismissalChangesTest extends TestCase
     public function test_changes_since_filters_dismissals(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $tz = config('app.timezone');
         $tBefore = Carbon::parse('2026-09-01 10:00:00', $tz);
@@ -90,7 +90,7 @@ class InterferenceDismissalChangesTest extends TestCase
     public function test_dismissal_only_change_advances_changes_cursor(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $tz = config('app.timezone');
         $t1 = Carbon::parse('2026-09-01 10:00:00', $tz);
@@ -139,7 +139,7 @@ class InterferenceDismissalChangesTest extends TestCase
     public function test_tombstone_only_change_advances_changes_cursor(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $tz = config('app.timezone');
         $t1 = Carbon::parse('2026-09-01 10:00:00', $tz);
@@ -186,7 +186,7 @@ class InterferenceDismissalChangesTest extends TestCase
     public function test_cross_gym_isolation_cove_dismissals_never_appear_in_flagship(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         // Cove has a dismissal
         PrismInterferenceDismissal::create([

@@ -30,7 +30,7 @@ class PrismWriteThrottleTest extends TestCase
         // Athlete sync-per-user limit is 10/min. Prism write limit is 120/min.
         // We assert that driving 20 writes within the same minute does NOT return 429.
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         for ($i = 0; $i < 20; $i++) {
             $this->travel(1)->seconds();
@@ -48,7 +48,7 @@ class PrismWriteThrottleTest extends TestCase
     public function test_exercise_limits_writes_are_throttled(): void
     {
         config(['rate_limits.prism_write.per_minute' => 2]);
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $emptyPayload = [
             'families' => ['upserts' => [], 'removals' => []],

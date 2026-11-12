@@ -22,7 +22,7 @@ class PrismPreferencesStoreTest extends TestCase
     public function test_first_post_creates_preferences_row(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $payload = [
             'data' => [
@@ -51,7 +51,7 @@ class PrismPreferencesStoreTest extends TestCase
     public function test_second_post_overwrites_data_in_place(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/the-cove/preferences', [
@@ -78,7 +78,7 @@ class PrismPreferencesStoreTest extends TestCase
     public function test_unknown_gym_returns_404(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/nonexistent-gym/preferences', [
@@ -109,7 +109,7 @@ class PrismPreferencesStoreTest extends TestCase
     public function test_missing_data_returns_422(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/the-cove/preferences', []);

@@ -76,7 +76,7 @@ class PrismAthletePublicationsStoreTest extends TestCase
 
     public function test_admin_publication_is_stored_and_returns_201(): void
     {
-        Sanctum::actingAs($this->admin);
+        Sanctum::actingAs($this->admin, ['*']);
 
         $response = $this->publish(self::validBody());
 
@@ -95,7 +95,7 @@ class PrismAthletePublicationsStoreTest extends TestCase
 
     public function test_raw_keeps_empty_objects_as_objects(): void
     {
-        Sanctum::actingAs($this->admin);
+        Sanctum::actingAs($this->admin, ['*']);
         $raw = self::validRaw();
         $raw['metadata'] = new \stdClass;
         $raw['workouts'][0]['_formatting'] = ['formattedText' => [], 'styles' => new \stdClass];
@@ -109,7 +109,7 @@ class PrismAthletePublicationsStoreTest extends TestCase
 
     public function test_non_admin_gets_403_and_nothing_is_stored(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->publish(self::validBody())->assertStatus(403);
 
@@ -125,7 +125,7 @@ class PrismAthletePublicationsStoreTest extends TestCase
 
     public function test_unknown_gym_gets_404(): void
     {
-        Sanctum::actingAs($this->admin);
+        Sanctum::actingAs($this->admin, ['*']);
 
         $this->publish(self::validBody(), gym: 'nowhere')->assertStatus(404);
 
@@ -134,7 +134,7 @@ class PrismAthletePublicationsStoreTest extends TestCase
 
     public function test_second_publication_of_the_same_program_is_a_new_row(): void
     {
-        Sanctum::actingAs($this->admin);
+        Sanctum::actingAs($this->admin, ['*']);
 
         $first = $this->publish(self::validBody())->assertStatus(201)->json('id');
         $second = $this->publish(['track' => 'sa'] + self::validBody())->assertStatus(201)->json('id');
@@ -223,7 +223,7 @@ class PrismAthletePublicationsStoreTest extends TestCase
     #[DataProvider('invalidBodies')]
     public function test_each_shape_rule_refuses_with_422_and_stores_nothing(callable $mutate): void
     {
-        Sanctum::actingAs($this->admin);
+        Sanctum::actingAs($this->admin, ['*']);
 
         $this->publish($mutate(self::validBody()))->assertStatus(422);
 
@@ -232,7 +232,7 @@ class PrismAthletePublicationsStoreTest extends TestCase
 
     public function test_raw_over_two_megabytes_is_refused(): void
     {
-        Sanctum::actingAs($this->admin);
+        Sanctum::actingAs($this->admin, ['*']);
         $body = self::validBody();
         $body['raw']['metadata']['notes'] = str_repeat('x', 2 * 1024 * 1024);
 

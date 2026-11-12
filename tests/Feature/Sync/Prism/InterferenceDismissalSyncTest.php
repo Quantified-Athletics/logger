@@ -23,7 +23,7 @@ class InterferenceDismissalSyncTest extends TestCase
     public function test_upsert_creates_dismissal_rows_with_deleted_at_null(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $payload = [
             'dismissals' => [
@@ -53,7 +53,7 @@ class InterferenceDismissalSyncTest extends TestCase
     public function test_removals_writes_tombstone(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         PrismInterferenceDismissal::create([
             'gym_id' => 'the-cove',
@@ -86,7 +86,7 @@ class InterferenceDismissalSyncTest extends TestCase
     public function test_batched_removals_tombstones_all_n_rows(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         for ($i = 1; $i <= 5; $i++) {
             PrismInterferenceDismissal::create([
@@ -118,7 +118,7 @@ class InterferenceDismissalSyncTest extends TestCase
     public function test_re_upserting_tombstoned_dismissal_clears_deleted_at(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/the-cove/interference-dismissals', [
@@ -150,7 +150,7 @@ class InterferenceDismissalSyncTest extends TestCase
     public function test_upsert_and_removal_in_single_request(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/the-cove/interference-dismissals', [
@@ -178,7 +178,7 @@ class InterferenceDismissalSyncTest extends TestCase
     public function test_long_resolution_key_round_trips_intact(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         // Construct a realistic long resolution key (approx 350-400 chars)
         $longKey = 'prog-550e8400-e29b-41d4-a716-446655440000|w12d4~w12d5|' . str_repeat('movement-pattern-variation-long-name,', 8) . 'final-pattern';
@@ -202,7 +202,7 @@ class InterferenceDismissalSyncTest extends TestCase
     public function test_unknown_gym_returns_404(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/nonexistent-gym/interference-dismissals', [
@@ -235,7 +235,7 @@ class InterferenceDismissalSyncTest extends TestCase
     public function test_missing_dismissals_and_removals_returns_422(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-uuid-1'])
             ->postJson('/api/sync/prism/the-cove/interference-dismissals', []);

@@ -38,7 +38,7 @@ class PrismCommentsTest extends TestCase
     public function test_a_comment_is_created_with_the_signed_in_user_as_author(): void
     {
         $user = User::factory()->create(['name' => 'Maurits Dekkers']);
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $this->add();
 
@@ -52,7 +52,7 @@ class PrismCommentsTest extends TestCase
 
     public function test_the_author_can_edit_delete_and_restore_their_comment(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
         $this->add();
 
         $this->add('People loved this one');
@@ -68,10 +68,10 @@ class PrismCommentsTest extends TestCase
 
     public function test_someone_else_cannot_edit_or_delete_a_comment(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
         $this->add();
 
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
         $this->postComments(['upserts' => [['uuid' => self::COMMENT, 'workout_uuid' => self::WORKOUT, 'body' => 'Hijacked']]])
             ->assertStatus(403);
         $this->postComments(['removals' => [['uuid' => self::COMMENT]]])->assertStatus(403);
@@ -83,10 +83,10 @@ class PrismCommentsTest extends TestCase
 
     public function test_a_refused_batch_writes_nothing(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
         $this->add();
 
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
         $this->postComments(['upserts' => [
             ['uuid' => '0b1c2d3e-4f5a-4b6c-8d7e-9f0a1b2c3d4e', 'workout_uuid' => self::WORKOUT, 'body' => 'Mine'],
             ['uuid' => self::COMMENT, 'workout_uuid' => self::WORKOUT, 'body' => 'Not mine'],
@@ -97,7 +97,7 @@ class PrismCommentsTest extends TestCase
 
     public function test_invalid_payloads_are_rejected(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->postComments(['upserts' => [], 'removals' => []])->assertStatus(422);
         $this->postComments(['upserts' => [['uuid' => 'nope', 'workout_uuid' => self::WORKOUT, 'body' => 'x']]])->assertStatus(422);
@@ -110,7 +110,7 @@ class PrismCommentsTest extends TestCase
     {
         $this->postComments(['upserts' => [['uuid' => self::COMMENT, 'workout_uuid' => self::WORKOUT, 'body' => 'x']]])->assertStatus(401);
 
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
         $this->withHeaders(['X-Device-Id' => 'dev-1'])
             ->postJson('/api/sync/prism/nowhere/programs/prog-123/comments', ['upserts' => [['uuid' => self::COMMENT, 'workout_uuid' => self::WORKOUT, 'body' => 'x']]])
             ->assertStatus(404);
@@ -118,7 +118,7 @@ class PrismCommentsTest extends TestCase
 
     public function test_changes_return_comments_with_the_authors_full_name_and_tombstones(): void
     {
-        Sanctum::actingAs(User::factory()->create(['name' => 'Maurits Dekkers', 'email' => 'coach@example.com']));
+        Sanctum::actingAs(User::factory()->create(['name' => 'Maurits Dekkers', 'email' => 'coach@example.com']), ['*']);
         $this->add();
 
         $comments = $this->withHeaders(['X-Device-Id' => 'dev-1'])

@@ -14,6 +14,12 @@ class PrismAthletePublication extends Model
     /** Athlete tracks a program can be published to. */
     public const TRACKS = ['peak', 'sa'];
 
+    /** The only ability of the token Athlete's GitHub Action reads publications with. */
+    public const READ_ABILITY = 'athlete-publications:read';
+
+    /** Most publications one read returns. */
+    public const READ_PAGE_SIZE = 20;
+
     /** Largest raw file accepted, in bytes of JSON. */
     public const RAW_MAX_BYTES = 2 * 1024 * 1024;
 

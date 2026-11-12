@@ -31,7 +31,7 @@ class PrismChangesTest extends TestCase
     public function test_cold_start_returns_full_gym_state(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $tz = config('app.timezone');
         $t = Carbon::parse('2026-09-01 12:00:00', $tz);
@@ -122,7 +122,7 @@ class PrismChangesTest extends TestCase
     public function test_since_filters_to_rows_at_or_after_cursor(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $tz = config('app.timezone');
         $tBefore = Carbon::parse('2026-09-01 10:00:00', $tz);
@@ -220,7 +220,7 @@ class PrismChangesTest extends TestCase
     public function test_inclusive_boundary_delivers_two_writes_at_same_instant(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $t = Carbon::parse('2026-09-01T12:00:00.000001Z');
 
@@ -256,7 +256,7 @@ class PrismChangesTest extends TestCase
     public function test_tombstone_is_delivered_in_delta(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $tz = config('app.timezone');
         $tSince = Carbon::parse('2026-09-01 12:00:00', $tz);
@@ -290,7 +290,7 @@ class PrismChangesTest extends TestCase
     public function test_cursor_is_non_rewinding_high_water_mark(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $tz = config('app.timezone');
         $t1 = Carbon::parse('2026-09-01 10:00:00', $tz);
@@ -332,7 +332,7 @@ class PrismChangesTest extends TestCase
     public function test_empty_gym_returns_empty_collections(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         // Cold start with empty gym
         $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
@@ -368,7 +368,7 @@ class PrismChangesTest extends TestCase
     public function test_unknown_gym_returns_404(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
             ->getJson('/api/sync/prism/nonexistent/changes');
@@ -395,7 +395,7 @@ class PrismChangesTest extends TestCase
     public function test_invalid_since_returns_422(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
             ->getJson('/api/sync/prism/the-cove/changes?since=not-a-date');
@@ -409,7 +409,7 @@ class PrismChangesTest extends TestCase
     public function test_changes_query_count_is_flat_under_growing_data(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         // 1. Seed small dataset: 1 program, 2 cells, 2 exercise overlays, 1 preferences row
         PrismProgram::create([
@@ -570,7 +570,7 @@ class PrismChangesTest extends TestCase
     public function test_changes_programs_carry_archived_at_and_archive_appears_in_since_delta(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $tz = config('app.timezone');
         $t1 = Carbon::parse('2026-09-01 10:00:00', $tz);
@@ -618,7 +618,7 @@ class PrismChangesTest extends TestCase
 
     public function test_changes_programs_carry_tab_position_and_a_move_appears_in_since_delta(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $tz = config('app.timezone');
         $t1 = Carbon::parse('2026-09-01 10:00:00', $tz);
@@ -669,7 +669,7 @@ class PrismChangesTest extends TestCase
     public function test_cell_tombstone_is_delivered_in_delta(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $tz = config('app.timezone');
         $tSince = Carbon::parse('2026-09-01 12:00:00', $tz);
@@ -704,7 +704,7 @@ class PrismChangesTest extends TestCase
     public function test_live_cell_carries_null_deleted_at(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         PrismProgramCell::create([
             'gym_id' => 'the-cove',
@@ -727,7 +727,7 @@ class PrismChangesTest extends TestCase
     public function test_cursor_advances_on_cell_removal(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         $tz = config('app.timezone');
         $t1 = Carbon::parse('2026-09-01 10:00:00', $tz);
@@ -768,7 +768,7 @@ class PrismChangesTest extends TestCase
     public function test_changes_carry_destinations_with_linked_by_and_tombstones_since_cursor(): void
     {
         $coach = User::factory()->create(['name' => 'Coach A']);
-        Sanctum::actingAs($coach);
+        Sanctum::actingAs($coach, ['*']);
 
         $tz = config('app.timezone');
         $tOld = Carbon::parse('2026-10-01 12:00:00', $tz);
@@ -839,7 +839,7 @@ class PrismChangesTest extends TestCase
     public function test_changes_carry_momence_destination_with_all_four_fields(): void
     {
         $coach = User::factory()->create(['name' => 'Coach A']);
-        Sanctum::actingAs($coach);
+        Sanctum::actingAs($coach, ['*']);
 
         $this->withHeaders(['X-Device-Id' => 'dev-1'])
             ->postJson('/api/sync/prism/the-cove/programs/prog-1/destinations', [
@@ -884,7 +884,7 @@ class PrismChangesTest extends TestCase
 
     public function test_changes_programs_carry_start_date_and_no_metadata(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         PrismProgram::create([
             'gym_id' => 'the-cove',
@@ -913,7 +913,7 @@ class PrismChangesTest extends TestCase
     public function test_changes_return_each_cells_workout_uuid(): void
     {
         $user = User::factory()->create();
-        Sanctum::actingAs($user);
+        Sanctum::actingAs($user, ['*']);
 
         PrismProgramCell::create([
             'gym_id' => 'the-cove',
@@ -965,7 +965,7 @@ class PrismChangesTest extends TestCase
 
     public function test_changes_carry_exercise_limit_rows_with_exact_shapes(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $tz = config('app.timezone');
         $t1 = Carbon::parse('2026-09-01 10:00:00', $tz)->toIso8601String();
@@ -1004,7 +1004,7 @@ class PrismChangesTest extends TestCase
 
     public function test_empty_gym_returns_empty_exercise_limit_lists(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $response = $this->withHeaders(['X-Device-Id' => 'dev-1'])
             ->getJson('/api/sync/prism/the-cove/changes');
@@ -1017,7 +1017,7 @@ class PrismChangesTest extends TestCase
 
     public function test_since_filters_exercise_limit_rows(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->createAtTime(PrismExerciseFamily::class, ['gym_id' => 'the-cove', 'family_id' => 'old-family', 'name' => 'Old', 'device_id' => 'dev-1'], '2026-09-01 10:00:00');
         $this->createAtTime(PrismExerciseFamily::class, ['gym_id' => 'the-cove', 'family_id' => 'new-family', 'name' => 'New', 'device_id' => 'dev-1'], '2026-09-01 12:00:00');
@@ -1039,7 +1039,7 @@ class PrismChangesTest extends TestCase
     #[DataProvider('exerciseLimitRows')]
     public function test_exercise_limit_tombstones_are_delivered_in_delta(string $modelClass, array $attributes, string $feedKey): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $tombstone = Carbon::parse('2026-09-01 12:00:00', config('app.timezone'));
         $this->createAtTime($modelClass, array_merge($attributes, ['deleted_at' => $tombstone]), '2026-09-01 12:00:00');
@@ -1057,7 +1057,7 @@ class PrismChangesTest extends TestCase
     #[DataProvider('exerciseLimitRows')]
     public function test_cursor_advances_on_exercise_limit_update(string $modelClass, array $attributes, string $feedKey): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $tz = config('app.timezone');
         $t15 = Carbon::parse('2026-09-01 15:00:00', $tz);
@@ -1073,7 +1073,7 @@ class PrismChangesTest extends TestCase
     #[DataProvider('exerciseLimitRows')]
     public function test_cursor_advances_on_exercise_limit_removal(string $modelClass, array $attributes, string $feedKey): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $tz = config('app.timezone');
         $t15 = Carbon::parse('2026-09-01 15:00:00', $tz);
@@ -1088,7 +1088,7 @@ class PrismChangesTest extends TestCase
 
     public function test_other_gyms_exercise_limit_rows_never_appear(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
         Gym::create(['id' => 'other-gym', 'name' => 'Other Gym']);
 
         $this->createAtTime(PrismExerciseFamily::class, ['gym_id' => 'other-gym', 'family_id' => 'other-family', 'name' => 'Other', 'device_id' => 'dev-1'], '2026-09-01 15:00:00');

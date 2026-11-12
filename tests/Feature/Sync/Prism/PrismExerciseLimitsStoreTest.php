@@ -103,7 +103,7 @@ class PrismExerciseLimitsStoreTest extends TestCase
      */
     private function postLimits(array $payload, string $gym = 'the-cove'): TestResponse
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         return $this->withHeaders(['X-Device-Id' => 'dev-1'])
             ->postJson("/api/sync/prism/{$gym}/exercise-limits", $payload);

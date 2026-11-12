@@ -34,7 +34,7 @@ class PrismProgramStoreTest extends TestCase
 
     private function seedProgram(): PrismProgram
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->pushProgram([
             'name' => 'Spring Block',
@@ -48,7 +48,7 @@ class PrismProgramStoreTest extends TestCase
 
     public function test_create_stores_all_fields(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $response = $this->pushProgram([
             'name' => 'Hypertrophy Block A',
@@ -74,7 +74,7 @@ class PrismProgramStoreTest extends TestCase
 
     public function test_create_without_name_or_week_count_returns_422(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->pushProgram(['week_count' => 6])->assertStatus(422)->assertJson(['status' => 'error']);
         $this->pushProgram(['name' => 'No weeks'])->assertStatus(422)->assertJson(['status' => 'error']);
@@ -190,7 +190,7 @@ class PrismProgramStoreTest extends TestCase
 
     public function test_legacy_metadata_null_also_returns_503(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->pushProgram(['name' => 'X', 'week_count' => 1, 'metadata' => null])->assertStatus(503);
         $this->assertDatabaseCount('prism_programs', 0);
@@ -215,7 +215,7 @@ class PrismProgramStoreTest extends TestCase
 
     public function test_create_race_is_applied_as_update(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         // Simulate another coach inserting the same program between our lookup and our insert.
         $inserted = false;
@@ -247,7 +247,7 @@ class PrismProgramStoreTest extends TestCase
 
     public function test_tab_position_is_stored_on_create_and_kept_verbatim(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->pushProgram(['name' => 'Tabbed', 'week_count' => 4, 'tab_position' => 'a0V'])
             ->assertStatus(200);
@@ -325,7 +325,7 @@ class PrismProgramStoreTest extends TestCase
 
     public function test_tab_position_only_write_to_unknown_program_returns_422(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->pushProgram(['tab_position' => 'a0'])->assertStatus(422);
 
@@ -334,7 +334,7 @@ class PrismProgramStoreTest extends TestCase
 
     public function test_unknown_gym_returns_404(): void
     {
-        Sanctum::actingAs(User::factory()->create());
+        Sanctum::actingAs(User::factory()->create(), ['*']);
 
         $this->pushProgram(['name' => 'Hypertrophy Block A', 'week_count' => 6], 'dev-uuid-1', '/api/sync/prism/nonexistent-gym/programs/prog-uuid-123')
             ->assertStatus(404)
