@@ -8,8 +8,8 @@ use Illuminate\Database\Seeder;
 /**
  * Seeds the known gym partitions.
  *
- * These gym ids ('the-cove', 'flagship') are the cross-app join key and
- * MUST match Prism's `src/constants/accessControl.js` (`GYM_DOMAINS`)
+ * These gym ids ('the-cove', 'flagship', 'maurits') are the cross-app join key and
+ * MUST match Prism's `src/constants/accessControl.js` (`GYMS`)
  * byte-for-byte; renaming a shipped gym id orphans data.
  */
 class GymSeeder extends Seeder
@@ -27,6 +27,11 @@ class GymSeeder extends Seeder
         Gym::updateOrCreate(
             ['id' => 'flagship'],
             ['name' => 'Flagship']
+        );
+
+        Gym::updateOrCreate(
+            ['id' => 'maurits'],
+            ['name' => 'Maurits PT']
         );
     }
 }
