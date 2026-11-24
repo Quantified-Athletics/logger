@@ -37,7 +37,14 @@ return [
         ))
     ))),
 
-    'allowed_origins_patterns' => [],
+    /*
+    | In the local environment only, any localhost port is allowed, so a second
+    | dev server (Prism on :5174, a tq verify worktree on :5555) can sign in
+    | without editing CORS_ALLOWED_ORIGINS. Never in production or staging.
+    */
+    'allowed_origins_patterns' => env('APP_ENV') === 'local'
+        ? ['#^http://(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$#']
+        : [],
 
     'allowed_headers' => ['Authorization', 'Content-Type', 'X-Device-Id', 'X-Idempotency-Key'],
 
