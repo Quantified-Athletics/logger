@@ -46,6 +46,7 @@ Route::middleware(['auth:sanctum', EnsureFullAccessToken::class, 'throttle:sync-
     Route::get('/coach-programs', [CoachProgramController::class, 'index']);
     Route::post('/exercises', [\App\Sync\Controllers\ExerciseController::class, 'store']);
     Route::post('/queue/sync', [AthleteQueueController::class, 'sync']);
+    Route::get('/queue/changes', [AthleteQueueController::class, 'changes']);
     Route::delete('/queue/{id}', [AthleteQueueController::class, 'destroy']);
 });
 

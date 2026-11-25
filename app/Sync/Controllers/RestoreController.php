@@ -6,6 +6,7 @@ use App\Models\LiftLog;
 use App\Models\PersonalRecord;
 use App\Sync\Models\AthleteBlueprint;
 use App\Sync\Models\AthletePreference;
+use App\Sync\Services\AthleteQueueStateService;
 use App\Sync\Services\SetFieldMapper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ class RestoreController
 {
     public function __construct(
         private SetFieldMapper $setFieldMapper,
+        private AthleteQueueStateService $athleteQueueStateService,
     ) {}
 
     /**
@@ -129,6 +131,7 @@ class RestoreController
             'logs' => $logsData,
             'prHistory' => (object) $prHistory,
             'userExercises' => $this->getUserExercises($user),
+            'queue' => $this->athleteQueueStateService->liveItems((int) $user->id),
         ]);
     }
 

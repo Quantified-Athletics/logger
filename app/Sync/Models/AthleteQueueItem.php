@@ -46,6 +46,14 @@ class AthleteQueueItem extends Model
         return AthleteQueueItemFactory::new();
     }
 
+    /**
+     * The stored item decoded as objects, so an empty `{}` is served back as `{}`, not `[]`.
+     */
+    public function itemPayload(): mixed
+    {
+        return json_decode($this->item, false, 512, JSON_THROW_ON_ERROR);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
