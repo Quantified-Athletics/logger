@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * One item of an athlete's workout queue. `item` is the item's JSON text, kept byte for byte and
- * never interpreted; `item_updated_at` is its `updatedAt`, used for last-write-wins. A set
- * `deleted_at` is a tombstone, not a soft delete: the row stays visible to Eloquent so it can be
- * served as a deletion and revived by a newer push.
+ * One item of an athlete's workout queue. `item` is the item's JSON text, never cast or interpreted
+ * here; MySQL's `json` column may reorder object keys and respace it. `item_updated_at` is the
+ * item's `updatedAt`, used for last-write-wins. A set `deleted_at` is a tombstone, not a soft
+ * delete: the row stays visible to Eloquent so it can be served as a deletion and revived by a newer
+ * push.
  */
 class AthleteQueueItem extends Model
 {
