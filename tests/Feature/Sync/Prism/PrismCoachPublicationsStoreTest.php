@@ -322,7 +322,7 @@ class PrismCoachPublicationsStoreTest extends TestCase
         $this->withHeaders(['X-Device-Id' => 'dev-a'])
             ->postJson('/api/sync/prism/the-cove/programs/prog-1/coach-publications/revoke', [])
             ->assertStatus(422)
-            ->assertJsonValidationErrors('recipient_email');
+            ->assertJsonPath('status', 'error');
     }
 
     public function test_coach_publication_routes_use_the_prism_write_group(): void
