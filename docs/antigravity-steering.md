@@ -197,6 +197,9 @@ Do not print it prematurely. Do not print it if any milestone has not passed.
 - **Migrations are forward-only in production.** Never modify a migration that has already run. Create a new migration to alter the schema.
 - **NEVER run destructive database commands** — no `migrate:fresh`, `migrate:reset`, `db:wipe`. Use `migrate` (forward-only). `migrate:rollback`, `db:seed`, and `tinker` writes require approval.
 - **A migration must be safe to auto-apply.** Forge runs it on production when the PR merges: additive and nullable, a reversible `down()`, no destructive data operation without explicit intent. Your SQLite tests don't prove it on MySQL.
+- **Index and constraint names must fit MySQL's 64 characters.** SQLite has no limit, so tests pass while the
+  production deploy fails part-way through the migration. Laravel builds a name from the table and every column:
+  with a long table name or a multi-column index, pass a short name explicitly.
 - **New columns on existing tables must be nullable**, added to the model's `$fillable`, and given casts in the `casts()` method where needed. If a column changes how existing data is interpreted, update all upstream readers in the same milestone.
 - **Never repurpose a column** for something it wasn't designed for. New features get proper schema.
 - **One source of truth per datum.** Don't store the same information in two shapes — derive it at read time.
@@ -205,6 +208,9 @@ Do not print it prematurely. Do not print it if any milestone has not passed.
 
 ## 7. Architecture Conventions
 
+- **A header a browser client sends or reads goes in `config/cors.php`.** The web apps call the sync API from
+  other origins: a new request header (such as `If-None-Match`) belongs in `allowed_headers`, and a response
+  header the script reads (such as `ETag`) in `exposed_headers`. A feature test passes without either.
 - **Domain folders for isolated features.** New feature modules that don't belong in the existing web UI flow get their own `app/X/` directory (controllers, actions, services, models, middleware, commands). Sync code lives in `app/Sync/`; its routes live in `routes/sync.php`. Don't scatter new feature code across `app/Http/Controllers/`, `app/Services/`, etc. unless it's genuinely shared.
 - **Existing web UI behavior is sacred.** Changes to shared models (`LiftLog`, `LiftSet`, `User`, `Exercise`) must not break existing views, controllers, or tests. If you touch a shared model, run the full suite.
 - **Dispatch events, don't inline side effects.** Downstream consequences (PR detection, notifications) are dispatched as events, not inlined into a controller or action. PR detection piggybacks on `LiftLogCompleted`.

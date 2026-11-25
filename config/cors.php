@@ -46,9 +46,9 @@ return [
         ? ['#^http://(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$#']
         : [],
 
-    'allowed_headers' => ['Authorization', 'Content-Type', 'X-Device-Id', 'X-Idempotency-Key'],
+    'allowed_headers' => ['Authorization', 'Content-Type', 'X-Device-Id', 'X-Idempotency-Key', 'If-None-Match'],
 
-    'exposed_headers' => [],
+    'exposed_headers' => ['ETag'],
 
     'max_age' => 0,
 
