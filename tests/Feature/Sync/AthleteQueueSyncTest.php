@@ -7,6 +7,7 @@ use App\Sync\Models\AthleteQueueItem;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use Illuminate\Testing\TestResponse;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 /**
@@ -31,6 +32,8 @@ class AthleteQueueSyncTest extends TestCase
      */
     private function bearerHeadersFor(User $user): array
     {
+        $this->app['auth']->forgetGuards();
+
         return ['Authorization' => 'Bearer '.$user->createToken('test')->plainTextToken];
     }
 
@@ -46,6 +49,7 @@ class AthleteQueueSyncTest extends TestCase
 
     private function pushRaw(string $body, ?User $user = null): TestResponse
     {
+        $this->app['auth']->forgetGuards();
         $token = ($user ?? $this->athlete)->createToken('test')->plainTextToken;
 
         return $this->call('POST', '/api/sync/queue/sync', [], [], [], [
@@ -74,6 +78,16 @@ class AthleteQueueSyncTest extends TestCase
             'meta' => ['title' => $title],
             'generatorConfig' => ['focus' => 'lower'],
         ];
+    }
+
+    /** The sync API answers a 422 as `{status, message}`, the message naming the first bad field. */
+    private function assertRefused(TestResponse $response, string $field): void
+    {
+        $response->assertUnprocessable()->assertJsonPath('status', 'error');
+        $this->assertStringContainsString(
+            'The '.$field.' ',
+            (string) $response->json('message'),
+        );
     }
 
     private function stored(string $itemId, ?User $user = null): ?AthleteQueueItem
@@ -315,7 +329,7 @@ class AthleteQueueSyncTest extends TestCase
     {
         $items = array_map(fn (int $n): array => $this->item("q-{$n}", '2026-11-24T10:00:00.000Z'), range(1, 201));
 
-        $this->push($items)->assertUnprocessable()->assertJsonValidationErrors('items');
+        $this->assertRefused($this->push($items), 'items');
         $this->assertSame(0, AthleteQueueItem::query()->count());
     }
 
@@ -336,23 +350,22 @@ class AthleteQueueSyncTest extends TestCase
             'missing updatedAt' => [['items' => [array_diff_key($valid, ['updatedAt' => true])], 'deletedIds' => []], 'items.0.updatedAt'],
             'updatedAt not ISO-8601' => [['items' => [[...$valid, 'updatedAt' => '24/11/2026 10:00']], 'deletedIds' => []], 'items.0.updatedAt'],
             'updatedAt not a date' => [['items' => [[...$valid, 'updatedAt' => '2026-13-45T10:00:00Z']], 'deletedIds' => []], 'items.0.updatedAt'],
-            'deletedIds not a list' => [['items' => [], 'deletedIds' => 'q-1'], 'deletedIds'],
+            'deletedIds not a list' => [['items' => [], 'deletedIds' => 'q-1'], 'deleted ids'],
             'deleted id not a string' => [['items' => [], 'deletedIds' => [7]], 'deletedIds.0'],
             'deleted id too long' => [['items' => [], 'deletedIds' => [str_repeat('a', 192)]], 'deletedIds.0'],
         ];
     }
 
     /**
-     * @dataProvider malformedBodies
-     *
      * @param  array<string, mixed>  $body
      */
+    #[DataProvider('malformedBodies')]
     public function test_a_malformed_body_is_refused(array $body, string $field): void
     {
-        $this->withHeaders($this->bearerHeadersFor($this->athlete))
-            ->postJson('/api/sync/queue/sync', $body)
-            ->assertUnprocessable()
-            ->assertJsonValidationErrors($field);
+        $this->assertRefused(
+            $this->withHeaders($this->bearerHeadersFor($this->athlete))->postJson('/api/sync/queue/sync', $body),
+            $field,
+        );
 
         $this->assertSame(0, AthleteQueueItem::query()->count());
     }
