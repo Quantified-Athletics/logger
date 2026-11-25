@@ -5,6 +5,7 @@ namespace App\Sync\Requests;
 use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Carbon;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class SyncAthleteQueueRequest extends FormRequest
@@ -21,8 +22,22 @@ class SyncAthleteQueueRequest extends FormRequest
         return true;
     }
 
+    /**
+     * A body that can't be read parses as no input at all, which would pass as an empty push, so it is
+     * refused here.
+     */
     protected function prepareForValidation(): void
     {
+        $body = json_decode($this->getContent());
+
+        if (! $this->isJson() || ! is_object($body)) {
+            throw ValidationException::withMessages(['body' => 'The body must be a JSON object.']);
+        }
+
+        if (isset($body->items) && ! is_array($body->items)) {
+            throw ValidationException::withMessages(['items' => 'The items field must be a list.']);
+        }
+
         foreach (['items', 'deletedIds'] as $key) {
             if ($this->input($key) === null) {
                 $this->merge([$key => []]);
@@ -40,11 +55,24 @@ class SyncAthleteQueueRequest extends FormRequest
         return [
             'items' => ['present', 'array', 'list', 'max:'.self::MAX_ITEMS],
             'items.*' => ['array'],
-            'items.*.id' => ['exclude_if:items.*.source,coach', 'required', 'string', 'max:'.self::MAX_ID_LENGTH, 'distinct'],
+            'items.*.id' => ['exclude_if:items.*.source,coach', 'required', 'string', 'max:'.self::MAX_ID_LENGTH, $this->uniqueAmongStoredItems(...)],
             'items.*.updatedAt' => ['exclude_if:items.*.source,coach', 'required', 'string', $this->isoDateTime(...)],
             'deletedIds' => ['present', 'array', 'list'],
             'deletedIds.*' => ['string', 'max:'.self::MAX_ID_LENGTH],
         ];
+    }
+
+    /** Laravel's `distinct` also counts coach items, and compares "1" and "01" as equal. */
+    private function uniqueAmongStoredItems(string $attribute, mixed $value, Closure $fail): void
+    {
+        $matches = array_filter(
+            $this->input('items'),
+            fn (mixed $item): bool => is_array($item) && ($item['source'] ?? null) !== 'coach' && ($item['id'] ?? null) === $value,
+        );
+
+        if (count($matches) > 1) {
+            $fail('The :attribute field has a duplicate value.');
+        }
     }
 
     private function isoDateTime(string $attribute, mixed $value, Closure $fail): void
@@ -84,7 +112,7 @@ class SyncAthleteQueueRequest extends FormRequest
      */
     public function queueItems(): array
     {
-        $rawItems = $this->rawItems();
+        $rawItems = json_decode($this->getContent())->items ?? [];
         $queueItems = [];
 
         foreach ($this->input('items', []) as $index => $item) {
@@ -93,7 +121,7 @@ class SyncAthleteQueueRequest extends FormRequest
                 'updatedAt' => (string) ($item['updatedAt'] ?? ''),
                 'source' => $item['source'] ?? null,
                 'json' => json_encode(
-                    $rawItems[$index] ?? $item,
+                    $rawItems[$index],
                     JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRESERVE_ZERO_FRACTION | JSON_THROW_ON_ERROR,
                 ),
             ];
@@ -108,19 +136,5 @@ class SyncAthleteQueueRequest extends FormRequest
     public function deletedIds(): array
     {
         return array_values(array_map('strval', $this->input('deletedIds', [])));
-    }
-
-    /**
-     * @return array<int, mixed>
-     */
-    private function rawItems(): array
-    {
-        $body = json_decode($this->getContent(), false);
-
-        if (! is_object($body) || ! isset($body->items) || ! is_array($body->items)) {
-            return [];
-        }
-
-        return $body->items;
     }
 }

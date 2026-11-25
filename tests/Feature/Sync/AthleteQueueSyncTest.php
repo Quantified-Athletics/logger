@@ -380,6 +380,55 @@ class AthleteQueueSyncTest extends TestCase
         $this->assertSame(0, AthleteQueueItem::query()->count());
     }
 
+    /**
+     * @return array<string, array{0: string}>
+     */
+    public static function unreadableBodies(): array
+    {
+        return [
+            'truncated JSON' => ['{"items":[{"id":"q-1",'],
+            'not JSON' => ['garbage'],
+            'empty' => [''],
+            'a JSON string' => ['"q-1"'],
+            'a JSON list' => ['[{"id":"q-1"}]'],
+        ];
+    }
+
+    #[DataProvider('unreadableBodies')]
+    public function test_a_body_that_is_not_a_json_object_is_refused(string $body): void
+    {
+        $this->assertRefused($this->pushRaw($body), 'body');
+    }
+
+    public function test_items_sent_as_an_object_with_numeric_keys_are_refused(): void
+    {
+        $this->assertRefused(
+            $this->pushRaw('{"items":{"0":{"id":"q-1","updatedAt":"2026-11-24T10:00:00.000Z"}},"deletedIds":[]}'),
+            'items',
+        );
+        $this->assertSame(0, AthleteQueueItem::query()->count());
+    }
+
+    public function test_a_coach_item_sharing_an_id_does_not_fail_the_push(): void
+    {
+        $coach = $this->item('q-1', '2026-11-24T11:00:00.000Z', 'Coach', 'coach');
+        $mine = $this->item('q-1', '2026-11-24T10:00:00.000Z', 'Mine');
+
+        $this->push([$coach, $mine, $coach])
+            ->assertOk()
+            ->assertExactJson(['ok' => true, 'stored' => 1, 'skipped_coach' => 2]);
+
+        $this->assertSame('Mine', json_decode($this->stored('q-1')->item, true)['meta']['title']);
+    }
+
+    public function test_ids_that_only_look_like_equal_numbers_are_different_items(): void
+    {
+        $this->push(array_map(
+            fn (string $id): array => $this->item($id, '2026-11-24T10:00:00.000Z'),
+            ['1', '01', '100', '1e2'],
+        ))->assertOk()->assertJsonPath('stored', 4);
+    }
+
     public function test_missing_keys_count_as_empty_lists(): void
     {
         $this->withHeaders($this->bearerHeadersFor($this->athlete))

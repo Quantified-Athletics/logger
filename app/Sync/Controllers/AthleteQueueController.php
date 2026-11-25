@@ -4,8 +4,8 @@ namespace App\Sync\Controllers;
 
 use App\Sync\Actions\DeleteAthleteQueueItemAction;
 use App\Sync\Actions\SyncAthleteQueueAction;
-use App\Sync\Services\AthleteQueueStateService;
 use App\Sync\Requests\SyncAthleteQueueRequest;
+use App\Sync\Services\AthleteQueueStateService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
