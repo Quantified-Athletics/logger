@@ -211,6 +211,9 @@ Do not print it prematurely. Do not print it if any milestone has not passed.
 - **A header a browser client sends or reads goes in `config/cors.php`.** The web apps call the sync API from
   other origins: a new request header (such as `If-None-Match`) belongs in `allowed_headers`, and a response
   header the script reads (such as `ETag`) in `exposed_headers`. A feature test passes without either.
+- **A sync write that accepts empty input must refuse an unreadable body.** Laravel parses broken or non-JSON
+  content as no input, so a Form Request that defaults missing lists to `[]` answers `200` and the client
+  believes its data was saved. Check the raw body, and test it with a truncated one.
 - **Domain folders for isolated features.** New feature modules that don't belong in the existing web UI flow get their own `app/X/` directory (controllers, actions, services, models, middleware, commands). Sync code lives in `app/Sync/`; its routes live in `routes/sync.php`. Don't scatter new feature code across `app/Http/Controllers/`, `app/Services/`, etc. unless it's genuinely shared.
 - **Existing web UI behavior is sacred.** Changes to shared models (`LiftLog`, `LiftSet`, `User`, `Exercise`) must not break existing views, controllers, or tests. If you touch a shared model, run the full suite.
 - **Dispatch events, don't inline side effects.** Downstream consequences (PR detection, notifications) are dispatched as events, not inlined into a controller or action. PR detection piggybacks on `LiftLogCompleted`.

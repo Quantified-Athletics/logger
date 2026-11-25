@@ -1,6 +1,7 @@
 <?php
 
 use App\Sync\Controllers\AthletePublicationFeedController;
+use App\Sync\Controllers\AthleteQueueController;
 use App\Sync\Controllers\AuthController;
 use App\Sync\Controllers\BlueprintController;
 use App\Sync\Controllers\ChangesController;
@@ -44,6 +45,9 @@ Route::middleware(['auth:sanctum', EnsureFullAccessToken::class, 'throttle:sync-
     Route::get('/me', [WhoAmIController::class, 'show']);
     Route::get('/coach-programs', [CoachProgramController::class, 'index']);
     Route::post('/exercises', [\App\Sync\Controllers\ExerciseController::class, 'store']);
+    Route::post('/queue/sync', [AthleteQueueController::class, 'sync']);
+    Route::get('/queue/changes', [AthleteQueueController::class, 'changes']);
+    Route::delete('/queue/{id}', [AthleteQueueController::class, 'destroy']);
 });
 
 Route::middleware(['auth:sanctum', EnsureFullAccessToken::class, 'throttle:sync-batch', 'device-id', 'log-sync-request'])->group(function () {
