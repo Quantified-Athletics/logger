@@ -238,6 +238,24 @@ class CoachProgramsReadTest extends TestCase
         $this->assertSame($etag, $response->headers->get('ETag'));
     }
 
+    public function test_a_browser_preflight_may_send_if_none_match(): void
+    {
+        $response = $this->call('OPTIONS', '/api/sync/coach-programs', server: [
+            'HTTP_ORIGIN' => 'http://localhost:5173',
+            'HTTP_ACCESS_CONTROL_REQUEST_METHOD' => 'GET',
+            'HTTP_ACCESS_CONTROL_REQUEST_HEADERS' => 'authorization,if-none-match,x-device-id',
+        ]);
+
+        $this->assertStringContainsStringIgnoringCase('If-None-Match', (string) $response->headers->get('Access-Control-Allow-Headers'));
+    }
+
+    public function test_a_browser_may_read_the_etag(): void
+    {
+        $response = $this->read($this->athlete, ['Origin' => 'http://localhost:5173']);
+
+        $this->assertStringContainsStringIgnoringCase('ETag', (string) $response->headers->get('Access-Control-Expose-Headers'));
+    }
+
     public function test_a_stale_if_none_match_gets_the_full_list(): void
     {
         $this->publish($this->athlete, 'prog-1');
