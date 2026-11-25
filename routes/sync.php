@@ -4,6 +4,7 @@ use App\Sync\Controllers\AthletePublicationFeedController;
 use App\Sync\Controllers\AuthController;
 use App\Sync\Controllers\BlueprintController;
 use App\Sync\Controllers\ChangesController;
+use App\Sync\Controllers\CoachProgramController;
 use App\Sync\Controllers\LogController;
 use App\Sync\Controllers\PreferencesController;
 use App\Sync\Controllers\PrismAthletePublicationController;
@@ -41,6 +42,7 @@ Route::middleware(['auth:sanctum', EnsureFullAccessToken::class, 'throttle:sync-
     Route::get('/restore', [RestoreController::class, 'index']);
     Route::get('/changes', [ChangesController::class, 'index']);
     Route::get('/me', [WhoAmIController::class, 'show']);
+    Route::get('/coach-programs', [CoachProgramController::class, 'index']);
     Route::post('/exercises', [\App\Sync\Controllers\ExerciseController::class, 'store']);
 });
 

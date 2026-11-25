@@ -272,8 +272,11 @@ class CoachProgramsReadTest extends TestCase
         $this->publish($this->athlete, 'prog-1', 'Spring Block v3', '2026-11-30', '2026-11-22 10:00:00');
         $etags[] = $this->read($this->athlete)->headers->get('ETag');
 
-        $this->assertCount(5, array_unique($etags), 'every change gives a new ETag: '.implode(', ', $etags));
         $this->assertNotContains(null, $etags);
+        for ($change = 1; $change < count($etags); $change++) {
+            $this->assertNotSame($etags[$change - 1], $etags[$change], "change {$change} left the ETag unchanged");
+        }
+        $this->assertSame($etags[0], $etags[3], 'nothing current after the revoke, as at the start');
     }
 
     public function test_an_old_etag_is_not_answered_with_304_after_a_revoke(): void
@@ -346,9 +349,11 @@ class CoachProgramsReadTest extends TestCase
     public function test_the_publications_read_token_is_refused(): void
     {
         $this->publish($this->coach, 'prog-1');
-        Sanctum::actingAs($this->coach, ['athlete-publications:read']);
+        $token = $this->coach->createToken('publications-read', ['athlete-publications:read'])->plainTextToken;
 
-        $this->withHeaders(['X-Device-Id' => 'dev-a'])->getJson('/api/sync/coach-programs')->assertStatus(403);
+        $this->withHeaders(['Authorization' => "Bearer {$token}", 'X-Device-Id' => 'dev-a'])
+            ->getJson('/api/sync/coach-programs')
+            ->assertStatus(403);
     }
 
     public function test_coach_programs_route_uses_the_athlete_sync_group(): void

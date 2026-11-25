@@ -4,9 +4,11 @@ namespace App\Sync\Models;
 
 use App\Models\User;
 use Database\Factories\Sync\PrismCoachPublicationFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
  * A Prism program snapshot a coach published to one athlete. Each publish is a new row; a
@@ -60,5 +62,30 @@ class PrismCoachPublication extends Model
     public function publishedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'published_by_user_id');
+    }
+
+    /**
+     * The recipient's current publication of each program: the latest by `published_at` (the higher
+     * id breaks a tie), kept only when it is not revoked. A revoked latest has no fallback.
+     *
+     * @param  Builder<PrismCoachPublication>  $query
+     */
+    public function scopeCurrentForRecipient(Builder $query, int $recipientUserId): void
+    {
+        $query->where('prism_coach_publications.recipient_user_id', $recipientUserId)
+            ->whereNull('prism_coach_publications.revoked_at')
+            ->whereNotExists(function (QueryBuilder $later): void {
+                $later->selectRaw('1')
+                    ->from('prism_coach_publications as later')
+                    ->whereColumn('later.recipient_user_id', 'prism_coach_publications.recipient_user_id')
+                    ->whereColumn('later.program_uuid', 'prism_coach_publications.program_uuid')
+                    ->where(function (QueryBuilder $newer): void {
+                        $newer->whereColumn('later.published_at', '>', 'prism_coach_publications.published_at')
+                            ->orWhere(function (QueryBuilder $tie): void {
+                                $tie->whereColumn('later.published_at', 'prism_coach_publications.published_at')
+                                    ->whereColumn('later.id', '>', 'prism_coach_publications.id');
+                            });
+                    });
+            });
     }
 }
