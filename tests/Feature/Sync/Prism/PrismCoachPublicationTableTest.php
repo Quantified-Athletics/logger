@@ -38,6 +38,14 @@ class PrismCoachPublicationTableTest extends TestCase
         $this->assertContains(['recipient_user_id', 'program_uuid', 'published_at'], $indexedColumns);
     }
 
+    /** MySQL refuses a longer identifier, and SQLite, which these tests run on, does not. */
+    public function test_index_names_fit_the_mysql_identifier_limit(): void
+    {
+        foreach (Schema::getIndexes('prism_coach_publications') as $index) {
+            $this->assertLessThanOrEqual(64, strlen($index['name']), "{$index['name']} is too long for MySQL");
+        }
+    }
+
     public function test_factory_stores_a_current_publication_with_its_relations(): void
     {
         $publication = PrismCoachPublication::factory()->create();

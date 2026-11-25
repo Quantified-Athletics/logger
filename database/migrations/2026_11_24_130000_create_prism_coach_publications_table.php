@@ -28,7 +28,7 @@ return new class extends Migration
             $table->timestamps(6);
 
             $table->foreign('gym_id')->references('id')->on('gyms')->cascadeOnDelete();
-            $table->index(['recipient_user_id', 'program_uuid', 'published_at']);
+            $table->index(['recipient_user_id', 'program_uuid', 'published_at'], 'prism_coach_publications_recipient_program_published_index');
         });
     }
 
