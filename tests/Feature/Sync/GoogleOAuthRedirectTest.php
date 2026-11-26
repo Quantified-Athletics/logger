@@ -214,6 +214,114 @@ class GoogleOAuthRedirectTest extends TestCase
         $response->assertRedirect();
     }
 
+    // ─── googleRedirect — built-in default allowlist ──────────────
+    //
+    // The tests above override the config, so none of them sees the built-in
+    // default. These read config/services.php with ATHLETE_ALLOWED_REDIRECT_HOSTS
+    // unset, so a box without that env line still serves every client host.
+
+    public function test_default_allowed_redirect_hosts_list_every_client_host(): void
+    {
+        $defaultHosts = $this->useDefaultAllowedRedirectHosts();
+
+        foreach (['squirby.app', 'flagship.squirby.ai', 'app.squirby.ai', 'prism.squirby.ai', 'localhost'] as $host) {
+            $this->assertContains($host, $defaultHosts);
+        }
+    }
+
+    public function test_google_redirect_honors_generic_athlete_origin_with_default_allowlist(): void
+    {
+        $this->useDefaultAllowedRedirectHosts();
+
+        Socialite::shouldReceive('driver')->with('google')->once()->andReturnSelf();
+        Socialite::shouldReceive('stateless')->once()->andReturnSelf();
+        Socialite::shouldReceive('redirectUrl')->once()->andReturnSelf();
+
+        Socialite::shouldReceive('with')
+            ->once()
+            ->withArgs(function ($args) {
+                $state = json_decode(base64_decode($args['state']), true);
+
+                return $state['athlete_url'] === 'https://app.squirby.ai';
+            })
+            ->andReturnSelf();
+
+        Socialite::shouldReceive('redirect')
+            ->once()
+            ->andReturn(redirect('https://accounts.google.com'));
+
+        $response = $this->get(
+            '/api/sync/auth/google/redirect?device_id=athlete-device&redirect_origin=' .
+            urlencode('https://app.squirby.ai')
+        );
+
+        $response->assertRedirect();
+    }
+
+    public function test_google_redirect_rejects_unlisted_origin_with_default_allowlist(): void
+    {
+        $this->useDefaultAllowedRedirectHosts();
+
+        Socialite::shouldReceive('driver')->with('google')->once()->andReturnSelf();
+        Socialite::shouldReceive('stateless')->once()->andReturnSelf();
+        Socialite::shouldReceive('redirectUrl')->once()->andReturnSelf();
+
+        Socialite::shouldReceive('with')
+            ->once()
+            ->withArgs(function ($args) {
+                $state = json_decode(base64_decode($args['state']), true);
+
+                return $state['athlete_url'] === config('services.athlete.url');
+            })
+            ->andReturnSelf();
+
+        Socialite::shouldReceive('redirect')
+            ->once()
+            ->andReturn(redirect('https://accounts.google.com'));
+
+        $response = $this->get(
+            '/api/sync/auth/google/redirect?device_id=test-device&redirect_origin=' .
+            urlencode('https://evil.example.com')
+        );
+
+        $response->assertRedirect();
+    }
+
+    /**
+     * Re-read the allowlist from config/services.php with the env override unset,
+     * apply it to the running config, and return it.
+     *
+     * @return list<string>
+     */
+    private function useDefaultAllowedRedirectHosts(): array
+    {
+        $envKey = 'ATHLETE_ALLOWED_REDIRECT_HOSTS';
+        $savedEnv = $_ENV[$envKey] ?? null;
+        $savedServer = $_SERVER[$envKey] ?? null;
+        $savedGetenv = getenv($envKey);
+
+        unset($_ENV[$envKey], $_SERVER[$envKey]);
+        putenv($envKey);
+
+        try {
+            $defaultHosts = (require config_path('services.php'))['athlete']['allowed_redirect_hosts'];
+        } finally {
+            if ($savedEnv !== null) {
+                $_ENV[$envKey] = $savedEnv;
+            }
+            if ($savedServer !== null) {
+                $_SERVER[$envKey] = $savedServer;
+            }
+            if ($savedGetenv !== false) {
+                putenv($envKey . '=' . $savedGetenv);
+            }
+        }
+
+        config(['services.athlete.allowed_redirect_hosts' => $defaultHosts]);
+
+        return $defaultHosts;
+    }
+
     // ─── googleCallback — success ─────────────────────────────────
 
     public function test_google_callback_creates_user_and_redirects_with_token(): void
