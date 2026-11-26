@@ -37,8 +37,11 @@ class MenuBadgeCountTest extends TestCase
         $stranger = User::factory()->create();
 
         $todayA = $this->createPr($this->followedUser, $feedExercise, now()->subHours(1));
+        $todayB = $this->createPr($this->followedUser, $feedExercise, now()->subHours(1));
         $this->createPr($this->followedUser, $feedExercise, now()->subHours(1));
         $this->createPr($this->followedUser, $feedExercise, now()->subDays(2));
+        $superseded = $this->createPr($this->followedUser, $feedExercise, now()->subDays(4));
+        $todayB->update(['previous_pr_id' => $superseded->id]);
         $this->createPr($this->user, $feedExercise, now()->subDays(3));
         $readGroup = $this->createPr($this->user, $feedExercise, now()->subDays(5));
         $this->createPr($this->followedUser, $feedExercise, now()->subDays(10));
