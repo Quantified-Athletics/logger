@@ -2,11 +2,26 @@
 
 namespace App\Services;
 
+use App\Services\MenuBadges\FeedBadgeCounter;
+use App\Services\MenuBadges\MenuBadgeCounter;
+use App\Services\MenuBadges\UnreadNotificationsBadgeCounter;
+use App\Services\MenuBadges\UnreadPrFeedBadgeCounter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 class MenuService
 {
+    /**
+     * Menu badge keys used in config/menu.php, mapped to the counter that computes each.
+     *
+     * @var array<string, class-string<MenuBadgeCounter>>
+     */
+    private const BADGE_COUNTERS = [
+        'feed' => FeedBadgeCounter::class,
+        'unread-pr-feed' => UnreadPrFeedBadgeCounter::class,
+        'unread-notifications' => UnreadNotificationsBadgeCounter::class,
+    ];
+
     /**
      * Processes an array of menu items, setting active states and handling roles.
      *
@@ -55,9 +70,9 @@ class MenuService
                 $item['active'] = false;
             }
 
-            // Calculate badge count if badge callback is defined
-            if (isset($item['badge']) && is_callable($item['badge'])) {
-                $item['badgeCount'] = $item['badge']();
+            // Calculate badge count if the badge key names a known counter
+            if (isset($item['badge']) && is_string($item['badge']) && isset(self::BADGE_COUNTERS[$item['badge']])) {
+                $item['badgeCount'] = app(self::BADGE_COUNTERS[$item['badge']])->count();
             }
 
             // Recursively process children

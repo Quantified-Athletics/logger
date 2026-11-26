@@ -12,52 +12,7 @@ return [
                 'feed.*',
                 'notifications.*',
             ],
-            'badge' => function() {
-                $currentUser = auth()->user();
-                if (!$currentUser) {
-                    return 0;
-                }
-                
-                // Get IDs of users that current user is following, plus current user
-                $followingIds = $currentUser->following()->pluck('users.id')->toArray();
-                $followingIds[] = $currentUser->id;
-                
-                // Get PRs from the last 7 days
-                $prs = \App\Models\PersonalRecord::current()
-                    ->where('achieved_at', '>=', now()->subDays(7))
-                    ->whereIn('user_id', $followingIds)
-                    ->whereHas('exercise', function ($query) {
-                        $query->where('show_in_feed', true);
-                    })
-                    ->get();
-                
-                // Get IDs of PRs that the current user has already read
-                $readPRIds = $currentUser->readPersonalRecords()->pluck('personal_records.id')->toArray();
-                
-                // Count user-date groups that have at least one unread PR
-                $newPRCount = 0;
-                $seenGroups = [];
-                
-                foreach ($prs as $pr) {
-                    $groupKey = $pr->user_id . '_' . $pr->achieved_at->format('Y-m-d');
-                    
-                    if (isset($seenGroups[$groupKey])) {
-                        continue; // Already counted this group
-                    }
-                    
-                    // Check if this PR is unread
-                    if (!in_array($pr->id, $readPRIds)) {
-                        $newPRCount++;
-                        $seenGroups[$groupKey] = true;
-                    }
-                }
-                
-                // Get unread notifications count
-                $unreadNotifications = $currentUser->notifications()->unread()->count();
-                
-                // Return sum of both
-                return $newPRCount + $unreadNotifications;
-            },
+            'badge' => 'feed',
             'children' => [
                 [
                     'label' => 'PRs',
@@ -65,48 +20,7 @@ return [
                     'route' => 'feed.index',
                     'title' => 'PR Feed',
                     'patterns' => ['feed.index'],
-                    'badge' => function() {
-                        $currentUser = auth()->user();
-                        if (!$currentUser) {
-                            return 0;
-                        }
-                        
-                        // Get IDs of users that current user is following, plus current user
-                        $followingIds = $currentUser->following()->pluck('users.id')->toArray();
-                        $followingIds[] = $currentUser->id;
-                        
-                        // Get PRs from the last 7 days
-                        $prs = \App\Models\PersonalRecord::current()
-                            ->where('achieved_at', '>=', now()->subDays(7))
-                            ->whereIn('user_id', $followingIds)
-                            ->whereHas('exercise', function ($query) {
-                                $query->where('show_in_feed', true);
-                            })
-                            ->get();
-                        
-                        // Get IDs of PRs that the current user has already read
-                        $readPRIds = $currentUser->readPersonalRecords()->pluck('personal_records.id')->toArray();
-                        
-                        // Count user-date groups that have at least one unread PR
-                        $newPRCount = 0;
-                        $seenGroups = [];
-                        
-                        foreach ($prs as $pr) {
-                            $groupKey = $pr->user_id . '_' . $pr->achieved_at->format('Y-m-d');
-                            
-                            if (isset($seenGroups[$groupKey])) {
-                                continue;
-                            }
-                            
-                            // Check if this PR is unread
-                            if (!in_array($pr->id, $readPRIds)) {
-                                $newPRCount++;
-                                $seenGroups[$groupKey] = true;
-                            }
-                        }
-                        
-                        return $newPRCount;
-                    },
+                    'badge' => 'unread-pr-feed',
                 ],
                 [
                     'label' => 'Notifications',
@@ -114,14 +28,7 @@ return [
                     'route' => 'notifications.index',
                     'title' => 'Notifications',
                     'patterns' => ['notifications.*'],
-                    'badge' => function() {
-                        $currentUser = auth()->user();
-                        if (!$currentUser) {
-                            return 0;
-                        }
-                        
-                        return $currentUser->notifications()->unread()->count();
-                    },
+                    'badge' => 'unread-notifications',
                 ],
                 [
                     'label' => 'Friends',
