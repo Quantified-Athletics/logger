@@ -57,6 +57,10 @@ return [
         'client_id' => env('APPLE_CLIENT_ID'),
     ],
 
+    'gemini' => [
+        'api_key' => env('GEMINI_API_KEY'),
+    ],
+
     'athlete' => [
         'url' => env('ATHLETE_APP_URL', 'https://flagship.squirby.ai'),
 
