@@ -97,10 +97,10 @@ class AnalyzeRecentWorkouts extends Command
             return 0;
         }
 
-        $apiKey = env('GEMINI_API_KEY');
+        $apiKey = config('services.gemini.api_key');
 
         if (!$apiKey) {
-            $this->error('GEMINI_API_KEY not set in .env file.');
+            $this->error('Gemini API key is not configured. Set the GEMINI_API_KEY environment variable.');
             return 1;
         }
 

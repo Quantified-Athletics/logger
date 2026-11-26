@@ -220,10 +220,10 @@ class GenerateExerciseIntelligence extends Command
 
     public function handle()
     {
-        $apiKey = $this->option('api-key') ?: env('GEMINI_API_KEY');
+        $apiKey = $this->option('api-key') ?: config('services.gemini.api_key');
         
         if (!$apiKey) {
-            $this->error('Gemini API key is required. Set GEMINI_API_KEY in .env or use --api-key option.');
+            $this->error('Gemini API key is required. Set the GEMINI_API_KEY environment variable or pass the --api-key option.');
             $this->comment('Get your free API key at: https://aistudio.google.com/app/apikey');
             return Command::FAILURE;
         }
