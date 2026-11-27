@@ -43,7 +43,7 @@ class StoreSyncLogAction
         );
 
         // Enforce group_rule on sets
-        $this->setGroupRuleValidator->validateSets($exercise->exercise_type, $validated['sets'] ?? []);
+        $this->setGroupRuleValidator->validateSets($exercise->strategyTypeName(), $validated['sets'] ?? []);
 
         // Parse logged_at date at 12:00:00
         $loggedAt = Carbon::parse($validated['date'])->setTime(12, 0, 0);

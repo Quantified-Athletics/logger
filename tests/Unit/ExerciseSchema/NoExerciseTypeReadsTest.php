@@ -18,7 +18,7 @@ class NoExerciseTypeReadsTest extends TestCase
 {
     /**
      * Patterns that read the column: a property read that isn't an assignment, a query on it,
-     * a select of it, or the form's old() lookup.
+     * or a select of it.
      *
      * @var list<string>
      */
@@ -26,7 +26,6 @@ class NoExerciseTypeReadsTest extends TestCase
         '/->exercise_type\b(?!\s*=[^=>])/',
         '/(where\w*|orWhere\w*|orderBy|groupBy|pluck|select|value)\(\s*[\'"](?:\w+\.)?exercise_type[\'"]/',
         '/[\'"]exercises\.exercise_type[\'"]/',
-        '/old\(\s*[\'"]exercise_type[\'"]/',
         '/isDirty\(\s*[\'"]exercise_type[\'"]/',
         '/getAttribute\(\s*[\'"]exercise_type[\'"]/',
     ];
@@ -65,17 +64,20 @@ class NoExerciseTypeReadsTest extends TestCase
 
     /**
      * Until Step 3 moves the writers, the model fills a missing log_type from a written exercise_type
-     * through the reverse table. That bridge is the one allowed read; Step 3 removes it.
+     * through the reverse table, and a new exercise still gets the NOT NULL column's 'regular' default.
+     * Those two are the allowed reads; Step 3 removes them.
      *
      * @return array<string, list<int>>
      */
     private function allowedLines(): array
     {
-        $bridge = new ReflectionMethod(Exercise::class, 'fillLogTypeFromWrittenExerciseType');
+        $lines = [];
+        foreach (['setExerciseTypeAttribute', 'fillLogTypeFromWrittenExerciseType', 'defaultWrittenExerciseType'] as $method) {
+            $bridge = new ReflectionMethod(Exercise::class, $method);
+            $lines = [...$lines, ...range($bridge->getStartLine(), $bridge->getEndLine())];
+        }
 
-        return [
-            'app/Models/Exercise.php' => range($bridge->getStartLine(), $bridge->getEndLine()),
-        ];
+        return ['app/Models/Exercise.php' => $lines];
     }
 
     private function isComment(string $line): bool

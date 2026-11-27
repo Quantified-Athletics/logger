@@ -109,9 +109,9 @@ class ImportJsonLiftLogBandTypeTest extends TestCase
             $exercise = Exercise::where('canonical_name', 'assisted_pull_up')->first();
             $this->assertNotNull($exercise);
             $this->assertEquals('banded_assistance', $exercise->exercise_type);
+            $this->assertEquals('banded', $exercise->log_type);
             $this->assertEquals($user->id, $exercise->user_id);
-            $this->assertTrue($exercise->isBandedAssistance());
-            $this->assertFalse($exercise->isBandedResistance());
+            $this->assertTrue($exercise->isBandedResistance());
             
         } finally {
             unlink($tempFile);
@@ -277,7 +277,8 @@ class ImportJsonLiftLogBandTypeTest extends TestCase
             $assistanceExercise = Exercise::where('canonical_name', 'assistance_band_exercise')->first();
             $this->assertNotNull($assistanceExercise);
             $this->assertEquals('banded_assistance', $assistanceExercise->exercise_type);
-            $this->assertTrue($assistanceExercise->isBandedAssistance());
+            $this->assertEquals('banded', $assistanceExercise->log_type);
+            $this->assertTrue($assistanceExercise->isBandedResistance());
             
             // Verify no band exercise
             $noBandExercise = Exercise::where('canonical_name', 'no_band_exercise')->first();

@@ -47,7 +47,7 @@ class ExerciseFormService
             'exercise_type',
             'Exercise Type',
             $exerciseTypes,
-            old('exercise_type', $exercise->exercise_type ?? '')
+            old('exercise_type', $exercise->exists ? $exercise->strategyTypeName() : '')
         );
         
         // Show in feed checkbox

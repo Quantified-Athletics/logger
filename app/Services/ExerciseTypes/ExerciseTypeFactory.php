@@ -123,7 +123,7 @@ class ExerciseTypeFactory
             // Log the error for debugging
             \Log::warning('Failed to create exercise type strategy', [
                 'exercise_id' => $exercise->id,
-                'exercise_type' => self::determineExerciseType($exercise),
+                'log_type' => $exercise->log_type,
                 'error' => $e->getMessage(),
             ]);
             
@@ -173,27 +173,19 @@ class ExerciseTypeFactory
     }
     
     /**
-     * Determine the exercise type based on exercise properties
-     * Uses the exercise_type field directly
+     * Determine the strategy type name from the exercise's log type, through the log type table
      */
     private static function determineExerciseType(Exercise $exercise): string
     {
-        // Use exercise_type field directly - all exercises should have this set
-        if (!empty($exercise->exercise_type)) {
-            return $exercise->exercise_type;
-        }
-        
-        // Default fallback for any edge cases
-        return 'regular';
+        return LogTypeTable::strategyOrFallbackFor($exercise->log_type);
     }
     
     /**
      * Generate a cache key for the exercise
-     * Simplified to use only exercise_type
      */
     private static function generateKey(Exercise $exercise): string
     {
-        return sprintf('exercise_%d_%s', $exercise->id, $exercise->exercise_type);
+        return sprintf('exercise_%d_%s', $exercise->id, $exercise->log_type);
     }
     
     /**

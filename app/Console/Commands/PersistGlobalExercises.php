@@ -28,7 +28,7 @@ class PersistGlobalExercises extends Command
     private function collectGlobalExercises()
     {
         $globalExercises = Exercise::whereNull('user_id')
-            ->select('title', 'description', 'canonical_name', 'exercise_type')
+            ->select('title', 'description', 'canonical_name', 'log_type')
             ->get();
         
         // Filter out exercises without canonical_name and warn about them
@@ -153,7 +153,7 @@ class PersistGlobalExercises extends Command
         }
         
         // Compare exercise_type
-        $dbExerciseType = $dbExercise->exercise_type ?? 'regular';
+        $dbExerciseType = $dbExercise->strategyTypeName();
         $csvExerciseType = $csvData['exercise_type'] ?? 'regular';
         if ($dbExerciseType !== $csvExerciseType) {
             $differences['exercise_type'] = [
@@ -268,8 +268,8 @@ class PersistGlobalExercises extends Command
                 if ($exercise->description) {
                     $details[] = "description: '{$exercise->description}'";
                 }
-                if ($exercise->exercise_type && $exercise->exercise_type !== 'regular') {
-                    $details[] = "exercise_type: '{$exercise->exercise_type}'";
+                if ($exercise->strategyTypeName() !== 'regular') {
+                    $details[] = "exercise_type: '{$exercise->strategyTypeName()}'";
                 }
                 
                 if (!empty($details)) {
@@ -337,7 +337,7 @@ class PersistGlobalExercises extends Command
             'title' => $exercise->title ?? '',
             'description' => $exercise->description ?? '',
             'canonical_name' => $exercise->canonical_name ?? '',
-            'exercise_type' => $exercise->exercise_type ?? 'regular'
+            'exercise_type' => $exercise->strategyTypeName()
         ];
     }
     

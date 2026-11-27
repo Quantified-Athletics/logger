@@ -305,11 +305,12 @@ class ExerciseTest extends TestCase
     }
 
     /** @test */
-    public function is_banded_assistance_returns_true_for_assistance_band_type()
+    public function an_exercise_written_as_banded_assistance_is_banded_resistance()
     {
         $exercise = Exercise::factory()->create(['exercise_type' => 'banded_assistance']);
-        $this->assertTrue($exercise->isBandedAssistance());
-        $this->assertFalse($exercise->isBandedResistance());
+        $this->assertSame('banded', $exercise->log_type);
+        $this->assertFalse($exercise->isBandedAssistance());
+        $this->assertTrue($exercise->isBandedResistance());
     }
 
     /** @test */
@@ -687,7 +688,7 @@ class ExerciseTest extends TestCase
     }
 
     /** @test */
-    public function is_compatible_for_merge_returns_false_when_band_types_differ()
+    public function is_compatible_for_merge_returns_false_when_banded_meets_bodyweight()
     {
         $user = \App\Models\User::factory()->create();
         $userExercise = Exercise::factory()->create([
@@ -696,7 +697,7 @@ class ExerciseTest extends TestCase
         ]);
         $globalExercise = Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'banded_assistance'
+            'exercise_type' => 'bodyweight'
         ]);
         
         $this->assertFalse($userExercise->isCompatibleForMerge($globalExercise));

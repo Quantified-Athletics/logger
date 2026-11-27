@@ -388,7 +388,7 @@ class ExerciseMergeService
                             'canonical_name' => $source->canonical_name,
                             'title' => $source->title,
                             'log_type' => $source->log_type,
-                            'exercise_type' => $source->exercise_type,
+                            'exercise_type' => $source->strategyTypeName(),
                         ],
                         'target_original' => [
                             'id' => $target->id,

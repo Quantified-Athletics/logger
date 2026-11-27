@@ -4,6 +4,7 @@ namespace App\Services\PR;
 
 use App\Models\LiftLog;
 use App\Models\PersonalRecord;
+use App\Services\ExerciseTypes\LogTypeTable;
 
 // Reason ("why not") records are shaped exclusively by PrReasons so the detect loop below
 // stays a clean, line-for-line analogue of the Athlete engine's PR-detection loop.
@@ -141,6 +142,15 @@ final class PrEngine
         }
 
         return $map['regular'] ?? 'weightlifting';
+    }
+
+    /**
+     * Resolve the PR family for an exercise's log type: the log type itself first, then the strategy
+     * the log type table gives it (for example 'bodyweight-reps' resolves through 'bodyweight').
+     */
+    public function resolveFamilyForLogType(?string $logType): ?string
+    {
+        return $this->resolveFamily($logType, LogTypeTable::strategyFor($logType));
     }
 
     private function extractSets(mixed $log): array

@@ -172,12 +172,12 @@ class PersistGlobalExercisesCsvParsingTest extends TestCase
         $command = $this->getCommand();
         
         // Test with all fields populated
-        $exercise = (object) [
+        $exercise = new \App\Models\Exercise([
             'title' => 'Test Exercise',
             'description' => 'Test description',
             'canonical_name' => 'test_exercise',
             'exercise_type' => 'banded_resistance'
-        ];
+        ]);
         
         $result = $this->callPrivateMethod($command, 'prepareExerciseForCsv', [$exercise]);
         
@@ -194,12 +194,12 @@ class PersistGlobalExercisesCsvParsingTest extends TestCase
         $command = $this->getCommand();
         
         // Test with null values
-        $exercise = (object) [
+        $exercise = new \App\Models\Exercise([
             'title' => 'Test Exercise',
             'description' => null,
             'canonical_name' => 'test_exercise',
             'exercise_type' => 'regular'
-        ];
+        ]);
         
         $result = $this->callPrivateMethod($command, 'prepareExerciseForCsv', [$exercise]);
         

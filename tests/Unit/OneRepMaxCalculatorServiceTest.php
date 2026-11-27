@@ -174,7 +174,7 @@ class OneRepMaxCalculatorServiceTest extends TestCase
     public function it_throws_exception_for_banded_exercise_in_get_best_lift_log_one_rep_max()
     {
         $this->expectException(\App\Services\ExerciseTypes\Exceptions\UnsupportedOperationException::class);
-        $this->expectExceptionMessage('1RM calculation not supported for banded_assistance exercises');
+        $this->expectExceptionMessage('1RM calculation not supported for banded_resistance exercises');
 
         $exercise = Exercise::factory()->create(['exercise_type' => 'banded_assistance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);

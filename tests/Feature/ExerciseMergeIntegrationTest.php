@@ -380,7 +380,7 @@ class ExerciseMergeIntegrationTest extends TestCase
     {
         $this->actingAs($this->admin);
 
-        // Test resistance source with assistance target (should be incompatible)
+        // Banded source with a bodyweight target (should be incompatible)
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
             'exercise_type' => 'banded_resistance'
@@ -388,7 +388,7 @@ class ExerciseMergeIntegrationTest extends TestCase
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'banded_assistance'
+            'exercise_type' => 'bodyweight'
         ]);
 
         $response = $this->post(route('exercises.merge', $sourceExercise), [

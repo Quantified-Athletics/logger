@@ -214,7 +214,7 @@ class CreateLiftLogAction
         
         // For static holds, pass time parameter (reps is always 1, time contains duration)
         // For other exercises, time will be null
-        $time = $exercise->exercise_type === 'static_hold' ? $reps : null;
+        $time = $exercise->isStaticHold() ? $reps : null;
         $workoutDescription = $strategy->formatSuccessMessageDescription($weight, $reps, $rounds, $bandColor, $time);
         
         // Get celebratory messages from config and replace placeholders

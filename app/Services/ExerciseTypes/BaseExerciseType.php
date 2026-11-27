@@ -309,7 +309,7 @@ abstract class BaseExerciseType implements ExerciseTypeInterface
         
         // Create a mock exercise to avoid null pointer errors
         $mockExercise = new \App\Models\Exercise();
-        $mockExercise->exercise_type = $this->getTypeName();
+        $mockExercise->log_type = LogTypeTable::logTypeForExerciseType($this->getTypeName());
         $mockLiftLog->setRelation('exercise', $mockExercise);
         
         $mockLiftLog->setRelation('liftSets', collect([

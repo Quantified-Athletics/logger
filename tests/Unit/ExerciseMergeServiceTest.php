@@ -101,10 +101,10 @@ class ExerciseMergeServiceTest extends TestCase
             'exercise_type' => 'banded_resistance',
         ]);
 
-        // Create incompatible global exercise (different band type)
+        // Create incompatible global exercise (bodyweight)
         Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'banded_assistance',
+            'exercise_type' => 'bodyweight',
         ]);
 
         $targets = $this->service->getPotentialTargets($userExercise);
@@ -203,7 +203,7 @@ class ExerciseMergeServiceTest extends TestCase
         ]);
         $target = Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'banded_assistance',
+            'exercise_type' => 'bodyweight',
         ]);
 
         $result = $this->service->validateMergeCompatibility($source, $target);

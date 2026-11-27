@@ -227,7 +227,7 @@ class CreateDemoUser extends Command
             $config = $exerciseData['config'];
             
             // Determine how many logs to create for this exercise
-            $exerciseType = $exercise->exercise_type;
+            $exerciseType = $exercise->strategyTypeName();
             if ($exerciseType === 'regular') {
                 // Barbell exercises: at least 18 logs
                 $numLogs = rand(18, 22);

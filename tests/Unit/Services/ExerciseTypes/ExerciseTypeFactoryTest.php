@@ -54,7 +54,7 @@ class ExerciseTypeFactoryTest extends TestCase
     }
 
     /** @test */
-    public function it_creates_banded_assistance_exercise_type_for_assistance_band_exercise()
+    public function it_creates_banded_resistance_exercise_type_for_an_exercise_written_as_banded_assistance()
     {
         $exercise = Exercise::factory()->create([
             'exercise_type' => 'banded_assistance',
@@ -62,8 +62,9 @@ class ExerciseTypeFactoryTest extends TestCase
 
         $strategy = ExerciseTypeFactory::create($exercise);
 
-        $this->assertInstanceOf(BandedAssistanceExerciseType::class, $strategy);
-        $this->assertEquals('banded_assistance', $strategy->getTypeName());
+        $this->assertSame('banded', $exercise->log_type);
+        $this->assertInstanceOf(BandedResistanceExerciseType::class, $strategy);
+        $this->assertEquals('banded_resistance', $strategy->getTypeName());
     }
 
     /** @test */
@@ -373,14 +374,14 @@ class ExerciseTypeFactoryTest extends TestCase
     public function it_creates_correct_strategy_for_all_exercise_type_values()
     {
         $testCases = [
-            'regular' => RegularExerciseType::class,
-            'bodyweight' => BodyweightExerciseType::class,
-            'banded_resistance' => BandedResistanceExerciseType::class,
-            'banded_assistance' => BandedAssistanceExerciseType::class,
-            'cardio' => CardioExerciseType::class,
+            'regular' => [RegularExerciseType::class, 'regular'],
+            'bodyweight' => [BodyweightExerciseType::class, 'bodyweight'],
+            'banded_resistance' => [BandedResistanceExerciseType::class, 'banded_resistance'],
+            'banded_assistance' => [BandedResistanceExerciseType::class, 'banded_resistance'],
+            'cardio' => [CardioExerciseType::class, 'cardio'],
         ];
 
-        foreach ($testCases as $exerciseType => $expectedClass) {
+        foreach ($testCases as $exerciseType => [$expectedClass, $expectedTypeName]) {
             $exercise = Exercise::factory()->create([
                 'exercise_type' => $exerciseType,
             ]);
@@ -388,7 +389,7 @@ class ExerciseTypeFactoryTest extends TestCase
             $strategy = ExerciseTypeFactory::create($exercise);
 
             $this->assertInstanceOf($expectedClass, $strategy, "Failed for exercise_type: {$exerciseType}");
-            $this->assertEquals($exerciseType, $strategy->getTypeName(), "Type name mismatch for exercise_type: {$exerciseType}");
+            $this->assertEquals($expectedTypeName, $strategy->getTypeName(), "Type name mismatch for exercise_type: {$exerciseType}");
         }
     }
 
@@ -418,7 +419,7 @@ class ExerciseTypeFactoryTest extends TestCase
         // Verify correct types
         $this->assertInstanceOf(BandedResistanceExerciseType::class, $strategy1);
         $this->assertInstanceOf(BandedResistanceExerciseType::class, $strategy2);
-        $this->assertInstanceOf(BandedAssistanceExerciseType::class, $strategy3);
+        $this->assertInstanceOf(BandedResistanceExerciseType::class, $strategy3);
     }
 
     /** @test */
@@ -501,7 +502,7 @@ class ExerciseTypeFactoryTest extends TestCase
         ]);
 
         $assistanceStrategy = ExerciseTypeFactory::create($assistanceExercise);
-        $this->assertInstanceOf(BandedAssistanceExerciseType::class, $assistanceStrategy);
-        $this->assertEquals('banded_assistance', $assistanceStrategy->getTypeName());
+        $this->assertInstanceOf(BandedResistanceExerciseType::class, $assistanceStrategy);
+        $this->assertEquals('banded_resistance', $assistanceStrategy->getTypeName());
     }
 }

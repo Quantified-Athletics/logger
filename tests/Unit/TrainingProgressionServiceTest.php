@@ -155,7 +155,7 @@ class TrainingProgressionServiceTest extends TestCase
         $this->assertEquals('red', $suggestion->band_color);
     }
 
-    public function test_banded_exercise_progression_with_assistance_type_band_changes()
+    public function test_an_exercise_written_as_banded_assistance_progresses_as_banded_resistance()
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
@@ -177,8 +177,8 @@ class TrainingProgressionServiceTest extends TestCase
         $suggestion = $this->trainingProgressionService->getSuggestionDetails($user->id, $exercise->id);
 
         $this->assertNotNull($suggestion);
-        $this->assertEquals(8, $suggestion->reps); // Default reps on band change
-        $this->assertEquals('blue', $suggestion->band_color); // Next harder band (less assistance)
+        $this->assertEquals(16, $suggestion->reps); // Its log type is banded: resistance progression adds a rep
+        $this->assertEquals('green', $suggestion->band_color);
     }
 
     // Test fallbacks for non-banded exercises (existing logic)

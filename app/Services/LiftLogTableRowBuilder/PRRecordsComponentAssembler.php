@@ -104,7 +104,7 @@ class PRRecordsComponentAssembler
         }
         
         $prEngine = app(\App\Services\PR\PrEngine::class);
-        $family = $prEngine->resolveFamily($liftLog->exercise->log_type ?? null, $liftLog->exercise->exercise_type ?? null);
+        $family = $prEngine->resolveFamilyForLogType($liftLog->exercise->log_type ?? null);
         $descriptors = config("pr_families.families.{$family}", []);
         $descriptorMap = array_column($descriptors, null, 'type');
 
@@ -155,7 +155,7 @@ class PRRecordsComponentAssembler
         }
         
         $prEngine = app(\App\Services\PR\PrEngine::class);
-        $family = $prEngine->resolveFamily($liftLog->exercise->log_type ?? null, $liftLog->exercise->exercise_type ?? null);
+        $family = $prEngine->resolveFamilyForLogType($liftLog->exercise->log_type ?? null);
         $descriptors = config("pr_families.families.{$family}", []);
         $descriptorMap = array_column($descriptors, null, 'type');
 

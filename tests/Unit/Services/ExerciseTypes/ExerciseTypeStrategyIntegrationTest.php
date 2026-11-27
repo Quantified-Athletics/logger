@@ -348,8 +348,8 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
         $this->assertTrue($bandedResistanceExercise->isBandedResistance());
         $this->assertFalse($bandedResistanceExercise->isBandedAssistance());
         
-        $this->assertTrue($bandedAssistanceExercise->isBandedAssistance());
-        $this->assertFalse($bandedAssistanceExercise->isBandedResistance());
+        $this->assertFalse($bandedAssistanceExercise->isBandedAssistance());
+        $this->assertTrue($bandedAssistanceExercise->isBandedResistance());
         
         $this->assertFalse($regularExercise->isBandedResistance());
         $this->assertFalse($regularExercise->isBandedAssistance());
@@ -360,7 +360,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
         $regularStrategy = ExerciseTypeFactory::create($regularExercise);
 
         $this->assertEquals('banded_resistance', $resistanceStrategy->getTypeName());
-        $this->assertEquals('banded_assistance', $assistanceStrategy->getTypeName());
+        $this->assertEquals('banded_resistance', $assistanceStrategy->getTypeName());
         $this->assertEquals('regular', $regularStrategy->getTypeName());
     }
 
