@@ -17,7 +17,6 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UnitSeeder::class,
             GlobalExercisesSeeder::class,
-            ExerciseIntelligenceSeeder::class,
             UserSeeder::class,
             IngredientSeeder::class,
             DailyLogSeeder::class,

@@ -298,12 +298,12 @@ seeded once, by hand, with the targeted `GymSeeder`.
 
 ### Why you must NOT run `db:seed` generically on production
 
-`DatabaseSeeder` calls 13 seeders, and **only `GymSeeder` is idempotent** (`updateOrCreate`). The
+`DatabaseSeeder` calls 11 seeders, and **only `GymSeeder` is idempotent** (`updateOrCreate`). The
 rest use bare `create()` and are **local-dev fixtures**, not production data. Running the full
 `db:seed` against a populated DB would:
 
 - **Duplicate reference data** — `RoleSeeder`, `UnitSeeder`, the 26 hardcoded exercises in
-  `GlobalExercisesSeeder`, `ExerciseIntelligenceSeeder`, `IngredientSeeder`, `MealSeeder`,
+  `GlobalExercisesSeeder`, `IngredientSeeder`, `MealSeeder`,
   `ProgramSeeder`, and the CSV importers (`LiftLogSeeder`, `DailyLogSeeder`, `MeasurementSeeder`)
   all insert new rows on every run.
 - **Likely abort partway** — `UserSeeder` does `User::create('admin@example.com', …)` and
@@ -320,7 +320,7 @@ Seeder idempotency audit (as of 2026-10):
 | `GymSeeder` | ✅ `updateOrCreate` | Safe to re-run; the only prod-safe one. |
 | `GlobalExercisesSeeder` | ⚠️ partial | carry-splits use `firstOrCreate`; 26 hardcoded exercises use bare `create`. |
 | `MeasurementSeeder` | ⚠️ partial | type via `firstOrCreate`; `BodyLog` rows bare `create` from CSV. |
-| `RoleSeeder`, `UnitSeeder`, `UserSeeder`, `ExerciseIntelligenceSeeder`, `IngredientSeeder`, `MealSeeder`, `ProgramSeeder`, `LiftLogSeeder`, `DailyLogSeeder` | ❌ | Bare `create` / CSV import; duplicate or crash on re-run. |
+| `RoleSeeder`, `UnitSeeder`, `UserSeeder`, `IngredientSeeder`, `MealSeeder`, `ProgramSeeder`, `LiftLogSeeder`, `DailyLogSeeder` | ❌ | Bare `create` / CSV import; duplicate or crash on re-run. |
 
 ### Required one-time manual step: seed the Prism gyms in production
 

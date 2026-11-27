@@ -16,8 +16,6 @@ class GeminiApiKeyConfigTest extends TestCase
 
     private const ANALYZE_MISSING_KEY = 'Gemini API key is not configured. Set the GEMINI_API_KEY environment variable.';
 
-    private const GENERATE_MISSING_KEY = 'Gemini API key is required. Set the GEMINI_API_KEY environment variable or pass the --api-key option.';
-
     private string|false $originalEnvValue;
 
     protected function setUp(): void
@@ -89,46 +87,6 @@ class GeminiApiKeyConfigTest extends TestCase
             ->assertFailed();
 
         Http::assertNothingSent();
-    }
-
-    /** @test */
-    public function generate_exercise_intelligence_reads_the_key_from_config(): void
-    {
-        config(['services.gemini.api_key' => 'config-key']);
-        Http::fake(['generativelanguage.googleapis.com/*' => Http::response([], 500)]);
-
-        $this->artisan('exercises:generate-intelligence')
-            ->doesntExpectOutput(self::GENERATE_MISSING_KEY)
-            ->expectsOutput('Failed to detect available models. Please specify --model manually.')
-            ->assertFailed();
-
-        Http::assertSent(fn (Request $request): bool => str_contains($request->url(), 'key=config-key'));
-    }
-
-    /** @test */
-    public function generate_exercise_intelligence_fails_when_the_config_key_is_missing(): void
-    {
-        config(['services.gemini.api_key' => null]);
-
-        $this->artisan('exercises:generate-intelligence')
-            ->expectsOutput(self::GENERATE_MISSING_KEY)
-            ->assertFailed();
-
-        Http::assertNothingSent();
-    }
-
-    /** @test */
-    public function generate_exercise_intelligence_prefers_the_api_key_option_over_config(): void
-    {
-        config(['services.gemini.api_key' => 'config-key']);
-        Http::fake(['generativelanguage.googleapis.com/*' => Http::response([], 500)]);
-
-        $this->artisan('exercises:generate-intelligence', ['--api-key' => 'option-key'])
-            ->expectsOutput('Failed to detect available models. Please specify --model manually.')
-            ->assertFailed();
-
-        Http::assertSent(fn (Request $request): bool => str_contains($request->url(), 'key=option-key'));
-        Http::assertNotSent(fn (Request $request): bool => str_contains($request->url(), 'key=config-key'));
     }
 
     private function userWithRecentLiftLog(): User

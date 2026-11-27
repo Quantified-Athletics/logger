@@ -3,7 +3,6 @@
 namespace Tests\Unit;
 
 use App\Models\Exercise;
-use App\Models\ExerciseIntelligence;
 use App\Models\LiftLog;
 use App\Models\Role;
 use App\Models\User;
@@ -296,46 +295,6 @@ class ExerciseMergeServiceTest extends TestCase
     }
 
     /** @test */
-    public function merge_exercises_transfers_intelligence_when_target_has_none()
-    {
-        $source = Exercise::factory()->create(['user_id' => $this->regularUser->id]);
-        $target = Exercise::factory()->create(['user_id' => null]);
-
-        // Create intelligence for source exercise only
-        $intelligence = ExerciseIntelligence::factory()->create(['exercise_id' => $source->id]);
-
-        $this->service->mergeExercises($source, $target, $this->admin);
-
-        // Check intelligence was transferred
-        $this->assertDatabaseHas('exercise_intelligence', [
-            'id' => $intelligence->id,
-            'exercise_id' => $target->id,
-        ]);
-    }
-
-    /** @test */
-    public function merge_exercises_keeps_target_intelligence_when_both_have_intelligence()
-    {
-        $source = Exercise::factory()->create(['user_id' => $this->regularUser->id]);
-        $target = Exercise::factory()->create(['user_id' => null]);
-
-        // Create intelligence for both exercises
-        $sourceIntelligence = ExerciseIntelligence::factory()->create(['exercise_id' => $source->id]);
-        $targetIntelligence = ExerciseIntelligence::factory()->create(['exercise_id' => $target->id]);
-
-        $this->service->mergeExercises($source, $target, $this->admin);
-
-        // Target intelligence should remain unchanged
-        $this->assertDatabaseHas('exercise_intelligence', [
-            'id' => $targetIntelligence->id,
-            'exercise_id' => $target->id,
-        ]);
-
-        // Source intelligence should be soft deleted (cascade delete with exercise)
-        $this->assertSoftDeleted($sourceIntelligence);
-    }
-
-    /** @test */
     public function merge_exercises_deletes_source_exercise()
     {
         $source = Exercise::factory()->create(['user_id' => $this->regularUser->id]);
@@ -437,13 +396,9 @@ class ExerciseMergeServiceTest extends TestCase
             'user_id' => $otherUser->id,
         ]);
 
-        // Create exercise intelligence
-        ExerciseIntelligence::factory()->create(['exercise_id' => $exercise->id]);
-
         $stats = $this->service->getMergeStatistics($exercise);
 
         $this->assertEquals(5, $stats['lift_logs_count']);
-        $this->assertTrue($stats['has_intelligence']);
         $this->assertEquals(2, $stats['users_count']);
     }
 

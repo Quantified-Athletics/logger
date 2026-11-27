@@ -61,11 +61,6 @@ class Exercise extends Model
             $exercise->aliases()->each(function ($alias) {
                 $alias->delete();
             });
-
-            // Soft delete associated ExerciseIntelligence record
-            if ($exercise->intelligence) {
-                $exercise->intelligence->delete();
-            }
         });
     }
 
@@ -77,11 +72,6 @@ class Exercise extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function intelligence()
-    {
-        return $this->hasOne(ExerciseIntelligence::class);
     }
 
     public function aliases()
@@ -176,11 +166,6 @@ class Exercise extends Model
     {
         $userId = $userId ?? Auth::id();
         return $query->where('user_id', $userId);
-    }
-
-    public function scopeWithIntelligence($query)
-    {
-        return $query->whereHas('intelligence');
     }
 
     /**
@@ -353,11 +338,6 @@ class Exercise extends Model
             return false; // Regular users cannot delete global exercises
         }
         return $this->user_id === $user->id;
-    }
-
-    public function hasIntelligence(): bool
-    {
-        return $this->intelligence !== null;
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Exercise;
-use App\Models\ExerciseIntelligence;
 use App\Models\LiftLog;
 use App\Models\Role;
 use App\Models\User;
@@ -70,18 +69,13 @@ class ExerciseMergeIntegrationTest extends TestCase
             'logged_at' => now()->subDays(3)
         ]);
 
-        // Create exercise intelligence for source
-        $sourceIntelligence = ExerciseIntelligence::factory()->create([
-            'exercise_id' => $sourceExercise->id,
-            'canonical_name' => 'user_bench_press'
-        ]);
-
         // Step 1: Access merge interface
         $showResponse = $this->get(route('exercises.show-merge', $sourceExercise));
         $showResponse->assertStatus(200);
         $showResponse->assertViewIs('exercises.merge');
         $showResponse->assertViewHas('exercise', $sourceExercise);
         $showResponse->assertViewHas('targetsWithInfo');
+        $showResponse->assertDontSee('Has AI insights');
 
         // Step 2: Execute merge
         $mergeResponse = $this->post(route('exercises.merge', $sourceExercise), [
@@ -110,13 +104,6 @@ class ExerciseMergeIntegrationTest extends TestCase
             'weight' => 105
         ]);
 
-        // Check exercise intelligence was transferred
-        $this->assertDatabaseHas('exercise_intelligence', [
-            'id' => $sourceIntelligence->id,
-            'exercise_id' => $targetExercise->id,
-            'canonical_name' => 'user_bench_press'
-        ]);
-
         // Check source exercise was soft deleted
         $this->assertSoftDeleted($sourceExercise);
 
@@ -128,43 +115,6 @@ class ExerciseMergeIntegrationTest extends TestCase
             'user_id' => null,
             'deleted_at' => null
         ]);
-    }
-
-    #[\PHPUnit\Framework\Attributes\Test]
-    public function merge_workflow_handles_intelligence_conflicts_correctly()
-    {
-        $this->actingAs($this->admin);
-
-        $sourceExercise = Exercise::factory()->create(['user_id' => $this->regularUser->id]);
-        $targetExercise = Exercise::factory()->create(['user_id' => null]);
-
-        // Create intelligence for both exercises
-        $sourceIntelligence = ExerciseIntelligence::factory()->create([
-            'exercise_id' => $sourceExercise->id,
-            'canonical_name' => 'source_exercise'
-        ]);
-
-        $targetIntelligence = ExerciseIntelligence::factory()->create([
-            'exercise_id' => $targetExercise->id,
-            'canonical_name' => 'target_exercise'
-        ]);
-
-        // Execute merge
-        $response = $this->post(route('exercises.merge', $sourceExercise), [
-            'target_exercise_id' => $targetExercise->id
-        ]);
-
-        $response->assertRedirect(route('exercises.index'));
-
-        // Target intelligence should remain unchanged
-        $this->assertDatabaseHas('exercise_intelligence', [
-            'id' => $targetIntelligence->id,
-            'exercise_id' => $targetExercise->id,
-            'canonical_name' => 'target_exercise'
-        ]);
-
-        // Source intelligence should be soft deleted (cascade with exercise)
-        $this->assertSoftDeleted($sourceIntelligence);
     }
 
     #[\PHPUnit\Framework\Attributes\Test]

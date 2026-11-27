@@ -104,9 +104,6 @@ class ExerciseMergeService
             // Transfer lift logs
             $this->transferLiftLogs($source, $target);
 
-            // Handle exercise intelligence
-            $this->handleExerciseIntelligence($source, $target);
-
             // Create alias for the source exercise owner if requested
             $aliasCreated = $this->createAliasForOwner($source, $target, $createAlias);
 
@@ -168,22 +165,6 @@ class ExerciseMergeService
             // Update exercise_id to target without modifying comments
             $liftLog->update(['exercise_id' => $target->id]);
         }
-    }
-
-    /**
-     * Handle exercise intelligence transfer
-     */
-    private function handleExerciseIntelligence(Exercise $source, Exercise $target): void
-    {
-        $sourceIntelligence = $source->intelligence;
-        $targetIntelligence = $target->intelligence;
-
-        // If source has intelligence and target doesn't, transfer it
-        if ($sourceIntelligence && ! $targetIntelligence) {
-            $sourceIntelligence->update(['exercise_id' => $target->id]);
-        }
-        // If both have intelligence, keep target's intelligence (source will be deleted with exercise)
-        // No action needed as source intelligence will be cascade deleted
     }
 
     /**
@@ -312,7 +293,6 @@ class ExerciseMergeService
     {
         return [
             'lift_logs_count' => $exercise->liftLogs()->count(),
-            'has_intelligence' => $exercise->hasIntelligence(),
             'users_count' => $exercise->liftLogs()->distinct('user_id')->count('user_id'),
         ];
     }
@@ -370,9 +350,6 @@ class ExerciseMergeService
 
                 // Repoint lift logs
                 LiftLog::where('exercise_id', $source->id)->update(['exercise_id' => $target->id]);
-
-                // Handle exercise intelligence
-                $this->handleExerciseIntelligence($source, $target);
 
                 // Create global alias for source canonical_name and title on target
                 $aliasesCreated = [];
