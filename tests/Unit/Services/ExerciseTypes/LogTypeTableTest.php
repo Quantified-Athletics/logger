@@ -81,8 +81,8 @@ class LogTypeTableTest extends TestCase
     #[DataProvider('measuredLogTypes')]
     public function the_tables_strategy_behaves_like_todays(string $logType, string $exerciseType): void
     {
-        $today = $this->todaysStrategy($logType, $exerciseType);
-        $fromTable = ExerciseTypeFactory::createFromTypeName(LogTypeTable::strategyFor($logType));
+        $today = $this->todaysStrategy($exerciseType);
+        $fromTable = ExerciseTypeFactory::create(new Exercise(['log_type' => $logType]));
 
         $this->assertSame(get_class($today), get_class($fromTable));
 
@@ -208,12 +208,12 @@ class LogTypeTableTest extends TestCase
         $this->assertNull(LogTypeTable::logTypeForExerciseType(null));
     }
 
-    private function todaysStrategy(string $logType, string $exerciseType): ExerciseTypeInterface
+    /**
+     * The strategy today's exercise_type path picks: the one configured under that name.
+     */
+    private function todaysStrategy(string $exerciseType): ExerciseTypeInterface
     {
-        $exercise = new Exercise(['title' => 'Golden '.$logType, 'exercise_type' => $exerciseType, 'log_type' => $logType]);
-        $exercise->id = crc32($logType);
-
-        return ExerciseTypeFactory::create($exercise);
+        return ExerciseTypeFactory::createFromTypeName($exerciseType);
     }
 
     private function kilogramUser(): User

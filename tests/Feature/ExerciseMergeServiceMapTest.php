@@ -24,7 +24,6 @@ class ExerciseMergeServiceMapTest extends TestCase
             'user_id' => null,
             'title' => 'Strict Pull-Ups',
             'canonical_name' => 'strict_pull_up',
-            'exercise_type' => 'regular',
             'log_type' => 'bodyweight',
         ]);
 
@@ -32,7 +31,6 @@ class ExerciseMergeServiceMapTest extends TestCase
             'user_id' => null,
             'title' => 'Pull-Up',
             'canonical_name' => 'pull_ups',
-            'exercise_type' => 'regular',
             'log_type' => 'bodyweight-reps',
         ]);
 
@@ -40,7 +38,6 @@ class ExerciseMergeServiceMapTest extends TestCase
             'user_id' => null,
             'title' => 'Pull-Ups',
             'canonical_name' => 'pull_up',
-            'exercise_type' => 'regular',
             'log_type' => 'bodyweight',
         ]);
 

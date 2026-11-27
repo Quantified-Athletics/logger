@@ -138,7 +138,6 @@ class LogTypeReadersTest extends TestCase
             $exercise = Exercise::factory()->create([
                 'title' => 'Mine '.$logType,
                 'user_id' => $user->id,
-                'exercise_type' => null,
                 'log_type' => $logType,
             ]);
             $expected[$exercise->canonical_name] = ['logType' => $logType, 'exerciseType' => $exerciseType];
@@ -159,7 +158,6 @@ class LogTypeReadersTest extends TestCase
         return Exercise::factory()->create([
             'title' => 'Standard '.$logType,
             'user_id' => null,
-            'exercise_type' => null,
             'log_type' => $logType,
         ]);
     }

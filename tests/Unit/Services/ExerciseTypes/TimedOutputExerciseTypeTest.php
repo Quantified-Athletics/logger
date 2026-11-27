@@ -116,7 +116,7 @@ class TimedOutputExerciseTypeTest extends TestCase
         $liftLog = new LiftLog();
 
         $mockExercise = new Exercise();
-        $mockExercise->exercise_type = 'timed_output';
+        $mockExercise->log_type = 'timed-reps';
         $liftLog->setRelation('exercise', $mockExercise);
 
         $mockUser = new User();

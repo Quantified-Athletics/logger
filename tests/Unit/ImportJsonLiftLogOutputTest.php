@@ -25,7 +25,7 @@ class ImportJsonLiftLogOutputTest extends TestCase
             'canonical_name' => 'bench_press',
             'description' => 'Barbell bench press',
             'user_id' => null, // Global exercise
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Create a temporary JSON file
@@ -140,7 +140,7 @@ class ImportJsonLiftLogOutputTest extends TestCase
             'canonical_name' => 'bench_press',
             'description' => 'Barbell bench press',
             'user_id' => null,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         Exercise::create([
@@ -148,7 +148,7 @@ class ImportJsonLiftLogOutputTest extends TestCase
             'canonical_name' => 'squat',
             'description' => 'Barbell squat',
             'user_id' => null,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Create JSON data with multiple exercises
@@ -199,7 +199,7 @@ class ImportJsonLiftLogOutputTest extends TestCase
             'canonical_name' => 'bench_press',
             'description' => 'Barbell bench press',
             'user_id' => null,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Create existing lift log data

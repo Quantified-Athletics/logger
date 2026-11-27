@@ -116,14 +116,13 @@ class BodyweightExerciseTypeTest extends TestCase
     public function it_processes_exercise_data_correctly()
     {
         $inputData = [
-            'title' => 'Push-ups',
-            'exercise_type' => 'bodyweight',
+            'title' => 'Push-ups'
         ];
 
         $processedData = $this->strategy->processExerciseData($inputData);
 
         $this->assertEquals('Push-ups', $processedData['title']);
-        $this->assertEquals('bodyweight', $processedData['exercise_type']);
+        $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 
     /** @test */
@@ -149,7 +148,7 @@ class BodyweightExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_bodyweight_only_display()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -165,7 +164,7 @@ class BodyweightExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_bodyweight_plus_extra_weight_display()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -181,7 +180,7 @@ class BodyweightExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_negative_weight_as_bodyweight_only()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -197,7 +196,7 @@ class BodyweightExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_non_numeric_weight_as_bodyweight_only()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -213,7 +212,7 @@ class BodyweightExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_1rm_display_as_empty_string()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -243,7 +242,7 @@ class BodyweightExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_progression_suggestion_for_high_reps_no_weight()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -259,7 +258,7 @@ class BodyweightExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_progression_suggestion_for_high_reps_with_weight()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -275,7 +274,7 @@ class BodyweightExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_null_progression_suggestion_for_low_reps()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -291,7 +290,7 @@ class BodyweightExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_null_progression_suggestion_for_non_numeric_reps()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,

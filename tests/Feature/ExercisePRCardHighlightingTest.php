@@ -28,7 +28,7 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Bench Press',
         ]);
 
@@ -58,7 +58,7 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Squat',
         ]);
 
@@ -85,7 +85,7 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Clean',
         ]);
 
@@ -110,7 +110,7 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Deadlift',
         ]);
 
@@ -139,7 +139,7 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Overhead Press',
         ]);
 
@@ -168,7 +168,7 @@ class ExercisePRCardHighlightingTest extends TestCase
         // Test that the highlighting logic works for regular exercises
         $regularExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Bench Press',
         ]);
 
@@ -183,7 +183,7 @@ class ExercisePRCardHighlightingTest extends TestCase
         // Test that non-regular exercises don't show PR cards at all
         $bodyweightExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
             'title' => 'Push-ups',
         ]);
 
@@ -202,7 +202,7 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Squat',
         ]);
 

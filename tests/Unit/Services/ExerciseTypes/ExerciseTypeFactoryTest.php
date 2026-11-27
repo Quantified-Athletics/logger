@@ -344,10 +344,10 @@ class ExerciseTypeFactoryTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_missing_exercise_type_gracefully()
+    public function it_handles_missing_log_type_gracefully()
     {
-        $exercise = Exercise::factory()->create([
-            'exercise_type' => null,
+        $exercise = Exercise::factory()->make([
+            'log_type' => null,
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -358,10 +358,10 @@ class ExerciseTypeFactoryTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_empty_exercise_type_gracefully()
+    public function it_handles_empty_log_type_gracefully()
     {
-        $exercise = Exercise::factory()->create([
-            'exercise_type' => '',
+        $exercise = Exercise::factory()->make([
+            'log_type' => '',
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -465,7 +465,6 @@ class ExerciseTypeFactoryTest extends TestCase
     {
         // Create exercise using legacy fields (simulating old data)
         $exercise = Exercise::factory()->make([
-            'exercise_type' => null,
             'log_type' => 'bodyweight'
         ]);
 
@@ -484,7 +483,6 @@ class ExerciseTypeFactoryTest extends TestCase
         // Test resistance band fallback - create with different ID to avoid cache collision
         $resistanceExercise = Exercise::factory()->make([
             'id' => 999,
-            'exercise_type' => null,
             'log_type' => 'banded'
         ]);
 
@@ -498,7 +496,6 @@ class ExerciseTypeFactoryTest extends TestCase
         // Test assistance band fallback - create with different ID
         $assistanceExercise = Exercise::factory()->make([
             'id' => 998,
-            'exercise_type' => null,
             'log_type' => 'banded'
         ]);
 

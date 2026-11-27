@@ -28,7 +28,6 @@ class BodyweightVolumeSplitTest extends TestCase
         $this->dips = Exercise::factory()->create([
             'user_id' => $this->user->id,
             'title' => 'Dips',
-            'exercise_type' => 'bodyweight',
             'log_type' => 'bodyweight-reps',
         ]);
     }

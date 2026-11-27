@@ -95,7 +95,7 @@ class BaseExerciseTypeTest extends TestCase
     public function it_formats_1rm_display_when_supported()
     {
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         

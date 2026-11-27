@@ -190,7 +190,7 @@ class LiftLogLoggingTest extends TestCase {
     /** @test */
     public function a_user_can_create_a_bodyweight_lift_log()
     {
-        $exercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'exercise_type' => 'bodyweight']);
+        $exercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'log_type' => 'bodyweight']);
 
         $now = now();
         $testTime = '09:15'; // Use a time that's already on 15-minute interval
@@ -235,7 +235,7 @@ class LiftLogLoggingTest extends TestCase {
     /** @test */
     public function a_user_can_update_a_bodyweight_lift_log()
     {
-        $exercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'exercise_type' => 'bodyweight']);
+        $exercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'log_type' => 'bodyweight']);
         $liftLog = \App\Models\LiftLog::factory()->create([
             'user_id' => $this->user->id,
             'exercise_id' => $exercise->id,
@@ -247,7 +247,7 @@ class LiftLogLoggingTest extends TestCase {
             'notes' => 'Original bodyweight comments',
         ]);
 
-        $updatedExercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'exercise_type' => 'bodyweight']);
+        $updatedExercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'log_type' => 'bodyweight']);
         $updatedLiftLogData = [
             'exercise_id' => $updatedExercise->id,
             'weight' => 0,

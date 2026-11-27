@@ -194,7 +194,7 @@ class BandedExerciseCreationTest extends TestCase
 
         $response = $this->post(route('exercises.store'), [
             'title' => 'Invalid Exercise Type',
-            'exercise_type' => 'invalid_type',
+            'log_type' => 'invalid_type',
         ]);
 
         $response->assertSessionHasErrors('log_type');

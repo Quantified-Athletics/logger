@@ -20,7 +20,7 @@ class UnitConversionInDisplayTest extends TestCase
         $strategy = new RegularExerciseType();
 
         $exercise = new Exercise();
-        $exercise->exercise_type = 'regular';
+        $exercise->log_type = 'barbell';
 
         // Stored lbs, User prefers lbs (identity)
         $userLbs = new User();
@@ -64,7 +64,7 @@ class UnitConversionInDisplayTest extends TestCase
         $strategy = new BodyweightExerciseType();
 
         $exercise = new Exercise();
-        $exercise->exercise_type = 'bodyweight';
+        $exercise->log_type = 'bodyweight';
 
         $userKg = new User();
         $userKg->weight_unit = 'kg';
@@ -95,7 +95,7 @@ class UnitConversionInDisplayTest extends TestCase
         $strategy = new StaticHoldExerciseType();
 
         $exercise = new Exercise();
-        $exercise->exercise_type = 'static_hold';
+        $exercise->log_type = 'static-hold';
 
         $userKg = new User();
         $userKg->weight_unit = 'kg';
