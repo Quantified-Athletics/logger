@@ -67,14 +67,6 @@ class TimedOutputExerciseType extends BaseExerciseType
         return 'N/A';
     }
 
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-stopwatch',
-            'name' => 'Timed Output',
-        ];
-    }
-
     public function getChartTitle(): string
     {
         return 'Duration Progress';

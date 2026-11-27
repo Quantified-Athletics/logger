@@ -274,18 +274,7 @@ class BodyweightExerciseType extends BaseExerciseType
         
         return round($converted) . ' ' . $unit . ' (est. incl. BW)';
     }
-    
-    /**
-     * Get exercise type display name and icon for bodyweight exercises
-     */
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-user',
-            'name' => 'Bodyweight'
-        ];
-    }
-    
+
     /**
      * Get chart title for bodyweight exercises
      */

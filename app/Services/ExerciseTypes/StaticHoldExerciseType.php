@@ -398,18 +398,7 @@ class StaticHoldExerciseType extends BaseExerciseType
     {
         return 'N/A (Static Hold)';
     }
-    
-    /**
-     * Get exercise type display name and icon for static hold exercises
-     */
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-hand-paper',
-            'name' => 'Static Hold'
-        ];
-    }
-    
+
     /**
      * Get chart title for static hold exercises
      */

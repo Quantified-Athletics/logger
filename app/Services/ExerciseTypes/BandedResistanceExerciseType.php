@@ -184,18 +184,7 @@ class BandedResistanceExerciseType extends BaseExerciseType
             'secondary' => $repsText
         ];
     }
-    
-    /**
-     * Get exercise type display name and icon for banded resistance exercises
-     */
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-circle',
-            'name' => 'Resistance Band'
-        ];
-    }
-    
+
     /**
      * Format a single set badge for banded resistance exercises.
      * Shows band color, e.g. "Red band".

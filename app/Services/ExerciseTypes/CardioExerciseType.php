@@ -303,18 +303,7 @@ class CardioExerciseType extends BaseExerciseType
     {
         return 'N/A (Cardio)';
     }
-    
-    /**
-     * Get exercise type display name and icon for cardio exercises
-     */
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-running',
-            'name' => 'Cardio'
-        ];
-    }
-    
+
     /**
      * Get chart title for cardio exercises
      */

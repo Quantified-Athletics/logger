@@ -209,14 +209,6 @@ class LoadOutputExerciseType extends BaseExerciseType
         return 'N/A';
     }
 
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-truck-loading',
-            'name' => 'Load Output',
-        ];
-    }
-
     public function getChartTitle(): string
     {
         return 'Load Output Progress';
