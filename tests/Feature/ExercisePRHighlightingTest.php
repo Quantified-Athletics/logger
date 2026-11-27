@@ -19,7 +19,7 @@ class ExercisePRHighlightingTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => $user->id
         ]);
 
@@ -66,7 +66,7 @@ class ExercisePRHighlightingTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => $user->id
         ]);
 
@@ -125,7 +125,7 @@ class ExercisePRHighlightingTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
             'user_id' => $user->id
         ]);
 
@@ -156,7 +156,7 @@ class ExercisePRHighlightingTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded',
+            'log_type' => 'banded',
             'user_id' => $user->id
         ]);
 
@@ -185,7 +185,7 @@ class ExercisePRHighlightingTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => $user->id
         ]);
 
@@ -237,7 +237,7 @@ class ExercisePRHighlightingTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => $user->id
         ]);
 
@@ -276,7 +276,7 @@ class ExercisePRHighlightingTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => $user->id
         ]);
 
@@ -321,7 +321,7 @@ class ExercisePRHighlightingTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => $user->id
         ]);
 
@@ -353,7 +353,7 @@ class ExercisePRHighlightingTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => $user->id
         ]);
 

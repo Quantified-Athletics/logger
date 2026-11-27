@@ -55,7 +55,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         // Log a lift with red band, 10 reps
@@ -81,7 +81,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         // Log a lift with red band, max reps (15)
@@ -107,7 +107,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         // Log a lift with green band, max reps (15)
@@ -133,7 +133,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_assistance'
+            'log_type' => 'banded'
         ]);
 
         // Log a lift with red band (less assistance), 10 reps
@@ -159,7 +159,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_assistance'
+            'log_type' => 'banded'
         ]);
 
         // Log a lift with green band (most assistance), max reps (15)
@@ -402,7 +402,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         // Create pattern that would suggest progression based on strategy
@@ -440,7 +440,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 400m distance (< 1000m)
@@ -469,7 +469,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 800m distance (< 1000m but >= 500m)
@@ -498,7 +498,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 1500m distance (>= 1000m)
@@ -527,7 +527,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 2000m distance and 3 rounds
@@ -569,7 +569,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 950m distance (< 1000m, would suggest 1050m, but cap at 1500m)
@@ -598,7 +598,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 2000m distance and 9 rounds (would suggest 10, which is the cap)
@@ -630,7 +630,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         $suggestion = $this->trainingProgressionService->getSuggestionDetails($user->id, $exercise->id);
@@ -642,7 +642,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with invalid distance (0 or negative)

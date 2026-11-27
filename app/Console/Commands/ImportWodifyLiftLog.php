@@ -277,7 +277,7 @@ class ImportWodifyLiftLog extends Command
                 'title' => $exerciseName,
                 'canonical_name' => $canonicalName,
                 'description' => "Imported from Wodify",
-                'exercise_type' => 'regular',
+                'log_type' => 'barbell',
                 'user_id' => $user->id
             ]);
         }
@@ -299,7 +299,7 @@ class ImportWodifyLiftLog extends Command
                 'title' => $exerciseName,
                 'canonical_name' => $canonicalName,
                 'description' => "Imported from Wodify",
-                'exercise_type' => 'regular',
+                'log_type' => 'barbell',
                 'user_id' => $user->id
             ]);
         }

@@ -31,7 +31,7 @@ class PersistGlobalExercisesComparisonTest extends TestCase
         $exercise = new Exercise([
             'title' => 'Push Up',
             'description' => 'A basic push up',
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
         
         $csvData = [
@@ -55,7 +55,7 @@ class PersistGlobalExercisesComparisonTest extends TestCase
         $exercise = new Exercise([
             'title' => 'Push Up',
             'description' => 'A basic push up',
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
         
         $csvData = [
@@ -79,7 +79,7 @@ class PersistGlobalExercisesComparisonTest extends TestCase
         $exercise = new Exercise([
             'title' => 'Band Pull',
             'description' => 'Pull with resistance band',
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
         
         $csvData = [
@@ -103,7 +103,7 @@ class PersistGlobalExercisesComparisonTest extends TestCase
         $exercise = new Exercise([
             'title' => 'Push Up',
             'description' => 'A basic push up',
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
         
         $csvData = [

@@ -24,7 +24,6 @@ class TimedOutputExerciseType extends BaseExerciseType
     public function processExerciseData(array $data): array
     {
         $processedData = $data;
-        $processedData['exercise_type'] = 'timed_output';
 
         return $processedData;
     }

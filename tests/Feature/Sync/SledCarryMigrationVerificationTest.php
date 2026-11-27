@@ -30,14 +30,12 @@ class SledCarryMigrationVerificationTest extends TestCase
             'title' => 'Farmers Walk',
             'canonical_name' => 'farmers_walk',
             'log_type' => 'weighted-carry',
-            'exercise_type' => 'static_hold',
         ]);
 
         $holdEx = Exercise::create([
             'title' => 'Plank',
             'canonical_name' => 'plank',
             'log_type' => 'static-hold',
-            'exercise_type' => 'static_hold',
         ]);
 
         $sledLog = LiftLog::create([
@@ -91,8 +89,8 @@ class SledCarryMigrationVerificationTest extends TestCase
         $migration->up();
 
         // (a) exercises.exercise_type became load_output
-        $this->assertEquals('load_output', $sledEx->fresh()->exercise_type);
-        $this->assertEquals('load_output', $carryEx->fresh()->exercise_type);
+        $this->assertEquals('load_output', $sledEx->fresh()->strategyTypeName());
+        $this->assertEquals('load_output', $carryEx->fresh()->strategyTypeName());
 
         // (b) lift_logs.log_type is STILL sled/weighted-carry
         $this->assertEquals('sled', $sledLog->fresh()->log_type);
@@ -105,7 +103,7 @@ class SledCarryMigrationVerificationTest extends TestCase
         $this->assertEquals(0, $sledPrCount);
 
         // (d) genuine static-hold / dual-kettlebell rows are untouched
-        $this->assertEquals('static_hold', $holdEx->fresh()->exercise_type);
+        $this->assertEquals('static_hold', $holdEx->fresh()->strategyTypeName());
 
         // Concrete regression check: mapFromColumns using log_type produces non-empty body
         $mapper = new SetFieldMapper();
@@ -160,7 +158,7 @@ class SledCarryMigrationVerificationTest extends TestCase
         $migration = include database_path('migrations/2026_08_30_142524_retype_sled_and_carry_exercises_to_load_output.php');
         $migration->up();
 
-        $this->assertEquals('load_output', $sledEx->fresh()->exercise_type);
+        $this->assertEquals('load_output', $sledEx->fresh()->strategyTypeName());
         $this->assertEquals(0, DB::table('personal_records')
             ->whereIn('pr_type', ['sled_weight', 'sled_distance', 'sled_volume'])
             ->count());

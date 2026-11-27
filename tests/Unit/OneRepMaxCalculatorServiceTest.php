@@ -138,7 +138,7 @@ class OneRepMaxCalculatorServiceTest extends TestCase
         $this->expectException(\App\Services\ExerciseTypes\Exceptions\UnsupportedOperationException::class);
         $this->expectExceptionMessage('1RM calculation not supported for bodyweight exercises');
 
-        $exercise = Exercise::factory()->create(['user_id' => $this->user->id, 'exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['user_id' => $this->user->id, 'log_type' => 'bodyweight']);
         $liftLog = LiftLog::factory()->create(['user_id' => $this->user->id, 'exercise_id' => $exercise->id, 'logged_at' => Carbon::now()]);
         $liftLog->liftSets()->createMany([
             ['weight' => 0, 'reps' => 5, 'notes' => 'Set 1'],
@@ -163,7 +163,7 @@ class OneRepMaxCalculatorServiceTest extends TestCase
         $this->expectException(\App\Services\ExerciseTypes\Exceptions\UnsupportedOperationException::class);
         $this->expectExceptionMessage('1RM calculation not supported for banded_resistance exercises');
 
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_resistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         $liftLog->liftSets()->create(['weight' => 0, 'reps' => 5, 'band_color' => 'red']);
 
@@ -176,7 +176,7 @@ class OneRepMaxCalculatorServiceTest extends TestCase
         $this->expectException(\App\Services\ExerciseTypes\Exceptions\UnsupportedOperationException::class);
         $this->expectExceptionMessage('1RM calculation not supported for banded_resistance exercises');
 
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_assistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         $liftLog->liftSets()->create(['weight' => 0, 'reps' => 5, 'band_color' => 'blue']);
 

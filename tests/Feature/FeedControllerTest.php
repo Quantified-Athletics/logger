@@ -2239,7 +2239,7 @@ class FeedControllerTest extends TestCase
             'user_id' => null,
             'title' => 'L-Sit',
             'show_in_feed' => true,
-            'exercise_type' => 'static_hold',
+            'log_type' => 'static-hold',
         ]);
 
         // Follow the other user

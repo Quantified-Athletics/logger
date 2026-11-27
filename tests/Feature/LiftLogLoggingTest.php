@@ -286,7 +286,7 @@ class LiftLogLoggingTest extends TestCase {
         $exercise = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id, 
             'title' => 'Chin-Ups', 
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
         $liftLog = \App\Models\LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -313,7 +313,7 @@ class LiftLogLoggingTest extends TestCase {
         $exercise = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
             'title' => 'Chin-Ups',
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
         $liftLog = \App\Models\LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -338,7 +338,7 @@ class LiftLogLoggingTest extends TestCase {
     {
         $exercise = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'static_hold',
+            'log_type' => 'static-hold',
             'title' => 'L-sit'
         ]);
 
@@ -388,7 +388,7 @@ class LiftLogLoggingTest extends TestCase {
     {
         $exercise = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'static_hold',
+            'log_type' => 'static-hold',
             'title' => 'Plank'
         ]);
         
@@ -583,7 +583,7 @@ class LiftLogLoggingTest extends TestCase {
     {
         $exercise = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $liftLogData = [

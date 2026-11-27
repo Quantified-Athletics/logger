@@ -25,7 +25,7 @@ class PRInfoDisplayTest extends TestCase
         $this->exercise = Exercise::factory()->create([
             'title' => 'Bench Press',
             'user_id' => null,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
     }
 
@@ -257,7 +257,7 @@ class PRInfoDisplayTest extends TestCase
         $bodyweightExercise = Exercise::factory()->create([
             'title' => 'Push-ups',
             'user_id' => null,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
         
         // Create previous log with 20 reps

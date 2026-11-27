@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Exercise;
+use App\Services\ExerciseTypes\LogTypeTable;
 use App\Models\LiftLog;
 use App\Models\LiftSet;
 use App\Models\User;
@@ -567,9 +568,23 @@ class ImportJsonLiftLog extends Command
             $exerciseType = 'bodyweight';
         }
         
-        $exerciseAttributes['exercise_type'] = $exerciseType;
+        $exerciseAttributes['log_type'] = $this->logTypeForImportedExercise($exerciseData, $exerciseType);
 
         return Exercise::create($exerciseAttributes);
+    }
+
+    /**
+     * The log type to store for an imported exercise: the file's own log type when it is one Logger
+     * knows, otherwise the one the reverse table names for its (possibly legacy) exercise type.
+     */
+    private function logTypeForImportedExercise(array $exerciseData, string $exerciseType): string
+    {
+        $fileLogType = $exerciseData['log_type'] ?? null;
+        if (is_string($fileLogType) && LogTypeTable::strategyFor($fileLogType) !== null) {
+            return $fileLogType;
+        }
+
+        return LogTypeTable::logTypeForExerciseType($exerciseType) ?? LogTypeTable::DEFAULT_LOG_TYPE;
     }
 
     /**

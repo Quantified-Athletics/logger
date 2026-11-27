@@ -7,6 +7,8 @@
  * LOG_TYPE_TO_FAMILY). Each log type uses exactly one exercise type strategy from
  * `config/exercise_types.php`; this table is the one place that says which.
  *
+ * `labels` names each log type in Logger's exercise form.
+ *
  * `from_exercise_type` is the reverse table for old sync clients that send only an
  * `exercise_type`: it names the log type to store for each one.
  */
@@ -45,6 +47,33 @@ return [
 
         // Rest: nothing is logged against it.
         'none' => 'regular',
+    ],
+
+    'labels' => [
+        'barbell' => 'Barbell',
+        'barbell-complex' => 'Barbell Complex',
+        'dual-dumbbell' => 'Two Dumbbells',
+        'single-dumbbell' => 'One Dumbbell',
+        'kettlebell' => 'Kettlebell',
+        'ball' => 'Ball',
+        'machine' => 'Machine',
+        'added-weight' => 'Added Weight',
+        'bodyweight' => 'Bodyweight',
+        'bodyweight-reps' => 'Bodyweight (Reps)',
+        'banded' => 'Banded',
+        'cardio' => 'Cardio',
+        'cardio-calories' => 'Cardio (Calories)',
+        'cardio-distance' => 'Cardio (Distance)',
+        'static-hold' => 'Static Hold',
+        'timed-reps' => 'Timed Reps',
+        'sled' => 'Sled',
+        'weighted-carry' => 'Weighted Carry',
+        'weighted-carry-1-db' => 'Carry, One Dumbbell',
+        'weighted-carry-1-kb' => 'Carry, One Kettlebell',
+        'weighted-carry-2-db' => 'Carry, Two Dumbbells',
+        'weighted-carry-2-kb' => 'Carry, Two Kettlebells',
+        'weighted-carry-ball' => 'Carry, Ball',
+        'none' => 'None (Rest)',
     ],
 
     'from_exercise_type' => [

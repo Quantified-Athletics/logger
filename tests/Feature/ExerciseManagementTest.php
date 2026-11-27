@@ -24,7 +24,7 @@ class ExerciseManagementTest extends TestCase
         $exerciseData = [
             'title' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $response = $this->post(route('exercises.store'), $exerciseData);
@@ -47,7 +47,7 @@ class ExerciseManagementTest extends TestCase
         $exerciseData = [
             'title' => '', // Missing title
             'description' => $this->faker->paragraph(),
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $response = $this->post(route('exercises.store'), $exerciseData);
@@ -70,7 +70,7 @@ class ExerciseManagementTest extends TestCase
         $exerciseData = [
             'title' => 'Bench Press',
             'description' => 'User trying to create duplicate',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $response = $this->post(route('exercises.store'), $exerciseData);
@@ -92,7 +92,7 @@ class ExerciseManagementTest extends TestCase
         $updatedData = [
             'title' => 'Updated Title',
             'description' => 'Updated description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $response = $this->put(route('exercises.update', $userExercise), $updatedData);
@@ -215,7 +215,7 @@ class ExerciseManagementTest extends TestCase
         $updatedData = [
             'title' => 'Updated Global Title',
             'description' => 'Updated description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $response = $this->put(route('exercises.update', $globalExercise), $updatedData);
@@ -317,7 +317,7 @@ class ExerciseManagementTest extends TestCase
             'user_id' => $regularUser->id,
             'title' => 'User Exercise',
             'description' => 'Original description',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Admin edits the exercise (without changing global status)
@@ -325,7 +325,7 @@ class ExerciseManagementTest extends TestCase
         $response = $this->put(route('exercises.update', $userExercise), [
             'title' => 'Updated User Exercise',
             'description' => 'Updated description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $response->assertRedirect(route('exercises.edit', $userExercise));

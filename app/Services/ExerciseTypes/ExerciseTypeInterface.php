@@ -109,8 +109,8 @@ interface ExerciseTypeInterface
      * 
      * @example
      * // Regular exercise processing
-     * $input = ['title' => 'Bench Press', 'exercise_type' => 'bodyweight'];
-     * $output = ['title' => 'Bench Press', 'exercise_type' => 'regular'];
+     * $input = ['title' => 'Bench Press', 'log_type' => 'barbell'];
+     * $output = ['title' => 'Bench Press', 'log_type' => 'barbell', 'is_bodyweight' => false];
      */
     public function processExerciseData(array $data): array;
     

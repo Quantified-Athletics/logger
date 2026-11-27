@@ -41,7 +41,6 @@ class LoadOutputExerciseType extends BaseExerciseType
     public function processExerciseData(array $data): array
     {
         $processedData = $data;
-        $processedData['exercise_type'] = 'load_output';
         $processedData['is_bodyweight'] = false;
 
         return $processedData;

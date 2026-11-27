@@ -20,7 +20,7 @@ class Exercise extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['title', 'description', 'canonical_name', 'user_id', 'exercise_type'])
+            ->logOnly(['title', 'description', 'canonical_name', 'user_id', 'log_type'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
@@ -30,13 +30,11 @@ class Exercise extends Model
         'description',
         'canonical_name',
         'user_id',
-        'exercise_type',
         'log_type',
         'show_in_feed',
     ];
 
     protected $casts = [
-        'exercise_type' => 'string',
         'log_type' => 'string',
         'show_in_feed' => 'boolean',
         'deleted_at' => 'datetime',
@@ -50,12 +48,10 @@ class Exercise extends Model
             if (empty($exercise->canonical_name) && !empty($exercise->title)) {
                 $exercise->canonical_name = static::generateUniqueCanonicalName($exercise->title);
             }
-            
-            static::defaultWrittenExerciseType($exercise);
         });
 
         static::saving(function (Exercise $exercise) {
-            static::fillLogTypeFromWrittenExerciseType($exercise);
+            static::defaultLogType($exercise);
         });
 
         static::deleting(function ($exercise) {
@@ -67,56 +63,13 @@ class Exercise extends Model
     }
 
     /**
-     * Until every writer stores a log_type (#33 Step 3), setting exercise_type on an exercise that has
-     * no log type yet gives it the log type the reverse table names, saved or not.
+     * Every exercise has a log type: one saved without any gets barbell (the regular strategy), as an
+     * exercise without an exercise type used to get regular.
      */
-    public function setExerciseTypeAttribute(?string $exerciseType): void
+    protected static function defaultLogType(Exercise $exercise): void
     {
-        $this->attributes['exercise_type'] = $exerciseType;
-
-        if (empty($this->attributes['log_type'] ?? null)) {
-            $derivedLogType = LogTypeTable::logTypeForExerciseType($exerciseType);
-            if ($derivedLogType !== null) {
-                $this->attributes['log_type'] = $derivedLogType;
-            }
-        }
-    }
-
-    /**
-     * The exercise_type column is still NOT NULL until it is dropped, so a new exercise without one
-     * gets 'regular' (#33 Step 3 removes this with the other exercise_type handling).
-     */
-    protected static function defaultWrittenExerciseType(Exercise $exercise): void
-    {
-        if (empty($exercise->getAttribute('exercise_type'))) {
-            $exercise->exercise_type = 'regular';
-        }
-    }
-
-    /**
-     * Until every writer stores a log_type (#33 Step 3), a writer that sets only exercise_type gets the
-     * log type the reverse table names for it: when the exercise has no log type yet, or when an edit
-     * changes exercise_type to a strategy the current log type doesn't use.
-     */
-    protected static function fillLogTypeFromWrittenExerciseType(Exercise $exercise): void
-    {
-        $writtenExerciseType = $exercise->getAttribute('exercise_type');
-        if (empty($writtenExerciseType)) {
-            return;
-        }
-
-        $hasLogType = ! empty($exercise->log_type);
-        $editChangedStrategy = $exercise->isDirty('exercise_type')
-            && ! $exercise->isDirty('log_type')
-            && LogTypeTable::strategyFor($exercise->log_type) !== $writtenExerciseType;
-
-        if ($hasLogType && ! $editChangedStrategy) {
-            return;
-        }
-
-        $derivedLogType = LogTypeTable::logTypeForExerciseType($writtenExerciseType);
-        if ($derivedLogType !== null) {
-            $exercise->log_type = $derivedLogType;
+        if (empty($exercise->log_type)) {
+            $exercise->log_type = LogTypeTable::DEFAULT_LOG_TYPE;
         }
     }
 

@@ -224,7 +224,7 @@ class LiftLogEditTest extends TestCase
     {
         $bodyweightExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
         $bodyweightLog = LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -249,7 +249,7 @@ class LiftLogEditTest extends TestCase
     {
         $bandedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
         $bandedLog = LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -363,7 +363,7 @@ class LiftLogEditTest extends TestCase
     {
         $staticHoldExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'static_hold'
+            'log_type' => 'static-hold'
         ]);
         $staticHoldLog = LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -401,7 +401,7 @@ class LiftLogEditTest extends TestCase
     {
         $staticHoldExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'static_hold'
+            'log_type' => 'static-hold'
         ]);
         $staticHoldLog = LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -454,7 +454,6 @@ class LiftLogEditTest extends TestCase
     {
         $carryExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'load_output',
             'log_type' => 'weighted-carry-ball',
         ]);
         $carryLog = LiftLog::factory()->create([
@@ -493,7 +492,6 @@ class LiftLogEditTest extends TestCase
     {
         $carryExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'load_output',
             'log_type' => 'weighted-carry-ball',
         ]);
         $carryLog = LiftLog::factory()->create([
@@ -530,7 +528,6 @@ class LiftLogEditTest extends TestCase
     {
         $timedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'timed_output',
             'log_type' => 'timed-reps',
         ]);
         $timedLog = LiftLog::factory()->create([

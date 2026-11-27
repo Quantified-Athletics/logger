@@ -81,9 +81,6 @@ class BandedResistanceExerciseType extends BaseExerciseType
     {
         $processedData = $data;
         
-        // For banded resistance exercises, ensure exercise_type is set correctly
-        $processedData['exercise_type'] = 'banded_resistance';
-        
         // Banded resistance exercises are not bodyweight exercises
         $processedData['is_bodyweight'] = false;
         

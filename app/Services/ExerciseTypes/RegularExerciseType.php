@@ -75,9 +75,6 @@ class RegularExerciseType extends BaseExerciseType
     {
         $processedData = $data;
         
-        // For regular exercises, ensure exercise_type is set correctly
-        $processedData['exercise_type'] = 'regular';
-        
         // Regular exercises are not bodyweight exercises and don't use bands
         $processedData['is_bodyweight'] = false;
         

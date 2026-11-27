@@ -176,7 +176,7 @@ class PersistGlobalExercisesCsvParsingTest extends TestCase
             'title' => 'Test Exercise',
             'description' => 'Test description',
             'canonical_name' => 'test_exercise',
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
         
         $result = $this->callPrivateMethod($command, 'prepareExerciseForCsv', [$exercise]);
@@ -198,7 +198,7 @@ class PersistGlobalExercisesCsvParsingTest extends TestCase
             'title' => 'Test Exercise',
             'description' => null,
             'canonical_name' => 'test_exercise',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
         
         $result = $this->callPrivateMethod($command, 'prepareExerciseForCsv', [$exercise]);

@@ -124,9 +124,6 @@ class StaticHoldExerciseType extends BaseExerciseType
     {
         $processedData = $data;
         
-        // For static hold exercises, ensure exercise_type is set correctly
-        $processedData['exercise_type'] = 'static_hold';
-        
         return $processedData;
     }
     

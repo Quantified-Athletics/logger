@@ -49,7 +49,7 @@ class ExerciseReconcilerTest extends TestCase
         $exercise = Exercise::create([
             'canonical_name' => 'test_ex',
             'title' => 'Test Exercise',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => null
         ]);
 
@@ -77,7 +77,7 @@ class ExerciseReconcilerTest extends TestCase
         $exercise = Exercise::create([
             'canonical_name' => 'test_ex',
             'title' => 'Test Exercise',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => null
         ]);
 
@@ -110,7 +110,7 @@ class ExerciseReconcilerTest extends TestCase
         $exercise = Exercise::create([
             'canonical_name' => 'test_ex_old',
             'title' => 'Test Exercise Old',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => null
         ]);
 
@@ -167,7 +167,7 @@ class ExerciseReconcilerTest extends TestCase
         $exercise = Exercise::where('canonical_name', 'test_add')->whereNull('user_id')->first();
         $this->assertNotNull($exercise);
         $this->assertEquals('Test Add', $exercise->title);
-        $this->assertEquals('bodyweight', $exercise->exercise_type);
+        $this->assertEquals('bodyweight', $exercise->strategyTypeName());
         $this->assertEquals('bodyweight-reps', $exercise->log_type);
 
         // Rollback
@@ -216,7 +216,7 @@ class ExerciseReconcilerTest extends TestCase
         $exercise = Exercise::create([
             'canonical_name' => 'test_ex',
             'title' => 'Test Exercise',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => null
         ]);
 
@@ -245,7 +245,7 @@ class ExerciseReconcilerTest extends TestCase
         $exercise = Exercise::create([
             'canonical_name' => 'test_ex',
             'title' => 'Test Exercise',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'user_id' => null
         ]);
 

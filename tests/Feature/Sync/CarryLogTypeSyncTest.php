@@ -36,7 +36,7 @@ class CarryLogTypeSyncTest extends TestCase
 
         $ex1 = Exercise::where('canonical_name', 'double_kb_farmers_carry')->first();
         $this->assertNotNull($ex1);
-        $this->assertEquals('load_output', $ex1->exercise_type);
+        $this->assertEquals('load_output', $ex1->strategyTypeName());
         $this->assertEquals('weighted-carry-2-kb', $ex1->log_type);
 
         $prs1 = PersonalRecord::where('exercise_id', $ex1->id)->where('user_id', $user->id)->get();
@@ -63,7 +63,7 @@ class CarryLogTypeSyncTest extends TestCase
 
         $ex2 = Exercise::where('canonical_name', 'single_db_suitcase_carry')->first();
         $this->assertNotNull($ex2);
-        $this->assertEquals('load_output', $ex2->exercise_type);
+        $this->assertEquals('load_output', $ex2->strategyTypeName());
         $this->assertEquals('weighted-carry-1-db', $ex2->log_type);
 
         $prs2 = PersonalRecord::where('exercise_id', $ex2->id)->where('user_id', $user->id)->get();
@@ -89,7 +89,7 @@ class CarryLogTypeSyncTest extends TestCase
 
         $ex3 = Exercise::where('canonical_name', 'medicine_ball_bear_hug_carry')->first();
         $this->assertNotNull($ex3);
-        $this->assertEquals('load_output', $ex3->exercise_type);
+        $this->assertEquals('load_output', $ex3->strategyTypeName());
         $this->assertEquals('weighted-carry-ball', $ex3->log_type);
 
         $prs3 = PersonalRecord::where('exercise_id', $ex3->id)->where('user_id', $user->id)->get();
@@ -139,7 +139,6 @@ class CarryLogTypeSyncTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'load_output',
             'log_type' => 'weighted-carry-2-kb',
         ]);
 

@@ -30,7 +30,7 @@ class BandedLiftLoggingTest extends TestCase
         $this->actingAs($this->user);
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $response = $this->post(route('lift-logs.store'), [
@@ -62,7 +62,7 @@ class BandedLiftLoggingTest extends TestCase
         $this->actingAs($this->user);
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_assistance'
+            'log_type' => 'banded'
         ]);
 
         $response = $this->post(route('lift-logs.store'), [
@@ -94,7 +94,7 @@ class BandedLiftLoggingTest extends TestCase
         $this->actingAs($this->user);
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $response = $this->post(route('lift-logs.store'), [
@@ -142,7 +142,7 @@ class BandedLiftLoggingTest extends TestCase
         $this->actingAs($this->user);
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -187,7 +187,7 @@ class BandedLiftLoggingTest extends TestCase
         $this->actingAs($this->user);
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -244,7 +244,7 @@ class BandedLiftLoggingTest extends TestCase
         $this->actingAs($this->user);
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         // Orange band
@@ -276,7 +276,7 @@ class BandedLiftLoggingTest extends TestCase
         $this->actingAs($this->user);
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $response = $this->post(route('lift-logs.store'), [
@@ -297,7 +297,7 @@ class BandedLiftLoggingTest extends TestCase
         $this->actingAs($this->user);
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $response = $this->post(route('lift-logs.store'), [

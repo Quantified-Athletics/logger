@@ -9,6 +9,11 @@ namespace App\Services\ExerciseTypes;
 class LogTypeTable
 {
     /**
+     * The log type an exercise gets when nothing names one: the regular strategy's.
+     */
+    public const DEFAULT_LOG_TYPE = 'barbell';
+
+    /**
      * The exercise type strategy name for a log type, or null when the log type is unknown or empty.
      */
     public static function strategyFor(?string $logType): ?string
@@ -28,6 +33,14 @@ class LogTypeTable
     public static function logTypes(): array
     {
         return array_keys(config('log_types.strategies', []));
+    }
+
+    /**
+     * The label Logger's exercise form shows for a log type.
+     */
+    public static function labelFor(string $logType): string
+    {
+        return config("log_types.labels.{$logType}") ?? ucfirst(str_replace('-', ' ', $logType));
     }
 
     /**

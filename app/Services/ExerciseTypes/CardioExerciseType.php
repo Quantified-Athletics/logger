@@ -114,9 +114,6 @@ class CardioExerciseType extends BaseExerciseType
     {
         $processedData = $data;
         
-        // For cardio exercises, ensure exercise_type is set correctly
-        $processedData['exercise_type'] = 'cardio';
-        
         // Cardio exercises are not bodyweight exercises and don't use bands
         $processedData['is_bodyweight'] = false;
         

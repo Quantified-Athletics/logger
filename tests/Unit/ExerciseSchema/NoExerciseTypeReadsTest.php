@@ -2,17 +2,15 @@
 
 namespace Tests\Unit\ExerciseSchema;
 
-use App\Models\Exercise;
 use PHPUnit\Framework\Attributes\Test;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use ReflectionMethod;
 use Tests\TestCase;
 
 /**
  * Nothing under app/, config/, resources/ or routes/ reads the exercises.exercise_type column: the
- * log type decides everything. Writes are Step 3's (#33) and are not checked here. Reading an old
- * sync client's `exercise_type` request field, and the reverse table, are allowed.
+ * log type decides everything. Writes are checked by NoExerciseTypeWritesTest. Reading an old sync
+ * client's `exercise_type` request field, and the reverse table, are allowed.
  */
 class NoExerciseTypeReadsTest extends TestCase
 {
@@ -33,7 +31,6 @@ class NoExerciseTypeReadsTest extends TestCase
     #[Test]
     public function no_code_reads_the_exercise_type_column(): void
     {
-        $allowed = $this->allowedLines();
         $offending = [];
 
         foreach (['app', 'config', 'resources', 'routes'] as $directory) {
@@ -43,9 +40,6 @@ class NoExerciseTypeReadsTest extends TestCase
                     $relative = ltrim(str_replace(base_path(), '', $path), '/');
 
                     if (! str_contains($line, 'exercise_type') || $this->isComment($line)) {
-                        continue;
-                    }
-                    if (in_array($lineNumber, $allowed[$relative] ?? [], true)) {
                         continue;
                     }
 
@@ -60,24 +54,6 @@ class NoExerciseTypeReadsTest extends TestCase
         }
 
         $this->assertSame([], $offending, "These lines read exercise_type:\n".implode("\n", $offending));
-    }
-
-    /**
-     * Until Step 3 moves the writers, the model fills a missing log_type from a written exercise_type
-     * through the reverse table, and a new exercise still gets the NOT NULL column's 'regular' default.
-     * Those two are the allowed reads; Step 3 removes them.
-     *
-     * @return array<string, list<int>>
-     */
-    private function allowedLines(): array
-    {
-        $lines = [];
-        foreach (['setExerciseTypeAttribute', 'fillLogTypeFromWrittenExerciseType', 'defaultWrittenExerciseType'] as $method) {
-            $bridge = new ReflectionMethod(Exercise::class, $method);
-            $lines = [...$lines, ...range($bridge->getStartLine(), $bridge->getEndLine())];
-        }
-
-        return ['app/Models/Exercise.php' => $lines];
     }
 
     private function isComment(string $line): bool

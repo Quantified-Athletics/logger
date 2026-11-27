@@ -29,7 +29,7 @@ class ExerciseResolverServiceTest extends TestCase
         $exercise = Exercise::create([
             'title' => 'Bench Press',
             'canonical_name' => 'bench_press',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $resolved = $this->resolver->resolve('Bench Press', $this->user);
@@ -44,7 +44,7 @@ class ExerciseResolverServiceTest extends TestCase
         $exercise = Exercise::create([
             'title' => 'Deadlift',
             'canonical_name' => 'deadlift',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $resolved = $this->resolver->resolve('deadlift', $this->user);
@@ -59,7 +59,7 @@ class ExerciseResolverServiceTest extends TestCase
         $exercise = Exercise::create([
             'title' => 'Back Squat',
             'canonical_name' => 'back_squat',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         ExerciseAlias::create([
@@ -81,7 +81,7 @@ class ExerciseResolverServiceTest extends TestCase
         $userExercise = Exercise::create([
             'title' => 'User Push Up',
             'canonical_name' => 'user_push_up',
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
             'user_id' => $this->user->id,
         ]);
 
@@ -90,7 +90,7 @@ class ExerciseResolverServiceTest extends TestCase
         $otherExercise = Exercise::create([
             'title' => 'Other Push Up',
             'canonical_name' => 'other_push_up',
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
             'user_id' => $otherUser->id,
         ]);
 
@@ -110,7 +110,7 @@ class ExerciseResolverServiceTest extends TestCase
         $exercise = Exercise::create([
             'title' => 'Barbell Bench Press',
             'canonical_name' => 'bb_bench_press',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         // Should resolve using exact canonical name parameter
@@ -124,7 +124,7 @@ class ExerciseResolverServiceTest extends TestCase
         $exercise = Exercise::create([
             'title' => 'Old Title',
             'canonical_name' => 'bench_press',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $resolved = $this->resolver->resolve('New Title', $this->user, null, 'bench_press');
@@ -137,7 +137,7 @@ class ExerciseResolverServiceTest extends TestCase
         $exercise = Exercise::create([
             'title' => 'Soft Deleted Pull Up',
             'canonical_name' => 'soft_deleted_pull_up',
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
 
         $exercise->delete(); // Soft delete
@@ -153,31 +153,31 @@ class ExerciseResolverServiceTest extends TestCase
         // cardio log type should derive cardio exercise type
         $cardio = $this->resolver->resolve('Super Run', $this->user, 'cardio');
         $this->assertEquals('Super Run', $cardio->title);
-        $this->assertEquals('cardio', $cardio->exercise_type);
+        $this->assertEquals('cardio', $cardio->strategyTypeName());
 
         // bodyweight log type should derive bodyweight exercise type
         $bodyweight = $this->resolver->resolve('Super Push', $this->user, 'bodyweight');
-        $this->assertEquals('bodyweight', $bodyweight->exercise_type);
+        $this->assertEquals('bodyweight', $bodyweight->strategyTypeName());
 
         // barbell and barbell-complex log types should derive regular exercise type
         $regular = $this->resolver->resolve('Super Press', $this->user, 'barbell');
-        $this->assertEquals('regular', $regular->exercise_type);
+        $this->assertEquals('regular', $regular->strategyTypeName());
 
         $barbellComplex = $this->resolver->resolve('Bear Complex', $this->user, 'barbell-complex');
-        $this->assertEquals('regular', $barbellComplex->exercise_type);
+        $this->assertEquals('regular', $barbellComplex->strategyTypeName());
 
         // weighted-carry 5 logTypes should derive load_output exercise type
         foreach (['weighted-carry-1-kb', 'weighted-carry-2-kb', 'weighted-carry-1-db', 'weighted-carry-2-db', 'weighted-carry-ball'] as $logType) {
             $carry = $this->resolver->resolve("Farmer Carry $logType", $this->user, $logType);
-            $this->assertEquals('load_output', $carry->exercise_type);
+            $this->assertEquals('load_output', $carry->strategyTypeName());
         }
 
         // static-hold should derive static_hold exercise type
         $hold = $this->resolver->resolve('L-Sit Hold', $this->user, 'static-hold');
-        $this->assertEquals('static_hold', $hold->exercise_type);
+        $this->assertEquals('static_hold', $hold->strategyTypeName());
 
         // timed-reps should derive timed_output exercise type
         $timedReps = $this->resolver->resolve('Glute Bridge March', $this->user, 'timed-reps');
-        $this->assertEquals('timed_output', $timedReps->exercise_type);
+        $this->assertEquals('timed_output', $timedReps->strategyTypeName());
     }
 }

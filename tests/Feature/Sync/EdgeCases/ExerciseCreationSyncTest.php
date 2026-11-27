@@ -59,7 +59,7 @@ class ExerciseCreationSyncTest extends TestCase
             'canonical_name' => 'jefferson_squat',
             'title' => 'Jefferson Squat',
             'user_id' => $this->userA->id,
-            'exercise_type' => 'regular',
+            'exercise_type' => null,
             'log_type' => 'barbell',
         ]);
     }
@@ -169,7 +169,6 @@ class ExerciseCreationSyncTest extends TestCase
         Exercise::create([
             'title' => 'Bench Press',
             'canonical_name' => 'bench_press',
-            'exercise_type' => 'regular',
             'log_type' => 'barbell',
             'user_id' => null,
         ]);
