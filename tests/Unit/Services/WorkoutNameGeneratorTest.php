@@ -19,6 +19,13 @@ class WorkoutNameGeneratorTest extends TestCase
     {
         parent::setUp();
         $this->generator = new WorkoutNameGenerator();
+        Carbon::setTestNow('2025-12-06 10:00:00');
+    }
+
+    protected function tearDown(): void
+    {
+        Carbon::setTestNow();
+        parent::tearDown();
     }
 
     /**
@@ -38,7 +45,7 @@ class WorkoutNameGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_name_with_movement_archetype_and_category()
+    public function it_ignores_archetype_and_category_and_uses_the_date_fallback()
     {
         $exercise = Exercise::factory()->create(['title' => 'Deadlift']);
         
@@ -49,11 +56,11 @@ class WorkoutNameGeneratorTest extends TestCase
 
         $name = $this->generator->generate($exercise);
 
-        $this->assertEquals('Hinge Day (Strength)', $name);
+        $this->assertEquals('New Workout - Dec 6, 2025', $name);
     }
 
     /** @test */
-    public function it_generates_name_with_movement_archetype_and_category_combined()
+    public function it_ignores_a_mobility_category_and_uses_the_date_fallback()
     {
         $exercise = Exercise::factory()->create(['title' => 'Squat']);
         
@@ -64,12 +71,11 @@ class WorkoutNameGeneratorTest extends TestCase
 
         $name = $this->generator->generate($exercise);
 
-        // Both archetype and category are required, so they're always combined
-        $this->assertEquals('Squat Day (Mobility)', $name);
+        $this->assertEquals('New Workout - Dec 6, 2025', $name);
     }
 
     /** @test */
-    public function it_generates_cardio_workout_name()
+    public function it_ignores_a_cardio_category_and_uses_the_date_fallback()
     {
         $exercise = Exercise::factory()->create(['title' => 'Running']);
         
@@ -80,11 +86,11 @@ class WorkoutNameGeneratorTest extends TestCase
 
         $name = $this->generator->generate($exercise);
 
-        $this->assertEquals('Core Day (Cardio)', $name);
+        $this->assertEquals('New Workout - Dec 6, 2025', $name);
     }
 
     /** @test */
-    public function it_uses_primary_mover_when_no_archetype_or_category()
+    public function it_ignores_the_primary_mover_and_uses_the_date_fallback()
     {
         $exercise = Exercise::factory()->create(['title' => 'Bench Press']);
         
@@ -96,13 +102,11 @@ class WorkoutNameGeneratorTest extends TestCase
 
         $name = $this->generator->generate($exercise);
 
-        // Since archetype is required, this will actually return "Push Day (Strength)"
-        // Let's adjust the test to match reality
-        $this->assertEquals('Push Day (Strength)', $name);
+        $this->assertEquals('New Workout - Dec 6, 2025', $name);
     }
 
     /** @test */
-    public function it_uses_largest_muscle_when_no_other_data_available()
+    public function it_ignores_the_largest_muscle_and_uses_the_date_fallback()
     {
         $exercise = Exercise::factory()->create(['title' => 'Pull Up']);
         
@@ -115,11 +119,11 @@ class WorkoutNameGeneratorTest extends TestCase
 
         $name = $this->generator->generate($exercise);
 
-        $this->assertEquals('Pull Day (Strength)', $name);
+        $this->assertEquals('New Workout - Dec 6, 2025', $name);
     }
 
     /** @test */
-    public function it_formats_snake_case_muscle_names()
+    public function it_ignores_snake_case_muscle_names_and_uses_the_date_fallback()
     {
         $exercise = Exercise::factory()->create(['title' => 'Leg Press']);
         
@@ -131,12 +135,11 @@ class WorkoutNameGeneratorTest extends TestCase
 
         $name = $this->generator->generate($exercise);
 
-        // Will use archetype, not primary_mover
-        $this->assertEquals('Squat Day (Strength)', $name);
+        $this->assertEquals('New Workout - Dec 6, 2025', $name);
     }
 
     /** @test */
-    public function it_formats_kebab_case_muscle_names()
+    public function it_ignores_kebab_case_muscle_names_and_uses_the_date_fallback()
     {
         $exercise = Exercise::factory()->create(['title' => 'Shoulder Press']);
         
@@ -148,12 +151,11 @@ class WorkoutNameGeneratorTest extends TestCase
 
         $name = $this->generator->generate($exercise);
 
-        // Will use archetype, not primary_mover
-        $this->assertEquals('Push Day (Strength)', $name);
+        $this->assertEquals('New Workout - Dec 6, 2025', $name);
     }
 
     /** @test */
-    public function it_capitalizes_movement_archetype_properly()
+    public function it_ignores_a_push_archetype_and_uses_the_date_fallback()
     {
         $exercise = Exercise::factory()->create(['title' => 'Push Up']);
         
@@ -164,11 +166,11 @@ class WorkoutNameGeneratorTest extends TestCase
 
         $name = $this->generator->generate($exercise);
 
-        $this->assertEquals('Push Day (Strength)', $name);
+        $this->assertEquals('New Workout - Dec 6, 2025', $name);
     }
 
     /** @test */
-    public function it_capitalizes_category_properly()
+    public function it_ignores_a_plyometric_category_and_uses_the_date_fallback()
     {
         $exercise = Exercise::factory()->create(['title' => 'Burpees']);
         
@@ -179,7 +181,7 @@ class WorkoutNameGeneratorTest extends TestCase
 
         $name = $this->generator->generate($exercise);
 
-        $this->assertEquals('Core Day (Plyometric)', $name);
+        $this->assertEquals('New Workout - Dec 6, 2025', $name);
     }
 
     /** @test */
@@ -215,7 +217,7 @@ class WorkoutNameGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_prioritizes_movement_archetype_over_category()
+    public function it_ignores_all_intelligence_fields_and_uses_the_date_fallback()
     {
         $exercise = Exercise::factory()->create(['title' => 'Deadlift']);
         
@@ -228,12 +230,11 @@ class WorkoutNameGeneratorTest extends TestCase
 
         $name = $this->generator->generate($exercise);
 
-        // Should use archetype + category, not primary_mover or largest_muscle
-        $this->assertEquals('Hinge Day (Strength)', $name);
+        $this->assertEquals('New Workout - Dec 6, 2025', $name);
     }
 
     /** @test */
-    public function it_combines_archetype_and_category_correctly()
+    public function it_ignores_a_squat_plyometric_combination_and_uses_the_date_fallback()
     {
         $exercise = Exercise::factory()->create(['title' => 'Box Jumps']);
         
@@ -244,19 +245,19 @@ class WorkoutNameGeneratorTest extends TestCase
 
         $name = $this->generator->generate($exercise);
 
-        $this->assertEquals('Squat Day (Plyometric)', $name);
+        $this->assertEquals('New Workout - Dec 6, 2025', $name);
     }
 
     /** @test */
-    public function it_handles_different_movement_archetypes()
+    public function it_uses_the_date_fallback_for_every_movement_archetype()
     {
         $testCases = [
-            ['archetype' => 'push', 'expected' => 'Push Day (Strength)'],
-            ['archetype' => 'pull', 'expected' => 'Pull Day (Strength)'],
-            ['archetype' => 'squat', 'expected' => 'Squat Day (Strength)'],
-            ['archetype' => 'hinge', 'expected' => 'Hinge Day (Strength)'],
-            ['archetype' => 'carry', 'expected' => 'Carry Day (Strength)'],
-            ['archetype' => 'core', 'expected' => 'Core Day (Strength)'],
+            ['archetype' => 'push', 'expected' => 'New Workout - Dec 6, 2025'],
+            ['archetype' => 'pull', 'expected' => 'New Workout - Dec 6, 2025'],
+            ['archetype' => 'squat', 'expected' => 'New Workout - Dec 6, 2025'],
+            ['archetype' => 'hinge', 'expected' => 'New Workout - Dec 6, 2025'],
+            ['archetype' => 'carry', 'expected' => 'New Workout - Dec 6, 2025'],
+            ['archetype' => 'core', 'expected' => 'New Workout - Dec 6, 2025'],
         ];
 
         foreach ($testCases as $testCase) {
@@ -272,14 +273,14 @@ class WorkoutNameGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_different_categories()
+    public function it_uses_the_date_fallback_for_every_category()
     {
         $testCases = [
-            ['category' => 'strength', 'expected' => 'Push Day (Strength)'],
-            ['category' => 'cardio', 'expected' => 'Push Day (Cardio)'],
-            ['category' => 'mobility', 'expected' => 'Push Day (Mobility)'],
-            ['category' => 'plyometric', 'expected' => 'Push Day (Plyometric)'],
-            ['category' => 'flexibility', 'expected' => 'Push Day (Flexibility)'],
+            ['category' => 'strength', 'expected' => 'New Workout - Dec 6, 2025'],
+            ['category' => 'cardio', 'expected' => 'New Workout - Dec 6, 2025'],
+            ['category' => 'mobility', 'expected' => 'New Workout - Dec 6, 2025'],
+            ['category' => 'plyometric', 'expected' => 'New Workout - Dec 6, 2025'],
+            ['category' => 'flexibility', 'expected' => 'New Workout - Dec 6, 2025'],
         ];
 
         foreach ($testCases as $testCase) {

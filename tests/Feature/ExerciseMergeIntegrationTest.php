@@ -82,6 +82,7 @@ class ExerciseMergeIntegrationTest extends TestCase
         $showResponse->assertViewIs('exercises.merge');
         $showResponse->assertViewHas('exercise', $sourceExercise);
         $showResponse->assertViewHas('targetsWithInfo');
+        $showResponse->assertDontSee('Has AI insights');
 
         // Step 2: Execute merge
         $mergeResponse = $this->post(route('exercises.merge', $sourceExercise), [
@@ -110,12 +111,13 @@ class ExerciseMergeIntegrationTest extends TestCase
             'weight' => 105
         ]);
 
-        // Check exercise intelligence was transferred
+        // Exercise intelligence is no longer transferred: it stays on the source
         $this->assertDatabaseHas('exercise_intelligence', [
             'id' => $sourceIntelligence->id,
-            'exercise_id' => $targetExercise->id,
+            'exercise_id' => $sourceExercise->id,
             'canonical_name' => 'user_bench_press'
         ]);
+        $this->assertDatabaseMissing('exercise_intelligence', ['exercise_id' => $targetExercise->id]);
 
         // Check source exercise was soft deleted
         $this->assertSoftDeleted($sourceExercise);

@@ -296,21 +296,20 @@ class ExerciseMergeServiceTest extends TestCase
     }
 
     /** @test */
-    public function merge_exercises_transfers_intelligence_when_target_has_none()
+    public function merge_exercises_does_not_transfer_intelligence_when_target_has_none()
     {
         $source = Exercise::factory()->create(['user_id' => $this->regularUser->id]);
         $target = Exercise::factory()->create(['user_id' => null]);
 
-        // Create intelligence for source exercise only
         $intelligence = ExerciseIntelligence::factory()->create(['exercise_id' => $source->id]);
 
-        $this->service->mergeExercises($source, $target, $this->admin);
+        $this->assertTrue($this->service->mergeExercises($source, $target, $this->admin));
 
-        // Check intelligence was transferred
         $this->assertDatabaseHas('exercise_intelligence', [
             'id' => $intelligence->id,
-            'exercise_id' => $target->id,
+            'exercise_id' => $source->id,
         ]);
+        $this->assertDatabaseMissing('exercise_intelligence', ['exercise_id' => $target->id]);
     }
 
     /** @test */
@@ -437,13 +436,12 @@ class ExerciseMergeServiceTest extends TestCase
             'user_id' => $otherUser->id,
         ]);
 
-        // Create exercise intelligence
         ExerciseIntelligence::factory()->create(['exercise_id' => $exercise->id]);
 
         $stats = $this->service->getMergeStatistics($exercise);
 
         $this->assertEquals(5, $stats['lift_logs_count']);
-        $this->assertTrue($stats['has_intelligence']);
+        $this->assertArrayNotHasKey('has_intelligence', $stats);
         $this->assertEquals(2, $stats['users_count']);
     }
 

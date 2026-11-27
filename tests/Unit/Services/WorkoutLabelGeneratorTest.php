@@ -94,7 +94,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_intelligent_label_for_single_exercise_with_intelligence()
+    public function it_lists_the_exercise_name_for_a_single_exercise_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         $exercise = $this->createExerciseWithIntelligence('Back Squat', 'squat', 'strength');
@@ -102,11 +102,11 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        $this->assertEquals('Leg Day • 1 exercise', $label);
+        $this->assertEquals('Back Squat', $label);
     }
 
     /** @test */
-    public function it_uses_intelligent_label_for_two_exercises_with_intelligence()
+    public function it_lists_exercise_names_for_two_exercises_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         $exercise1 = $this->createExerciseWithIntelligence('Pull-Up', 'pull', 'strength');
@@ -116,11 +116,11 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        $this->assertEquals('Pull Day • 2 exercises', $label);
+        $this->assertEquals('Pull-Up & Bent-Over Row', $label);
     }
 
     /** @test */
-    public function it_generates_push_day_label_for_all_push_exercises()
+    public function it_uses_the_name_fallback_for_push_exercises_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -136,11 +136,11 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        $this->assertEquals('Push Day • 3 exercises', $label);
+        $this->assertEquals('Upper Body • 3 exercises', $label);
     }
 
     /** @test */
-    public function it_generates_pull_day_label_for_all_pull_exercises()
+    public function it_uses_the_mixed_fallback_for_pull_exercises_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -156,11 +156,11 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        $this->assertEquals('Pull Day • 3 exercises', $label);
+        $this->assertEquals('Mixed Workout • 3 exercises', $label);
     }
 
     /** @test */
-    public function it_generates_leg_day_label_for_all_squat_exercises()
+    public function it_uses_the_name_fallback_for_squat_exercises_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -180,7 +180,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_upper_body_label_for_push_and_pull_mix()
+    public function it_uses_the_name_fallback_for_a_push_and_pull_mix_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -201,7 +201,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_leg_day_label_for_squat_and_hinge_mix()
+    public function it_uses_the_name_fallback_for_a_squat_and_hinge_mix_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -222,7 +222,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_full_body_label_for_mixed_archetypes()
+    public function it_uses_the_name_fallback_for_mixed_archetypes_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -239,11 +239,11 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        $this->assertEquals('Full Body • 4 exercises', $label);
+        $this->assertEquals('Leg Day • 4 exercises', $label);
     }
 
     /** @test */
-    public function it_appends_category_when_dominant_and_not_strength()
+    public function it_does_not_append_a_cardio_category_from_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -259,12 +259,12 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        $this->assertStringContainsString('Cardio', $label);
-        $this->assertStringContainsString('3 exercises', $label);
+        $this->assertEquals('Mixed Workout • 3 exercises', $label);
+        $this->assertStringNotContainsString('Cardio', $label);
     }
 
     /** @test */
-    public function it_does_not_append_strength_category()
+    public function it_does_not_append_a_strength_category_from_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -280,12 +280,12 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        $this->assertEquals('Push Day • 3 exercises', $label);
+        $this->assertEquals('Upper Body • 3 exercises', $label);
         $this->assertStringNotContainsString('Strength', $label);
     }
 
     /** @test */
-    public function it_generates_plyometric_label_when_dominant()
+    public function it_does_not_append_a_plyometric_category_from_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -301,11 +301,12 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        $this->assertStringContainsString('Plyometric', $label);
+        $this->assertEquals('Leg Day • 3 exercises', $label);
+        $this->assertStringNotContainsString('Plyometric', $label);
     }
 
     /** @test */
-    public function it_handles_core_archetype()
+    public function it_uses_the_mixed_fallback_for_core_exercises_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -321,7 +322,7 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        $this->assertEquals('Core • 3 exercises', $label);
+        $this->assertEquals('Mixed Workout • 3 exercises', $label);
     }
 
     /** @test */
@@ -365,7 +366,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_mixed_squat_and_hinge_as_leg_day()
+    public function it_uses_the_name_fallback_for_lunges_and_hinges_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -385,7 +386,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_generates_leg_day_for_squat_hinge_mix_above_70_percent()
+    public function it_uses_the_name_fallback_for_five_leg_exercises_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -407,7 +408,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_only_appends_category_when_70_percent_dominant()
+    public function it_uses_the_name_fallback_for_mixed_categories_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -423,12 +424,11 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        // 2/3 = 66%, not enough for category append
-        $this->assertEquals('Push Day • 3 exercises', $label);
+        $this->assertEquals('Upper Body • 3 exercises', $label);
     }
 
     /** @test */
-    public function it_handles_exercises_with_missing_intelligence_data()
+    public function it_uses_the_name_fallback_when_only_some_exercises_have_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -445,16 +445,14 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        // Should calculate based on exercises with intelligence: 2/2 = 100% leg movements
         $this->assertEquals('Leg Day • 3 exercises', $label);
     }
 
     /** @test */
-    public function it_ignores_core_exercises_when_determining_workout_type()
+    public function it_uses_the_name_fallback_for_push_and_core_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
-        // Push exercises + core - should be labeled as Push Day, not Full Body
         $exercises = [
             $this->createExerciseWithIntelligence('Bench Press', 'push', 'strength'),
             $this->createExerciseWithIntelligence('Overhead Press', 'push', 'strength'),
@@ -467,12 +465,11 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        // Core should be ignored, so 2/2 non-core = 100% push
-        $this->assertEquals('Push Day • 3 exercises', $label);
+        $this->assertEquals('Upper Body • 3 exercises', $label);
     }
 
     /** @test */
-    public function it_labels_core_only_workouts_as_core()
+    public function it_uses_the_mixed_fallback_for_core_only_workouts_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -488,16 +485,14 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        // All core exercises should be labeled as Core
-        $this->assertEquals('Core • 3 exercises', $label);
+        $this->assertEquals('Mixed Workout • 3 exercises', $label);
     }
 
     /** @test */
-    public function it_ignores_core_in_mixed_workouts()
+    public function it_uses_the_name_fallback_for_upper_leg_and_core_with_intelligence()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
-        // Upper body + leg + core - should still be Full Body
         $exercises = [
             $this->createExerciseWithIntelligence('Bench Press', 'push', 'strength'),
             $this->createExerciseWithIntelligence('Back Squat', 'squat', 'strength'),
@@ -511,7 +506,6 @@ class WorkoutLabelGeneratorTest extends TestCase
 
         $label = $this->generator->generateFromWorkout($workout);
 
-        // Core ignored, so push + squat + pull = Full Body
-        $this->assertEquals('Full Body • 4 exercises', $label);
+        $this->assertEquals('Leg Day • 4 exercises', $label);
     }
 }

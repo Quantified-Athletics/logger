@@ -115,7 +115,7 @@ class SimpleWorkoutTest extends TestCase
 
         $response->assertRedirect();
         
-        // Verify workout was created with date-based fallback name (since new exercise has no intelligence)
+        // Verify workout was created with the date-based fallback name
         $workout = Workout::where('user_id', $user->id)->first();
         $this->assertNotNull($workout);
         $this->assertStringStartsWith('New Workout - ', $workout->name);
