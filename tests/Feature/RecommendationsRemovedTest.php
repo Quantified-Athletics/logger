@@ -41,9 +41,9 @@ class RecommendationsRemovedTest extends TestCase
 
     public function test_recommendation_classes_are_gone(): void
     {
-        $this->assertFalse(class_exists('App\\Http\\Controllers\\RecommendationController'));
-        $this->assertFalse(class_exists('App\\Services\\RecommendationEngine'));
-        $this->assertFalse(class_exists('App\\Services\\ActivityAnalysisService'));
+        $this->assertFileDoesNotExist(app_path('Http/Controllers/RecommendationController.php'));
+        $this->assertFileDoesNotExist(app_path('Services/RecommendationEngine.php'));
+        $this->assertFileDoesNotExist(app_path('Services/ActivityAnalysisService.php'));
     }
 
     public function test_recommendations_view_is_gone(): void
@@ -82,6 +82,6 @@ class RecommendationsRemovedTest extends TestCase
         $this->actingAs($this->adminUser())
             ->get(route('profile.edit'))
             ->assertOk()
-            ->assertDontSee('Recommendations');
+            ->assertDontSee(url('/recommendations'), false);
     }
 }

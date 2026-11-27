@@ -15,7 +15,6 @@ use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\LiftLogController;
 use App\Http\Controllers\BodyLogController;
 use App\Http\Controllers\MeasurementTypeController;
-use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\WorkoutController;
 use App\Http\Controllers\FeedController;
 
@@ -117,9 +116,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('exercise-aliases/create', [App\Http\Controllers\ExerciseMatchingAliasController::class, 'create'])->name('exercise-aliases.create');
     Route::get('exercise-aliases/store', [App\Http\Controllers\ExerciseMatchingAliasController::class, 'store'])->name('exercise-aliases.store');
     Route::post('exercise-aliases/create-and-link', [App\Http\Controllers\ExerciseMatchingAliasController::class, 'createAndLink'])->name('exercise-aliases.create-and-link');
-
-    // Exercise Recommendations
-    Route::get('recommendations', [RecommendationController::class, 'index'])->name('recommendations.index');
 
     // Workouts - Simple Mode
     Route::get('workouts/create-simple', [App\Http\Controllers\SimpleWorkoutController::class, 'create'])
