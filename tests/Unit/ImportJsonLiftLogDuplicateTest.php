@@ -39,7 +39,7 @@ class ImportJsonLiftLogDuplicateTest extends TestCase
             'canonical_name' => $canonicalName,
             'description' => 'Test exercise',
             'user_id' => null,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
     }
 

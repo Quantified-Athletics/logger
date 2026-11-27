@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ExerciseTypes\ExerciseTypeFactory;
 use App\Services\ExerciseTypes\ExerciseTypeInterface;
+use App\Services\ExerciseTypes\LogTypeTable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
@@ -19,7 +20,7 @@ class Exercise extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['title', 'description', 'canonical_name', 'user_id', 'exercise_type'])
+            ->logOnly(['title', 'description', 'canonical_name', 'user_id', 'log_type'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
@@ -29,13 +30,11 @@ class Exercise extends Model
         'description',
         'canonical_name',
         'user_id',
-        'exercise_type',
         'log_type',
         'show_in_feed',
     ];
 
     protected $casts = [
-        'exercise_type' => 'string',
         'log_type' => 'string',
         'show_in_feed' => 'boolean',
         'deleted_at' => 'datetime',
@@ -49,11 +48,10 @@ class Exercise extends Model
             if (empty($exercise->canonical_name) && !empty($exercise->title)) {
                 $exercise->canonical_name = static::generateUniqueCanonicalName($exercise->title);
             }
-            
-            // Set default exercise_type if not provided
-            if (empty($exercise->exercise_type)) {
-                $exercise->exercise_type = 'regular';
-            }
+        });
+
+        static::saving(function (Exercise $exercise) {
+            static::defaultLogType($exercise);
         });
 
         static::deleting(function ($exercise) {
@@ -62,6 +60,17 @@ class Exercise extends Model
                 $alias->delete();
             });
         });
+    }
+
+    /**
+     * Every exercise has a log type: one saved without any gets barbell (the regular strategy), as an
+     * exercise without an exercise type used to get regular.
+     */
+    protected static function defaultLogType(Exercise $exercise): void
+    {
+        if (empty($exercise->log_type)) {
+            $exercise->log_type = LogTypeTable::DEFAULT_LOG_TYPE;
+        }
     }
 
     public function liftLogs()
@@ -169,11 +178,11 @@ class Exercise extends Model
     }
 
     /**
-     * Scope to filter exercises by specific type
+     * Scope to filter exercises whose log type uses a specific strategy type
      */
     public function scopeOfType($query, string $type)
     {
-        return $query->where('exercise_type', $type);
+        return $query->whereIn('log_type', LogTypeTable::logTypesFor($type));
     }
 
     /**
@@ -181,7 +190,7 @@ class Exercise extends Model
      */
     public function scopeBanded($query)
     {
-        return $query->whereIn('exercise_type', ['banded_resistance', 'banded_assistance']);
+        return $query->whereIn('log_type', LogTypeTable::logTypesFor('banded_resistance', 'banded_assistance'));
     }
 
     /**
@@ -189,7 +198,7 @@ class Exercise extends Model
      */
     public function scopeBodyweight($query)
     {
-        return $query->where('exercise_type', 'bodyweight');
+        return $query->whereIn('log_type', LogTypeTable::logTypesFor('bodyweight'));
     }
 
     /**
@@ -197,7 +206,7 @@ class Exercise extends Model
      */
     public function scopeRegular($query)
     {
-        return $query->where('exercise_type', 'regular');
+        return $query->whereIn('log_type', LogTypeTable::logTypesFor('regular'));
     }
 
     /**
@@ -205,7 +214,7 @@ class Exercise extends Model
      */
     public function scopeCardio($query)
     {
-        return $query->where('exercise_type', 'cardio');
+        return $query->whereIn('log_type', LogTypeTable::logTypesFor('cardio'));
     }
 
     /**
@@ -213,8 +222,8 @@ class Exercise extends Model
      */
     public function scopeNonCardio($query)
     {
-        return $query->where('exercise_type', '!=', 'cardio')
-                     ->orWhereNull('exercise_type');
+        return $query->whereNotIn('log_type', LogTypeTable::logTypesFor('cardio'))
+                     ->orWhereNull('log_type');
     }
 
     /**
@@ -222,7 +231,7 @@ class Exercise extends Model
      */
     public function scopeStaticHold($query)
     {
-        return $query->where('exercise_type', 'static_hold');
+        return $query->whereIn('log_type', LogTypeTable::logTypesFor('static_hold'));
     }
 
     // Helper methods
@@ -232,21 +241,29 @@ class Exercise extends Model
     }
 
     /**
+     * The strategy type name this exercise's log type uses (regular when it has none)
+     */
+    public function strategyTypeName(): string
+    {
+        return LogTypeTable::strategyOrFallbackFor($this->log_type);
+    }
+
+    /**
      * Check if this exercise is of a specific type
      */
     public function isType(string $type): bool
     {
-        return $this->exercise_type === $type;
+        return $this->strategyTypeName() === $type;
     }
 
     public function isBandedResistance(): bool
     {
-        return $this->exercise_type === 'banded_resistance';
+        return $this->strategyTypeName() === 'banded_resistance';
     }
 
     public function isBandedAssistance(): bool
     {
-        return $this->exercise_type === 'banded_assistance';
+        return $this->strategyTypeName() === 'banded_assistance';
     }
 
     /**
@@ -254,7 +271,7 @@ class Exercise extends Model
      */
     public function isBanded(): bool
     {
-        return in_array($this->exercise_type, ['banded_resistance', 'banded_assistance']);
+        return in_array($this->strategyTypeName(), ['banded_resistance', 'banded_assistance']);
     }
 
     /**
@@ -262,7 +279,7 @@ class Exercise extends Model
      */
     public function isCardio(): bool
     {
-        return $this->exercise_type === 'cardio';
+        return $this->strategyTypeName() === 'cardio';
     }
 
     /**
@@ -270,10 +287,8 @@ class Exercise extends Model
      */
     public function isStaticHold(): bool
     {
-        return $this->exercise_type === 'static_hold';
+        return $this->strategyTypeName() === 'static_hold';
     }
-
-
 
     /**
      * Check if this exercise supports 1RM calculation
@@ -416,8 +431,8 @@ class Exercise extends Model
         }
 
         // Exercise types must be compatible for merging
-        $sourceType = $source->exercise_type;
-        $targetType = $globalTarget->exercise_type;
+        $sourceType = $source->strategyTypeName();
+        $targetType = $globalTarget->strategyTypeName();
         
         // Exact match is always compatible
         if ($sourceType === $targetType) {
@@ -492,19 +507,5 @@ class Exercise extends Model
     public function hasAliasForUser(User $user): bool
     {
         return app(\App\Services\ExerciseAliasService::class)->hasAlias($user, $this);
-    }
-
-    public function getLogTypeAttribute($value): string
-    {
-        if ($value) {
-            return $value;
-        }
-
-        return match ($this->exercise_type) {
-            'bodyweight' => 'bodyweight',
-            'cardio' => 'cardio',
-            'static_hold' => 'static_hold',
-            default => 'regular',
-        };
     }
 }

@@ -23,7 +23,7 @@ class ChartTimeframeSelectorTest extends TestCase
         $this->user = User::factory()->create();
         $this->exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'weighted'
+            'log_type' => 'barbell'
         ]);
         $this->actingAs($this->user);
     }

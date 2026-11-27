@@ -37,7 +37,7 @@ class CreateExerciseWorkflowTest extends TestCase
         $this->assertDatabaseHas('exercises', [
             'title' => $exerciseName,
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Should redirect to lift-logs/create (without date param for today)
@@ -110,7 +110,7 @@ class CreateExerciseWorkflowTest extends TestCase
             'user_id' => $this->user->id,
             'title' => 'Test Exercise',
             'canonical_name' => 'test_exercise',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Try to create another with same name

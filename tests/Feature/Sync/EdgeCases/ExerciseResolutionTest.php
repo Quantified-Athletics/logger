@@ -45,7 +45,7 @@ class ExerciseResolutionTest extends TestCase
 
         $this->assertEquals('brand_new_exercise', $exercise->canonical_name);
         $this->assertEquals('cardio', $exercise->log_type);
-        $this->assertEquals('cardio', $exercise->exercise_type);
+        $this->assertEquals('cardio', $exercise->strategyTypeName());
     }
 
     /**
@@ -56,7 +56,7 @@ class ExerciseResolutionTest extends TestCase
         $exercise = Exercise::create([
             'title' => 'Back Squat',
             'canonical_name' => 'back_squat',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         ExerciseAlias::create([
@@ -80,7 +80,6 @@ class ExerciseResolutionTest extends TestCase
         $exercise = Exercise::create([
             'title' => 'Deadlift',
             'canonical_name' => 'deadlift',
-            'exercise_type' => 'regular',
             'log_type' => 'barbell',
         ]);
 
@@ -115,7 +114,6 @@ class ExerciseResolutionTest extends TestCase
         $exercise = Exercise::create([
             'title' => 'Overhead Press',
             'canonical_name' => 'overhead_press',
-            'exercise_type' => 'regular',
             'log_type' => 'barbell',
         ]);
 
@@ -148,7 +146,6 @@ class ExerciseResolutionTest extends TestCase
         $exercise = Exercise::create([
             'title' => 'Old Title',
             'canonical_name' => 'some_exercise',
-            'exercise_type' => 'regular',
             'log_type' => 'barbell',
         ]);
 

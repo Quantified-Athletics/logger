@@ -217,15 +217,6 @@ class StaticHoldExerciseTypeTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_correct_display_info()
-    {
-        $info = $this->strategy->getTypeDisplayInfo();
-        
-        $this->assertEquals('fas fa-hand-paper', $info['icon']);
-        $this->assertEquals('Static Hold', $info['name']);
-    }
-
-    /** @test */
     public function it_returns_correct_chart_title()
     {
         $this->assertEquals('Hold Duration Progress', $this->strategy->getChartTitle());
@@ -323,7 +314,7 @@ class StaticHoldExerciseTypeTest extends TestCase
         
         // Create mock exercise to avoid null pointer errors
         $mockExercise = new Exercise();
-        $mockExercise->exercise_type = 'static_hold';
+        $mockExercise->log_type = 'static-hold';
         $liftLog->setRelation('exercise', $mockExercise);
         
         // Set a mock user for unit resolution

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Exercise;
 use App\Models\User;
+use App\Services\ExerciseTypes\LogTypeTable;
 use Illuminate\Support\Facades\Log;
 
 class ExercisePRService
@@ -23,7 +24,7 @@ class ExercisePRService
      */
     public function supportsPRTracking(Exercise $exercise): bool
     {
-        return $exercise->exercise_type === 'regular';
+        return LogTypeTable::strategyFor($exercise->log_type) === 'regular';
     }
 
     /**

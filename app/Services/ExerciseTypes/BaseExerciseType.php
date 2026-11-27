@@ -309,7 +309,7 @@ abstract class BaseExerciseType implements ExerciseTypeInterface
         
         // Create a mock exercise to avoid null pointer errors
         $mockExercise = new \App\Models\Exercise();
-        $mockExercise->exercise_type = $this->getTypeName();
+        $mockExercise->log_type = LogTypeTable::logTypeForExerciseType($this->getTypeName());
         $mockLiftLog->setRelation('exercise', $mockExercise);
         
         $mockLiftLog->setRelation('liftSets', collect([
@@ -353,19 +353,7 @@ abstract class BaseExerciseType implements ExerciseTypeInterface
         
         return round($liftLog->one_rep_max) . ' lbs';
     }
-    
-    /**
-     * Get exercise type display name and icon
-     * Default implementation returns generic weighted exercise info
-     */
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-dumbbell',
-            'name' => 'Weighted'
-        ];
-    }
-    
+
     /**
      * Get chart title for exercise logs page
      * Default implementation returns 1RM Progress if supported, otherwise Volume Progress

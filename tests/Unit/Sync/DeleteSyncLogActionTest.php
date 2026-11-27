@@ -27,7 +27,7 @@ class DeleteSyncLogActionTest extends TestCase
         $this->exercise = Exercise::create([
             'title' => 'Squat',
             'canonical_name' => 'squat',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
     }
 

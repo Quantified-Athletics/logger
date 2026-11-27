@@ -40,7 +40,7 @@ class ExerciseCreationService
         $exercise = Exercise::create([
             'title' => $exerciseName,
             'user_id' => $userId,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'canonical_name' => $this->generateUniqueCanonicalName($exerciseName, $userId)
         ]);
         

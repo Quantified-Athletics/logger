@@ -44,7 +44,7 @@ class ImportJsonLiftLogTest extends TestCase
             'canonical_name' => $canonicalName,
             'description' => 'Test exercise',
             'user_id' => null, // Global exercise
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
     }
 
@@ -299,12 +299,12 @@ class ImportJsonLiftLogTest extends TestCase
             'canonical_name' => 'new_exercise',
             'user_id' => $user->id,
             'description' => 'Imported from JSON file',
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
         
         $this->assertEquals('New Exercise', $result->title);
         $this->assertEquals('new_exercise', $result->canonical_name);
-        $this->assertEquals('bodyweight', $result->exercise_type);
+        $this->assertEquals('bodyweight', $result->strategyTypeName());
         $this->assertEquals($user->id, $result->user_id);
     }
 
@@ -1036,7 +1036,7 @@ class ImportJsonLiftLogTest extends TestCase
             'title' => 'Auto Created Exercise',
                 'canonical_name' => 'auto_created_exercise',
                 'user_id' => $user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
             
             // Verify lift log was created

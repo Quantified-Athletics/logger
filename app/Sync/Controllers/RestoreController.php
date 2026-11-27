@@ -49,16 +49,8 @@ class RestoreController
                 // Prefer the exercise's canonical log_type from Athlete sync
                 $logType = $liftLog->exercise->log_type;
             }
-            if (!$logType) {
-                // Final fallback: derive from coarse exercise_type
-                $exerciseType = $liftLog->exercise->exercise_type ?? 'regular';
-                $logType = match ($exerciseType) {
-                    'cardio' => 'cardio',
-                    'static_hold', 'static-hold' => 'static-hold',
-                    'banded_resistance', 'banded_assistance', 'banded' => 'banded',
-                    'bodyweight' => 'bodyweight-reps',
-                    default => 'barbell',
-                };
+            if (! $logType) {
+                $logType = 'barbell';
             }
 
             // Skip logs with no live sets: they carry no unit and would otherwise
@@ -150,8 +142,8 @@ class RestoreController
             return [
                 'id' => $exercise->canonical_name,
                 'name' => $exercise->title,
-                'logType' => $exercise->log_type ?? 'barbell',
-                'exerciseType' => $exercise->exercise_type ?? 'regular',
+                'logType' => $exercise->log_type ?: 'barbell',
+                'exerciseType' => $exercise->strategyTypeName(),
             ];
         })->values()->toArray();
     }

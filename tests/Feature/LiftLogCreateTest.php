@@ -27,7 +27,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
         
         // Refresh to ensure we have the latest data
@@ -353,7 +353,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $response = $this->get(route('lift-logs.create', [
@@ -370,7 +370,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded'
+            'log_type' => 'banded'
         ]);
 
         $response = $this->get(route('lift-logs.create', [
@@ -582,7 +582,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded'
+            'log_type' => 'banded'
         ]);
         $date = Carbon::today();
 

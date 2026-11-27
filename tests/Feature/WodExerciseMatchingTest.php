@@ -30,7 +30,7 @@ class WodExerciseMatchingTest extends TestCase
         $exercise = Exercise::factory()->create([
             'user_id' => $user->id,
             'title' => 'Back Squat',
-            'exercise_type' => 'weighted_resistance',
+            'log_type' => 'barbell',
         ]);
 
         $workout = Workout::factory()->create([
@@ -76,7 +76,7 @@ class WodExerciseMatchingTest extends TestCase
         $exercise = Exercise::factory()->create([
             'user_id' => $user->id,
             'title' => 'Bench Press',
-            'exercise_type' => 'weighted_resistance',
+            'log_type' => 'barbell',
         ]);
 
         $workout = Workout::factory()->create([
@@ -102,7 +102,7 @@ class WodExerciseMatchingTest extends TestCase
         $exercise = Exercise::factory()->create([
             'user_id' => $user->id,
             'title' => 'Push-ups',
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
 
         $workout = Workout::factory()->create([
@@ -130,13 +130,13 @@ class WodExerciseMatchingTest extends TestCase
         $squatExercise = Exercise::factory()->create([
             'user_id' => $user->id,
             'title' => 'Back Squat',
-            'exercise_type' => 'weighted_resistance',
+            'log_type' => 'barbell',
         ]);
         
         $warmupExercise = Exercise::factory()->create([
             'user_id' => $user->id,
             'title' => 'Warm-up Squats',
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
 
         $workout = Workout::factory()->create([
@@ -162,13 +162,13 @@ class WodExerciseMatchingTest extends TestCase
         $burpeeExercise = Exercise::factory()->create([
             'user_id' => $user->id,
             'title' => 'Burpees',
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
         
         $stretchExercise = Exercise::factory()->create([
             'user_id' => $user->id,
             'title' => 'Stretching',
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
 
         $workout = Workout::factory()->create([
@@ -193,7 +193,7 @@ class WodExerciseMatchingTest extends TestCase
         $exercise = Exercise::factory()->create([
             'user_id' => $user->id,
             'title' => 'Back Squat',
-            'exercise_type' => 'weighted_resistance',
+            'log_type' => 'barbell',
         ]);
 
         // WOD syntax uses plural form
@@ -222,7 +222,7 @@ class WodExerciseMatchingTest extends TestCase
         $exercise = Exercise::factory()->create([
             'user_id' => $user->id,
             'title' => 'Deadlift',
-            'exercise_type' => 'weighted_resistance',
+            'log_type' => 'barbell',
         ]);
 
         // WOD syntax uses plural form

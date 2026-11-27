@@ -124,9 +124,6 @@ class StaticHoldExerciseType extends BaseExerciseType
     {
         $processedData = $data;
         
-        // For static hold exercises, ensure exercise_type is set correctly
-        $processedData['exercise_type'] = 'static_hold';
-        
         return $processedData;
     }
     
@@ -401,18 +398,7 @@ class StaticHoldExerciseType extends BaseExerciseType
     {
         return 'N/A (Static Hold)';
     }
-    
-    /**
-     * Get exercise type display name and icon for static hold exercises
-     */
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-hand-paper',
-            'name' => 'Static Hold'
-        ];
-    }
-    
+
     /**
      * Get chart title for static hold exercises
      */

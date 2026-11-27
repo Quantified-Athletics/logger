@@ -24,7 +24,7 @@ class PREdgeCasesTest extends TestCase
         $this->exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
             'title' => 'Bench Press',
-            'exercise_type' => 'barbell',
+            'log_type' => 'barbell',
         ]);
     }
 

@@ -120,7 +120,7 @@ class ExerciseControllerTest extends TestCase
             'user_id' => $this->regularUser->id,
             'title' => 'Test Exercise',
             'description' => 'Test Description',
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
 
         $response = $this->controller->promote($userExercise);
@@ -131,7 +131,7 @@ class ExerciseControllerTest extends TestCase
             'title' => 'Test Exercise',
             'description' => 'Test Description',
             'user_id' => null,
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
     }
 
@@ -356,7 +356,7 @@ class ExerciseControllerTest extends TestCase
             'user_id' => null,
             'title' => 'Test Exercise',
             'description' => 'Test Description',
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
 
         // Create a lift log for the original owner
@@ -374,7 +374,7 @@ class ExerciseControllerTest extends TestCase
             'title' => 'Test Exercise',
             'description' => 'Test Description',
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
     }
 
@@ -387,7 +387,7 @@ class ExerciseControllerTest extends TestCase
         $response = $this->post(route('exercises.store'), [
             'title' => 'New Exercise',
             'description' => 'Test description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'show_in_feed' => true,
         ]);
 
@@ -407,7 +407,7 @@ class ExerciseControllerTest extends TestCase
         $response = $this->post(route('exercises.store'), [
             'title' => 'New Exercise',
             'description' => 'Test description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'show_in_feed' => false,
         ]);
 
@@ -427,7 +427,7 @@ class ExerciseControllerTest extends TestCase
         $response = $this->post(route('exercises.store'), [
             'title' => 'New Exercise',
             'description' => 'Test description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             // show_in_feed not provided
         ]);
 
@@ -453,7 +453,7 @@ class ExerciseControllerTest extends TestCase
         $response = $this->put(route('exercises.update', $exercise), [
             'title' => 'Test Exercise',
             'description' => 'Test description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'show_in_feed' => true,
         ]);
 
@@ -478,7 +478,7 @@ class ExerciseControllerTest extends TestCase
         $response = $this->put(route('exercises.update', $exercise), [
             'title' => 'Test Exercise',
             'description' => 'Test description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'show_in_feed' => false,
         ]);
 
@@ -503,7 +503,7 @@ class ExerciseControllerTest extends TestCase
         $response = $this->put(route('exercises.update', $exercise), [
             'title' => 'Test Exercise Updated',
             'description' => 'Test description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             // show_in_feed not provided
         ]);
 

@@ -5,7 +5,9 @@ namespace App\Actions\Exercises;
 use App\Models\Exercise;
 use App\Models\User;
 use App\Services\ExerciseTypes\ExerciseTypeFactory;
+use App\Services\ExerciseTypes\LogTypeTable;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Str;
 
 class CreateExerciseAction
@@ -18,11 +20,11 @@ class CreateExerciseAction
         // Check for name conflicts
         $this->validateExerciseName($validated['title'], $user);
 
-        $exerciseType = $validated['exercise_type'];
+        $logType = $validated['log_type'];
 
         // Create a temporary exercise to determine the strategy
         $tempExercise = new Exercise([
-            'exercise_type' => $exerciseType,
+            'log_type' => $logType,
         ]);
 
         // Use exercise type strategy to process exercise data
@@ -31,8 +33,8 @@ class CreateExerciseAction
 
         $exercise = new Exercise([
             'title' => $processedData['title'],
-            'description' => $processedData['description'],
-            'exercise_type' => $exerciseType,
+            'description' => $processedData['description'] ?? null,
+            'log_type' => $logType,
             'user_id' => $user->id, // All new exercises are user exercises
             'show_in_feed' => $validated['show_in_feed'] ?? false,
         ]);
@@ -44,12 +46,10 @@ class CreateExerciseAction
     
     private function validateRequest(Request $request, User $user): array
     {
-        $availableTypes = ExerciseTypeFactory::getAvailableTypes();
-        
         $rules = [
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'exercise_type' => 'required|in:' . implode(',', $availableTypes),
+            'log_type' => ['required', Rule::in(LogTypeTable::logTypes())],
             'show_in_feed' => 'nullable|boolean',
         ];
 

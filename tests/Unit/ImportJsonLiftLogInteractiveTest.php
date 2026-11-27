@@ -27,7 +27,7 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
             'canonical_name' => $canonicalName,
             'description' => 'Test exercise',
             'user_id' => null, // Global exercise
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
     }
 
@@ -50,13 +50,13 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
             'canonical_name' => 'custom_exercise',
             'description' => 'Imported from JSON file',
             'user_id' => $user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
         
         $this->assertEquals('Custom Exercise', $result->title);
         $this->assertEquals('custom_exercise', $result->canonical_name);
         $this->assertEquals('Imported from JSON file', $result->description);
-        $this->assertEquals('bodyweight', $result->exercise_type);
+        $this->assertEquals('bodyweight', $result->strategyTypeName());
         $this->assertEquals($user->id, $result->user_id);
     }
 
@@ -78,10 +78,10 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
             'title' => 'Weighted Exercise',
             'canonical_name' => 'weighted_exercise',
             'user_id' => $user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
         
-        $this->assertEquals('regular', $result->exercise_type);
+        $this->assertEquals('regular', $result->strategyTypeName());
         $this->assertEquals($user->id, $result->user_id);
     }
 
@@ -115,7 +115,7 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
             'canonical_name' => 'user_exercise',
             'description' => 'User specific exercise',
             'user_id' => $user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
         
         $exerciseData = [
@@ -153,7 +153,7 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
             'canonical_name' => 'user_exercise',
             'description' => 'User specific exercise',
             'user_id' => $user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
         
         // Test global scope
@@ -246,7 +246,7 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
             'title' => 'New Exercise',
             'canonical_name' => 'new_exercise',
             'user_id' => $user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
         
         $this->assertEquals('New Exercise', $result['exercise']->title);

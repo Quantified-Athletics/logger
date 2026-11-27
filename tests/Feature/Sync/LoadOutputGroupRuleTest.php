@@ -71,7 +71,6 @@ class LoadOutputGroupRuleTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'load_output',
             'log_type' => 'weighted-carry',
         ]);
 

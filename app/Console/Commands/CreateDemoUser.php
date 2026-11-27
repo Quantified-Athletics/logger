@@ -185,10 +185,10 @@ class CreateDemoUser extends Command
             'Strict Press' => ['start_weight' => 75, 'base_progression' => 5, 'current_weight' => 75, 'max_rep_target' => 3],
             'Clean & Jerk' => ['start_weight' => 95, 'base_progression' => 5, 'current_weight' => 95, 'max_rep_target' => 1],
             'Snatch' => ['start_weight' => 65, 'base_progression' => 5, 'current_weight' => 65, 'max_rep_target' => 1],
-            'Pull-ups' => ['start_weight' => 0, 'base_progression' => 0, 'type' => 'bodyweight', 'current_weight' => 0],
-            'Push-ups' => ['start_weight' => 0, 'base_progression' => 0, 'type' => 'bodyweight', 'current_weight' => 0],
-            'Rowing' => ['start_weight' => 0, 'base_progression' => 0, 'type' => 'cardio', 'current_weight' => 0],
-            'Banded Pull-Down' => ['start_weight' => 0, 'base_progression' => 0, 'type' => 'banded_resistance', 'current_weight' => 0],
+            'Pull-ups' => ['start_weight' => 0, 'base_progression' => 0, 'log_type' => 'bodyweight', 'current_weight' => 0],
+            'Push-ups' => ['start_weight' => 0, 'base_progression' => 0, 'log_type' => 'bodyweight', 'current_weight' => 0],
+            'Rowing' => ['start_weight' => 0, 'base_progression' => 0, 'log_type' => 'cardio-distance', 'current_weight' => 0],
+            'Banded Pull-Down' => ['start_weight' => 0, 'base_progression' => 0, 'log_type' => 'banded', 'current_weight' => 0],
         ];
 
         $exerciseModels = [];
@@ -205,7 +205,7 @@ class CreateDemoUser extends Command
                     'title' => $title,
                     'description' => "Demo {$title}",
                     'user_id' => $user->id,
-                    'exercise_type' => $config['type'] ?? 'regular',
+                    'log_type' => $config['log_type'] ?? 'barbell',
                 ]);
             }
 
@@ -227,7 +227,7 @@ class CreateDemoUser extends Command
             $config = $exerciseData['config'];
             
             // Determine how many logs to create for this exercise
-            $exerciseType = $exercise->exercise_type;
+            $exerciseType = $exercise->strategyTypeName();
             if ($exerciseType === 'regular') {
                 // Barbell exercises: at least 18 logs
                 $numLogs = rand(18, 22);

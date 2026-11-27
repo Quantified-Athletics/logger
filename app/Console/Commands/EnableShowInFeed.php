@@ -91,7 +91,7 @@ class EnableShowInFeed extends Command
             $exercises->map(fn($e) => [
                 $e->id,
                 $e->title,
-                $e->exercise_type ?? 'regular',
+                $e->strategyTypeName(),
                 $e->user_id ?? 'global',
                 $e->lift_logs_max_logged_at 
                     ? \Carbon\Carbon::parse($e->lift_logs_max_logged_at)->format('Y-m-d H:i')
@@ -167,7 +167,7 @@ class EnableShowInFeed extends Command
             $availableExercises->map(fn($e) => [
                 $e->id,
                 $e->title,
-                $e->exercise_type ?? 'regular',
+                $e->strategyTypeName(),
                 $e->user_id ?? 'global',
                 $e->lift_logs_max_logged_at 
                     ? \Carbon\Carbon::parse($e->lift_logs_max_logged_at)->format('Y-m-d H:i')
@@ -202,7 +202,7 @@ class EnableShowInFeed extends Command
             $exercises->map(fn($e) => [
                 $e->id,
                 $e->title,
-                $e->exercise_type ?? 'regular',
+                $e->strategyTypeName(),
                 $e->user_id ?? 'global'
             ])
         );

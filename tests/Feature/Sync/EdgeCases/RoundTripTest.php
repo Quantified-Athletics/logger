@@ -70,7 +70,6 @@ class RoundTripTest extends TestCase
         $exercise = Exercise::create([
             'title' => 'Bench Press',
             'canonical_name' => 'bench_press',
-            'exercise_type' => 'regular',
             'log_type' => 'barbell',
         ]);
 

@@ -183,7 +183,7 @@ class ExerciseMatchingAliasController extends Controller
         $exercise = Exercise::create([
             'title' => $request->input('exercise_name'),
             'user_id' => Auth::id(),
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'canonical_name' => $canonicalName
         ]);
         

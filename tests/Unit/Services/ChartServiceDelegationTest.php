@@ -26,7 +26,7 @@ class ChartServiceDelegationTest extends TestCase
     /** @test */
     public function it_generates_1rm_chart_for_weighted_exercises()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLogs = $this->createLiftLogsWithSets($exercise, [
             ['weight' => 100, 'reps' => 5],
             ['weight' => 105, 'reps' => 5],
@@ -41,7 +41,7 @@ class ChartServiceDelegationTest extends TestCase
     /** @test */
     public function it_generates_volume_chart_for_bodyweight_exercises()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
         $liftLogs = $this->createLiftLogsWithSets($exercise, [
             ['weight' => 0, 'reps' => 10],
             ['weight' => 0, 'reps' => 12],
@@ -56,7 +56,7 @@ class ChartServiceDelegationTest extends TestCase
     /** @test */
     public function it_generates_volume_chart_for_banded_exercises()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_resistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLogs = $this->createLiftLogsWithSets($exercise, [
             ['weight' => 0, 'reps' => 8],
             ['weight' => 0, 'reps' => 10],
@@ -71,7 +71,7 @@ class ChartServiceDelegationTest extends TestCase
     /** @test */
     public function it_generates_distance_chart_for_cardio_exercises()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLogs = $this->createLiftLogsWithSets($exercise, [
             ['weight' => 0, 'reps' => 500],  // 500m
             ['weight' => 0, 'reps' => 1000], // 1000m

@@ -33,7 +33,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
 
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -51,7 +51,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
 
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -69,7 +69,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
 
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -88,7 +88,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
 
         $exercise = Exercise::factory()->create([
             'user_id' => $userWithExtraWeight->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -106,7 +106,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
 
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -124,7 +124,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -146,7 +146,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -168,7 +168,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -190,7 +190,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -213,7 +213,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
     public function exercise_controller_processes_regular_exercise_creation_data()
     {
         $exercise = Exercise::factory()->make([
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -222,20 +222,20 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
             'title' => 'Bench Press',
             // Should be set to false
             // Should be set to null,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ];
 
         $processedData = $strategy->processExerciseData($inputData);
 
         $this->assertEquals('Bench Press', $processedData['title']);
-        $this->assertEquals('regular', $processedData['exercise_type']);
+        $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 
     /** @test */
     public function exercise_controller_processes_banded_exercise_creation_data()
     {
         $exercise = Exercise::factory()->make([
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -243,20 +243,20 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
         $inputData = [
             'title' => 'Banded Squat',
             // Should be set to false when band_type is set,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ];
 
         $processedData = $strategy->processExerciseData($inputData);
 
         $this->assertEquals('Banded Squat', $processedData['title']);
-        $this->assertEquals('banded_resistance', $processedData['exercise_type']);
+        $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 
     /** @test */
     public function exercise_controller_processes_bodyweight_exercise_creation_data()
     {
         $exercise = Exercise::factory()->make([
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -264,33 +264,33 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
         $inputData = [
             'title' => 'Push-ups',
             // Should be set to null when is_bodyweight is true,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ];
 
         $processedData = $strategy->processExerciseData($inputData);
 
         $this->assertEquals('Push-ups', $processedData['title']);
-        $this->assertEquals('bodyweight', $processedData['exercise_type']);
+        $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 
     /** @test */
     public function exercise_controller_processes_cardio_exercise_creation_data()
     {
         $exercise = Exercise::factory()->make([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
         
         $inputData = [
             'title' => 'Running',
-            'exercise_type' => 'regular' // Should be overridden to cardio
+            'log_type' => 'barbell' // Should be overridden to cardio
         ];
 
         $processedData = $strategy->processExerciseData($inputData);
 
         $this->assertEquals('Running', $processedData['title']);
-        $this->assertEquals('cardio', $processedData['exercise_type']);
+        $this->assertArrayNotHasKey('exercise_type', $processedData);
         $this->assertFalse($processedData['is_bodyweight']);
     }
 
@@ -300,22 +300,22 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
         // Create exercises with different types
         $regularExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $bandedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $bodyweightExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $cardioExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Test that existing model methods still work
@@ -348,22 +348,22 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
     {
         $regularExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $bandedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $bodyweightExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $cardioExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         $regularStrategy = ExerciseTypeFactory::create($regularExercise);
@@ -398,7 +398,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
     {
         $regularExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $strategy = ExerciseTypeFactory::create($regularExercise);
@@ -416,7 +416,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
     {
         $regularExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $strategy = ExerciseTypeFactory::create($regularExercise);
@@ -434,7 +434,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
     {
         $regularExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $strategy = ExerciseTypeFactory::create($regularExercise);

@@ -81,9 +81,6 @@ class BandedAssistanceExerciseType extends BaseExerciseType
     {
         $processedData = $data;
         
-        // For banded assistance exercises, ensure exercise_type is set correctly
-        $processedData['exercise_type'] = 'banded_assistance';
-        
         // Banded assistance exercises are not bodyweight exercises
         $processedData['is_bodyweight'] = false;
         
@@ -161,18 +158,7 @@ class BandedAssistanceExerciseType extends BaseExerciseType
             'secondary' => $repsText
         ];
     }
-    
-    /**
-     * Get exercise type display name and icon for banded assistance exercises
-     */
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-circle',
-            'name' => 'Assistance Band'
-        ];
-    }
-    
+
     /**
      * Format a single set badge for banded assistance exercises.
      * Shows band color with assist context, e.g. "Green band".

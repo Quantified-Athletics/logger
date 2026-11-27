@@ -3,6 +3,7 @@
 namespace App\Sync\Services;
 
 use App\Models\Exercise;
+use App\Services\ExerciseTypes\LogTypeTable;
 use App\Models\ExerciseAlias;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -161,8 +162,7 @@ class ExerciseReconciler
             ['canonical_name' => $op['canonical_name'], 'user_id' => null],
             [
                 'title' => $op['title'],
-                'exercise_type' => $op['exercise_type'],
-                'log_type' => $op['log_type'] ?? null,
+                'log_type' => $op['log_type'] ?? LogTypeTable::logTypeForExerciseType($op['exercise_type'] ?? null) ?? LogTypeTable::DEFAULT_LOG_TYPE,
                 'show_in_feed' => true
             ]
         );

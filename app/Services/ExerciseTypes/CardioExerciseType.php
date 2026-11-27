@@ -114,9 +114,6 @@ class CardioExerciseType extends BaseExerciseType
     {
         $processedData = $data;
         
-        // For cardio exercises, ensure exercise_type is set correctly
-        $processedData['exercise_type'] = 'cardio';
-        
         // Cardio exercises are not bodyweight exercises and don't use bands
         $processedData['is_bodyweight'] = false;
         
@@ -306,18 +303,7 @@ class CardioExerciseType extends BaseExerciseType
     {
         return 'N/A (Cardio)';
     }
-    
-    /**
-     * Get exercise type display name and icon for cardio exercises
-     */
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-running',
-            'name' => 'Cardio'
-        ];
-    }
-    
+
     /**
      * Get chart title for cardio exercises
      */

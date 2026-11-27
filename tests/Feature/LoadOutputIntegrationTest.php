@@ -23,20 +23,20 @@ class LoadOutputIntegrationTest extends TestCase
         $user = User::factory()->create();
 
         $carryEx = $resolver->resolve('Farmer Carry', $user, 'weighted-carry-2-kb');
-        $this->assertEquals('load_output', $carryEx->exercise_type);
+        $this->assertEquals('load_output', $carryEx->strategyTypeName());
 
         $sledEx = $resolver->resolve('Sled Push', $user, 'sled');
-        $this->assertEquals('load_output', $sledEx->exercise_type);
+        $this->assertEquals('load_output', $sledEx->strategyTypeName());
 
         $holdEx = $resolver->resolve('Plank', $user, 'static-hold');
-        $this->assertEquals('static_hold', $holdEx->exercise_type);
+        $this->assertEquals('static_hold', $holdEx->strategyTypeName());
     }
 
     /** @test */
     public function lift_log_form_factory_returns_load_output_fields()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'load_output']);
+        $exercise = Exercise::factory()->create(['log_type' => 'weighted-carry']);
 
         $strategy = $exercise->getTypeStrategy();
         $fieldDefinitions = $strategy->getFormFieldDefinitions([], $user);
@@ -52,7 +52,7 @@ class LoadOutputIntegrationTest extends TestCase
     public function it_sets_is_pr_flag_and_row_pr_styling_when_load_output_pr_is_achieved()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'load_output', 'log_type' => 'sled']);
+        $exercise = Exercise::factory()->create([ 'log_type' => 'sled']);
 
         $log = LiftLog::factory()->create(['user_id' => $user->id, 'exercise_id' => $exercise->id]);
         LiftSet::factory()->create([

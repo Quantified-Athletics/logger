@@ -42,7 +42,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $exerciseData = [
             'title' => 'Bench Press',
             'description' => 'Standard bench press exercise',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $storeResponse = $this->post(route('exercises.store'), $exerciseData);
@@ -53,7 +53,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $this->assertDatabaseHas('exercises', [
             'title' => 'Bench Press',
             'user_id' => $admin->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $exercise = Exercise::where('title', 'Bench Press')->first();
@@ -84,7 +84,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $updatedData = [
             'title' => 'Updated Global Bench Press',
             'description' => 'Updated description for global exercise',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $updateResponse = $this->put(route('exercises.update', $exercise), $updatedData);
@@ -132,7 +132,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $conflictData = [
             'title' => 'Squat', // Same as global exercise
             'description' => 'My personal squat variation',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $conflictResponse = $this->post(route('exercises.store'), $conflictData);
@@ -147,7 +147,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $personalExerciseData = [
             'title' => 'My Custom Deadlift',
             'description' => 'Personal deadlift variation',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $storeResponse = $this->post(route('exercises.store'), $personalExerciseData);
@@ -170,7 +170,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $updatedData = [
             'title' => 'Updated Custom Deadlift',
             'description' => 'Updated personal exercise',
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ];
 
         $updateResponse = $this->put(route('exercises.update', $personalExercise), $updatedData);
@@ -181,7 +181,7 @@ class ExerciseManagementWorkflowTest extends TestCase
             'id' => $personalExercise->id,
             'title' => 'Updated Custom Deadlift',
             'user_id' => $user->id,
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
             'deleted_at' => null
         ]);
 
@@ -274,7 +274,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $globalAttempt = [
             'title' => 'Attempted Global Exercise',
             'description' => 'Should not be allowed',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $globalResponse = $this->post(route('exercises.store'), $globalAttempt);
@@ -445,14 +445,14 @@ class ExerciseManagementWorkflowTest extends TestCase
         $benchPressResponse = $this->post(route('exercises.store'), [
             'title' => 'Bench Press',
             'description' => 'Global bench press',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
         $benchPressResponse->assertRedirect(route('exercises.index'));
         
         $squatResponse = $this->post(route('exercises.store'), [
             'title' => 'Squat',
             'description' => 'Global squat',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
         $squatResponse->assertRedirect(route('exercises.index'));
         
@@ -472,7 +472,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $conflictResponse1 = $this->post(route('exercises.store'), [
             'title' => 'Bench Press',
             'description' => 'User1 bench press',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
         $conflictResponse1->assertSessionHasErrors('title');
 
@@ -480,7 +480,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $this->post(route('exercises.store'), [
             'title' => 'Incline Bench Press',
             'description' => 'User1 incline bench',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         // User2 attempts to create exercise with same name as User1's exercise (should succeed - different users)
@@ -488,7 +488,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $user2Response = $this->post(route('exercises.store'), [
             'title' => 'Incline Bench Press',
             'description' => 'User2 incline bench',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
         $user2Response->assertRedirect(route('exercises.index'));
 
@@ -496,7 +496,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $conflictResponse2 = $this->post(route('exercises.store'), [
             'title' => 'Squat',
             'description' => 'User2 squat',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
         $conflictResponse2->assertSessionHasErrors('title');
 
@@ -555,7 +555,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $this->post(route('exercises.store'), [
             'title' => 'Deadlift',
             'description' => 'Global deadlift exercise',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
         
         $deadlift = Exercise::where('title', 'Deadlift')->first();
@@ -565,7 +565,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $duplicateResponse = $this->post(route('exercises.store'), [
             'title' => 'Deadlift',
             'description' => 'Duplicate deadlift',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
         
         // The creation should fail due to name conflict with global exercise
@@ -583,7 +583,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $personalResponse = $this->post(route('exercises.store'), [
             'title' => 'Romanian Deadlift',
             'description' => 'Admin personal exercise',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
         
         $personalResponse->assertRedirect(route('exercises.index'));

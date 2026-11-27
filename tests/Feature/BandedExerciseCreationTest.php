@@ -35,14 +35,14 @@ class BandedExerciseCreationTest extends TestCase
         $response = $this->post(route('exercises.store'), [
             'title' => 'Banded Pull-ups',
             'description' => 'Pull-ups with a resistance band',
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $response->assertRedirect(route('exercises.index'));
         $this->assertDatabaseHas('exercises', [
             'title' => 'Banded Pull-ups',
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
     }
 
@@ -54,14 +54,14 @@ class BandedExerciseCreationTest extends TestCase
         $response = $this->post(route('exercises.store'), [
             'title' => 'Assisted Push-ups',
             'description' => 'Push-ups with an assistance band',
-            'exercise_type' => 'banded_assistance',
+            'log_type' => 'banded',
         ]);
 
         $response->assertRedirect(route('exercises.index'));
         $this->assertDatabaseHas('exercises', [
             'title' => 'Assisted Push-ups',
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_assistance',
+            'log_type' => 'banded',
         ]);
     }
 
@@ -73,14 +73,14 @@ class BandedExerciseCreationTest extends TestCase
         $response = $this->post(route('exercises.store'), [
             'title' => 'Banded Dips',
             'description' => 'Dips with a resistance band',
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $response->assertRedirect(route('exercises.index'));
         $this->assertDatabaseHas('exercises', [
             'title' => 'Banded Dips',
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
     }
 
@@ -90,21 +90,21 @@ class BandedExerciseCreationTest extends TestCase
         $this->actingAs($this->user);
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
             'title' => 'Old Banded Exercise',
         ]);
 
         $response = $this->put(route('exercises.update', $exercise->id), [
             'title' => 'Updated Banded Exercise',
             'description' => 'Updated description',
-            'exercise_type' => 'banded_assistance',
+            'log_type' => 'banded',
         ]);
 
         $response->assertRedirect(route('exercises.edit', $exercise));
         $this->assertDatabaseHas('exercises', [
             'id' => $exercise->id,
             'title' => 'Updated Banded Exercise',
-            'exercise_type' => 'banded_assistance',
+            'log_type' => 'banded',
         ]);
     }
 
@@ -114,19 +114,19 @@ class BandedExerciseCreationTest extends TestCase
         $this->actingAs($this->user);
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $response = $this->put(route('exercises.update', $exercise->id), [
             'title' => $exercise->title,
             'description' => $exercise->description,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $response->assertRedirect(route('exercises.edit', $exercise));
         $this->assertDatabaseHas('exercises', [
             'id' => $exercise->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
     }
 
@@ -139,14 +139,14 @@ class BandedExerciseCreationTest extends TestCase
         $response = $this->post(route('exercises.store'), [
             'title' => 'Global Banded Exercise',
             'description' => 'A global banded exercise',
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $response->assertRedirect(route('exercises.index'));
         $this->assertDatabaseHas('exercises', [
             'title' => 'Global Banded Exercise',
             'user_id' => $this->admin->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
         
         // Promote to global
@@ -158,7 +158,7 @@ class BandedExerciseCreationTest extends TestCase
         $this->assertDatabaseHas('exercises', [
             'title' => 'Global Banded Exercise',
             'user_id' => null,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
     }
 
@@ -168,21 +168,21 @@ class BandedExerciseCreationTest extends TestCase
         $this->actingAs($this->admin);
         $exercise = Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
             'title' => 'Old Global Banded Exercise',
         ]);
 
         $response = $this->put(route('exercises.update', $exercise->id), [
             'title' => 'Updated Global Banded Exercise',
             'description' => 'Updated global description',
-            'exercise_type' => 'banded_assistance',
+            'log_type' => 'banded',
         ]);
 
         $response->assertRedirect(route('exercises.edit', $exercise));
         $this->assertDatabaseHas('exercises', [
             'id' => $exercise->id,
             'title' => 'Updated Global Banded Exercise',
-            'exercise_type' => 'banded_assistance',
+            'log_type' => 'banded',
             'user_id' => null,
         ]);
     }
@@ -194,10 +194,10 @@ class BandedExerciseCreationTest extends TestCase
 
         $response = $this->post(route('exercises.store'), [
             'title' => 'Invalid Exercise Type',
-            'exercise_type' => 'invalid_type',
+            'log_type' => 'invalid_type',
         ]);
 
-        $response->assertSessionHasErrors('exercise_type');
+        $response->assertSessionHasErrors('log_type');
         $this->assertDatabaseMissing('exercises', [
             'title' => 'Invalid Exercise Type',
         ]);

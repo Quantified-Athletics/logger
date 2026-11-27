@@ -51,7 +51,7 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $userExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         // No global exercises exist
@@ -63,13 +63,13 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $userExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         // Create compatible global exercise
         Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $this->assertTrue($this->service->canBeMerged($userExercise));
@@ -80,13 +80,13 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $userExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
 
         // Create incompatible global exercise (different bodyweight setting)
         Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $targets = $this->service->getPotentialTargets($userExercise);
@@ -98,13 +98,13 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $userExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
-        // Create incompatible global exercise (different band type)
+        // Create incompatible global exercise (bodyweight)
         Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'banded_assistance',
+            'log_type' => 'bodyweight',
         ]);
 
         $targets = $this->service->getPotentialTargets($userExercise);
@@ -116,21 +116,21 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $userExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         // Create compatible global exercises
         $target1 = Exercise::factory()->create([
             'user_id' => null,
             'title' => 'B Exercise',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $target2 = Exercise::factory()->create([
             'user_id' => null,
             // null can merge with any value
             'title' => 'A Exercise',
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $targets = $this->service->getPotentialTargets($userExercise);
@@ -146,7 +146,7 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $userExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $targets = $this->service->getPotentialTargets($userExercise);
@@ -181,11 +181,11 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $source = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
         $target = Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $result = $this->service->validateMergeCompatibility($source, $target);
@@ -199,11 +199,11 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $source = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
         $target = Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'banded_assistance',
+            'log_type' => 'bodyweight',
         ]);
 
         $result = $this->service->validateMergeCompatibility($source, $target);
@@ -230,11 +230,11 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $source = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
         $target = Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $result = $this->service->validateMergeCompatibility($source, $target);
@@ -248,11 +248,11 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $source = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
         $target = Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $this->expectException(\InvalidArgumentException::class);
@@ -409,14 +409,14 @@ class ExerciseMergeServiceTest extends TestCase
             'user_id' => $this->regularUser->id,
             'title' => 'My Dumbbell Press',
             'canonical_name' => 'custom_dumbell_press_slug',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $target = Exercise::create([
             'user_id' => null,
             'title' => 'Incline Dumbbell Press',
             'canonical_name' => 'incline_dumbbell_press',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $result = $this->service->mergeExercises($source, $target, $this->admin);
@@ -438,14 +438,14 @@ class ExerciseMergeServiceTest extends TestCase
             'user_id' => $this->regularUser->id,
             'title' => 'Bench Press',
             'canonical_name' => 'bench_press',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $target = Exercise::create([
             'user_id' => null,
             'title' => 'Flat Bench Press',
             'canonical_name' => 'flat_bench_press',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $result = $this->service->mergeExercises($source, $target, $this->admin);

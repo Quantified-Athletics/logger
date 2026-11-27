@@ -269,7 +269,7 @@ class LiftLogMultiSetTest extends TestCase
     public function grouped_badges_for_bodyweight_zero_weight()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['user_id' => $user->id, 'exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['user_id' => $user->id, 'log_type' => 'bodyweight']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id,

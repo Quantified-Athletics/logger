@@ -28,7 +28,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Back Squat',
         ]);
 
@@ -54,7 +54,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Bench Press',
         ]);
 
@@ -84,7 +84,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'dumbbell',
+            'log_type' => 'dumbbell',
             'title' => 'Dumbbell Press',
         ]);
 
@@ -104,7 +104,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'cardio',
+            'log_type' => 'cardio-distance',
             'title' => 'Running',
         ]);
 
@@ -123,7 +123,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Deadlift',
         ]);
 
@@ -153,7 +153,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Overhead Press',
         ]);
 
@@ -183,7 +183,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Front Squat',
         ]);
 
@@ -207,7 +207,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Clean and Jerk',
         ]);
 
@@ -250,7 +250,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Deadlift',
         ]);
 
@@ -291,7 +291,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Squat',
         ]);
 
@@ -318,7 +318,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Overhead Press',
         ]);
 
@@ -342,7 +342,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Front Squat',
         ]);
 
@@ -384,7 +384,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Bench Press',
         ]);
 
@@ -409,7 +409,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Deadlift',
         ]);
 
@@ -431,7 +431,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Squat',
         ]);
 
@@ -453,7 +453,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Clean',
         ]);
 
@@ -476,7 +476,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Overhead Press',
         ]);
 
@@ -507,7 +507,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Back Squat',
         ]);
 
@@ -531,7 +531,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Bench Press',
         ]);
 
@@ -559,7 +559,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Squat',
         ]);
 
@@ -584,7 +584,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Clean',
         ]);
 
@@ -608,7 +608,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Deadlift',
         ]);
 
@@ -642,7 +642,7 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'title' => 'Overhead Press',
         ]);
 

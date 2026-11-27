@@ -41,7 +41,7 @@ class ExerciseMergeIntegrationTest extends TestCase
             'user_id' => $this->regularUser->id,
             'title' => 'User Bench Press',
             'description' => 'User created bench press',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Create target exercise
@@ -49,7 +49,7 @@ class ExerciseMergeIntegrationTest extends TestCase
             'user_id' => null,
             'title' => 'Bench Press',
             'description' => 'Standard bench press',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Create lift logs with various scenarios
@@ -145,13 +145,13 @@ class ExerciseMergeIntegrationTest extends TestCase
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
             'title' => 'Push-ups',
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
             'title' => 'Bench Press',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Try to merge incompatible exercises
@@ -183,12 +183,12 @@ class ExerciseMergeIntegrationTest extends TestCase
         
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $userWithDisabledVisibility->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Access merge interface
@@ -355,12 +355,12 @@ class ExerciseMergeIntegrationTest extends TestCase
         // Test null source with resistance target (should be compatible)
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $response = $this->post(route('exercises.merge', $sourceExercise), [
@@ -380,15 +380,15 @@ class ExerciseMergeIntegrationTest extends TestCase
     {
         $this->actingAs($this->admin);
 
-        // Test resistance source with assistance target (should be incompatible)
+        // Banded source with a bodyweight target (should be incompatible)
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
-            'exercise_type' => 'banded_assistance'
+            'log_type' => 'bodyweight'
         ]);
 
         $response = $this->post(route('exercises.merge', $sourceExercise), [
@@ -411,7 +411,7 @@ class ExerciseMergeIntegrationTest extends TestCase
         // Create source exercise with unique characteristics
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         // No compatible global exercises exist
@@ -429,13 +429,13 @@ class ExerciseMergeIntegrationTest extends TestCase
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
             'title' => 'BP',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
             'title' => 'Bench Press',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Execute merge with alias creation enabled (default)
@@ -459,13 +459,13 @@ class ExerciseMergeIntegrationTest extends TestCase
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
             'title' => 'BP',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
             'title' => 'Bench Press',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Execute merge with alias creation disabled
@@ -495,13 +495,13 @@ class ExerciseMergeIntegrationTest extends TestCase
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
             'title' => 'Squat Variation',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
             'title' => 'Squat',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Execute merge
@@ -534,13 +534,13 @@ class ExerciseMergeIntegrationTest extends TestCase
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
             'title' => 'DL',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
             'title' => 'Deadlift',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Create lift log to verify transaction integrity
@@ -585,13 +585,13 @@ class ExerciseMergeIntegrationTest extends TestCase
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
             'title' => 'OHP',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
             'title' => 'Overhead Press',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Create an existing alias for the user and target exercise
@@ -638,13 +638,13 @@ class ExerciseMergeIntegrationTest extends TestCase
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
             'title' => 'Front Squat',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
             'title' => 'Squat',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Execute merge without create_alias parameter (should default to true)
@@ -672,13 +672,13 @@ class ExerciseMergeIntegrationTest extends TestCase
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
             'title' => 'RDL',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
             'title' => 'Romanian Deadlift',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Execute merge with alias creation
@@ -703,13 +703,13 @@ class ExerciseMergeIntegrationTest extends TestCase
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
             'title' => 'User Squat',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
             'title' => 'Squat',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Create lift logs to track
@@ -766,13 +766,13 @@ class ExerciseMergeIntegrationTest extends TestCase
         $sourceExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
             'title' => 'Temp Exercise',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $targetExercise = Exercise::factory()->create([
             'user_id' => null,
             'title' => 'Target Exercise',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Execute merge

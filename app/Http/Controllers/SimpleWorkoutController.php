@@ -327,7 +327,7 @@ class SimpleWorkoutController extends Controller
         // Find or create exercise
         $exercise = \App\Models\Exercise::firstOrCreate(
             ['title' => $validated['exercise_name']],
-            ['user_id' => Auth::id()]
+            ['user_id' => Auth::id(), 'log_type' => 'barbell']
         );
 
         // Create workout if it doesn't exist (first exercise being added)

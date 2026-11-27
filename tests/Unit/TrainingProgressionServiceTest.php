@@ -55,7 +55,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         // Log a lift with red band, 10 reps
@@ -81,7 +81,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         // Log a lift with red band, max reps (15)
@@ -107,7 +107,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         // Log a lift with green band, max reps (15)
@@ -133,7 +133,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_assistance'
+            'log_type' => 'banded'
         ]);
 
         // Log a lift with red band (less assistance), 10 reps
@@ -155,11 +155,11 @@ class TrainingProgressionServiceTest extends TestCase
         $this->assertEquals('red', $suggestion->band_color);
     }
 
-    public function test_banded_exercise_progression_with_assistance_type_band_changes()
+    public function test_an_exercise_written_as_banded_assistance_progresses_as_banded_resistance()
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_assistance'
+            'log_type' => 'banded'
         ]);
 
         // Log a lift with green band (most assistance), max reps (15)
@@ -177,15 +177,15 @@ class TrainingProgressionServiceTest extends TestCase
         $suggestion = $this->trainingProgressionService->getSuggestionDetails($user->id, $exercise->id);
 
         $this->assertNotNull($suggestion);
-        $this->assertEquals(8, $suggestion->reps); // Default reps on band change
-        $this->assertEquals('blue', $suggestion->band_color); // Next harder band (less assistance)
+        $this->assertEquals(16, $suggestion->reps); // Its log type is banded: resistance progression adds a rep
+        $this->assertEquals('green', $suggestion->band_color);
     }
 
     // Test fallbacks for non-banded exercises (existing logic)
     public function test_non_banded_exercise_uses_linear_progression()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
 
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
@@ -208,7 +208,7 @@ class TrainingProgressionServiceTest extends TestCase
     public function test_non_banded_exercise_uses_double_progression()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
 
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
@@ -231,7 +231,7 @@ class TrainingProgressionServiceTest extends TestCase
     public function test_infers_double_progression_from_same_weight_increased_reps_pattern()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
 
         // Create two lift logs showing DoubleProgression pattern: same weight, reps increased
         $olderLog = LiftLog::factory()->create([
@@ -267,7 +267,7 @@ class TrainingProgressionServiceTest extends TestCase
     public function test_infers_double_progression_from_weight_increase_with_reps_reset_pattern()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
 
         // Create two lift logs showing DoubleProgression reset pattern: weight increased, reps decreased to 8-12 range
         $olderLog = LiftLog::factory()->create([
@@ -303,7 +303,7 @@ class TrainingProgressionServiceTest extends TestCase
     public function test_infers_linear_progression_from_weight_increase_same_reps_pattern()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
 
         // Create two lift logs showing LinearProgression pattern: weight increased, same reps
         $olderLog = LiftLog::factory()->create([
@@ -339,7 +339,7 @@ class TrainingProgressionServiceTest extends TestCase
     public function test_falls_back_to_rep_range_logic_when_pattern_unclear()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
 
         // Create two lift logs with unclear pattern (both weight and reps changed in unexpected way)
         $olderLog = LiftLog::factory()->create([
@@ -376,7 +376,7 @@ class TrainingProgressionServiceTest extends TestCase
     public function test_uses_rep_range_logic_when_insufficient_history()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
 
         // Create only one lift log (insufficient for pattern inference)
         $liftLog = LiftLog::factory()->create([
@@ -402,7 +402,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         // Create pattern that would suggest progression based on strategy
@@ -440,7 +440,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 400m distance (< 1000m)
@@ -469,7 +469,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 800m distance (< 1000m but >= 500m)
@@ -498,7 +498,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 1500m distance (>= 1000m)
@@ -527,7 +527,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 2000m distance and 3 rounds
@@ -569,7 +569,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 950m distance (< 1000m, would suggest 1050m, but cap at 1500m)
@@ -598,7 +598,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with 2000m distance and 9 rounds (would suggest 10, which is the cap)
@@ -630,7 +630,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         $suggestion = $this->trainingProgressionService->getSuggestionDetails($user->id, $exercise->id);
@@ -642,7 +642,7 @@ class TrainingProgressionServiceTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         // Log a cardio workout with invalid distance (0 or negative)

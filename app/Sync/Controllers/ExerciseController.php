@@ -3,6 +3,7 @@
 namespace App\Sync\Controllers;
 
 use App\Models\Exercise;
+use App\Services\ExerciseTypes\LogTypeTable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -25,6 +26,7 @@ class ExerciseController
         ]);
 
         $user = $request->user();
+        $logType = $this->logTypeFor($request);
         $title = $request->input('title');
         $canonicalName = $request->input('canonical_name') ?: Str::snake(Str::lower($title));
 
@@ -42,8 +44,7 @@ class ExerciseController
             // Update fields
             $existing->update([
                 'title' => $title,
-                'exercise_type' => $request->input('exercise_type', 'regular'),
-                'log_type' => $request->input('log_type'),
+                'log_type' => $this->keepsStrategy($request, $existing, $logType) ? $existing->log_type : $logType,
                 'show_in_feed' => $request->input('show_in_feed', true),
             ]);
 
@@ -59,8 +60,7 @@ class ExerciseController
             'title' => $title,
             'canonical_name' => $canonicalName,
             'user_id' => $user->id,
-            'exercise_type' => $request->input('exercise_type', 'regular'),
-            'log_type' => $request->input('log_type'),
+            'log_type' => $logType,
             'show_in_feed' => $request->input('show_in_feed', true),
         ]);
 
@@ -69,5 +69,30 @@ class ExerciseController
             'exercise_id' => $exercise->id,
             'canonical_name' => $exercise->canonical_name,
         ], 201);
+    }
+
+    /**
+     * The log type to store: the client's own, or, for an old client that sends only an exercise type,
+     * the one the reverse table names for it (regular when it sends neither, as before).
+     */
+    private function logTypeFor(Request $request): string
+    {
+        if ($request->filled('log_type')) {
+            return $request->input('log_type');
+        }
+
+        return LogTypeTable::logTypeForExerciseType($request->input('exercise_type', 'regular'))
+            ?? LogTypeTable::DEFAULT_LOG_TYPE;
+    }
+
+    /**
+     * An old client's update that sends no log type keeps the exercise's own log type when the
+     * exercise type it sends uses the same strategy, so a kettlebell exercise isn't turned into barbell.
+     */
+    private function keepsStrategy(Request $request, Exercise $existing, string $derivedLogType): bool
+    {
+        return ! $request->filled('log_type')
+            && ! empty($existing->log_type)
+            && LogTypeTable::strategyFor($existing->log_type) === LogTypeTable::strategyFor($derivedLogType);
     }
 }

@@ -35,11 +35,11 @@ class BandedDisplayTests extends TestCase
         $this->actingAs($this->user);
         $bandedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
         $nonBandedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $bandedLiftLog = LiftLog::factory()->create([
@@ -83,7 +83,7 @@ class BandedDisplayTests extends TestCase
         $this->actingAs($this->user);
         $bandedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $bandedLiftLog = LiftLog::factory()->create([
@@ -110,7 +110,7 @@ class BandedDisplayTests extends TestCase
         $this->actingAs($this->user);
         $nonBandedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $nonBandedLiftLog = LiftLog::factory()->create([
