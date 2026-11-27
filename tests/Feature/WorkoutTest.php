@@ -127,7 +127,7 @@ class WorkoutTest extends TestCase
         $response = $this->actingAs($user)->get(route('workouts.index'));
 
         $response->assertOk();
-        // With 2 exercises without intelligence, it shows the exercise names directly
+        // With 2 exercises, it shows the exercise names directly
         $response->assertSee('Bench Press & Squat', false);
     }
 
@@ -223,7 +223,7 @@ class WorkoutTest extends TestCase
         $response = $this->actingAs($user)->get(route('workouts.index'));
 
         $response->assertOk();
-        // With 1 exercise without intelligence, it just shows the exercise name
+        // With 1 exercise, it just shows the exercise name
         $response->assertSee('Bench Press');
         $response->assertDontSee('Test Workout');
         
@@ -315,30 +315,9 @@ class WorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        // Add exercises with intelligence data, which the label ignores
+        // Add exercises
         $exercise1 = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
         $exercise2 = Exercise::factory()->create(['title' => 'Overhead Press', 'user_id' => null]);
-        
-        // Create intelligence data for push exercises
-        \App\Models\ExerciseIntelligence::create([
-            'exercise_id' => $exercise1->id,
-            'muscle_data' => json_encode([]),
-            'primary_mover' => 'chest',
-            'largest_muscle' => 'chest',
-            'movement_archetype' => 'push',
-            'category' => 'strength',
-            'difficulty_level' => 3,
-        ]);
-        
-        \App\Models\ExerciseIntelligence::create([
-            'exercise_id' => $exercise2->id,
-            'muscle_data' => json_encode([]),
-            'primary_mover' => 'shoulders',
-            'largest_muscle' => 'shoulders',
-            'movement_archetype' => 'push',
-            'category' => 'strength',
-            'difficulty_level' => 3,
-        ]);
         
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise1->id, 'order' => 1]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise2->id, 'order' => 2]);
@@ -404,15 +383,6 @@ class WorkoutTest extends TestCase
         ]);
         
         $pullUp = Exercise::factory()->create(['title' => 'Pull-Up', 'user_id' => null]);
-        \App\Models\ExerciseIntelligence::create([
-            'exercise_id' => $pullUp->id,
-            'muscle_data' => json_encode([]),
-            'primary_mover' => 'back',
-            'largest_muscle' => 'back',
-            'movement_archetype' => 'pull',
-            'category' => 'strength',
-            'difficulty_level' => 3,
-        ]);
         WorkoutExercise::create(['workout_id' => $simpleWorkout->id, 'exercise_id' => $pullUp->id, 'order' => 1]);
         
         // Create an advanced workout

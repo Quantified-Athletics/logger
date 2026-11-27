@@ -3,7 +3,6 @@
 namespace Tests\Unit\Services;
 
 use App\Models\Exercise;
-use App\Models\ExerciseIntelligence;
 use App\Models\User;
 use App\Models\Workout;
 use App\Models\WorkoutExercise;
@@ -26,23 +25,11 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /**
-     * Helper to create exercise with intelligence
+     * Helper to create an exercise with a title
      */
-    private function createExerciseWithIntelligence(string $title, string $archetype, string $category): Exercise
+    private function createExercise(string $title): Exercise
     {
-        $exercise = Exercise::factory()->create(['title' => $title]);
-        
-        ExerciseIntelligence::create([
-            'exercise_id' => $exercise->id,
-            'muscle_data' => json_encode([]),
-            'primary_mover' => 'test_muscle',
-            'largest_muscle' => 'test_muscle',
-            'movement_archetype' => $archetype,
-            'category' => $category,
-            'difficulty_level' => 3,
-        ]);
-        
-        return $exercise;
+        return Exercise::factory()->create(['title' => $title]);
     }
 
     /**
@@ -68,7 +55,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_lists_exercise_names_for_single_exercise_without_intelligence()
+    public function it_lists_exercise_names_for_single_exercise()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         $exercise = Exercise::factory()->create(['title' => 'Back Squat']);
@@ -80,7 +67,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_lists_exercise_names_for_two_exercises_without_intelligence()
+    public function it_lists_exercise_names_for_two_exercises()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         $exercise1 = Exercise::factory()->create(['title' => 'Back Squat']);
@@ -94,10 +81,10 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_lists_the_exercise_name_for_a_single_exercise_with_intelligence()
+    public function it_lists_the_exercise_name_for_a_single_exercise()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
-        $exercise = $this->createExerciseWithIntelligence('Back Squat', 'squat', 'strength');
+        $exercise = $this->createExercise('Back Squat');
         $this->addExerciseToWorkout($workout, $exercise);
 
         $label = $this->generator->generateFromWorkout($workout);
@@ -106,11 +93,11 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_lists_exercise_names_for_two_exercises_with_intelligence()
+    public function it_lists_exercise_names_for_two_pull_exercises()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
-        $exercise1 = $this->createExerciseWithIntelligence('Pull-Up', 'pull', 'strength');
-        $exercise2 = $this->createExerciseWithIntelligence('Bent-Over Row', 'pull', 'strength');
+        $exercise1 = $this->createExercise('Pull-Up');
+        $exercise2 = $this->createExercise('Bent-Over Row');
         $this->addExerciseToWorkout($workout, $exercise1);
         $this->addExerciseToWorkout($workout, $exercise2);
 
@@ -120,14 +107,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_name_fallback_for_push_exercises_with_intelligence()
+    public function it_uses_the_name_fallback_for_push_exercises()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Bench Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Overhead Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Push Ups', 'push', 'strength'),
+            $this->createExercise('Bench Press'),
+            $this->createExercise('Overhead Press'),
+            $this->createExercise('Push Ups'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -140,14 +127,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_mixed_fallback_for_pull_exercises_with_intelligence()
+    public function it_uses_the_mixed_fallback_for_pull_exercises()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Pull Ups', 'pull', 'strength'),
-            $this->createExerciseWithIntelligence('Rows', 'pull', 'strength'),
-            $this->createExerciseWithIntelligence('Lat Pulldown', 'pull', 'strength'),
+            $this->createExercise('Pull Ups'),
+            $this->createExercise('Rows'),
+            $this->createExercise('Lat Pulldown'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -160,14 +147,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_name_fallback_for_squat_exercises_with_intelligence()
+    public function it_uses_the_name_fallback_for_squat_exercises()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Back Squat', 'squat', 'strength'),
-            $this->createExerciseWithIntelligence('Front Squat', 'squat', 'strength'),
-            $this->createExerciseWithIntelligence('Goblet Squat', 'squat', 'strength'),
+            $this->createExercise('Back Squat'),
+            $this->createExercise('Front Squat'),
+            $this->createExercise('Goblet Squat'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -180,15 +167,15 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_name_fallback_for_a_push_and_pull_mix_with_intelligence()
+    public function it_uses_the_name_fallback_for_a_push_and_pull_mix()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Bench Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Pull Ups', 'pull', 'strength'),
-            $this->createExerciseWithIntelligence('Overhead Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Rows', 'pull', 'strength'),
+            $this->createExercise('Bench Press'),
+            $this->createExercise('Pull Ups'),
+            $this->createExercise('Overhead Press'),
+            $this->createExercise('Rows'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -201,15 +188,15 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_name_fallback_for_a_squat_and_hinge_mix_with_intelligence()
+    public function it_uses_the_name_fallback_for_a_squat_and_hinge_mix()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Back Squat', 'squat', 'strength'),
-            $this->createExerciseWithIntelligence('Deadlift', 'hinge', 'strength'),
-            $this->createExerciseWithIntelligence('Front Squat', 'squat', 'strength'),
-            $this->createExerciseWithIntelligence('Romanian Deadlift', 'hinge', 'strength'),
+            $this->createExercise('Back Squat'),
+            $this->createExercise('Deadlift'),
+            $this->createExercise('Front Squat'),
+            $this->createExercise('Romanian Deadlift'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -222,15 +209,15 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_name_fallback_for_mixed_archetypes_with_intelligence()
+    public function it_uses_the_name_fallback_for_mixed_archetypes()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Bench Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Deadlift', 'hinge', 'strength'),
-            $this->createExerciseWithIntelligence('Pull Ups', 'pull', 'strength'),
-            $this->createExerciseWithIntelligence('Back Squat', 'squat', 'strength'),
+            $this->createExercise('Bench Press'),
+            $this->createExercise('Deadlift'),
+            $this->createExercise('Pull Ups'),
+            $this->createExercise('Back Squat'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -243,14 +230,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_does_not_append_a_cardio_category_from_intelligence()
+    public function it_does_not_append_a_cardio_category()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Running', 'core', 'cardio'),
-            $this->createExerciseWithIntelligence('Cycling', 'core', 'cardio'),
-            $this->createExerciseWithIntelligence('Rowing', 'pull', 'cardio'),
+            $this->createExercise('Running'),
+            $this->createExercise('Cycling'),
+            $this->createExercise('Rowing'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -264,14 +251,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_does_not_append_a_strength_category_from_intelligence()
+    public function it_does_not_append_a_strength_category()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Bench Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Overhead Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Dips', 'push', 'strength'),
+            $this->createExercise('Bench Press'),
+            $this->createExercise('Overhead Press'),
+            $this->createExercise('Dips'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -285,14 +272,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_does_not_append_a_plyometric_category_from_intelligence()
+    public function it_does_not_append_a_plyometric_category()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Box Jumps', 'squat', 'plyometric'),
-            $this->createExerciseWithIntelligence('Burpees', 'core', 'plyometric'),
-            $this->createExerciseWithIntelligence('Jump Squats', 'squat', 'plyometric'),
+            $this->createExercise('Box Jumps'),
+            $this->createExercise('Burpees'),
+            $this->createExercise('Jump Squats'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -306,14 +293,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_mixed_fallback_for_core_exercises_with_intelligence()
+    public function it_uses_the_mixed_fallback_for_core_exercises()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Plank', 'core', 'strength'),
-            $this->createExerciseWithIntelligence('Crunches', 'core', 'strength'),
-            $this->createExerciseWithIntelligence('Russian Twists', 'core', 'strength'),
+            $this->createExercise('Plank'),
+            $this->createExercise('Crunches'),
+            $this->createExercise('Russian Twists'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -326,7 +313,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_fallback_for_exercises_without_intelligence()
+    public function it_uses_fallback_for_exercises()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -346,7 +333,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_infers_leg_day_from_exercise_names_without_intelligence()
+    public function it_infers_leg_day_from_exercise_names()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
@@ -366,14 +353,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_name_fallback_for_lunges_and_hinges_with_intelligence()
+    public function it_uses_the_name_fallback_for_lunges_and_hinges()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Walking Lunges', 'squat', 'strength'),
-            $this->createExerciseWithIntelligence('Deadlift', 'hinge', 'strength'),
-            $this->createExerciseWithIntelligence('Bulgarian Split Squat', 'squat', 'strength'),
+            $this->createExercise('Walking Lunges'),
+            $this->createExercise('Deadlift'),
+            $this->createExercise('Bulgarian Split Squat'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -386,16 +373,16 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_name_fallback_for_five_leg_exercises_with_intelligence()
+    public function it_uses_the_name_fallback_for_five_leg_exercises()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Back Squat', 'squat', 'strength'),
-            $this->createExerciseWithIntelligence('Deadlift', 'hinge', 'strength'),
-            $this->createExerciseWithIntelligence('Front Squat', 'squat', 'strength'),
-            $this->createExerciseWithIntelligence('Romanian Deadlift', 'hinge', 'strength'),
-            $this->createExerciseWithIntelligence('Plank', 'core', 'strength'), // 20% non-leg
+            $this->createExercise('Back Squat'),
+            $this->createExercise('Deadlift'),
+            $this->createExercise('Front Squat'),
+            $this->createExercise('Romanian Deadlift'),
+            $this->createExercise('Plank'), // 20% non-leg
         ];
         
         foreach ($exercises as $exercise) {
@@ -408,14 +395,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_name_fallback_for_mixed_categories_with_intelligence()
+    public function it_uses_the_name_fallback_for_mixed_categories()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Bench Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Overhead Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Burpees', 'push', 'cardio'),
+            $this->createExercise('Bench Press'),
+            $this->createExercise('Overhead Press'),
+            $this->createExercise('Burpees'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -428,15 +415,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_name_fallback_when_only_some_exercises_have_intelligence()
+    public function it_uses_the_keyword_fallback_for_a_mixed_leg_workout()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
-        // 2 exercises with intelligence (squat + hinge), 1 without
         $exercises = [
-            $this->createExerciseWithIntelligence('Back Squat', 'squat', 'strength'),
-            Exercise::factory()->create(['title' => 'Back Rack Lunge']), // No intelligence
-            $this->createExerciseWithIntelligence('Romanian Deadlift', 'hinge', 'strength'),
+            $this->createExercise('Back Squat'),
+            $this->createExercise('Back Rack Lunge'),
+            $this->createExercise('Romanian Deadlift'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -449,14 +435,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_name_fallback_for_push_and_core_with_intelligence()
+    public function it_uses_the_name_fallback_for_push_and_core()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Bench Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Overhead Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Plank', 'core', 'strength'),
+            $this->createExercise('Bench Press'),
+            $this->createExercise('Overhead Press'),
+            $this->createExercise('Plank'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -469,14 +455,14 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_mixed_fallback_for_core_only_workouts_with_intelligence()
+    public function it_uses_the_mixed_fallback_for_core_only_workouts()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Plank', 'core', 'strength'),
-            $this->createExerciseWithIntelligence('Crunches', 'core', 'strength'),
-            $this->createExerciseWithIntelligence('Russian Twists', 'core', 'strength'),
+            $this->createExercise('Plank'),
+            $this->createExercise('Crunches'),
+            $this->createExercise('Russian Twists'),
         ];
         
         foreach ($exercises as $exercise) {
@@ -489,15 +475,15 @@ class WorkoutLabelGeneratorTest extends TestCase
     }
 
     /** @test */
-    public function it_uses_the_name_fallback_for_upper_leg_and_core_with_intelligence()
+    public function it_uses_the_name_fallback_for_upper_leg_and_core()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            $this->createExerciseWithIntelligence('Bench Press', 'push', 'strength'),
-            $this->createExerciseWithIntelligence('Back Squat', 'squat', 'strength'),
-            $this->createExerciseWithIntelligence('Plank', 'core', 'strength'),
-            $this->createExerciseWithIntelligence('Pull-Up', 'pull', 'strength'),
+            $this->createExercise('Bench Press'),
+            $this->createExercise('Back Squat'),
+            $this->createExercise('Plank'),
+            $this->createExercise('Pull-Up'),
         ];
         
         foreach ($exercises as $exercise) {
