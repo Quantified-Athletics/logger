@@ -22,7 +22,8 @@ class LogTypeReadersTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * Today's pairing, measured on the local copy of production (issue #33).
+     * Today's pairing, measured on the local copy of production (issue #33). `added-weight` had no row
+     * to measure: it is bodyweight, as in Athlete and `pr_families.php`.
      *
      * @return array<string, array{string, string}>
      */

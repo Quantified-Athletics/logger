@@ -19,6 +19,8 @@ use Tests\TestCase;
  * The fixture below is the log_type → exercise_type pairing measured on the local copy of production
  * (2026-11-27). For every log type, the strategy the table picks must behave exactly like the strategy
  * today's exercise_type path picks for an exercise carrying that pair.
+ *
+ * `added-weight` had no row to measure: it is bodyweight, as in Athlete and `pr_families.php`.
  */
 class LogTypeTableTest extends TestCase
 {
