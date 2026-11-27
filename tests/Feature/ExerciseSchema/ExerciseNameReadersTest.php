@@ -33,7 +33,9 @@ class ExerciseNameReadersTest extends TestCase
      */
     private const FORBIDDEN_PATTERNS = [
         'a title property read or written' => '/\$\w+->title\b|>exercise->title\b/',
-        'a query on the title column' => '/(where|orderBy|select|pluck|sortBy|groupBy)\(\s*\'title\'/',
+        'a query or collection call on title' => '/(where|orderBy|select|pluck|sortBy|groupBy|keyBy|latest|oldest|value|get)\w*\(\s*\[?\s*(\'[\w.]+\'\s*,\s*)*\'title\'/i',
+        'an exercise array read by title' => '/\$\w*exercise\w*\[\'title\'\]/i',
+        'an eager load of the title column' => '/exercises?:[\w,]*\btitle\b/',
         'a raw query on the title column' => '/LOWER\(title\)/',
         'a dotted exercise title' => '/exercises?\.title\b/',
         'a title sort key' => '/\[\s*\'title\'\s*,\s*\'(asc|desc)\'\s*\]/',
