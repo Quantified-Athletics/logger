@@ -52,7 +52,7 @@ class LiftLogEditTest extends TestCase
             ->get(route('lift-logs.edit', $this->liftLog));
 
         $response->assertStatus(200);
-        $response->assertSee($this->exercise->title);
+        $response->assertSee($this->exercise->name);
         $response->assertSee('100'); // weight
         $response->assertSee('5'); // reps
         $response->assertSee('3'); // sets/rounds
@@ -240,7 +240,7 @@ class LiftLogEditTest extends TestCase
             ->get(route('lift-logs.edit', $bodyweightLog));
 
         $response->assertStatus(200);
-        $response->assertSee($bodyweightExercise->title);
+        $response->assertSee($bodyweightExercise->name);
         $response->assertSee('10'); // reps
     }
 
@@ -266,7 +266,7 @@ class LiftLogEditTest extends TestCase
             ->get(route('lift-logs.edit', $bandedLog));
 
         $response->assertStatus(200);
-        $response->assertSee($bandedExercise->title);
+        $response->assertSee($bandedExercise->name);
         $response->assertSee('12'); // reps
     }
 
@@ -282,7 +282,7 @@ class LiftLogEditTest extends TestCase
         $formData = $data['components'][0]['data'];
         
         $this->assertStringContainsString('Update', $formData['buttons']['submit']);
-        $this->assertStringContainsString($this->exercise->title, $formData['buttons']['submit']);
+        $this->assertStringContainsString($this->exercise->name, $formData['buttons']['submit']);
     }
 
     /** @test */
@@ -299,7 +299,7 @@ class LiftLogEditTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('My Custom Name');
-        $response->assertDontSee($this->exercise->title);
+        $response->assertDontSee($this->exercise->name);
     }
 
     /** @test */
@@ -380,7 +380,7 @@ class LiftLogEditTest extends TestCase
             ->get(route('lift-logs.edit', $staticHoldLog));
 
         $response->assertStatus(200);
-        $response->assertSee($staticHoldExercise->title);
+        $response->assertSee($staticHoldExercise->name);
         
         $data = $response->viewData('data');
         $formData = $data['components'][0]['data'];

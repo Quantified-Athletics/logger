@@ -94,7 +94,7 @@ class WorkoutNamesAndMergesFallbackTest extends TestCase
     {
         $admin = $this->createAdmin();
         $source = $this->createExercise('User Pull-Up', userId: $this->user->id);
-        $target = Exercise::factory()->create(['title' => 'Pull-Up', 'user_id' => null]);
+        $target = Exercise::factory()->create(['name' => 'Pull-Up', 'user_id' => null]);
 
         $response = $this->actingAs($admin)->post(route('exercises.merge', $source), [
             'target_exercise_id' => $target->id,
@@ -145,7 +145,7 @@ class WorkoutNamesAndMergesFallbackTest extends TestCase
 
     private function createExercise(string $title, ?int $userId = null): Exercise
     {
-        return Exercise::factory()->create(['title' => $title, 'user_id' => $userId]);
+        return Exercise::factory()->create(['name' => $title, 'user_id' => $userId]);
     }
 
     private function createAdmin(): User

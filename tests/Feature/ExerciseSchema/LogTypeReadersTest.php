@@ -137,7 +137,7 @@ class LogTypeReadersTest extends TestCase
         $expected = [];
         foreach (self::measuredPairings() as [$logType, $exerciseType]) {
             $exercise = Exercise::factory()->create([
-                'title' => 'Mine '.$logType,
+                'name' => 'Mine '.$logType,
                 'user_id' => $user->id,
                 'log_type' => $logType,
             ]);
@@ -157,7 +157,7 @@ class LogTypeReadersTest extends TestCase
     private function standardExercise(string $logType): Exercise
     {
         return Exercise::factory()->create([
-            'title' => 'Standard '.$logType,
+            'name' => 'Standard '.$logType,
             'user_id' => null,
             'log_type' => $logType,
         ]);

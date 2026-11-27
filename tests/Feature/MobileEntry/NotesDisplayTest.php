@@ -28,7 +28,7 @@ class NotesDisplayTest extends TestCase
         
         $this->user = User::factory()->create();
         $this->exercise = Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'log_type' => 'barbell'
         ]);
     }

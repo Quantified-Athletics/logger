@@ -29,7 +29,7 @@ class PersistGlobalExercisesComparisonTest extends TestCase
         $command = $this->getCommand();
         
         $exercise = new Exercise([
-            'title' => 'Push Up',
+            'name' => 'Push Up',
             'description' => 'A basic push up',
             'log_type' => 'bodyweight'
         ]);
@@ -53,7 +53,7 @@ class PersistGlobalExercisesComparisonTest extends TestCase
         $command = $this->getCommand();
         
         $exercise = new Exercise([
-            'title' => 'Push Up',
+            'name' => 'Push Up',
             'description' => 'A basic push up',
             'log_type' => 'bodyweight'
         ]);
@@ -77,7 +77,7 @@ class PersistGlobalExercisesComparisonTest extends TestCase
         $command = $this->getCommand();
         
         $exercise = new Exercise([
-            'title' => 'Band Pull',
+            'name' => 'Band Pull',
             'description' => 'Pull with resistance band',
             'log_type' => 'banded'
         ]);
@@ -101,7 +101,7 @@ class PersistGlobalExercisesComparisonTest extends TestCase
         $command = $this->getCommand();
         
         $exercise = new Exercise([
-            'title' => 'Push Up',
+            'name' => 'Push Up',
             'description' => 'A basic push up',
             'log_type' => 'bodyweight'
         ]);

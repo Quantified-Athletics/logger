@@ -471,7 +471,7 @@ class ImportJsonLiftLog extends Command
             $this->line("⚠ Exercise '{$exerciseData['exercise']}' not found. Would create user-specific exercise...");
             // Return a mock exercise object for preview
             $mockExercise = new Exercise([
-                'title' => $exerciseData['exercise'],
+                'name' => $exerciseData['exercise'],
                 'canonical_name' => $exerciseData['canonical_name'],
                 'user_id' => $user->id
             ]);
@@ -484,7 +484,7 @@ class ImportJsonLiftLog extends Command
         
         // Return a mock exercise for preview
         $mockExercise = new Exercise([
-            'title' => $exerciseData['exercise'],
+            'name' => $exerciseData['exercise'],
             'canonical_name' => $exerciseData['canonical_name'],
             'user_id' => $user->id
         ]);
@@ -548,7 +548,7 @@ class ImportJsonLiftLog extends Command
     private function createNewUserExercise(array $exerciseData, User $user): Exercise
     {
         $exerciseAttributes = [
-            'title' => $exerciseData['exercise'],
+            'name' => $exerciseData['exercise'],
             'canonical_name' => $exerciseData['canonical_name'],
             'description' => $exerciseData['description'] ?? "Imported from JSON file",
             'user_id' => $user->id // User-specific exercise
@@ -705,19 +705,19 @@ class ImportJsonLiftLog extends Command
                 ->first();
 
             if ($exercise) {
-                $this->info("Mapping '{$exerciseData['exercise']}' to '{$exercise->title}'");
+                $this->info("Mapping '{$exerciseData['exercise']}' to '{$exercise->name}'");
                 return $exercise;
             } else {
                 $this->error("Exercise with canonical name '{$existingCanonicalName}' not found in global exercises.");
                 $this->info("Available global exercises:");
                 
                 $globalExercises = Exercise::global()
-                    ->select('title', 'canonical_name')
-                    ->orderBy('title')
+                    ->select('name', 'canonical_name')
+                    ->orderBy('name')
                     ->get();
                 
                 foreach ($globalExercises as $globalExercise) {
-                    $this->line("  - {$globalExercise->title} (canonical: {$globalExercise->canonical_name})");
+                    $this->line("  - {$globalExercise->name} (canonical: {$globalExercise->canonical_name})");
                 }
                 
                 if (!$this->confirm('Try again?')) {

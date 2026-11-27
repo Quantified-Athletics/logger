@@ -30,7 +30,7 @@ class WorkoutNameGeneratorTest extends TestCase
     /** @test */
     public function it_falls_back_to_date_based_name()
     {
-        $exercise = Exercise::factory()->create(['title' => 'Unknown Exercise']);
+        $exercise = Exercise::factory()->create(['name' => 'Unknown Exercise']);
 
         $name = $this->generator->generate($exercise);
 
@@ -46,7 +46,7 @@ class WorkoutNameGeneratorTest extends TestCase
         ];
 
         foreach ($titles as $title) {
-            $exercise = Exercise::factory()->create(['title' => $title]);
+            $exercise = Exercise::factory()->create(['name' => $title]);
 
             $this->assertEquals('New Workout - Dec 6, 2025', $this->generator->generate($exercise), $title);
         }
@@ -56,7 +56,7 @@ class WorkoutNameGeneratorTest extends TestCase
     public function it_uses_the_current_date_in_the_fallback()
     {
         Carbon::setTestNow('2026-01-15 08:00:00');
-        $exercise = Exercise::factory()->create(['title' => 'Deadlift']);
+        $exercise = Exercise::factory()->create(['name' => 'Deadlift']);
 
         $this->assertEquals('New Workout - Jan 15, 2026', $this->generator->generate($exercise));
     }

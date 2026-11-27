@@ -123,11 +123,11 @@ class SimpleWorkoutTest extends TestCase
         
         // Verify exercise was created
         $this->assertDatabaseHas('exercises', [
-            'title' => 'Brand New Exercise',
+            'name' => 'Brand New Exercise',
         ]);
         
         // Verify exercise was added to workout
-        $exercise = Exercise::where('title', 'Brand New Exercise')->first();
+        $exercise = Exercise::where('name', 'Brand New Exercise')->first();
         $this->assertDatabaseHas('workout_exercises', [
             'workout_id' => $workout->id,
             'exercise_id' => $exercise->id,
@@ -206,10 +206,10 @@ class SimpleWorkoutTest extends TestCase
         $response->assertSessionHas('success', 'Exercise created and added!');
         
         $this->assertDatabaseHas('exercises', [
-            'title' => 'New Custom Exercise',
+            'name' => 'New Custom Exercise',
         ]);
         
-        $exercise = Exercise::where('title', 'New Custom Exercise')->first();
+        $exercise = Exercise::where('name', 'New Custom Exercise')->first();
         $this->assertDatabaseHas('workout_exercises', [
             'workout_id' => $workout->id,
             'exercise_id' => $exercise->id,
@@ -441,7 +441,7 @@ class SimpleWorkoutTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => null,
         ]);
 
@@ -551,9 +551,9 @@ class SimpleWorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $exercise1 = Exercise::factory()->create(['user_id' => null, 'title' => 'Exercise 1']);
-        $exercise2 = Exercise::factory()->create(['user_id' => null, 'title' => 'Exercise 2']);
-        $exercise3 = Exercise::factory()->create(['user_id' => null, 'title' => 'Exercise 3']);
+        $exercise1 = Exercise::factory()->create(['user_id' => null, 'name' => 'Exercise 1']);
+        $exercise2 = Exercise::factory()->create(['user_id' => null, 'name' => 'Exercise 2']);
+        $exercise3 = Exercise::factory()->create(['user_id' => null, 'name' => 'Exercise 3']);
         
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -669,7 +669,7 @@ class SimpleWorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Single Exercise']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Single Exercise']);
         
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -735,7 +735,7 @@ class SimpleWorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Bench Press']);
         
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -795,7 +795,7 @@ class SimpleWorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Squat']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Squat']);
         
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -818,7 +818,7 @@ class SimpleWorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Deadlift']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Deadlift']);
         
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -857,7 +857,7 @@ class SimpleWorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Squat']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Squat']);
         
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -926,7 +926,7 @@ class SimpleWorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Bench Press']);
         
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -1012,7 +1012,7 @@ class SimpleWorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Deadlift']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Deadlift']);
         
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -1045,7 +1045,7 @@ class SimpleWorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Bench Press']);
         
         WorkoutExercise::create([
             'workout_id' => $workout->id,

@@ -122,14 +122,14 @@ class ExerciseMergeServiceTest extends TestCase
         // Create compatible global exercises
         $target1 = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'B Exercise',
+            'name' => 'B Exercise',
             'log_type' => 'barbell',
         ]);
 
         $target2 = Exercise::factory()->create([
             'user_id' => null,
             // null can merge with any value
-            'title' => 'A Exercise',
+            'name' => 'A Exercise',
             'log_type' => 'banded',
         ]);
 
@@ -137,8 +137,8 @@ class ExerciseMergeServiceTest extends TestCase
         $this->assertCount(2, $targets);
 
         // Should be ordered by title
-        $this->assertEquals('A Exercise', $targets->first()->title);
-        $this->assertEquals('B Exercise', $targets->last()->title);
+        $this->assertEquals('A Exercise', $targets->first()->name);
+        $this->assertEquals('B Exercise', $targets->last()->name);
     }
 
     /** @test */
@@ -314,11 +314,11 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $source = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'title' => 'Source Exercise',
+            'name' => 'Source Exercise',
         ]);
         $target = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Target Exercise',
+            'name' => 'Target Exercise',
         ]);
 
         // Create lift logs to verify they're logged
@@ -407,14 +407,14 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $source = Exercise::create([
             'user_id' => $this->regularUser->id,
-            'title' => 'My Dumbbell Press',
+            'name' => 'My Dumbbell Press',
             'canonical_name' => 'custom_dumbell_press_slug',
             'log_type' => 'barbell',
         ]);
 
         $target = Exercise::create([
             'user_id' => null,
-            'title' => 'Incline Dumbbell Press',
+            'name' => 'Incline Dumbbell Press',
             'canonical_name' => 'incline_dumbbell_press',
             'log_type' => 'barbell',
         ]);
@@ -436,14 +436,14 @@ class ExerciseMergeServiceTest extends TestCase
     {
         $source = Exercise::create([
             'user_id' => $this->regularUser->id,
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'canonical_name' => 'bench_press',
             'log_type' => 'barbell',
         ]);
 
         $target = Exercise::create([
             'user_id' => null,
-            'title' => 'Flat Bench Press',
+            'name' => 'Flat Bench Press',
             'canonical_name' => 'flat_bench_press',
             'log_type' => 'barbell',
         ]);

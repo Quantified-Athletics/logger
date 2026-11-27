@@ -35,13 +35,13 @@ class CreateExerciseWorkflowTest extends TestCase
 
         // Should create the exercise
         $this->assertDatabaseHas('exercises', [
-            'title' => $exerciseName,
+            'name' => $exerciseName,
             'user_id' => $this->user->id,
             'log_type' => 'barbell'
         ]);
 
         // Should redirect to lift-logs/create (without date param for today)
-        $exercise = Exercise::where('title', $exerciseName)->first();
+        $exercise = Exercise::where('name', $exerciseName)->first();
         $response->assertRedirect(route('lift-logs.create', [
             'exercise_id' => $exercise->id,
             'redirect_to' => 'mobile-entry-lifts'
@@ -57,7 +57,7 @@ class CreateExerciseWorkflowTest extends TestCase
     {
         $existingExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Bench Press'
+            'name' => 'Bench Press'
         ]);
 
         $date = Carbon::today()->toDateString();
@@ -68,7 +68,7 @@ class CreateExerciseWorkflowTest extends TestCase
         ]);
 
         // Should NOT create a duplicate
-        $this->assertEquals(1, Exercise::where('title', 'Bench Press')->count());
+        $this->assertEquals(1, Exercise::where('name', 'Bench Press')->count());
 
         // Should redirect to lift-logs/create for existing exercise (without date param for today)
         $response->assertRedirect(route('lift-logs.create', [
@@ -97,7 +97,7 @@ class CreateExerciseWorkflowTest extends TestCase
         ]);
 
         // Should have a canonical name
-        $exercise = Exercise::where('title', 'My Custom Exercise')->first();
+        $exercise = Exercise::where('name', 'My Custom Exercise')->first();
         $this->assertNotNull($exercise->canonical_name);
         $this->assertEquals('my_custom_exercise', $exercise->canonical_name);
     }
@@ -108,7 +108,7 @@ class CreateExerciseWorkflowTest extends TestCase
         // Create first exercise
         Exercise::create([
             'user_id' => $this->user->id,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'canonical_name' => 'test_exercise',
             'log_type' => 'barbell'
         ]);
@@ -121,7 +121,7 @@ class CreateExerciseWorkflowTest extends TestCase
 
         // Should redirect to the existing exercise instead of creating duplicate
         $exercises = Exercise::where('user_id', $this->user->id)
-            ->where('title', 'Test Exercise')
+            ->where('name', 'Test Exercise')
             ->get();
         $this->assertCount(1, $exercises);
     }
@@ -133,7 +133,7 @@ class CreateExerciseWorkflowTest extends TestCase
             'exercise_name' => 'Test Exercise'
         ]);
 
-        $exercise = Exercise::where('title', 'Test Exercise')->first();
+        $exercise = Exercise::where('name', 'Test Exercise')->first();
         
         // Should redirect without date param since it defaults to today
         $response->assertRedirect(route('lift-logs.create', [
@@ -152,7 +152,7 @@ class CreateExerciseWorkflowTest extends TestCase
             'date' => $historicalDate
         ]);
 
-        $exercise = Exercise::where('title', 'Historical Exercise')->first();
+        $exercise = Exercise::where('name', 'Historical Exercise')->first();
         
         // Should redirect WITH date param for historical dates
         $response->assertRedirect();

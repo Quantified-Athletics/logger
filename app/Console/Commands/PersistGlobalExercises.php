@@ -28,13 +28,13 @@ class PersistGlobalExercises extends Command
     private function collectGlobalExercises()
     {
         $globalExercises = Exercise::whereNull('user_id')
-            ->select('title', 'description', 'canonical_name', 'log_type')
+            ->select('name', 'description', 'canonical_name', 'log_type')
             ->get();
         
         // Filter out exercises without canonical_name and warn about them
         $validExercises = $globalExercises->filter(function ($exercise) {
             if (empty($exercise->canonical_name)) {
-                $this->warn("Skipping exercise '{$exercise->title}' - missing canonical name");
+                $this->warn("Skipping exercise '{$exercise->name}' - missing canonical name");
                 return false;
             }
             return true;
@@ -131,7 +131,7 @@ class PersistGlobalExercises extends Command
         $differences = [];
         
         // Compare title
-        $dbTitle = $dbExercise->title ?? '';
+        $dbTitle = $dbExercise->name ?? '';
         $csvTitle = $csvData['title'] ?? '';
         if ($dbTitle !== $csvTitle) {
             $differences['title'] = [
@@ -245,7 +245,7 @@ class PersistGlobalExercises extends Command
                 $exercise = $updateInfo['exercise'];
                 $differences = $updateInfo['differences'];
                 
-                $this->line("• {$exercise->title} (canonical: {$canonicalName})");
+                $this->line("• {$exercise->name} (canonical: {$canonicalName})");
                 
                 foreach ($differences as $field => $diff) {
                     $dbValue = $diff['database'] === '' ? '(empty)' : $diff['database'];
@@ -261,7 +261,7 @@ class PersistGlobalExercises extends Command
             $this->info("=== New Exercises to be Added ===");
             foreach ($changes['new_entries'] as $canonicalName => $entryInfo) {
                 $exercise = $entryInfo['exercise'];
-                $this->line("• {$exercise->title} (canonical: {$canonicalName})");
+                $this->line("• {$exercise->name} (canonical: {$canonicalName})");
                 
                 // Show key details of the new exercise
                 $details = [];
@@ -334,7 +334,7 @@ class PersistGlobalExercises extends Command
     private function prepareExerciseForCsv($exercise): array
     {
         return [
-            'title' => $exercise->title ?? '',
+            'title' => $exercise->name ?? '',
             'description' => $exercise->description ?? '',
             'canonical_name' => $exercise->canonical_name ?? '',
             'exercise_type' => $exercise->strategyTypeName()

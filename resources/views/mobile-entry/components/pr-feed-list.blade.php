@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="pr-lift-header">
                                     <div class="pr-lift-title-row">
                                         <div class="pr-lift-title-column">
-                                            <strong>{{ $liftLog->exercise->title }}</strong>
+                                            <strong>{{ $liftLog->exercise->name }}</strong>
                                             
                                             {{-- PR Types - Directly under exercise name --}}
                                             @php

@@ -116,12 +116,12 @@ class BodyweightExerciseTypeTest extends TestCase
     public function it_processes_exercise_data_correctly()
     {
         $inputData = [
-            'title' => 'Push-ups'
+            'name' => 'Push-ups'
         ];
 
         $processedData = $this->strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Push-ups', $processedData['title']);
+        $this->assertEquals('Push-ups', $processedData['name']);
         $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 

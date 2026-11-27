@@ -22,21 +22,21 @@ class ExerciseMergeServiceMapTest extends TestCase
 
         $target = Exercise::create([
             'user_id' => null,
-            'title' => 'Strict Pull-Ups',
+            'name' => 'Strict Pull-Ups',
             'canonical_name' => 'strict_pull_up',
             'log_type' => 'bodyweight',
         ]);
 
         $source1 = Exercise::create([
             'user_id' => null,
-            'title' => 'Pull-Up',
+            'name' => 'Pull-Up',
             'canonical_name' => 'pull_ups',
             'log_type' => 'bodyweight-reps',
         ]);
 
         $source2 = Exercise::create([
             'user_id' => null,
-            'title' => 'Pull-Ups',
+            'name' => 'Pull-Ups',
             'canonical_name' => 'pull_up',
             'log_type' => 'bodyweight',
         ]);

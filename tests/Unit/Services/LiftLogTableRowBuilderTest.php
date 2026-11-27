@@ -54,14 +54,14 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
 
         $this->assertCount(1, $rows);
         $this->assertEquals($liftLog->id, $rows[0]['id']);
-        $this->assertEquals($exercise->title, $rows[0]['line1']);
+        $this->assertEquals($exercise->name, $rows[0]['line1']);
         $this->assertNull($rows[0]['line2']); // Comments never in line2
         $this->assertTrue($rows[0]['compact']);
         $this->assertTrue($rows[0]['wrapActions']);
@@ -93,7 +93,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -133,7 +133,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -158,7 +158,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -186,7 +186,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -220,7 +220,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -251,7 +251,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
@@ -286,7 +286,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
@@ -322,7 +322,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
@@ -358,7 +358,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
@@ -390,7 +390,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
@@ -411,7 +411,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -434,7 +434,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -461,7 +461,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -503,7 +503,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->twice()
-            ->andReturn($exercise1->title, $exercise2->title);
+            ->andReturn($exercise1->name, $exercise2->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog1, $liftLog2]));
@@ -561,7 +561,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->times(3)
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log1, $log2, $log3]));
@@ -634,7 +634,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->times(3)
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log1, $log2, $log3]));
@@ -665,7 +665,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log]));
@@ -715,7 +715,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->times(2)
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log1, $log2]));
@@ -763,7 +763,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->times(2)
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log1, $log2]));
@@ -806,7 +806,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log]));
@@ -828,7 +828,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -856,7 +856,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -886,7 +886,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -938,7 +938,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$newLog]));
@@ -999,7 +999,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$newLog]), [
@@ -1066,7 +1066,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$newLog]), [
@@ -1123,7 +1123,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$newLog]), [

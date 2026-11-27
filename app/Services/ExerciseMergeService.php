@@ -45,7 +45,7 @@ class ExerciseMergeService
             ->filter(function ($target) use ($sourceExercise) {
                 return $sourceExercise->isCompatibleForMerge($target);
             })
-            ->sortBy('title')
+            ->sortBy('name')
             ->values();
     }
 
@@ -116,9 +116,9 @@ class ExerciseMergeService
             // Create database log entry
             ExerciseMergeLog::create([
                 'source_exercise_id' => $source->id,
-                'source_exercise_title' => $source->title,
+                'source_exercise_title' => $source->name,
                 'target_exercise_id' => $target->id,
-                'target_exercise_title' => $target->title,
+                'target_exercise_title' => $target->name,
                 'admin_user_id' => $admin->id,
                 'admin_email' => $admin->email,
                 'lift_log_ids' => $liftLogIds,
@@ -129,9 +129,9 @@ class ExerciseMergeService
             // Also log to Laravel log for immediate visibility
             Log::info('Exercise merge completed', [
                 'source_exercise_id' => $source->id,
-                'source_exercise_title' => $source->title,
+                'source_exercise_title' => $source->name,
                 'target_exercise_id' => $target->id,
-                'target_exercise_title' => $target->title,
+                'target_exercise_title' => $target->name,
                 'admin_user_id' => $admin->id,
                 'admin_email' => $admin->email,
                 'lift_log_count' => count($liftLogIds),
@@ -188,15 +188,15 @@ class ExerciseMergeService
             $this->aliasService->createAlias(
                 $source->user,
                 $target,
-                $source->title
+                $source->name
             );
 
             Log::info('Exercise alias created during merge', [
                 'user_id' => $source->user->id,
                 'user_email' => $source->user->email,
                 'exercise_id' => $target->id,
-                'exercise_title' => $target->title,
-                'alias_name' => $source->title,
+                'exercise_title' => $target->name,
+                'alias_name' => $source->name,
                 'created_via' => 'merge_operation',
             ]);
 
@@ -207,7 +207,7 @@ class ExerciseMergeService
                 Log::warning('Duplicate alias during merge - alias already exists', [
                     'user_id' => $source->user->id,
                     'exercise_id' => $target->id,
-                    'alias_name' => $source->title,
+                    'alias_name' => $source->name,
                 ]);
 
                 // Continue with merge - alias already exists
@@ -218,7 +218,7 @@ class ExerciseMergeService
             Log::error('Failed to create alias during merge', [
                 'user_id' => $source->user->id,
                 'exercise_id' => $target->id,
-                'alias_name' => $source->title,
+                'alias_name' => $source->name,
                 'error' => $e->getMessage(),
             ]);
 
@@ -229,7 +229,7 @@ class ExerciseMergeService
             Log::error('Unexpected error creating alias during merge', [
                 'user_id' => $source->user->id,
                 'exercise_id' => $target->id,
-                'alias_name' => $source->title,
+                'alias_name' => $source->name,
                 'error' => $e->getMessage(),
             ]);
 
@@ -244,8 +244,8 @@ class ExerciseMergeService
     private function createCanonicalNameAlias(Exercise $source, Exercise $target): void
     {
         $canonical = $source->canonical_name;
-        $titleSnake = \Illuminate\Support\Str::snake($source->title);
-        $titleSlug = \Illuminate\Support\Str::slug($source->title, '_');
+        $titleSnake = \Illuminate\Support\Str::snake($source->name);
+        $titleSlug = \Illuminate\Support\Str::slug($source->name, '_');
 
         // Skip if canonical_name is identical to snake_case or slug of title
         if ($canonical === $titleSnake || $canonical === $titleSlug) {
@@ -336,7 +336,7 @@ class ExerciseMergeService
 
         DB::transaction(function () use ($merge, $target, $sources, &$affectedUserIds) {
             $targetOriginalCanonical = $target->canonical_name;
-            $targetOriginalTitle = $target->title;
+            $targetOriginalTitle = $target->name;
 
             foreach ($sources as $source) {
                 // Collect lift log IDs and affected user IDs
@@ -353,7 +353,7 @@ class ExerciseMergeService
 
                 // Create global alias for source canonical_name and title on target
                 $aliasesCreated = [];
-                $aliasesToCreate = array_filter(array_unique([$source->canonical_name, $source->title]));
+                $aliasesToCreate = array_filter(array_unique([$source->canonical_name, $source->name]));
                 foreach ($aliasesToCreate as $aliasName) {
                     $exists = \App\Models\ExerciseAlias::query()
                         ->where('exercise_id', $target->id)
@@ -374,9 +374,9 @@ class ExerciseMergeService
                 // Create audit log
                 ExerciseMergeLog::create([
                     'source_exercise_id' => $source->id,
-                    'source_exercise_title' => $source->title,
+                    'source_exercise_title' => $source->name,
                     'target_exercise_id' => $target->id,
-                    'target_exercise_title' => $target->title,
+                    'target_exercise_title' => $target->name,
                     'admin_user_id' => null,
                     'admin_email' => null,
                     'lift_log_ids' => $liftLogIds,
@@ -386,14 +386,14 @@ class ExerciseMergeService
                         'source' => [
                             'id' => $source->id,
                             'canonical_name' => $source->canonical_name,
-                            'title' => $source->title,
+                            'name' => $source->name,
                             'log_type' => $source->log_type,
                             'exercise_type' => $source->strategyTypeName(),
                         ],
                         'target_original' => [
                             'id' => $target->id,
                             'canonical_name' => $targetOriginalCanonical,
-                            'title' => $targetOriginalTitle,
+                            'name' => $targetOriginalTitle,
                         ],
                         'aliases_created' => $aliasesCreated,
                     ],
@@ -406,7 +406,7 @@ class ExerciseMergeService
             // Set target canonical name and title per map (naming authority)
             $target->update([
                 'canonical_name' => $merge['target'],
-                'title' => $merge['title'],
+                'name' => $merge['title'],
             ]);
         });
 
@@ -430,7 +430,7 @@ class ExerciseMergeService
             return $matches->first();
         }
 
-        $titleMatches = (clone $query)->whereRaw('LOWER(title) = ?', [mb_strtolower($fallbackTitle)])->get();
+        $titleMatches = (clone $query)->whereRaw('LOWER(name) = ?', [mb_strtolower($fallbackTitle)])->get();
 
         if ($titleMatches->count() > 1) {
             throw new \RuntimeException("Ambiguous resolution for global exercise title [{$fallbackTitle}]: multiple rows found.");

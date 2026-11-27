@@ -84,14 +84,14 @@ class BandedResistanceExerciseTypeTest extends TestCase
     public function it_processes_exercise_data_correctly()
     {
         $inputData = [
-            'title' => 'Banded Squat',
+            'name' => 'Banded Squat',
             // Should be set to false when band_type is set,
             'log_type' => 'banded'
         ];
 
         $processedData = $this->strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Banded Squat', $processedData['title']);
+        $this->assertEquals('Banded Squat', $processedData['name']);
         $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 

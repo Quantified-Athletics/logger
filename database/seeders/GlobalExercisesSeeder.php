@@ -43,42 +43,42 @@ class GlobalExercisesSeeder extends Seeder
     {
         $carrySplitExercises = [
             [
-                'title' => 'Mixed Rack Carry (KB)',
+                'name' => 'Mixed Rack Carry (KB)',
                 'canonical_name' => 'mixed_rack_carry_kb',
                 'log_type' => 'weighted-carry-2-kb',
                 'show_in_feed' => true,
                 'user_id' => null,
             ],
             [
-                'title' => 'Mixed Rack Carry (DB)',
+                'name' => 'Mixed Rack Carry (DB)',
                 'canonical_name' => 'mixed_rack_carry_db',
                 'log_type' => 'weighted-carry-2-db',
                 'show_in_feed' => true,
                 'user_id' => null,
             ],
             [
-                'title' => 'Single-Arm Overhead Carry (KB)',
+                'name' => 'Single-Arm Overhead Carry (KB)',
                 'canonical_name' => 'single_arm_oh_carry_kb',
                 'log_type' => 'weighted-carry-1-kb',
                 'show_in_feed' => true,
                 'user_id' => null,
             ],
             [
-                'title' => 'Single-Arm Overhead Carry (DB)',
+                'name' => 'Single-Arm Overhead Carry (DB)',
                 'canonical_name' => 'single_arm_oh_carry_db',
                 'log_type' => 'weighted-carry-1-db',
                 'show_in_feed' => true,
                 'user_id' => null,
             ],
             [
-                'title' => 'Suitcase March (KB)',
+                'name' => 'Suitcase March (KB)',
                 'canonical_name' => 'suitcase_march_kb',
                 'log_type' => 'weighted-carry-1-kb',
                 'show_in_feed' => true,
                 'user_id' => null,
             ],
             [
-                'title' => 'Suitcase March (DB)',
+                'name' => 'Suitcase March (DB)',
                 'canonical_name' => 'suitcase_march_db',
                 'log_type' => 'weighted-carry-1-db',
                 'show_in_feed' => true,
@@ -106,14 +106,14 @@ class GlobalExercisesSeeder extends Seeder
         return [
             // Upper Body - Chest
             [
-                'title' => 'Push-Up',
+                'name' => 'Push-Up',
                 'description' => 'A bodyweight exercise that targets the chest, shoulders, and triceps.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'push_up',
                 'user_id' => null,
             ],
             [
-                'title' => 'Bench Press',
+                'name' => 'Bench Press',
                 'description' => 'A compound exercise that targets the muscles of the upper body, including the chest, shoulders, and triceps.',
                 'log_type' => 'barbell',
                 'canonical_name' => 'bench_press',
@@ -122,28 +122,28 @@ class GlobalExercisesSeeder extends Seeder
             
             // Upper Body - Back
             [
-                'title' => 'Pull-Up',
+                'name' => 'Pull-Up',
                 'description' => 'A bodyweight pulling exercise with pronated grip that targets the back and biceps.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'pull_ups',
                 'user_id' => null,
             ],
             [
-                'title' => 'Chin-Up',
+                'name' => 'Chin-Up',
                 'description' => 'A bodyweight pulling exercise with supinated grip that targets the back and biceps.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'chin_ups',
                 'user_id' => null,
             ],
             [
-                'title' => 'Bent-Over Row',
+                'name' => 'Bent-Over Row',
                 'description' => 'A compound pulling exercise that targets the back muscles and rear deltoids.',
                 'log_type' => 'barbell',
                 'canonical_name' => 'bent_over_row',
                 'user_id' => null,
             ],
             [
-                'title' => 'Lat Pull-Down',
+                'name' => 'Lat Pull-Down',
                 'description' => 'A machine exercise that targets the latissimus dorsi and other back muscles.',
                 'log_type' => 'banded',
                 'canonical_name' => 'lat_pull_down',
@@ -152,14 +152,14 @@ class GlobalExercisesSeeder extends Seeder
             
             // Upper Body - Shoulders
             [
-                'title' => 'Strict Press',
+                'name' => 'Strict Press',
                 'description' => 'An overhead pressing movement that targets the shoulders and triceps.',
                 'log_type' => 'barbell',
                 'canonical_name' => 'strict_press',
                 'user_id' => null,
             ],
             [
-                'title' => 'Pike Push-Up',
+                'name' => 'Pike Push-Up',
                 'description' => 'A bodyweight exercise that targets the shoulders and upper chest.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'pike_push_up',
@@ -168,28 +168,28 @@ class GlobalExercisesSeeder extends Seeder
             
             // Lower Body - Quads/Glutes
             [
-                'title' => 'Back Squat',
+                'name' => 'Back Squat',
                 'description' => 'A compound exercise that targets the muscles of the legs and core.',
                 'log_type' => 'barbell',
                 'canonical_name' => 'back_squat',
                 'user_id' => null,
             ],
             [
-                'title' => 'Front Squat',
+                'name' => 'Front Squat',
                 'description' => 'A squat variation with the barbell held in front that emphasizes the quads and core.',
                 'log_type' => 'barbell',
                 'canonical_name' => 'front_squat',
                 'user_id' => null,
             ],
             [
-                'title' => 'Bodyweight Squat',
+                'name' => 'Bodyweight Squat',
                 'description' => 'A fundamental bodyweight exercise that targets the legs and glutes.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'bodyweight_squat',
                 'user_id' => null,
             ],
             [
-                'title' => 'Lunge',
+                'name' => 'Lunge',
                 'description' => 'A unilateral exercise that targets the legs and improves balance.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'lunge',
@@ -198,21 +198,21 @@ class GlobalExercisesSeeder extends Seeder
             
             // Lower Body - Posterior Chain
             [
-                'title' => 'Deadlift',
+                'name' => 'Deadlift',
                 'description' => 'A compound exercise that targets the muscles of the back, legs, and grip.',
                 'log_type' => 'barbell',
                 'canonical_name' => 'deadlift',
                 'user_id' => null,
             ],
             [
-                'title' => 'Romanian Deadlift',
+                'name' => 'Romanian Deadlift',
                 'description' => 'A hip-hinge movement that targets the hamstrings and glutes.',
                 'log_type' => 'barbell',
                 'canonical_name' => 'romanian_deadlift',
                 'user_id' => null,
             ],
             [
-                'title' => 'Hip Thrust',
+                'name' => 'Hip Thrust',
                 'description' => 'An exercise that specifically targets the glutes and posterior chain.',
                 'log_type' => 'barbell',
                 'canonical_name' => 'hip_thrust',
@@ -221,21 +221,21 @@ class GlobalExercisesSeeder extends Seeder
             
             // Core
             [
-                'title' => 'Plank',
+                'name' => 'Plank',
                 'description' => 'An isometric core exercise that builds stability and strength.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'plank',
                 'user_id' => null,
             ],
             [
-                'title' => 'Mountain Climbers',
+                'name' => 'Mountain Climbers',
                 'description' => 'A dynamic bodyweight exercise that targets the core and provides cardio.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'mountain_climbers',
                 'user_id' => null,
             ],
             [
-                'title' => 'Dead Bug',
+                'name' => 'Dead Bug',
                 'description' => 'A core stability exercise that teaches proper spinal alignment.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'dead_bug',
@@ -244,21 +244,21 @@ class GlobalExercisesSeeder extends Seeder
             
             // Full Body/Olympic
             [
-                'title' => 'Burpee',
+                'name' => 'Burpee',
                 'description' => 'A full-body exercise that combines a squat, push-up, and jump.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'burpee',
                 'user_id' => null,
             ],
             [
-                'title' => 'Power Clean',
+                'name' => 'Power Clean',
                 'description' => 'An explosive Olympic lift that targets the entire body.',
                 'log_type' => 'barbell',
                 'canonical_name' => 'power_clean',
                 'user_id' => null,
             ],
             [
-                'title' => 'Thruster',
+                'name' => 'Thruster',
                 'description' => 'A combination of front squat and overhead press in one fluid movement.',
                 'log_type' => 'barbell',
                 'canonical_name' => 'thruster',
@@ -267,21 +267,21 @@ class GlobalExercisesSeeder extends Seeder
             
             // Isolation/Accessory
             [
-                'title' => 'Bicep Curl',
+                'name' => 'Bicep Curl',
                 'description' => 'An isolation exercise that targets the biceps.',
                 'log_type' => 'barbell',
                 'canonical_name' => 'bicep_curl',
                 'user_id' => null,
             ],
             [
-                'title' => 'Tricep Dip',
+                'name' => 'Tricep Dip',
                 'description' => 'A bodyweight exercise that targets the triceps and chest.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'tricep_dip',
                 'user_id' => null,
             ],
             [
-                'title' => 'Calf Raise',
+                'name' => 'Calf Raise',
                 'description' => 'An isolation exercise that targets the calf muscles.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'calf_raise',
@@ -290,7 +290,7 @@ class GlobalExercisesSeeder extends Seeder
             
             // Cardio/Conditioning
             [
-                'title' => 'Jumping Jacks',
+                'name' => 'Jumping Jacks',
                 'description' => 'A cardiovascular exercise that involves jumping while moving arms and legs.',
                 'log_type' => 'bodyweight',
                 'canonical_name' => 'jumping_jacks',

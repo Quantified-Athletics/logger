@@ -84,13 +84,13 @@ class BandedAssistanceExerciseTypeTest extends TestCase
     public function it_processes_exercise_data_correctly()
     {
         $inputData = [
-            'title' => 'Assisted Pull-up',
+            'name' => 'Assisted Pull-up',
             'log_type' => 'banded'
         ];
 
         $processedData = $this->strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Assisted Pull-up', $processedData['title']);
+        $this->assertEquals('Assisted Pull-up', $processedData['name']);
         $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 

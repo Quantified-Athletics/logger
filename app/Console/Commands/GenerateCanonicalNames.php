@@ -50,7 +50,7 @@ class GenerateCanonicalNames extends Command
         $skipped = 0;
 
         foreach ($exercisesWithoutCanonicalNames as $exercise) {
-            $canonicalName = $this->generateCanonicalName($exercise->title);
+            $canonicalName = $this->generateCanonicalName($exercise->name);
             
             // Check if this canonical name already exists
             $existingExercise = Exercise::where('canonical_name', $canonicalName)
@@ -58,17 +58,17 @@ class GenerateCanonicalNames extends Command
                 ->first();
 
             if ($existingExercise) {
-                $this->warn("Skipping '{$exercise->title}' - canonical name '{$canonicalName}' already exists for exercise ID {$existingExercise->id}");
+                $this->warn("Skipping '{$exercise->name}' - canonical name '{$canonicalName}' already exists for exercise ID {$existingExercise->id}");
                 $skipped++;
                 continue;
             }
 
             if ($isDryRun) {
-                $this->line("Would update: '{$exercise->title}' -> '{$canonicalName}'");
+                $this->line("Would update: '{$exercise->name}' -> '{$canonicalName}'");
             } else {
                 $exercise->canonical_name = $canonicalName;
                 $exercise->save();
-                $this->comment("Updated: '{$exercise->title}' -> '{$canonicalName}'");
+                $this->comment("Updated: '{$exercise->name}' -> '{$canonicalName}'");
             }
             
             $updated++;

@@ -26,8 +26,8 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_generates_list_with_all_exercises_by_default()
     {
-        $exercise1 = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
-        $exercise2 = Exercise::factory()->create(['title' => 'Squat', 'user_id' => $this->user->id]);
+        $exercise1 = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
+        $exercise2 = Exercise::factory()->create(['name' => 'Squat', 'user_id' => $this->user->id]);
 
         $result = $this->service->generate($this->user->id, [
             'url_generator' => fn($ex) => '/exercise/' . $ex->id,
@@ -39,8 +39,8 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_filters_to_logged_exercises_only_when_configured()
     {
-        $loggedExercise = Exercise::factory()->create(['title' => 'Bench Press']);
-        $unloggedExercise = Exercise::factory()->create(['title' => 'Squat']);
+        $loggedExercise = Exercise::factory()->create(['name' => 'Bench Press']);
+        $unloggedExercise = Exercise::factory()->create(['name' => 'Squat']);
 
         LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -58,8 +58,8 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_categorizes_recent_exercises_correctly()
     {
-        $recentExercise = Exercise::factory()->create(['title' => 'Bench Press']);
-        $oldExercise = Exercise::factory()->create(['title' => 'Squat']);
+        $recentExercise = Exercise::factory()->create(['name' => 'Bench Press']);
+        $oldExercise = Exercise::factory()->create(['name' => 'Squat']);
 
         LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -93,8 +93,8 @@ class UnifiedExerciseListServiceTest extends TestCase
     {
         // Create another user with lots of logs to establish "popular" exercises
         $experiencedUser = User::factory()->create();
-        $popularExercise = Exercise::factory()->create(['title' => 'Bench Press']);
-        $unpopularExercise = Exercise::factory()->create(['title' => 'Squat']);
+        $popularExercise = Exercise::factory()->create(['name' => 'Bench Press']);
+        $unpopularExercise = Exercise::factory()->create(['name' => 'Squat']);
 
         // Create 50 logs for popular exercise
         LiftLog::factory()->count(50)->create([
@@ -125,9 +125,9 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_sorts_recent_exercises_alphabetically()
     {
-        $exerciseZ = Exercise::factory()->create(['title' => 'Zercher Squat']);
-        $exerciseA = Exercise::factory()->create(['title' => 'Arnold Press']);
-        $exerciseM = Exercise::factory()->create(['title' => 'Military Press']);
+        $exerciseZ = Exercise::factory()->create(['name' => 'Zercher Squat']);
+        $exerciseA = Exercise::factory()->create(['name' => 'Arnold Press']);
+        $exerciseM = Exercise::factory()->create(['name' => 'Military Press']);
 
         // All logged within last 28 days
         LiftLog::factory()->create([
@@ -165,7 +165,7 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_generates_time_labels_correctly()
     {
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press']);
 
         LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -187,7 +187,7 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_respects_date_parameter_for_recency_calculation()
     {
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press']);
 
         // Logged 20 days ago
         LiftLog::factory()->create([
@@ -211,7 +211,7 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_uses_custom_filter_placeholder()
     {
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
 
         $result = $this->service->generate($this->user->id, [
             'filter_placeholder' => 'Custom search text',
@@ -223,7 +223,7 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_uses_custom_aria_labels()
     {
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
 
         $result = $this->service->generate($this->user->id, [
             'url_generator' => fn($ex) => '/exercise/' . $ex->id,
@@ -239,7 +239,7 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_includes_create_form_when_provided()
     {
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
 
         $result = $this->service->generate($this->user->id, [
             'url_generator' => fn($ex) => '/exercise/' . $ex->id,
@@ -256,7 +256,7 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_create_form_is_null_when_not_provided()
     {
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
 
         $result = $this->service->generate($this->user->id, [
             'url_generator' => fn($ex) => '/exercise/' . $ex->id,
@@ -267,7 +267,7 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_respects_initial_state_configuration()
     {
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
 
         $result = $this->service->generate($this->user->id, [
             'url_generator' => fn($ex) => '/exercise/' . $ex->id,
@@ -279,7 +279,7 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_respects_show_cancel_button_configuration()
     {
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
 
         $result = $this->service->generate($this->user->id, [
             'url_generator' => fn($ex) => '/exercise/' . $ex->id,
@@ -291,7 +291,7 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_throws_exception_when_url_generator_not_provided()
     {
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
 
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('url_generator is required');
@@ -301,7 +301,7 @@ class UnifiedExerciseListServiceTest extends TestCase
 
     public function test_url_generator_receives_exercise_and_config()
     {
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press']);
         
         $capturedExercise = null;
         $capturedConfig = null;

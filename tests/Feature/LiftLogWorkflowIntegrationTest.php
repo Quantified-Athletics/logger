@@ -40,7 +40,7 @@ class LiftLogWorkflowIntegrationTest extends TestCase
         $response = $this->get(route('workouts.index'));
         $response->assertOk();
         // Simple workouts show generated label, not stored name
-        $response->assertSee($exercise->title);
+        $response->assertSee($exercise->name);
 
         // Step 2: Click "Log now" button (simulated by following the link)
         $response = $this->get(route('lift-logs.create', [
@@ -51,7 +51,7 @@ class LiftLogWorkflowIntegrationTest extends TestCase
         ]));
 
         $response->assertOk();
-        $response->assertSee('Log ' . $exercise->title);
+        $response->assertSee('Log ' . $exercise->name);
         $response->assertSee(route('workouts.index', ['workout_id' => $workout->id])); // Back button
 
         // Step 3: Submit the lift log
@@ -103,7 +103,7 @@ class LiftLogWorkflowIntegrationTest extends TestCase
         ]));
 
         $response->assertOk();
-        $response->assertSee('Log ' . $exercise->title);
+        $response->assertSee('Log ' . $exercise->name);
         $response->assertSee(route('mobile-entry.lifts', ['date' => $date])); // Back button
 
         // Step 3: Submit the lift log
@@ -133,7 +133,7 @@ class LiftLogWorkflowIntegrationTest extends TestCase
         // Step 4: Verify we're back at mobile-entry with the logged exercise
         $response = $this->get(route('mobile-entry.lifts', ['date' => $date]));
         $response->assertOk();
-        $response->assertSee($exercise->title);
+        $response->assertSee($exercise->name);
         $response->assertSee('100 lbs');
     }
 
@@ -211,7 +211,7 @@ class LiftLogWorkflowIntegrationTest extends TestCase
         $response->assertOk();
 
         // Should show the logged exercise in the table
-        $response->assertSee($exercise->title);
+        $response->assertSee($exercise->name);
         $response->assertSee('150 lbs');
         $response->assertSee('Great workout!');
     }

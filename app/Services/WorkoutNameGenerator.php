@@ -22,7 +22,7 @@ class WorkoutNameGenerator
         
         // For 1-2 exercises, just list them
         if ($exercises->count() <= 2) {
-            $names = $exercises->pluck('exercise.title')->filter()->toArray();
+            $names = $exercises->pluck('exercise.name')->filter()->toArray();
             if (count($names) === 0) {
                 if ($includeCount) {
                     return 'Workout • ' . $exercises->count() . ' exercises';
@@ -46,7 +46,7 @@ class WorkoutNameGenerator
     private function fallbackLabel(Collection $exercises): string
     {
         // Try to infer from exercise names
-        $names = $exercises->pluck('exercise.title')->map(fn($n) => strtolower($n))->toArray();
+        $names = $exercises->pluck('exercise.name')->map(fn($n) => strtolower($n))->toArray();
         $allNames = implode(' ', $names);
         
         // Simple keyword matching

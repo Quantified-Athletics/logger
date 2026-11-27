@@ -25,11 +25,10 @@ class ExerciseFormService
             $form->hiddenField('_method', $method);
         }
         
-        // Title field
         $form->textField(
-            'title',
+            'name',
             'Exercise Name',
-            old('title', $exercise->title ?? ''),
+            old('name', $exercise->name ?? ''),
             'Enter the exercise name'
         );
         
@@ -88,8 +87,8 @@ class ExerciseFormService
     private function addValidationErrors($form): void
     {
         if ($errors = session('errors')) {
-            if ($errors->has('title')) {
-                $form->message('error', $errors->first('title'));
+            if ($errors->has('name')) {
+                $form->message('error', $errors->first('name'));
             }
             if ($errors->has('description')) {
                 $form->message('error', $errors->first('description'));

@@ -48,7 +48,7 @@ class ExerciseReconcilerTest extends TestCase
     {
         $exercise = Exercise::create([
             'canonical_name' => 'test_ex',
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'log_type' => 'barbell',
             'user_id' => null
         ]);
@@ -65,18 +65,18 @@ class ExerciseReconcilerTest extends TestCase
 
         // Apply
         ExerciseReconciler::apply($this->tempFilename);
-        $this->assertEquals('Test Exercise Renamed', $exercise->refresh()->title);
+        $this->assertEquals('Test Exercise Renamed', $exercise->refresh()->name);
 
         // Rollback
         ExerciseReconciler::rollback($this->tempFilename);
-        $this->assertEquals('Test Exercise', $exercise->refresh()->title);
+        $this->assertEquals('Test Exercise', $exercise->refresh()->name);
     }
 
     public function test_apply_and_rollback_create_alias(): void
     {
         $exercise = Exercise::create([
             'canonical_name' => 'test_ex',
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'log_type' => 'barbell',
             'user_id' => null
         ]);
@@ -109,7 +109,7 @@ class ExerciseReconcilerTest extends TestCase
     {
         $exercise = Exercise::create([
             'canonical_name' => 'test_ex_old',
-            'title' => 'Test Exercise Old',
+            'name' => 'Test Exercise Old',
             'log_type' => 'barbell',
             'user_id' => null
         ]);
@@ -129,7 +129,7 @@ class ExerciseReconcilerTest extends TestCase
         ExerciseReconciler::apply($this->tempFilename);
         $exercise->refresh();
         $this->assertEquals('test_ex_new', $exercise->canonical_name);
-        $this->assertEquals('Test Exercise New', $exercise->title);
+        $this->assertEquals('Test Exercise New', $exercise->name);
 
         // Alias should be created automatically for the old canonical name
         $aliasExists = ExerciseAlias::where('exercise_id', $exercise->id)
@@ -141,7 +141,7 @@ class ExerciseReconcilerTest extends TestCase
         ExerciseReconciler::rollback($this->tempFilename);
         $exercise->refresh();
         $this->assertEquals('test_ex_old', $exercise->canonical_name);
-        $this->assertEquals('Test Exercise Old', $exercise->title);
+        $this->assertEquals('Test Exercise Old', $exercise->name);
 
         $aliasExists = ExerciseAlias::where('exercise_id', $exercise->id)
             ->where('alias_name', 'test_ex_old')
@@ -166,7 +166,7 @@ class ExerciseReconcilerTest extends TestCase
         ExerciseReconciler::apply($this->tempFilename);
         $exercise = Exercise::where('canonical_name', 'test_add')->whereNull('user_id')->first();
         $this->assertNotNull($exercise);
-        $this->assertEquals('Test Add', $exercise->title);
+        $this->assertEquals('Test Add', $exercise->name);
         $this->assertEquals('bodyweight', $exercise->strategyTypeName());
         $this->assertEquals('bodyweight-reps', $exercise->log_type);
 
@@ -215,7 +215,7 @@ class ExerciseReconcilerTest extends TestCase
     {
         $exercise = Exercise::create([
             'canonical_name' => 'test_ex',
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'log_type' => 'barbell',
             'user_id' => null
         ]);
@@ -244,7 +244,7 @@ class ExerciseReconcilerTest extends TestCase
     {
         $exercise = Exercise::create([
             'canonical_name' => 'test_ex',
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'log_type' => 'barbell',
             'user_id' => null
         ]);
@@ -269,7 +269,7 @@ class ExerciseReconcilerTest extends TestCase
             ExerciseReconciler::apply($this->tempFilename);
         } finally {
             // Assert rename was rolled back
-            $this->assertEquals('Test Exercise', $exercise->refresh()->title);
+            $this->assertEquals('Test Exercise', $exercise->refresh()->name);
         }
     }
 }

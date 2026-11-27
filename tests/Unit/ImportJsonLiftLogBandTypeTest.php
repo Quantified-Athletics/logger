@@ -303,7 +303,7 @@ class ImportJsonLiftLogBandTypeTest extends TestCase
         
         // Create a global exercise with resistance band type
         $globalExercise = Exercise::create([
-            'title' => 'Global Banded Exercise',
+            'name' => 'Global Banded Exercise',
             'canonical_name' => 'global_banded_exercise',
             'description' => 'Global exercise with resistance band',
             'log_type' => 'banded',

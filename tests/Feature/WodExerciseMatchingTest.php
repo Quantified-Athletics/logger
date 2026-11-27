@@ -29,7 +29,7 @@ class WodExerciseMatchingTest extends TestCase
         $user->roles()->attach($adminRole);
         $exercise = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'log_type' => 'barbell',
         ]);
 
@@ -75,7 +75,7 @@ class WodExerciseMatchingTest extends TestCase
         $user->roles()->attach($adminRole);
         $exercise = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'log_type' => 'barbell',
         ]);
 
@@ -101,7 +101,7 @@ class WodExerciseMatchingTest extends TestCase
         $user->roles()->attach($adminRole);
         $exercise = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'Push-ups',
+            'name' => 'Push-ups',
             'log_type' => 'bodyweight',
         ]);
 
@@ -129,13 +129,13 @@ class WodExerciseMatchingTest extends TestCase
         // Create exercises
         $squatExercise = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'log_type' => 'barbell',
         ]);
         
         $warmupExercise = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'Warm-up Squats',
+            'name' => 'Warm-up Squats',
             'log_type' => 'bodyweight',
         ]);
 
@@ -161,13 +161,13 @@ class WodExerciseMatchingTest extends TestCase
         
         $burpeeExercise = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'Burpees',
+            'name' => 'Burpees',
             'log_type' => 'bodyweight',
         ]);
         
         $stretchExercise = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'Stretching',
+            'name' => 'Stretching',
             'log_type' => 'bodyweight',
         ]);
 
@@ -192,7 +192,7 @@ class WodExerciseMatchingTest extends TestCase
         // Database has singular form
         $exercise = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'log_type' => 'barbell',
         ]);
 
@@ -221,7 +221,7 @@ class WodExerciseMatchingTest extends TestCase
         // Database has singular form
         $exercise = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'Deadlift',
+            'name' => 'Deadlift',
             'log_type' => 'barbell',
         ]);
 

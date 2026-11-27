@@ -73,7 +73,7 @@ class ExerciseService
             ->with(['aliases' => function ($query) {
                 $query->where('user_id', Auth::id());
             }])
-            ->orderBy('title', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
     }
 }

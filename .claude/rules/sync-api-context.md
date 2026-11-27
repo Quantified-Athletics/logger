@@ -46,7 +46,7 @@ Operations and monitoring are documented in `docs/sync/sync-api-operations-and-m
 ### Existing tables you'll interact with
 
 - `users` — name, email, password, weight_unit. Add `HasApiTokens` trait.
-- `exercises` — title, canonical_name, log_type (Athlete's log types; `config/log_types.php` gives each one its strategy), user_id (null = global). Has aliases via `exercise_aliases`.
+- `exercises` — name, canonical_name, log_type (Athlete's log types; `config/log_types.php` gives each one its strategy), user_id (null = global). Has aliases via `exercise_aliases`.
 - `lift_logs` — exercise_id, user_id, logged_at, comments, workout_id, is_pr, pr_count. Soft deletes.
 - `lift_sets` — lift_log_id, weight, unit, reps, time, band_color, notes. Soft deletes.
 - `personal_records` — user_id, exercise_id, lift_log_id, pr_type, value, previous_pr_id.
@@ -75,7 +75,7 @@ PR detection runs automatically when a `LiftLogCompleted` event is dispatched. T
 ## Conventions specific to this project
 
 - **Actions pattern:** Business logic lives in Action classes (see `app/Actions/LiftLogs/CreateLiftLogAction.php` for the pattern). Actions are injected via constructor, have a single `execute()` method.
-- **Exercise matching:** The existing `ExerciseMatchingService` does fuzzy matching for the web UI's WOD parser. The sync API uses a simpler, deterministic `ExerciseResolverService` (exact canonical_name → title → alias → auto-create).
+- **Exercise matching:** The existing `ExerciseMatchingService` does fuzzy matching for the web UI's WOD parser. The sync API uses a simpler, deterministic `ExerciseResolverService` (exact canonical_name → name → alias → auto-create).
 - **Soft deletes everywhere:** LiftLog, LiftSet, Exercise, ExerciseAlias all use SoftDeletes. Always scope queries to exclude trashed records.
 - **Activity logging:** Models use Spatie ActivityLog trait. New models in `app/Sync/` do not need this (they're simple data stores).
 - **Unit handling:** `lift_sets.unit` stores the weight unit per set (lbs or kg). The user's preference is on `users.weight_unit`. Both can change independently — a user might switch mid-session.

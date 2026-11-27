@@ -29,7 +29,7 @@ class WorkoutLabelGeneratorTest extends TestCase
      */
     private function createExercise(string $title): Exercise
     {
-        return Exercise::factory()->create(['title' => $title]);
+        return Exercise::factory()->create(['name' => $title]);
     }
 
     /**
@@ -58,7 +58,7 @@ class WorkoutLabelGeneratorTest extends TestCase
     public function it_lists_exercise_names_for_single_exercise()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
-        $exercise = Exercise::factory()->create(['title' => 'Back Squat']);
+        $exercise = Exercise::factory()->create(['name' => 'Back Squat']);
         $this->addExerciseToWorkout($workout, $exercise);
 
         $label = $this->generator->generateFromWorkout($workout);
@@ -70,8 +70,8 @@ class WorkoutLabelGeneratorTest extends TestCase
     public function it_lists_exercise_names_for_two_exercises()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
-        $exercise1 = Exercise::factory()->create(['title' => 'Back Squat']);
-        $exercise2 = Exercise::factory()->create(['title' => 'Deadlift']);
+        $exercise1 = Exercise::factory()->create(['name' => 'Back Squat']);
+        $exercise2 = Exercise::factory()->create(['name' => 'Deadlift']);
         $this->addExerciseToWorkout($workout, $exercise1);
         $this->addExerciseToWorkout($workout, $exercise2);
 
@@ -318,9 +318,9 @@ class WorkoutLabelGeneratorTest extends TestCase
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            Exercise::factory()->create(['title' => 'Custom Exercise 1']),
-            Exercise::factory()->create(['title' => 'Custom Exercise 2']),
-            Exercise::factory()->create(['title' => 'Custom Exercise 3']),
+            Exercise::factory()->create(['name' => 'Custom Exercise 1']),
+            Exercise::factory()->create(['name' => 'Custom Exercise 2']),
+            Exercise::factory()->create(['name' => 'Custom Exercise 3']),
         ];
         
         foreach ($exercises as $exercise) {
@@ -338,9 +338,9 @@ class WorkoutLabelGeneratorTest extends TestCase
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
         
         $exercises = [
-            Exercise::factory()->create(['title' => 'Squat Variations']),
-            Exercise::factory()->create(['title' => 'Leg Press']),
-            Exercise::factory()->create(['title' => 'Leg Curls']),
+            Exercise::factory()->create(['name' => 'Squat Variations']),
+            Exercise::factory()->create(['name' => 'Leg Press']),
+            Exercise::factory()->create(['name' => 'Leg Curls']),
         ];
         
         foreach ($exercises as $exercise) {

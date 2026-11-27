@@ -40,7 +40,7 @@ class ImportJsonLiftLogTest extends TestCase
     private function createGlobalExercise(string $title, string $canonicalName): Exercise
     {
         return Exercise::create([
-            'title' => $title,
+            'name' => $title,
             'canonical_name' => $canonicalName,
             'description' => 'Test exercise',
             'user_id' => null, // Global exercise
@@ -295,14 +295,14 @@ class ImportJsonLiftLogTest extends TestCase
         $result = $this->callPrivateMethod($command, 'createNewUserExercise', [$exerciseData, $user]);
         
         $this->assertDatabaseHas('exercises', [
-            'title' => 'New Exercise',
+            'name' => 'New Exercise',
             'canonical_name' => 'new_exercise',
             'user_id' => $user->id,
             'description' => 'Imported from JSON file',
             'log_type' => 'bodyweight'
         ]);
         
-        $this->assertEquals('New Exercise', $result->title);
+        $this->assertEquals('New Exercise', $result->name);
         $this->assertEquals('new_exercise', $result->canonical_name);
         $this->assertEquals('bodyweight', $result->strategyTypeName());
         $this->assertEquals($user->id, $result->user_id);
@@ -1033,7 +1033,7 @@ class ImportJsonLiftLogTest extends TestCase
             
             // Verify user-specific exercise was created automatically
             $this->assertDatabaseHas('exercises', [
-            'title' => 'Auto Created Exercise',
+            'name' => 'Auto Created Exercise',
                 'canonical_name' => 'auto_created_exercise',
                 'user_id' => $user->id,
             'log_type' => 'bodyweight'

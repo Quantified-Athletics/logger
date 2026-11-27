@@ -23,7 +23,7 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
     private function createGlobalExercise(string $title, string $canonicalName): Exercise
     {
         return Exercise::create([
-            'title' => $title,
+            'name' => $title,
             'canonical_name' => $canonicalName,
             'description' => 'Test exercise',
             'user_id' => null, // Global exercise
@@ -46,14 +46,14 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
         
         // Verify exercise was created with correct attributes
         $this->assertDatabaseHas('exercises', [
-            'title' => 'Custom Exercise',
+            'name' => 'Custom Exercise',
             'canonical_name' => 'custom_exercise',
             'description' => 'Imported from JSON file',
             'user_id' => $user->id,
             'log_type' => 'bodyweight'
         ]);
         
-        $this->assertEquals('Custom Exercise', $result->title);
+        $this->assertEquals('Custom Exercise', $result->name);
         $this->assertEquals('custom_exercise', $result->canonical_name);
         $this->assertEquals('Imported from JSON file', $result->description);
         $this->assertEquals('bodyweight', $result->strategyTypeName());
@@ -75,7 +75,7 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
         
         // Verify exercise_type defaults to regular and it's a user exercise
         $this->assertDatabaseHas('exercises', [
-            'title' => 'Weighted Exercise',
+            'name' => 'Weighted Exercise',
             'canonical_name' => 'weighted_exercise',
             'user_id' => $user->id,
             'log_type' => 'barbell'
@@ -101,7 +101,7 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
         
         // Should return the existing exercise
         $this->assertEquals($existingExercise->id, $result['exercise']->id);
-        $this->assertEquals('Existing Exercise', $result['exercise']->title);
+        $this->assertEquals('Existing Exercise', $result['exercise']->name);
         $this->assertEquals('existing_exercise', $result['exercise']->canonical_name);
     }
 
@@ -111,7 +111,7 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
         
         // Create a user-specific exercise with a specific canonical name
         $userExercise = Exercise::create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'canonical_name' => 'user_exercise',
             'description' => 'User specific exercise',
             'user_id' => $user->id,
@@ -149,7 +149,7 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
         
         // Create user-specific exercise
         $userExercise = Exercise::create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'canonical_name' => 'user_exercise',
             'description' => 'User specific exercise',
             'user_id' => $user->id,
@@ -203,13 +203,13 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
         $result = $this->callPrivateMethod($command, 'createNewUserExercise', [$exerciseData, $user]);
         
         // Verify it uses the exercise title from the data
-        $this->assertEquals('Custom Exercise Title', $result->title);
+        $this->assertEquals('Custom Exercise Title', $result->name);
         // The canonical name should be preserved as provided (not auto-generated from title)
         $this->assertEquals('custom_canonical_name', $result->canonical_name);
         $this->assertEquals($user->id, $result->user_id);
         
         $this->assertDatabaseHas('exercises', [
-            'title' => 'Custom Exercise Title',
+            'name' => 'Custom Exercise Title',
             'canonical_name' => 'custom_canonical_name',
             'user_id' => $user->id
         ]);
@@ -243,13 +243,13 @@ class ImportJsonLiftLogInteractiveTest extends TestCase
         
         // Verify it created a user-specific exercise
         $this->assertDatabaseHas('exercises', [
-            'title' => 'New Exercise',
+            'name' => 'New Exercise',
             'canonical_name' => 'new_exercise',
             'user_id' => $user->id,
             'log_type' => 'barbell'
         ]);
         
-        $this->assertEquals('New Exercise', $result['exercise']->title);
+        $this->assertEquals('New Exercise', $result['exercise']->name);
         $this->assertEquals('new_exercise', $result['exercise']->canonical_name);
         $this->assertEquals($user->id, $result['exercise']->user_id);
     }

@@ -44,15 +44,15 @@ class WorkoutExerciseListServiceTest extends TestCase
     {
         // Create workout with exercises
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
-        $exercise1 = Exercise::factory()->create(['title' => 'Back Squat']);
-        $exercise2 = Exercise::factory()->create(['title' => 'Bench Press']);
+        $exercise1 = Exercise::factory()->create(['name' => 'Back Squat']);
+        $exercise2 = Exercise::factory()->create(['name' => 'Bench Press']);
         
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise1->id, 'order' => 1]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise2->id, 'order' => 2]);
 
         // Mock alias service
         $this->aliasService->method('getDisplayName')
-            ->willReturnCallback(fn($exercise) => $exercise->title);
+            ->willReturnCallback(fn($exercise) => $exercise->name);
 
         $result = $this->service->generateExerciseListTable($workout);
 
@@ -75,7 +75,7 @@ class WorkoutExerciseListServiceTest extends TestCase
     public function test_shows_logged_status_when_enabled()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
-        $exercise = Exercise::factory()->create(['title' => 'Back Squat']);
+        $exercise = Exercise::factory()->create(['name' => 'Back Squat']);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order' => 1]);
 
         // Create a lift log for today
@@ -111,8 +111,8 @@ class WorkoutExerciseListServiceTest extends TestCase
             'wod_syntax' => "# Strength\n[Back Squat]: 5x5\n[Bench Press]: 3x8"
         ]);
 
-        $exercise1 = Exercise::factory()->create(['title' => 'Back Squat']);
-        $exercise2 = Exercise::factory()->create(['title' => 'Bench Press']);
+        $exercise1 = Exercise::factory()->create(['name' => 'Back Squat']);
+        $exercise2 = Exercise::factory()->create(['name' => 'Bench Press']);
 
         // Mock matching service to return exercises
         $this->matchingService->method('findBestMatch')
@@ -122,7 +122,7 @@ class WorkoutExerciseListServiceTest extends TestCase
             ]);
 
         $this->aliasService->method('getDisplayName')
-            ->willReturnCallback(fn($exercise) => $exercise->title);
+            ->willReturnCallback(fn($exercise) => $exercise->name);
 
         $result = $this->service->generateExerciseListTable($workout, [
             'redirectContext' => 'advanced-workout'
@@ -170,7 +170,7 @@ class WorkoutExerciseListServiceTest extends TestCase
             'wod_syntax' => "# Strength\n[KB Swings]: 3x10"
         ]);
 
-        $exercise = Exercise::factory()->create(['title' => 'Kettlebell Swings']);
+        $exercise = Exercise::factory()->create(['name' => 'Kettlebell Swings']);
 
         // Mock matching service to return the exercise (fuzzy match)
         $this->matchingService->method('findBestMatch')
@@ -194,7 +194,7 @@ class WorkoutExerciseListServiceTest extends TestCase
     public function test_handles_compact_mode_option()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
-        $exercise = Exercise::factory()->create(['title' => 'Back Squat']);
+        $exercise = Exercise::factory()->create(['name' => 'Back Squat']);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order' => 1]);
 
         $this->aliasService->method('getDisplayName')->willReturn('Back Squat');
@@ -210,7 +210,7 @@ class WorkoutExerciseListServiceTest extends TestCase
     public function test_handles_show_buttons_options()
     {
         $workout = Workout::factory()->create(['user_id' => $this->user->id]);
-        $exercise = Exercise::factory()->create(['title' => 'Back Squat']);
+        $exercise = Exercise::factory()->create(['name' => 'Back Squat']);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order' => 1]);
 
         $this->aliasService->method('getDisplayName')->willReturn('Back Squat');

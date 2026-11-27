@@ -39,7 +39,7 @@ class LiftLogCreateTest extends TestCase
         ]));
 
         $response->assertStatus(200);
-        $response->assertSee('Log ' . $exercise->title);
+        $response->assertSee('Log ' . $exercise->name);
     }
 
     /** @test */
@@ -328,7 +328,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Back Squat'
+            'name' => 'Back Squat'
         ]);
         
         // Create an alias for this exercise
@@ -362,7 +362,7 @@ class LiftLogCreateTest extends TestCase
         ]));
 
         $response->assertStatus(200);
-        $response->assertSee('Log ' . $exercise->title);
+        $response->assertSee('Log ' . $exercise->name);
     }
 
     /** @test */
@@ -379,7 +379,7 @@ class LiftLogCreateTest extends TestCase
         ]));
 
         $response->assertStatus(200);
-        $response->assertSee('Log ' . $exercise->title);
+        $response->assertSee('Log ' . $exercise->name);
     }
 
     /** @test */
@@ -608,7 +608,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Bench Press'
+            'name' => 'Bench Press'
         ]);
         $date = Carbon::today();
 

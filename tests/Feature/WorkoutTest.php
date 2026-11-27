@@ -65,7 +65,7 @@ class WorkoutTest extends TestCase
         $adminRole = Role::where('name', 'Admin')->first();
         $user->roles()->attach($adminRole);
         $exercise = Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => null,
         ]);
 
@@ -98,11 +98,11 @@ class WorkoutTest extends TestCase
         ]);
         
         $exercise1 = Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => null,
         ]);
         $exercise2 = Exercise::factory()->create([
-            'title' => 'Squat',
+            'name' => 'Squat',
             'user_id' => null,
         ]);
 
@@ -140,9 +140,9 @@ class WorkoutTest extends TestCase
             'name' => 'Push Day',
         ]);
         
-        $exercise1 = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
-        $exercise2 = Exercise::factory()->create(['title' => 'Dips', 'user_id' => null]);
-        $exercise3 = Exercise::factory()->create(['title' => 'Tricep Extensions', 'user_id' => null]);
+        $exercise1 = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
+        $exercise2 = Exercise::factory()->create(['name' => 'Dips', 'user_id' => null]);
+        $exercise3 = Exercise::factory()->create(['name' => 'Tricep Extensions', 'user_id' => null]);
 
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -212,7 +212,7 @@ class WorkoutTest extends TestCase
     {
         $user = User::factory()->create();
         $workout = Workout::factory()->create(['user_id' => $user->id, 'name' => 'Test Workout']);
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Bench Press']);
         
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -288,7 +288,7 @@ class WorkoutTest extends TestCase
             'wod_syntax' => '[Bench Press]: 5x5'
         ]);
         
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Bench Press']);
         WorkoutExercise::create([
             'workout_id' => $workout->id,
             'exercise_id' => $exercise->id,
@@ -316,8 +316,8 @@ class WorkoutTest extends TestCase
         ]);
         
         // Add exercises
-        $exercise1 = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
-        $exercise2 = Exercise::factory()->create(['title' => 'Overhead Press', 'user_id' => null]);
+        $exercise1 = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
+        $exercise2 = Exercise::factory()->create(['name' => 'Overhead Press', 'user_id' => null]);
         
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise1->id, 'order' => 1]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise2->id, 'order' => 2]);
@@ -358,7 +358,7 @@ class WorkoutTest extends TestCase
             'wod_syntax' => '[Bench Press]: 5x5',
         ]);
         
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order' => 1]);
         
         $response = $this->actingAs($admin)->get(route('workouts.index'));
@@ -382,7 +382,7 @@ class WorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $pullUp = Exercise::factory()->create(['title' => 'Pull-Up', 'user_id' => null]);
+        $pullUp = Exercise::factory()->create(['name' => 'Pull-Up', 'user_id' => null]);
         WorkoutExercise::create(['workout_id' => $simpleWorkout->id, 'exercise_id' => $pullUp->id, 'order' => 1]);
         
         // Create an advanced workout
@@ -467,8 +467,8 @@ class WorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $exercise1 = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
-        $exercise2 = Exercise::factory()->create(['title' => 'Squat', 'user_id' => null]);
+        $exercise1 = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
+        $exercise2 = Exercise::factory()->create(['name' => 'Squat', 'user_id' => null]);
         
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise1->id, 'order' => 1]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise2->id, 'order' => 2]);
@@ -489,8 +489,8 @@ class WorkoutTest extends TestCase
         $admin->roles()->attach($adminRole);
         
         // Create exercises that will be matched by the WOD syntax
-        Exercise::factory()->create(['title' => 'Strict Press', 'user_id' => null]);
-        Exercise::factory()->create(['title' => 'Push-Ups', 'user_id' => null]);
+        Exercise::factory()->create(['name' => 'Strict Press', 'user_id' => null]);
+        Exercise::factory()->create(['name' => 'Push-Ups', 'user_id' => null]);
         
         // Create an advanced workout
         $workout = Workout::factory()->create([
@@ -591,7 +591,7 @@ class WorkoutTest extends TestCase
         ]);
         
         // Add an exercise so the workout shows up properly
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order' => 1]);
         
         $response = $this->actingAs($user)->get(route('workouts.index'));
@@ -629,7 +629,7 @@ class WorkoutTest extends TestCase
         ]);
         
         // Add an exercise so the workout shows up properly
-        $exercise = Exercise::factory()->create(['title' => 'Squat', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Squat', 'user_id' => null]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order' => 1]);
         
         $response = $this->actingAs($user)->get(route('workouts.index'));
@@ -666,7 +666,7 @@ class WorkoutTest extends TestCase
         ]);
         
         // Add an exercise so the workout shows up properly
-        $exercise = Exercise::factory()->create(['title' => 'Deadlift', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Deadlift', 'user_id' => null]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order' => 1]);
         
         $response = $this->actingAs($user)->get(route('workouts.index'));

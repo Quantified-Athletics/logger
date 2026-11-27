@@ -11,7 +11,8 @@ use Illuminate\Support\Str;
 class ExerciseController
 {
     /**
-     * Create a user-scoped exercise from the Athlete app.
+     * Create a user-scoped exercise from the Athlete app. The client sends the exercise's name as
+     * `title` (required); a `name`, when sent, wins over it.
      *
      * POST /api/sync/exercises
      */
@@ -19,6 +20,7 @@ class ExerciseController
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'name' => 'nullable|string|max:255',
             'canonical_name' => 'nullable|string|max:255',
             'exercise_type' => 'nullable|string|max:50',
             'log_type' => 'nullable|string|max:50',
@@ -27,8 +29,8 @@ class ExerciseController
 
         $user = $request->user();
         $logType = $this->logTypeFor($request);
-        $title = $request->input('title');
-        $canonicalName = $request->input('canonical_name') ?: Str::snake(Str::lower($title));
+        $name = $request->filled('name') ? $request->input('name') : $request->input('title');
+        $canonicalName = $request->input('canonical_name') ?: Str::snake(Str::lower($name));
 
         // Check if user already has an exercise with this canonical name
         $existing = Exercise::withTrashed()
@@ -43,7 +45,7 @@ class ExerciseController
             }
             // Update fields
             $existing->update([
-                'title' => $title,
+                'name' => $name,
                 'log_type' => $this->keepsStrategy($request, $existing, $logType) ? $existing->log_type : $logType,
                 'show_in_feed' => $request->input('show_in_feed', true),
             ]);
@@ -57,7 +59,7 @@ class ExerciseController
 
         // Create new user-scoped exercise
         $exercise = Exercise::create([
-            'title' => $title,
+            'name' => $name,
             'canonical_name' => $canonicalName,
             'user_id' => $user->id,
             'log_type' => $logType,

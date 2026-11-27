@@ -458,7 +458,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
         ]));
 
         $inputData = [
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'log_type' => 'banded'
         ];
 

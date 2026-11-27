@@ -44,7 +44,7 @@ class ExerciseAliasService
                 'user_id' => $user->id,
                 'user_email' => $user->email,
                 'exercise_id' => $exercise->id,
-                'exercise_title' => $exercise->title,
+                'exercise_title' => $exercise->name,
                 'alias_name' => $aliasName,
             ]);
 
@@ -101,7 +101,7 @@ class ExerciseAliasService
 
         return $exercises->map(function ($exercise) use ($aliases) {
             if ($aliases->has($exercise->id)) {
-                $exercise->title = $aliases->get($exercise->id)->alias_name;
+                $exercise->name = $aliases->get($exercise->id)->alias_name;
             }
             return $exercise;
         });
@@ -129,7 +129,7 @@ class ExerciseAliasService
             // 1. Exercise objects may not have a title set yet (e.g., in create forms)
             // 2. The method signature requires a string return type
             // 3. Returning empty string is safer than null for display purposes
-            return $exercise->title ?? '';
+            return $exercise->name ?? '';
         } catch (\Exception $e) {
             Log::error('Alias lookup failed', [
                 'exercise_id' => $exercise->id,
@@ -142,7 +142,7 @@ class ExerciseAliasService
             // - The exercise title is null (e.g., unsaved exercise in forms)
             // - An exception occurred during alias lookup
             // Returning empty string prevents TypeError and allows views to render gracefully
-            return $exercise->title ?? '';
+            return $exercise->name ?? '';
         }
     }
 

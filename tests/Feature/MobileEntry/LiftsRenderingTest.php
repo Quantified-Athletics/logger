@@ -40,7 +40,7 @@ class LiftsRenderingTest extends TestCase
         //    A LiftLog entry is crucial as the bug occurred when displaying *logged* items.
         //    A LiftSet is added to ensure the LiftLog is complete and would be displayed.
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press']);
 
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
@@ -80,7 +80,7 @@ class LiftsRenderingTest extends TestCase
     public function it_shows_expanded_list_and_correct_message_when_expand_selection_is_true()
     {
         $user = User::factory()->create();
-        Exercise::factory()->create(['title' => 'Bench Press']); // Need at least one exercise
+        Exercise::factory()->create(['name' => 'Bench Press']); // Need at least one exercise
         
         $response = $this->actingAs($user)->get(route('mobile-entry.lifts', ['expand_selection' => true]));
         
@@ -103,7 +103,7 @@ class LiftsRenderingTest extends TestCase
     public function it_shows_collapsed_list_and_default_message_when_expand_selection_is_false()
     {
         $user = User::factory()->create();
-        Exercise::factory()->create(['title' => 'Bench Press']); // Need at least one exercise
+        Exercise::factory()->create(['name' => 'Bench Press']); // Need at least one exercise
         
         // Test with expand_selection explicitly false
         $responseFalse = $this->actingAs($user)->get(route('mobile-entry.lifts', ['expand_selection' => false]));

@@ -130,7 +130,7 @@ class UnifiedExerciseListService
             },
             'user' // For ownership display
         ])
-        ->orderBy('title', 'asc')
+        ->orderBy('name', 'asc')
         ->get();
     }
 
@@ -248,7 +248,7 @@ class UnifiedExerciseListService
             
             $items[] = [
                 'id' => 'exercise-' . $exercise->id,
-                'name' => $exercise->title,
+                'name' => $exercise->name,
                 'type' => $itemType,
                 'href' => $href,
             ];

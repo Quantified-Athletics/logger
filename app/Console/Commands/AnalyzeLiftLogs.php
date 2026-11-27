@@ -171,11 +171,11 @@ class AnalyzeLiftLogs extends Command
         $query = DB::table('lift_logs')
             ->join('exercises', 'lift_logs.exercise_id', '=', 'exercises.id')
             ->select(
-                'exercises.title',
+                'exercises.name',
                 DB::raw('COUNT(lift_logs.id) as log_count'),
                 DB::raw('COUNT(DISTINCT lift_logs.user_id) as user_count')
             )
-            ->groupBy('exercises.id', 'exercises.title')
+            ->groupBy('exercises.id', 'exercises.name')
             ->orderByDesc('log_count')
             ->limit(10);
 
@@ -191,7 +191,7 @@ class AnalyzeLiftLogs extends Command
         $tableData = $popularExercises->map(function ($exercise, $idx) {
             return [
                 $idx + 1,
-                $exercise->title,
+                $exercise->name,
                 number_format($exercise->log_count),
                 number_format($exercise->user_count),
             ];
@@ -238,7 +238,7 @@ class AnalyzeLiftLogs extends Command
             if (!isset($volumeData[$key])) {
                 $volumeData[$key] = [
                     'user_name' => $user->name,
-                    'exercise_title' => $exercise->title,
+                    'exercise_title' => $exercise->name,
                     'user' => $user,
                     'total_sets' => 0,
                     'total_reps' => 0,
@@ -343,8 +343,8 @@ class AnalyzeLiftLogs extends Command
 
         $query = DB::table('lift_logs')
             ->join('exercises', 'lift_logs.exercise_id', '=', 'exercises.id')
-            ->select('exercises.id', 'exercises.title', DB::raw('COUNT(*) as count'))
-            ->groupBy('exercises.id', 'exercises.title')
+            ->select('exercises.id', 'exercises.name', DB::raw('COUNT(*) as count'))
+            ->groupBy('exercises.id', 'exercises.name')
             ->orderByDesc('count')
             ->limit(5);
 
@@ -359,7 +359,7 @@ class AnalyzeLiftLogs extends Command
         $unitResolver = app(\App\Services\UnitResolver::class);
 
         foreach ($topExercises as $exercise) {
-            $this->comment("Exercise: {$exercise->title}");
+            $this->comment("Exercise: {$exercise->name}");
 
             // Fetch all logs for this exercise with sets and user
             $logsQuery = LiftLog::where('exercise_id', $exercise->id)
@@ -466,7 +466,7 @@ class AnalyzeLiftLogs extends Command
             return [
                 $idx + 1,
                 $log->user->name ?? 'N/A',
-                $log->exercise->title ?? 'N/A',
+                $log->exercise->name ?? 'N/A',
                 $log->logged_at->format('M d, Y H:i'),
                 $log->liftSets->count(),
                 $weightRepsDisplay,

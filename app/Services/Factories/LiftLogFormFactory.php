@@ -80,10 +80,10 @@ class LiftLogFormFactory
         $formData['data']['buttons'] = [
             'decrement' => '-',
             'increment' => '+',
-            'submit' => 'Log ' . $exercise->title
+            'submit' => 'Log ' . $exercise->name
         ];
         $formData['data']['ariaLabels'] = [
-            'section' => $exercise->title . ' entry',
+            'section' => $exercise->name . ' entry',
             'deleteForm' => 'Remove this exercise form'
         ];
         

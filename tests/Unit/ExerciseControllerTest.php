@@ -93,7 +93,7 @@ class ExerciseControllerTest extends TestCase
 
         $userExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
         ]);
 
         $response = $this->controller->promote($userExercise);
@@ -118,7 +118,7 @@ class ExerciseControllerTest extends TestCase
 
         $userExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => 'Test Description',
             'log_type' => 'bodyweight',
         ]);
@@ -128,7 +128,7 @@ class ExerciseControllerTest extends TestCase
         // Check that all data is preserved except user_id
         $this->assertDatabaseHas('exercises', [
             'id' => $userExercise->id,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => 'Test Description',
             'user_id' => null,
             'log_type' => 'bodyweight',
@@ -141,7 +141,7 @@ class ExerciseControllerTest extends TestCase
 
         $userExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'title' => 'My Custom Exercise',
+            'name' => 'My Custom Exercise',
         ]);
 
         $response = $this->controller->promote($userExercise);
@@ -181,7 +181,7 @@ class ExerciseControllerTest extends TestCase
 
         $globalExercise = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
         ]);
 
         // No lift logs exist, so no original owner can be determined
@@ -201,7 +201,7 @@ class ExerciseControllerTest extends TestCase
 
         $globalExercise = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
         ]);
 
         // Create a lift log for the original owner
@@ -235,7 +235,7 @@ class ExerciseControllerTest extends TestCase
 
         $globalExercise = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
         ]);
 
         // Create lift logs for original owner (earliest)
@@ -278,7 +278,7 @@ class ExerciseControllerTest extends TestCase
 
         $globalExercise = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
         ]);
 
         // Create lift logs for original owner (earliest)
@@ -320,7 +320,7 @@ class ExerciseControllerTest extends TestCase
 
         $globalExercise = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
         ]);
 
         // Create lift log for another user (later)
@@ -354,7 +354,7 @@ class ExerciseControllerTest extends TestCase
 
         $globalExercise = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => 'Test Description',
             'log_type' => 'bodyweight',
         ]);
@@ -371,7 +371,7 @@ class ExerciseControllerTest extends TestCase
         // Check that all data is preserved except user_id
         $this->assertDatabaseHas('exercises', [
             'id' => $globalExercise->id,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => 'Test Description',
             'user_id' => $this->regularUser->id,
             'log_type' => 'bodyweight',
@@ -385,7 +385,7 @@ class ExerciseControllerTest extends TestCase
         $this->actingAs($this->regularUser);
 
         $response = $this->post(route('exercises.store'), [
-            'title' => 'New Exercise',
+            'name' => 'New Exercise',
             'description' => 'Test description',
             'log_type' => 'barbell',
             'show_in_feed' => true,
@@ -394,7 +394,7 @@ class ExerciseControllerTest extends TestCase
         $response->assertRedirect(route('exercises.index'));
 
         $this->assertDatabaseHas('exercises', [
-            'title' => 'New Exercise',
+            'name' => 'New Exercise',
             'user_id' => $this->regularUser->id,
             'show_in_feed' => true,
         ]);
@@ -405,7 +405,7 @@ class ExerciseControllerTest extends TestCase
         $this->actingAs($this->regularUser);
 
         $response = $this->post(route('exercises.store'), [
-            'title' => 'New Exercise',
+            'name' => 'New Exercise',
             'description' => 'Test description',
             'log_type' => 'barbell',
             'show_in_feed' => false,
@@ -414,7 +414,7 @@ class ExerciseControllerTest extends TestCase
         $response->assertRedirect(route('exercises.index'));
 
         $this->assertDatabaseHas('exercises', [
-            'title' => 'New Exercise',
+            'name' => 'New Exercise',
             'user_id' => $this->regularUser->id,
             'show_in_feed' => false,
         ]);
@@ -425,7 +425,7 @@ class ExerciseControllerTest extends TestCase
         $this->actingAs($this->regularUser);
 
         $response = $this->post(route('exercises.store'), [
-            'title' => 'New Exercise',
+            'name' => 'New Exercise',
             'description' => 'Test description',
             'log_type' => 'barbell',
             // show_in_feed not provided
@@ -434,7 +434,7 @@ class ExerciseControllerTest extends TestCase
         $response->assertRedirect(route('exercises.index'));
 
         $this->assertDatabaseHas('exercises', [
-            'title' => 'New Exercise',
+            'name' => 'New Exercise',
             'user_id' => $this->regularUser->id,
             'show_in_feed' => false,
         ]);
@@ -446,12 +446,12 @@ class ExerciseControllerTest extends TestCase
 
         $exercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'show_in_feed' => false,
         ]);
 
         $response = $this->put(route('exercises.update', $exercise), [
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => 'Test description',
             'log_type' => 'barbell',
             'show_in_feed' => true,
@@ -471,12 +471,12 @@ class ExerciseControllerTest extends TestCase
 
         $exercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'show_in_feed' => true,
         ]);
 
         $response = $this->put(route('exercises.update', $exercise), [
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => 'Test description',
             'log_type' => 'barbell',
             'show_in_feed' => false,
@@ -496,12 +496,12 @@ class ExerciseControllerTest extends TestCase
 
         $exercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'show_in_feed' => true,
         ]);
 
         $response = $this->put(route('exercises.update', $exercise), [
-            'title' => 'Test Exercise Updated',
+            'name' => 'Test Exercise Updated',
             'description' => 'Test description',
             'log_type' => 'barbell',
             // show_in_feed not provided
@@ -511,7 +511,7 @@ class ExerciseControllerTest extends TestCase
 
         $this->assertDatabaseHas('exercises', [
             'id' => $exercise->id,
-            'title' => 'Test Exercise Updated',
+            'name' => 'Test Exercise Updated',
             'show_in_feed' => false,
         ]);
     }
@@ -522,7 +522,7 @@ class ExerciseControllerTest extends TestCase
 
         $userExercise = Exercise::factory()->create([
             'user_id' => $this->regularUser->id,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'show_in_feed' => true,
         ]);
 
@@ -542,7 +542,7 @@ class ExerciseControllerTest extends TestCase
 
         $globalExercise = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'show_in_feed' => true,
         ]);
 

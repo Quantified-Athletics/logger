@@ -20,19 +20,19 @@ class SledCarryMigrationVerificationTest extends TestCase
         $user = User::factory()->create();
 
         $sledEx = Exercise::create([
-            'title' => 'Sled Push',
+            'name' => 'Sled Push',
             'canonical_name' => 'sled_push',
             'log_type' => 'sled',
         ]);
 
         $carryEx = Exercise::create([
-            'title' => 'Farmers Walk',
+            'name' => 'Farmers Walk',
             'canonical_name' => 'farmers_walk',
             'log_type' => 'weighted-carry',
         ]);
 
         $holdEx = Exercise::create([
-            'title' => 'Plank',
+            'name' => 'Plank',
             'canonical_name' => 'plank',
             'log_type' => 'static-hold',
         ]);
@@ -127,7 +127,7 @@ class SledCarryMigrationVerificationTest extends TestCase
     {
         $user = User::factory()->create();
         $sledEx = Exercise::create([
-            'title' => 'Sled Pull', 'canonical_name' => 'sled_pull',
+            'name' => 'Sled Pull', 'canonical_name' => 'sled_pull',
             'log_type' => 'sled', ]);
         $sledLog = LiftLog::create([
             'user_id' => $user->id, 'exercise_id' => $sledEx->id, 'log_type' => 'sled', 'logged_at' => now(),
