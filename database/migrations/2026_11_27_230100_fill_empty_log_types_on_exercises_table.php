@@ -46,7 +46,9 @@ return new class extends Migration
     {
         $sets = DB::table('lift_sets')
             ->join('lift_logs', 'lift_logs.id', '=', 'lift_sets.lift_log_id')
-            ->where('lift_logs.exercise_id', $exerciseId);
+            ->where('lift_logs.exercise_id', $exerciseId)
+            ->whereNull('lift_logs.deleted_at')
+            ->whereNull('lift_sets.deleted_at');
 
         $calorieSets = (clone $sets)->whereNotNull('lift_sets.calories')->count();
         $distanceSets = (clone $sets)->whereNotNull('lift_sets.distance')->count();

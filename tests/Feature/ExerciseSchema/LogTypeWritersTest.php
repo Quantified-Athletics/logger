@@ -8,6 +8,7 @@ use App\Models\LiftSet;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use PHPUnit\Framework\Attributes\Test;
 use Spatie\Activitylog\Models\Activity;
 use Tests\TestCase;
@@ -223,6 +224,7 @@ class LogTypeWritersTest extends TestCase
         ]);
 
         $this->assertDatabaseHas('exercises', ['canonical_name' => 'raw_insert', 'exercise_type' => null]);
+        $this->assertContains('idx_exercises_exercise_type', array_column(Schema::getIndexes('exercises'), 'name'));
     }
 
     #[Test]
@@ -265,6 +267,12 @@ class LogTypeWritersTest extends TestCase
         $this->logSet($caloriesCardio, ['calories' => 20]);
         $this->logSet($caloriesCardio, ['calories' => 25]);
         $this->logSet($distanceCardio, ['distance' => 500, 'distance_unit' => 'm']);
+        $deletedLogCardio = $this->exerciseWithoutLogType('Spin Bike', 'cardio');
+        $this->logSet($deletedLogCardio, ['calories' => 30]);
+        LiftLog::where('exercise_id', $deletedLogCardio)->firstOrFail()->delete();
+        $this->logSet($deletedLogCardio, ['distance' => 800, 'distance_unit' => 'm']);
+        $this->logSet($deletedLogCardio, ['calories' => 10]);
+        LiftSet::where('calories', 10)->firstOrFail()->delete();
         $activitiesBefore = Activity::count();
 
         (require base_path(self::FILL_MIGRATION))->up();
@@ -272,6 +280,7 @@ class LogTypeWritersTest extends TestCase
         $this->assertSame('cardio-calories', $this->storedLogType($caloriesCardio));
         $this->assertSame('cardio-distance', $this->storedLogType($distanceCardio));
         $this->assertSame('cardio-distance', $this->storedLogType($unloggedCardio));
+        $this->assertSame('cardio-distance', $this->storedLogType($deletedLogCardio));
         $this->assertSame('barbell', $this->storedLogType($regular));
         $this->assertSame('barbell', $this->storedLogType($nullLogType));
         $this->assertSame('kettlebell', $untouched->fresh()->log_type);
