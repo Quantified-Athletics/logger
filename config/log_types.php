@@ -22,10 +22,10 @@ return [
         'kettlebell' => 'regular',
         'ball' => 'regular',
         'machine' => 'regular',
-        'added-weight' => 'regular',
 
         'bodyweight' => 'bodyweight',
         'bodyweight-reps' => 'bodyweight',
+        'added-weight' => 'bodyweight',
 
         'banded' => 'banded_resistance',
 
