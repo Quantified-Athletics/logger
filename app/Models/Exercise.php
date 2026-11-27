@@ -20,13 +20,13 @@ class Exercise extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['title', 'description', 'canonical_name', 'user_id', 'log_type'])
+            ->logOnly(['name', 'description', 'canonical_name', 'user_id', 'log_type'])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
 
     protected $fillable = [
-        'title',
+        'name',
         'description',
         'canonical_name',
         'user_id',
@@ -45,8 +45,8 @@ class Exercise extends Model
         parent::boot();
 
         static::creating(function ($exercise) {
-            if (empty($exercise->canonical_name) && !empty($exercise->title)) {
-                $exercise->canonical_name = static::generateUniqueCanonicalName($exercise->title);
+            if (empty($exercise->canonical_name) && !empty($exercise->name)) {
+                $exercise->canonical_name = static::generateUniqueCanonicalName($exercise->name);
             }
         });
 
@@ -148,7 +148,7 @@ class Exercise extends Model
                                    $logQuery->where('user_id', $userId);
                                });
                   });
-            })->orderBy('title', 'asc');
+            })->orderBy('name', 'asc');
         }
     }
 
@@ -356,11 +356,11 @@ class Exercise extends Model
     }
 
     /**
-     * Generate a unique canonical name from a title
+     * Generate a unique canonical name from an exercise name
      */
-    protected static function generateUniqueCanonicalName(string $title, ?int $excludeId = null): string
+    protected static function generateUniqueCanonicalName(string $name, ?int $excludeId = null): string
     {
-        $baseCanonicalName = Str::slug($title, '_');
+        $baseCanonicalName = Str::slug($name, '_');
         $canonicalName = $baseCanonicalName;
         $counter = 1;
 
@@ -496,7 +496,7 @@ class Exercise extends Model
 
     /**
      * Get the display name for this exercise for a specific user
-     * Returns the user's alias if one exists, otherwise returns the exercise title
+     * Returns the user's alias if one exists, otherwise returns the exercise name
      * Requirements: 2.1, 2.2, 3.1, 3.2, 4.1, 4.2
      */
     public function getDisplayNameForUser(User $user): string

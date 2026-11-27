@@ -22,7 +22,7 @@ class ExerciseFactory extends Factory
     public function definition()
     {
         return [
-            'title' => $this->faker->sentence(3),
+            'name' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph,
             'log_type' => 'barbell',
         ];
