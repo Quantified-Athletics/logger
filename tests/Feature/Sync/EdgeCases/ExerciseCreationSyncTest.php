@@ -57,7 +57,7 @@ class ExerciseCreationSyncTest extends TestCase
 
         $this->assertDatabaseHas('exercises', [
             'canonical_name' => 'jefferson_squat',
-            'title' => 'Jefferson Squat',
+            'name' => 'Jefferson Squat',
             'user_id' => $this->userA->id,
             'exercise_type' => null,
             'log_type' => 'barbell',
@@ -167,7 +167,7 @@ class ExerciseCreationSyncTest extends TestCase
     {
         // Create a global exercise
         Exercise::create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'canonical_name' => 'bench_press',
             'log_type' => 'barbell',
             'user_id' => null,

@@ -99,7 +99,7 @@ class CalculateHistoricalPRs extends Command
 
         if ($exerciseId) {
             $exercise = Exercise::withTrashed()->find($exerciseId);
-            $label = $exercise ? $exercise->title : 'unknown';
+            $label = $exercise ? $exercise->name : 'unknown';
             $this->info("Exercise: {$label} (ID: {$exerciseId})");
         } else {
             $exerciseCount = Exercise::whereHas('liftLogs')->count();

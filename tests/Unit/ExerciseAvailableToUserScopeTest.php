@@ -188,17 +188,17 @@ class ExerciseAvailableToUserScopeTest extends TestCase
         $user = User::factory()->create(['show_global_exercises' => true]);
         
         // Create exercises
-        $globalExercise = Exercise::factory()->create(['title' => 'Global Exercise']);
+        $globalExercise = Exercise::factory()->create(['name' => 'Global Exercise']);
         $userExercise = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'User Exercise'
+            'name' => 'User Exercise'
         ]);
         
         $exercises = Exercise::availableToUser($user->id)->get();
         
         // Should be ordered with user exercises first (user_id IS NULL ASC means NULL comes first, but the query actually prioritizes user exercises)
         $this->assertCount(2, $exercises);
-        $exerciseTitles = $exercises->pluck('title')->toArray();
+        $exerciseTitles = $exercises->pluck('name')->toArray();
         $this->assertContains('Global Exercise', $exerciseTitles);
         $this->assertContains('User Exercise', $exerciseTitles);
     }
@@ -211,18 +211,18 @@ class ExerciseAvailableToUserScopeTest extends TestCase
         // Create user exercises with specific titles for ordering
         $exerciseB = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'B Exercise'
+            'name' => 'B Exercise'
         ]);
         $exerciseA = Exercise::factory()->create([
             'user_id' => $user->id,
-            'title' => 'A Exercise'
+            'name' => 'A Exercise'
         ]);
         
         $exercises = Exercise::availableToUser($user->id)->get();
         
         // Should be ordered by title ASC
-        $this->assertEquals('A Exercise', $exercises->first()->title);
-        $this->assertEquals('B Exercise', $exercises->last()->title);
+        $this->assertEquals('A Exercise', $exercises->first()->name);
+        $this->assertEquals('B Exercise', $exercises->last()->name);
     }
 
     /** @test */

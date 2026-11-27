@@ -81,7 +81,7 @@ class LiftLogService extends MobileEntryBaseService
         
         // Apply alias to exercise title
         $displayName = $this->aliasService->getDisplayName($exercise, $user);
-        $exercise->title = $displayName;
+        $exercise->name = $displayName;
         
         // Prepare defaults and messages based on mode
         if ($isEditMode) {
@@ -271,7 +271,7 @@ class LiftLogService extends MobileEntryBaseService
         }
         
         // Update button text
-        $formComponent['data']['buttons']['submit'] = 'Update ' . $liftLog->exercise->title;
+        $formComponent['data']['buttons']['submit'] = 'Update ' . $liftLog->exercise->name;
     }
 
     /**
@@ -291,7 +291,7 @@ class LiftLogService extends MobileEntryBaseService
             $messages[] = [
                 'type' => 'tip',
                 'prefix' => 'How to log:',
-                'text' => str_replace(':exercise', $form->exercise->title, config('mobile_entry_messages.form_guidance.how_to_log'))
+                'text' => str_replace(':exercise', $form->exercise->name, config('mobile_entry_messages.form_guidance.how_to_log'))
             ];
         }
         

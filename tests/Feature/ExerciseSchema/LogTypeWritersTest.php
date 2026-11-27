@@ -124,32 +124,32 @@ class LogTypeWritersTest extends TestCase
     public function the_ui_refuses_an_exercise_without_a_log_type(): void
     {
         $this->actingAs($this->user)->post(route('exercises.store'), [
-            'title' => 'No Type Lift',
+            'name' => 'No Type Lift',
         ])->assertSessionHasErrors('log_type');
 
-        $this->assertDatabaseMissing('exercises', ['title' => 'No Type Lift']);
+        $this->assertDatabaseMissing('exercises', ['name' => 'No Type Lift']);
     }
 
     #[Test]
     public function the_ui_refuses_a_log_type_that_is_not_in_the_list(): void
     {
         $this->actingAs($this->user)->post(route('exercises.store'), [
-            'title' => 'Odd Lift',
+            'name' => 'Odd Lift',
             'log_type' => 'regular',
         ])->assertSessionHasErrors('log_type');
 
-        $this->assertDatabaseMissing('exercises', ['title' => 'Odd Lift']);
+        $this->assertDatabaseMissing('exercises', ['name' => 'Odd Lift']);
     }
 
     #[Test]
     public function the_ui_stores_the_chosen_log_type_and_no_exercise_type(): void
     {
         $this->actingAs($this->user)->post(route('exercises.store'), [
-            'title' => 'Banded Dips',
+            'name' => 'Banded Dips',
             'log_type' => 'banded',
         ])->assertRedirect(route('exercises.index'));
 
-        $exercise = Exercise::where('title', 'Banded Dips')->firstOrFail();
+        $exercise = Exercise::where('name', 'Banded Dips')->firstOrFail();
         $this->assertSame('banded', $exercise->log_type);
         $this->assertSame('banded_resistance', $exercise->strategyTypeName());
         $this->assertNull($this->storedExerciseType($exercise));
@@ -161,7 +161,7 @@ class LogTypeWritersTest extends TestCase
         $exercise = Exercise::factory()->create(['user_id' => $this->user->id, 'log_type' => 'barbell']);
 
         $this->actingAs($this->user)->put(route('exercises.update', $exercise), [
-            'title' => $exercise->title,
+            'name' => $exercise->name,
             'log_type' => 'cardio-calories',
         ])->assertRedirect(route('exercises.edit', $exercise));
 
@@ -175,7 +175,7 @@ class LogTypeWritersTest extends TestCase
         $exercise = Exercise::factory()->create(['user_id' => $this->user->id, 'log_type' => 'bodyweight']);
 
         $this->actingAs($this->user)->put(route('exercises.update', $exercise), [
-            'title' => $exercise->title,
+            'name' => $exercise->name,
             'log_type' => '',
         ])->assertSessionHasErrors('log_type');
 
@@ -196,7 +196,7 @@ class LogTypeWritersTest extends TestCase
     #[Test]
     public function an_exercise_saved_without_a_log_type_still_gets_one(): void
     {
-        $exercise = Exercise::create(['title' => 'Bare Exercise']);
+        $exercise = Exercise::create(['name' => 'Bare Exercise']);
 
         $this->assertSame('barbell', $exercise->fresh()->log_type);
         $this->assertNull($this->storedExerciseType($exercise));
@@ -216,7 +216,7 @@ class LogTypeWritersTest extends TestCase
     public function the_exercise_type_column_accepts_no_value(): void
     {
         DB::table('exercises')->insert([
-            'title' => 'Raw Insert',
+            'name' => 'Raw Insert',
             'canonical_name' => 'raw_insert',
             'log_type' => 'barbell',
             'created_at' => now(),
@@ -231,14 +231,14 @@ class LogTypeWritersTest extends TestCase
     public function the_nullable_migration_rolls_back_by_filling_the_strategy_from_the_log_type(): void
     {
         $id = DB::table('exercises')->insertGetId([
-            'title' => 'Rolled Back Carry',
+            'name' => 'Rolled Back Carry',
             'canonical_name' => 'rolled_back_carry',
             'log_type' => 'weighted-carry-2-kb',
             'created_at' => now(),
             'updated_at' => now(),
         ]);
         $noLogTypeId = DB::table('exercises')->insertGetId([
-            'title' => 'Rolled Back Unknown',
+            'name' => 'Rolled Back Unknown',
             'canonical_name' => 'rolled_back_unknown',
             'created_at' => now(),
             'updated_at' => now(),
@@ -291,7 +291,7 @@ class LogTypeWritersTest extends TestCase
     private function exerciseWithoutLogType(string $title, string $exerciseType, ?int $userId = null, ?string $logType = ''): int
     {
         return DB::table('exercises')->insertGetId([
-            'title' => $title,
+            'name' => $title,
             'canonical_name' => str($title)->snake()->toString(),
             'exercise_type' => $exerciseType,
             'log_type' => $logType,

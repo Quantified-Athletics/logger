@@ -17,7 +17,7 @@
             <tr>
                 <td><input type="checkbox" name="lift_log_ids[]" value="{{ $liftLog->id }}" class="lift-log-checkbox"></td>
                 <td>{{ $liftLog->logged_at->format('m/d') }}</td>
-                <td><a href="{{ route('exercises.show-logs', $liftLog->exercise) }}">{{ $liftLog->exercise->title }}</a></td>
+                <td><a href="{{ route('exercises.show-logs', $liftLog->exercise) }}">{{ $liftLog->exercise->name }}</a></td>
                 <td>
                     @php
                         $strategy = $liftLog->exercise->getTypeStrategy();

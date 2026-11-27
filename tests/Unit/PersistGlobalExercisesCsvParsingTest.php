@@ -173,7 +173,7 @@ class PersistGlobalExercisesCsvParsingTest extends TestCase
         
         // Test with all fields populated
         $exercise = new \App\Models\Exercise([
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => 'Test description',
             'canonical_name' => 'test_exercise',
             'log_type' => 'banded'
@@ -195,7 +195,7 @@ class PersistGlobalExercisesCsvParsingTest extends TestCase
         
         // Test with null values
         $exercise = new \App\Models\Exercise([
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => null,
             'canonical_name' => 'test_exercise',
             'log_type' => 'barbell'

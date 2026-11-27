@@ -194,7 +194,7 @@ class CreateDemoUser extends Command
         $exerciseModels = [];
         
         foreach ($exercises as $title => $config) {
-            $exercise = Exercise::where('title', $title)
+            $exercise = Exercise::where('name', $title)
                 ->where(function($q) use ($user) {
                     $q->whereNull('user_id')->orWhere('user_id', $user->id);
                 })
@@ -202,7 +202,7 @@ class CreateDemoUser extends Command
 
             if (!$exercise) {
                 $exercise = Exercise::create([
-                    'title' => $title,
+                    'name' => $title,
                     'description' => "Demo {$title}",
                     'user_id' => $user->id,
                     'log_type' => $config['log_type'] ?? 'barbell',

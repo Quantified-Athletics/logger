@@ -40,7 +40,7 @@ class ExerciseManagementWorkflowTest extends TestCase
 
         // 2. Admin creates user exercise first
         $exerciseData = [
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'description' => 'Standard bench press exercise',
             'log_type' => 'barbell',
         ];
@@ -51,12 +51,12 @@ class ExerciseManagementWorkflowTest extends TestCase
         
         // Verify user exercise is created correctly
         $this->assertDatabaseHas('exercises', [
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => $admin->id,
             'log_type' => 'barbell',
         ]);
 
-        $exercise = Exercise::where('title', 'Bench Press')->first();
+        $exercise = Exercise::where('name', 'Bench Press')->first();
 
         // 3. Admin promotes exercise to global
         $promoteResponse = $this->post(route('exercises.promote', $exercise));
@@ -82,7 +82,7 @@ class ExerciseManagementWorkflowTest extends TestCase
 
         // 6. Admin updates global exercise
         $updatedData = [
-            'title' => 'Updated Global Bench Press',
+            'name' => 'Updated Global Bench Press',
             'description' => 'Updated description for global exercise',
             'log_type' => 'barbell',
         ];
@@ -93,7 +93,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         
         $this->assertDatabaseHas('exercises', [
             'id' => $exercise->id,
-            'title' => 'Updated Global Bench Press',
+            'name' => 'Updated Global Bench Press',
             'user_id' => null,
         ]);
 
@@ -114,7 +114,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $admin->roles()->attach($adminRole);
         
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Squat',
+            'name' => 'Squat',
             'user_id' => null,
         ]);
 
@@ -130,22 +130,22 @@ class ExerciseManagementWorkflowTest extends TestCase
 
         // 2. User attempts to create exercise with same name as global exercise (should fail)
         $conflictData = [
-            'title' => 'Squat', // Same as global exercise
+            'name' => 'Squat', // Same as global exercise
             'description' => 'My personal squat variation',
             'log_type' => 'barbell',
         ];
 
         $conflictResponse = $this->post(route('exercises.store'), $conflictData);
-        $conflictResponse->assertSessionHasErrors('title');
+        $conflictResponse->assertSessionHasErrors('name');
         $this->assertDatabaseMissing('exercises', [
-            'title' => 'Squat',
+            'name' => 'Squat',
             'user_id' => $user->id,
             'deleted_at' => null // Ensure it was never created (no soft delete involved here)
         ]);
 
         // 3. User creates personal exercise with unique name
         $personalExerciseData = [
-            'title' => 'My Custom Deadlift',
+            'name' => 'My Custom Deadlift',
             'description' => 'Personal deadlift variation',
             'log_type' => 'barbell',
         ];
@@ -155,12 +155,12 @@ class ExerciseManagementWorkflowTest extends TestCase
         $storeResponse->assertSessionHas('success', 'Exercise created successfully.');
         
         $this->assertDatabaseHas('exercises', [
-            'title' => 'My Custom Deadlift',
+            'name' => 'My Custom Deadlift',
             'user_id' => $user->id,
             'deleted_at' => null
         ]);
 
-        $personalExercise = Exercise::where('title', 'My Custom Deadlift')->first();
+        $personalExercise = Exercise::where('name', 'My Custom Deadlift')->first();
 
         // 4. User can edit their own exercise
         $editResponse = $this->get(route('exercises.edit', $personalExercise));
@@ -168,7 +168,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         $editResponse->assertDontSee('Global Exercise');
 
         $updatedData = [
-            'title' => 'Updated Custom Deadlift',
+            'name' => 'Updated Custom Deadlift',
             'description' => 'Updated personal exercise',
             'log_type' => 'bodyweight',
         ];
@@ -179,7 +179,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         
         $this->assertDatabaseHas('exercises', [
             'id' => $personalExercise->id,
-            'title' => 'Updated Custom Deadlift',
+            'name' => 'Updated Custom Deadlift',
             'user_id' => $user->id,
             'log_type' => 'bodyweight',
             'deleted_at' => null
@@ -202,12 +202,12 @@ class ExerciseManagementWorkflowTest extends TestCase
         $admin->roles()->attach($adminRole);
         
         $globalExercise1 = Exercise::factory()->create([
-            'title' => 'Global Bench Press',
+            'name' => 'Global Bench Press',
             'user_id' => null,
         ]);
         
         $globalExercise2 = Exercise::factory()->create([
-            'title' => 'Global Squat',
+            'name' => 'Global Squat',
             'user_id' => null,
         ]);
 
@@ -216,12 +216,12 @@ class ExerciseManagementWorkflowTest extends TestCase
         $user2 = User::factory()->create();
         
         $user1Exercise = Exercise::factory()->create([
-            'title' => 'User1 Custom Exercise',
+            'name' => 'User1 Custom Exercise',
             'user_id' => $user1->id,
         ]);
         
         $user2Exercise = Exercise::factory()->create([
-            'title' => 'User2 Custom Exercise',
+            'name' => 'User2 Custom Exercise',
             'user_id' => $user2->id,
         ]);
 
@@ -251,14 +251,14 @@ class ExerciseManagementWorkflowTest extends TestCase
         $admin->roles()->attach($adminRole);
         
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
         // Create another user's exercise
         $otherUser = User::factory()->create();
         $otherUserExercise = Exercise::factory()->create([
-            'title' => 'Other User Exercise',
+            'name' => 'Other User Exercise',
             'user_id' => $otherUser->id,
         ]);
 
@@ -272,7 +272,7 @@ class ExerciseManagementWorkflowTest extends TestCase
 
         // 2. User cannot create global exercise (no is_global parameter accepted)
         $globalAttempt = [
-            'title' => 'Attempted Global Exercise',
+            'name' => 'Attempted Global Exercise',
             'description' => 'Should not be allowed',
             'log_type' => 'barbell',
         ];
@@ -283,7 +283,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         
         // Verify it was created as user exercise, not global
         $this->assertDatabaseHas('exercises', [
-            'title' => 'Attempted Global Exercise',
+            'name' => 'Attempted Global Exercise',
             'user_id' => $user->id, // Should be user's exercise, not global
             'deleted_at' => null
         ]);
@@ -293,13 +293,13 @@ class ExerciseManagementWorkflowTest extends TestCase
         $editGlobalResponse->assertStatus(403);
 
         $updateGlobalResponse = $this->put(route('exercises.update', $globalExercise), [
-            'title' => 'Hacked Global Exercise',
+            'name' => 'Hacked Global Exercise',
         ]);
         $updateGlobalResponse->assertStatus(403);
         
         $this->assertDatabaseHas('exercises', [
             'id' => $globalExercise->id,
-            'title' => 'Global Exercise', // Should remain unchanged
+            'name' => 'Global Exercise', // Should remain unchanged
             'deleted_at' => null
         ]);
 
@@ -313,13 +313,13 @@ class ExerciseManagementWorkflowTest extends TestCase
         $editOtherResponse->assertStatus(403);
 
         $updateOtherResponse = $this->put(route('exercises.update', $otherUserExercise), [
-            'title' => 'Hacked Other Exercise',
+            'name' => 'Hacked Other Exercise',
         ]);
         $updateOtherResponse->assertStatus(403);
         
         $this->assertDatabaseHas('exercises', [
             'id' => $otherUserExercise->id,
-            'title' => 'Other User Exercise', // Should remain unchanged
+            'name' => 'Other User Exercise', // Should remain unchanged
             'deleted_at' => null
         ]);
 
@@ -330,7 +330,7 @@ class ExerciseManagementWorkflowTest extends TestCase
 
         // 7. Verify admin can access index and see all exercises
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Own Exercise',
+            'name' => 'User Own Exercise',
             'user_id' => $user->id,
         ]);
 
@@ -361,7 +361,7 @@ class ExerciseManagementWorkflowTest extends TestCase
 
         // Create global exercise with lift logs
         $globalExerciseWithLogs = Exercise::factory()->create([
-            'title' => 'Global Exercise With Logs',
+            'name' => 'Global Exercise With Logs',
             'user_id' => null,
         ]);
         
@@ -372,7 +372,7 @@ class ExerciseManagementWorkflowTest extends TestCase
 
         // Create user exercise with lift logs
         $userExerciseWithLogs = Exercise::factory()->create([
-            'title' => 'User Exercise With Logs',
+            'name' => 'User Exercise With Logs',
             'user_id' => $user->id,
         ]);
         
@@ -383,12 +383,12 @@ class ExerciseManagementWorkflowTest extends TestCase
 
         // Create exercises without lift logs for comparison
         $globalExerciseWithoutLogs = Exercise::factory()->create([
-            'title' => 'Global Exercise Without Logs',
+            'name' => 'Global Exercise Without Logs',
             'user_id' => null,
         ]);
         
         $userExerciseWithoutLogs = Exercise::factory()->create([
-            'title' => 'User Exercise Without Logs',
+            'name' => 'User Exercise Without Logs',
             'user_id' => $user->id,
         ]);
 
@@ -443,22 +443,22 @@ class ExerciseManagementWorkflowTest extends TestCase
         
         // Create user exercises first
         $benchPressResponse = $this->post(route('exercises.store'), [
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'description' => 'Global bench press',
             'log_type' => 'barbell',
         ]);
         $benchPressResponse->assertRedirect(route('exercises.index'));
         
         $squatResponse = $this->post(route('exercises.store'), [
-            'title' => 'Squat',
+            'name' => 'Squat',
             'description' => 'Global squat',
             'log_type' => 'barbell',
         ]);
         $squatResponse->assertRedirect(route('exercises.index'));
         
         // Promote them to global
-        $benchPress = Exercise::where('title', 'Bench Press')->first();
-        $squat = Exercise::where('title', 'Squat')->first();
+        $benchPress = Exercise::where('name', 'Bench Press')->first();
+        $squat = Exercise::where('name', 'Squat')->first();
         
         $this->post(route('exercises.promote', $benchPress));
         $this->post(route('exercises.promote', $squat));
@@ -470,15 +470,15 @@ class ExerciseManagementWorkflowTest extends TestCase
         // User1 attempts to create exercise with same name as global (should fail)
         $this->actingAs($user1);
         $conflictResponse1 = $this->post(route('exercises.store'), [
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'description' => 'User1 bench press',
             'log_type' => 'barbell',
         ]);
-        $conflictResponse1->assertSessionHasErrors('title');
+        $conflictResponse1->assertSessionHasErrors('name');
 
         // User1 creates unique exercise
         $this->post(route('exercises.store'), [
-            'title' => 'Incline Bench Press',
+            'name' => 'Incline Bench Press',
             'description' => 'User1 incline bench',
             'log_type' => 'barbell',
         ]);
@@ -486,7 +486,7 @@ class ExerciseManagementWorkflowTest extends TestCase
         // User2 attempts to create exercise with same name as User1's exercise (should succeed - different users)
         $this->actingAs($user2);
         $user2Response = $this->post(route('exercises.store'), [
-            'title' => 'Incline Bench Press',
+            'name' => 'Incline Bench Press',
             'description' => 'User2 incline bench',
             'log_type' => 'barbell',
         ]);
@@ -494,33 +494,33 @@ class ExerciseManagementWorkflowTest extends TestCase
 
         // User2 attempts to create exercise with same name as global (should fail)
         $conflictResponse2 = $this->post(route('exercises.store'), [
-            'title' => 'Squat',
+            'name' => 'Squat',
             'description' => 'User2 squat',
             'log_type' => 'barbell',
         ]);
-        $conflictResponse2->assertSessionHasErrors('title');
+        $conflictResponse2->assertSessionHasErrors('name');
 
         // Verify database state
         $this->assertDatabaseHas('exercises', [
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => null, // Global
             'deleted_at' => null
         ]);
         
         $this->assertDatabaseHas('exercises', [
-            'title' => 'Squat',
+            'name' => 'Squat',
             'user_id' => null, // Global
             'deleted_at' => null
         ]);
         
         $this->assertDatabaseHas('exercises', [
-            'title' => 'Incline Bench Press',
+            'name' => 'Incline Bench Press',
             'user_id' => $user1->id,
             'deleted_at' => null
         ]);
         
         $this->assertDatabaseHas('exercises', [
-            'title' => 'Incline Bench Press',
+            'name' => 'Incline Bench Press',
             'user_id' => $user2->id,
             'deleted_at' => null
         ]);
@@ -533,8 +533,8 @@ class ExerciseManagementWorkflowTest extends TestCase
         $adminIndexResponse->assertSee('Incline Bench Press'); // Both users have this name
         
         // Admin should see all exercises including both users' exercises with same name
-        $user1Exercise = Exercise::where('title', 'Incline Bench Press')->where('user_id', $user1->id)->first();
-        $user2Exercise = Exercise::where('title', 'Incline Bench Press')->where('user_id', $user2->id)->first();
+        $user1Exercise = Exercise::where('name', 'Incline Bench Press')->where('user_id', $user1->id)->first();
+        $user2Exercise = Exercise::where('name', 'Incline Bench Press')->where('user_id', $user2->id)->first();
         
         // Both exercises should exist in database
         $this->assertNotNull($user1Exercise);
@@ -553,42 +553,42 @@ class ExerciseManagementWorkflowTest extends TestCase
 
         // Admin creates first exercise and promotes to global
         $this->post(route('exercises.store'), [
-            'title' => 'Deadlift',
+            'name' => 'Deadlift',
             'description' => 'Global deadlift exercise',
             'log_type' => 'barbell',
         ]);
         
-        $deadlift = Exercise::where('title', 'Deadlift')->first();
+        $deadlift = Exercise::where('name', 'Deadlift')->first();
         $this->post(route('exercises.promote', $deadlift));
 
         // Admin attempts to create another exercise with same name and promote (should fail promotion)
         $duplicateResponse = $this->post(route('exercises.store'), [
-            'title' => 'Deadlift',
+            'name' => 'Deadlift',
             'description' => 'Duplicate deadlift',
             'log_type' => 'barbell',
         ]);
         
         // The creation should fail due to name conflict with global exercise
-        $duplicateResponse->assertSessionHasErrors('title');
+        $duplicateResponse->assertSessionHasErrors('name');
         
         // Verify only one deadlift exists (the global one)
-        $deadliftCount = Exercise::where('title', 'Deadlift')->whereNull('deleted_at')->count();
+        $deadliftCount = Exercise::where('name', 'Deadlift')->whereNull('deleted_at')->count();
         $this->assertEquals(1, $deadliftCount);
         
         // Verify only one global deadlift exists
-        $deadliftCount = Exercise::where('title', 'Deadlift')->whereNull('user_id')->whereNull('deleted_at')->count();
+        $deadliftCount = Exercise::where('name', 'Deadlift')->whereNull('user_id')->whereNull('deleted_at')->count();
         $this->assertEquals(1, $deadliftCount);
 
         // Admin can create personal exercise with different name
         $personalResponse = $this->post(route('exercises.store'), [
-            'title' => 'Romanian Deadlift',
+            'name' => 'Romanian Deadlift',
             'description' => 'Admin personal exercise',
             'log_type' => 'barbell',
         ]);
         
         $personalResponse->assertRedirect(route('exercises.index'));
         $this->assertDatabaseHas('exercises', [
-            'title' => 'Romanian Deadlift',
+            'name' => 'Romanian Deadlift',
             'user_id' => $admin->id,
             'deleted_at' => null
         ]);

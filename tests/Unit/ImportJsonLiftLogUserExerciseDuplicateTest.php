@@ -45,7 +45,7 @@ class ImportJsonLiftLogUserExerciseDuplicateTest extends TestCase
         
         // Create a user-specific exercise (not global)
         $userExercise = Exercise::create([
-            'title' => 'Custom Exercise',
+            'name' => 'Custom Exercise',
             'canonical_name' => 'custom_exercise',
             'description' => 'User-specific exercise',
             'user_id' => $user->id, // User-specific exercise
@@ -187,7 +187,7 @@ class ImportJsonLiftLogUserExerciseDuplicateTest extends TestCase
         
         // Create a global exercise
         $globalExercise = Exercise::create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'canonical_name' => 'global_exercise',
             'description' => 'Global exercise',
             'user_id' => null, // Global exercise
@@ -196,7 +196,7 @@ class ImportJsonLiftLogUserExerciseDuplicateTest extends TestCase
         
         // Create a user-specific exercise
         $userExercise = Exercise::create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'canonical_name' => 'user_exercise',
             'description' => 'User-specific exercise',
             'user_id' => $user->id, // User-specific exercise
@@ -275,7 +275,7 @@ class ImportJsonLiftLogUserExerciseDuplicateTest extends TestCase
         
         // Create user-specific exercises for different users with same canonical name
         $user1Exercise = Exercise::create([
-            'title' => 'Custom Exercise',
+            'name' => 'Custom Exercise',
             'canonical_name' => 'custom_exercise',
             'description' => 'User 1 exercise',
             'user_id' => $user1->id,
@@ -283,7 +283,7 @@ class ImportJsonLiftLogUserExerciseDuplicateTest extends TestCase
         ]);
         
         $user2Exercise = Exercise::create([
-            'title' => 'Custom Exercise',
+            'name' => 'Custom Exercise',
             'canonical_name' => 'custom_exercise',
             'description' => 'User 2 exercise',
             'user_id' => $user2->id,

@@ -34,7 +34,7 @@ class ExerciseAliasTest extends TestCase
     public function exercise_relationship_returns_correct_exercise()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press']);
         
         $alias = ExerciseAlias::factory()->create([
             'user_id' => $user->id,
@@ -44,7 +44,7 @@ class ExerciseAliasTest extends TestCase
 
         $this->assertInstanceOf(Exercise::class, $alias->exercise);
         $this->assertEquals($exercise->id, $alias->exercise->id);
-        $this->assertEquals('Bench Press', $alias->exercise->title);
+        $this->assertEquals('Bench Press', $alias->exercise->name);
     }
 
     /** @test */
@@ -102,8 +102,8 @@ class ExerciseAliasTest extends TestCase
     {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
-        $exercise1 = Exercise::factory()->create(['title' => 'Bench Press']);
-        $exercise2 = Exercise::factory()->create(['title' => 'Squat']);
+        $exercise1 = Exercise::factory()->create(['name' => 'Bench Press']);
+        $exercise2 = Exercise::factory()->create(['name' => 'Squat']);
         
         $alias1 = ExerciseAlias::factory()->create([
             'user_id' => $user1->id,

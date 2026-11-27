@@ -18,7 +18,7 @@ class CreateExerciseAction
         $validated = $this->validateRequest($request, $user);
         
         // Check for name conflicts
-        $this->validateExerciseName($validated['title'], $user);
+        $this->validateExerciseName($validated['name'], $user);
 
         $logType = $validated['log_type'];
 
@@ -32,7 +32,7 @@ class CreateExerciseAction
         $processedData = $exerciseTypeStrategy->processExerciseData($validated);
 
         $exercise = new Exercise([
-            'title' => $processedData['title'],
+            'name' => $processedData['name'],
             'description' => $processedData['description'] ?? null,
             'log_type' => $logType,
             'user_id' => $user->id, // All new exercises are user exercises
@@ -47,20 +47,20 @@ class CreateExerciseAction
     private function validateRequest(Request $request, User $user): array
     {
         $rules = [
-            'title' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'description' => 'nullable|string',
             'log_type' => ['required', Rule::in(LogTypeTable::logTypes())],
             'show_in_feed' => 'nullable|boolean',
         ];
 
-        return $request->validate($rules);
+        return $request->validate($rules, [], ['name' => 'title']);
     }
     
-    private function validateExerciseName(string $title, User $user): void
+    private function validateExerciseName(string $name, User $user): void
     {
         // All new exercises are user exercises, so check for conflicts with user's exercises and global exercises
         $userId = $user->id;
-        $conflicts = Exercise::where('title', $title)
+        $conflicts = Exercise::where('name', $name)
             ->where(function ($q) use ($userId) {
                 $q->whereNull('user_id')
                   ->orWhere('user_id', $userId);
@@ -69,7 +69,7 @@ class CreateExerciseAction
 
         if ($conflicts) {
             throw \Illuminate\Validation\ValidationException::withMessages([
-                'title' => 'An exercise with this name already exists.'
+                'name' => 'An exercise with this name already exists.'
             ]);
         }
     }

@@ -164,12 +164,12 @@ class CardioExerciseTypeTest extends TestCase
     public function it_processes_exercise_data_correctly()
     {
         $inputData = [
-            'title' => 'Running'
+            'name' => 'Running'
         ];
 
         $processedData = $this->strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Running', $processedData['title']);
+        $this->assertEquals('Running', $processedData['name']);
         $this->assertArrayNotHasKey('exercise_type', $processedData);
         $this->assertFalse($processedData['is_bodyweight']);
     }

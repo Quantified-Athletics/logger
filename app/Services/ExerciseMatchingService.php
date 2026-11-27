@@ -44,7 +44,7 @@ class ExerciseMatchingService
         
         // Try exact match first (case-insensitive) with expanded search
         $exactMatch = $exercises->first(function ($exercise) use ($expandedSearch) {
-            return $this->normalizeString($exercise->title) === $expandedSearch;
+            return $this->normalizeString($exercise->name) === $expandedSearch;
         });
         
         if ($exactMatch) {
@@ -54,7 +54,7 @@ class ExerciseMatchingService
         // Also try exact match with original normalized search (in case no expansion happened)
         if ($expandedSearch !== $normalizedSearch) {
             $exactMatch = $exercises->first(function ($exercise) use ($normalizedSearch) {
-                return $this->normalizeString($exercise->title) === $normalizedSearch;
+                return $this->normalizeString($exercise->name) === $normalizedSearch;
             });
             
             if ($exactMatch) {
@@ -64,8 +64,8 @@ class ExerciseMatchingService
         
         // Try fuzzy matching with scoring (use expanded search)
         $scoredExercises = $exercises->map(function ($exercise) use ($expandedSearch, $exerciseName) {
-            $normalizedTitle = $this->normalizeString($exercise->title);
-            $score = $this->calculateMatchScore($expandedSearch, $normalizedTitle, $exerciseName, $exercise->title);
+            $normalizedTitle = $this->normalizeString($exercise->name);
+            $score = $this->calculateMatchScore($expandedSearch, $normalizedTitle, $exerciseName, $exercise->name);
             
             return [
                 'exercise' => $exercise,

@@ -90,7 +90,7 @@ class LiftLogController extends Controller
             $data = [
                 'components' => [
                     ComponentBuilder::title(
-                        $liftLog->exercise->title,
+                        $liftLog->exercise->name,
                         'This log has variable sets and cannot be edited here'
                     )->build(),
                     ComponentBuilder::messages()

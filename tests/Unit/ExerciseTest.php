@@ -14,7 +14,7 @@ class ExerciseTest extends TestCase
     public function an_exercise_can_be_created_with_is_bodyweight_attribute()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Push-ups',
+            'name' => 'Push-ups',
             'description' => 'A bodyweight exercise',
             'log_type' => 'bodyweight',
         ]);
@@ -30,7 +30,7 @@ class ExerciseTest extends TestCase
     public function an_exercise_defaults_to_not_bodyweight()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'description' => 'A weighted exercise',
         ]);
 
@@ -45,12 +45,12 @@ class ExerciseTest extends TestCase
     public function scope_global_returns_only_exercises_with_null_user_id()
     {
         // Create global exercises (user_id = null)
-        $globalExercise1 = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise 1']);
-        $globalExercise2 = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise 2']);
+        $globalExercise1 = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise 1']);
+        $globalExercise2 = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise 2']);
         
         // Create user-specific exercises
         $user = \App\Models\User::factory()->create();
-        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'title' => 'User Exercise']);
+        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'name' => 'User Exercise']);
 
         $globalExercises = Exercise::global()->get();
 
@@ -67,10 +67,10 @@ class ExerciseTest extends TestCase
         $user2 = \App\Models\User::factory()->create();
         
         // Create exercises for different users
-        $user1Exercise1 = Exercise::factory()->create(['user_id' => $user1->id, 'title' => 'User 1 Exercise 1']);
-        $user1Exercise2 = Exercise::factory()->create(['user_id' => $user1->id, 'title' => 'User 1 Exercise 2']);
-        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'title' => 'User 2 Exercise']);
-        $globalExercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise']);
+        $user1Exercise1 = Exercise::factory()->create(['user_id' => $user1->id, 'name' => 'User 1 Exercise 1']);
+        $user1Exercise2 = Exercise::factory()->create(['user_id' => $user1->id, 'name' => 'User 1 Exercise 2']);
+        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'name' => 'User 2 Exercise']);
+        $globalExercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise']);
 
         $user1Exercises = Exercise::userSpecific($user1->id)->get();
 
@@ -88,10 +88,10 @@ class ExerciseTest extends TestCase
         $user2 = \App\Models\User::factory()->create();
         
         // Create exercises
-        $globalExercise1 = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise 1']);
-        $globalExercise2 = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise 2']);
-        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'title' => 'User 1 Exercise']);
-        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'title' => 'User 2 Exercise']);
+        $globalExercise1 = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise 1']);
+        $globalExercise2 = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise 2']);
+        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'name' => 'User 1 Exercise']);
+        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'name' => 'User 2 Exercise']);
 
         $availableToUser1 = Exercise::availableToUser($user1->id)->get();
 
@@ -115,11 +115,11 @@ class ExerciseTest extends TestCase
         $user2 = \App\Models\User::factory()->create();
         
         // Create exercises
-        $globalExercise1 = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise 1']);
-        $globalExercise2 = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise 2']);
-        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'title' => 'User 1 Exercise']);
-        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'title' => 'User 2 Exercise']);
-        $adminExercise = Exercise::factory()->create(['user_id' => $admin->id, 'title' => 'Admin Exercise']);
+        $globalExercise1 = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise 1']);
+        $globalExercise2 = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise 2']);
+        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'name' => 'User 1 Exercise']);
+        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'name' => 'User 2 Exercise']);
+        $adminExercise = Exercise::factory()->create(['user_id' => $admin->id, 'name' => 'Admin Exercise']);
 
         $availableToAdmin = Exercise::availableToUser($admin->id)->get();
 
@@ -139,8 +139,8 @@ class ExerciseTest extends TestCase
         $realUser = \App\Models\User::factory()->create();
         
         // Create some exercises
-        $globalExercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise']);
-        $userExercise = Exercise::factory()->create(['user_id' => $realUser->id, 'title' => 'User Exercise']);
+        $globalExercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise']);
+        $userExercise = Exercise::factory()->create(['user_id' => $realUser->id, 'name' => 'User Exercise']);
 
         // Test with non-existent user ID
         $availableToInvalidUser = Exercise::availableToUser(999)->get();
@@ -159,9 +159,9 @@ class ExerciseTest extends TestCase
         $otherUser = \App\Models\User::factory()->create();
         
         // Create exercises
-        $globalExercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise']);
-        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'title' => 'User Exercise']);
-        $otherUserExercise = Exercise::factory()->create(['user_id' => $otherUser->id, 'title' => 'Other User Exercise']);
+        $globalExercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise']);
+        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'name' => 'User Exercise']);
+        $otherUserExercise = Exercise::factory()->create(['user_id' => $otherUser->id, 'name' => 'Other User Exercise']);
 
         $availableToUser = Exercise::availableToUser($user->id)->get();
 
@@ -181,8 +181,8 @@ class ExerciseTest extends TestCase
         $admin->roles()->attach($adminRole);
         
         // Create exercises
-        $globalExercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise']);
-        $userExercise = Exercise::factory()->create(['user_id' => $admin->id, 'title' => 'User Exercise']);
+        $globalExercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise']);
+        $userExercise = Exercise::factory()->create(['user_id' => $admin->id, 'name' => 'User Exercise']);
 
         $availableToAdmin = Exercise::availableToUser($admin->id)->get();
 
@@ -325,7 +325,7 @@ class ExerciseTest extends TestCase
     public function canonical_name_is_automatically_generated_on_creation()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'description' => 'A compound exercise',
         ]);
 
@@ -340,7 +340,7 @@ class ExerciseTest extends TestCase
     public function canonical_name_handles_special_characters_and_spaces()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Half-Kneeling DB Press (Single Arm)',
+            'name' => 'Half-Kneeling DB Press (Single Arm)',
             'description' => 'A unilateral exercise',
         ]);
 
@@ -351,7 +351,7 @@ class ExerciseTest extends TestCase
     public function canonical_name_handles_numbers_and_mixed_case()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Bench Press (2-DB Seesaw)',
+            'name' => 'Bench Press (2-DB Seesaw)',
             'description' => 'A variation with dumbbells',
         ]);
 
@@ -362,12 +362,12 @@ class ExerciseTest extends TestCase
     public function canonical_name_generates_unique_names_for_duplicate_titles()
     {
         $exercise1 = Exercise::factory()->create([
-            'title' => 'Push Up',
+            'name' => 'Push Up',
             'description' => 'First push up exercise',
         ]);
 
         $exercise2 = Exercise::factory()->create([
-            'title' => 'Push Up',
+            'name' => 'Push Up',
             'description' => 'Second push up exercise',
         ]);
 
@@ -378,9 +378,9 @@ class ExerciseTest extends TestCase
     /** @test */
     public function canonical_name_handles_multiple_duplicates()
     {
-        $exercise1 = Exercise::factory()->create(['title' => 'Squat']);
-        $exercise2 = Exercise::factory()->create(['title' => 'Squat']);
-        $exercise3 = Exercise::factory()->create(['title' => 'Squat']);
+        $exercise1 = Exercise::factory()->create(['name' => 'Squat']);
+        $exercise2 = Exercise::factory()->create(['name' => 'Squat']);
+        $exercise3 = Exercise::factory()->create(['name' => 'Squat']);
 
         $this->assertEquals('squat', $exercise1->canonical_name);
         $this->assertEquals('squat_1', $exercise2->canonical_name);
@@ -391,7 +391,7 @@ class ExerciseTest extends TestCase
     public function canonical_name_is_not_updated_when_title_changes()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Original Title',
+            'name' => 'Original Title',
             'description' => 'Original description',
         ]);
 
@@ -399,20 +399,20 @@ class ExerciseTest extends TestCase
         $this->assertEquals('original_title', $originalCanonicalName);
 
         // Update the title
-        $exercise->update(['title' => 'Updated Title']);
+        $exercise->update(['name' => 'Updated Title']);
         $exercise->refresh();
 
         // Canonical name should remain unchanged
         $this->assertEquals($originalCanonicalName, $exercise->canonical_name);
         $this->assertEquals('original_title', $exercise->canonical_name);
-        $this->assertEquals('Updated Title', $exercise->title);
+        $this->assertEquals('Updated Title', $exercise->name);
     }
 
     /** @test */
     public function canonical_name_is_not_updated_when_other_fields_change()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => 'Original description',
             'log_type' => 'barbell',
         ]);
@@ -436,7 +436,7 @@ class ExerciseTest extends TestCase
     {
         // Create exercise with manually set canonical_name
         $exercise = new Exercise([
-            'title' => 'Manual Test',
+            'name' => 'Manual Test',
             'description' => 'Test with manual canonical name',
         ]);
         $exercise->canonical_name = 'custom_canonical_name';
@@ -449,7 +449,7 @@ class ExerciseTest extends TestCase
     public function canonical_name_is_not_generated_if_title_is_empty()
     {
         $exercise = new Exercise([
-            'title' => '',
+            'name' => '',
             'description' => 'Exercise without title',
         ]);
         $exercise->save();
@@ -467,14 +467,14 @@ class ExerciseTest extends TestCase
         ]);
         
         // Set title to null after instantiation to test the boot logic
-        $exercise->title = null;
+        $exercise->name = null;
         
         // The boot method should not generate a canonical name when title is null
         // We can't save this to database due to NOT NULL constraint, but we can test the logic
         $this->assertNull($exercise->canonical_name);
         
         // Test that the condition in boot method works correctly
-        $shouldGenerate = !empty($exercise->canonical_name) || !empty($exercise->title);
+        $shouldGenerate = !empty($exercise->canonical_name) || !empty($exercise->name);
         $this->assertFalse($shouldGenerate);
     }
 
@@ -482,7 +482,7 @@ class ExerciseTest extends TestCase
     public function canonical_name_uniqueness_excludes_current_exercise_during_updates()
     {
         // Create an exercise
-        $exercise = Exercise::factory()->create(['title' => 'Test Exercise']);
+        $exercise = Exercise::factory()->create(['name' => 'Test Exercise']);
         $this->assertEquals('test_exercise', $exercise->canonical_name);
 
         // Update description (not title) - canonical name should remain the same
@@ -497,7 +497,7 @@ class ExerciseTest extends TestCase
     public function canonical_name_handles_unicode_characters()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Café Squat & Déjà Vu',
+            'name' => 'Café Squat & Déjà Vu',
             'description' => 'Exercise with unicode characters',
         ]);
 
@@ -511,7 +511,7 @@ class ExerciseTest extends TestCase
         $longTitle = 'This is a very long exercise title that contains many words and should be properly converted to a canonical name format';
         
         $exercise = Exercise::factory()->create([
-            'title' => $longTitle,
+            'name' => $longTitle,
             'description' => 'Exercise with long title',
         ]);
 
@@ -526,10 +526,10 @@ class ExerciseTest extends TestCase
         $otherUser = \App\Models\User::factory()->create();
         
         // Create exercises
-        $globalExercise1 = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise 1']);
-        $globalExercise2 = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise 2']);
-        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'title' => 'User Exercise']);
-        $otherUserExercise = Exercise::factory()->create(['user_id' => $otherUser->id, 'title' => 'Other User Exercise']);
+        $globalExercise1 = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise 1']);
+        $globalExercise2 = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise 2']);
+        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'name' => 'User Exercise']);
+        $otherUserExercise = Exercise::factory()->create(['user_id' => $otherUser->id, 'name' => 'Other User Exercise']);
 
         // Test with showGlobal = false
         $availableToUser = Exercise::availableToUser($user->id, false)->get();
@@ -549,10 +549,10 @@ class ExerciseTest extends TestCase
         $otherUser = \App\Models\User::factory()->create();
         
         // Create exercises
-        $globalExercise1 = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise 1']);
-        $globalExercise2 = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise 2']);
-        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'title' => 'User Exercise']);
-        $otherUserExercise = Exercise::factory()->create(['user_id' => $otherUser->id, 'title' => 'Other User Exercise']);
+        $globalExercise1 = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise 1']);
+        $globalExercise2 = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise 2']);
+        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'name' => 'User Exercise']);
+        $otherUserExercise = Exercise::factory()->create(['user_id' => $otherUser->id, 'name' => 'Other User Exercise']);
 
         // Test with showGlobal = true (explicit)
         $availableToUser = Exercise::availableToUser($user->id, true)->get();
@@ -578,10 +578,10 @@ class ExerciseTest extends TestCase
         $user2 = \App\Models\User::factory()->create();
         
         // Create exercises
-        $globalExercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise']);
-        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'title' => 'User 1 Exercise']);
-        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'title' => 'User 2 Exercise']);
-        $adminExercise = Exercise::factory()->create(['user_id' => $admin->id, 'title' => 'Admin Exercise']);
+        $globalExercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise']);
+        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'name' => 'User 1 Exercise']);
+        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'name' => 'User 2 Exercise']);
+        $adminExercise = Exercise::factory()->create(['user_id' => $admin->id, 'name' => 'Admin Exercise']);
 
         // Test admin with showGlobal = false (should still see all)
         $availableToAdmin = Exercise::availableToUser($admin->id, false)->get();
@@ -600,9 +600,9 @@ class ExerciseTest extends TestCase
         $user = \App\Models\User::factory()->create();
         
         // Create user exercises with different titles to test ordering
-        $userExercise1 = Exercise::factory()->create(['user_id' => $user->id, 'title' => 'Z Exercise']);
-        $userExercise2 = Exercise::factory()->create(['user_id' => $user->id, 'title' => 'A Exercise']);
-        $globalExercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Global Exercise']);
+        $userExercise1 = Exercise::factory()->create(['user_id' => $user->id, 'name' => 'Z Exercise']);
+        $userExercise2 = Exercise::factory()->create(['user_id' => $user->id, 'name' => 'A Exercise']);
+        $globalExercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Global Exercise']);
 
         // Test with showGlobal = false
         $availableToUser = Exercise::availableToUser($user->id, false)->get();

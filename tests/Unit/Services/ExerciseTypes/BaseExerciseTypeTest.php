@@ -56,7 +56,7 @@ class BaseExerciseTypeTest extends TestCase
     public function it_returns_exercise_data_unchanged_by_default()
     {
         $inputData = [
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => 'Test description',
         ];
 

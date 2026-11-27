@@ -28,13 +28,13 @@ class ShowExtraWeightPreferenceTest extends TestCase
         
         $this->bodyweightExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Push-ups',
+            'name' => 'Push-ups',
             'log_type' => 'bodyweight'
         ]);
         
         $this->weightedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'log_type' => 'barbell'
         ]);
         

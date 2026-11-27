@@ -658,7 +658,7 @@ class FeedController extends Controller
         // Build PR details if available
         if ($pr && $pr->exercise) {
             $date = $pr->achieved_at->format('M j');
-            $exerciseName = $pr->exercise->title;
+            $exerciseName = $pr->exercise->name;
             
             // Get sets/reps from lift log
             $setsInfo = '';

@@ -27,7 +27,7 @@ class ExerciseAliasServiceTest extends TestCase
         $this->service = new ExerciseAliasService();
         $this->user = User::factory()->create();
         $this->exercise = Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => null
         ]);
     }
@@ -88,8 +88,8 @@ class ExerciseAliasServiceTest extends TestCase
     /** @test */
     public function get_user_aliases_returns_keyed_collection()
     {
-        $exercise1 = Exercise::factory()->create(['title' => 'Exercise 1']);
-        $exercise2 = Exercise::factory()->create(['title' => 'Exercise 2']);
+        $exercise1 = Exercise::factory()->create(['name' => 'Exercise 1']);
+        $exercise2 = Exercise::factory()->create(['name' => 'Exercise 2']);
         
         ExerciseAlias::factory()->create([
             'user_id' => $this->user->id,
@@ -158,9 +158,9 @@ class ExerciseAliasServiceTest extends TestCase
     /** @test */
     public function apply_aliases_to_exercises_modifies_exercise_titles()
     {
-        $exercise1 = Exercise::factory()->create(['title' => 'Bench Press']);
-        $exercise2 = Exercise::factory()->create(['title' => 'Squat']);
-        $exercise3 = Exercise::factory()->create(['title' => 'Deadlift']);
+        $exercise1 = Exercise::factory()->create(['name' => 'Bench Press']);
+        $exercise2 = Exercise::factory()->create(['name' => 'Squat']);
+        $exercise3 = Exercise::factory()->create(['name' => 'Deadlift']);
         
         // Create aliases for exercise1 and exercise2 only
         ExerciseAlias::factory()->create([
@@ -182,9 +182,9 @@ class ExerciseAliasServiceTest extends TestCase
         $this->assertCount(3, $result);
         
         // Check that aliases were applied
-        $this->assertEquals('BP', $result->get(0)->title);
-        $this->assertEquals('SQ', $result->get(1)->title);
-        $this->assertEquals('Deadlift', $result->get(2)->title); // No alias
+        $this->assertEquals('BP', $result->get(0)->name);
+        $this->assertEquals('SQ', $result->get(1)->name);
+        $this->assertEquals('Deadlift', $result->get(2)->name); // No alias
     }
 
     /** @test */
@@ -360,7 +360,7 @@ class ExerciseAliasServiceTest extends TestCase
     public function multiple_users_can_have_same_alias_name_for_different_exercises()
     {
         $user2 = User::factory()->create();
-        $exercise2 = Exercise::factory()->create(['title' => 'Squat']);
+        $exercise2 = Exercise::factory()->create(['name' => 'Squat']);
         
         // Both users create alias with same name for different exercises
         $alias1 = $this->service->createAlias($this->user, $this->exercise, 'My Exercise');

@@ -24,7 +24,7 @@ class PullUpMergeProofTest extends TestCase
         // Target exercise: Strict Pull-Ups
         $target = Exercise::create([
             'user_id' => null,
-            'title' => 'Strict Pull-Ups',
+            'name' => 'Strict Pull-Ups',
             'canonical_name' => 'strict_pull_up',
             'log_type' => 'bodyweight',
         ]);
@@ -32,7 +32,7 @@ class PullUpMergeProofTest extends TestCase
         // Historical source: Pull-Up (3 sessions, best max reps ~60)
         $source1 = Exercise::create([
             'user_id' => null,
-            'title' => 'Pull-Up',
+            'name' => 'Pull-Up',
             'canonical_name' => 'pull_ups',
             'log_type' => 'bodyweight-reps',
         ]);
@@ -40,7 +40,7 @@ class PullUpMergeProofTest extends TestCase
         // Recent source: Pull-Ups (1 session, 36 reps)
         $source2 = Exercise::create([
             'user_id' => null,
-            'title' => 'Pull-Ups',
+            'name' => 'Pull-Ups',
             'canonical_name' => 'pull_up',
             'log_type' => 'bodyweight',
         ]);

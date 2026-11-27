@@ -219,7 +219,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
         $strategy = ExerciseTypeFactory::create($exercise);
         
         $inputData = [
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             // Should be set to false
             // Should be set to null,
             'log_type' => 'banded'
@@ -227,7 +227,7 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
 
         $processedData = $strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Bench Press', $processedData['title']);
+        $this->assertEquals('Bench Press', $processedData['name']);
         $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 
@@ -241,14 +241,14 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
         $strategy = ExerciseTypeFactory::create($exercise);
         
         $inputData = [
-            'title' => 'Banded Squat',
+            'name' => 'Banded Squat',
             // Should be set to false when band_type is set,
             'log_type' => 'banded'
         ];
 
         $processedData = $strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Banded Squat', $processedData['title']);
+        $this->assertEquals('Banded Squat', $processedData['name']);
         $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 
@@ -262,14 +262,14 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
         $strategy = ExerciseTypeFactory::create($exercise);
         
         $inputData = [
-            'title' => 'Push-ups',
+            'name' => 'Push-ups',
             // Should be set to null when is_bodyweight is true,
             'log_type' => 'banded'
         ];
 
         $processedData = $strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Push-ups', $processedData['title']);
+        $this->assertEquals('Push-ups', $processedData['name']);
         $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 
@@ -283,13 +283,13 @@ class ExerciseTypeControllerIntegrationTest extends TestCase
         $strategy = ExerciseTypeFactory::create($exercise);
         
         $inputData = [
-            'title' => 'Running',
+            'name' => 'Running',
             'log_type' => 'barbell' // Should be overridden to cardio
         ];
 
         $processedData = $strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Running', $processedData['title']);
+        $this->assertEquals('Running', $processedData['name']);
         $this->assertArrayNotHasKey('exercise_type', $processedData);
         $this->assertFalse($processedData['is_bodyweight']);
     }

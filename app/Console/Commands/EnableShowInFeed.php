@@ -90,7 +90,7 @@ class EnableShowInFeed extends Command
             ['ID', 'Title', 'Type', 'User ID', 'Last Logged'],
             $exercises->map(fn($e) => [
                 $e->id,
-                $e->title,
+                $e->name,
                 $e->strategyTypeName(),
                 $e->user_id ?? 'global',
                 $e->lift_logs_max_logged_at 
@@ -118,7 +118,7 @@ class EnableShowInFeed extends Command
             $this->newLine();
             $this->info("Successfully enabled show_in_feed for {$exercises->count()} exercises:");
             foreach ($exercises as $exercise) {
-                $this->comment("  ✓ [{$exercise->id}] {$exercise->title}");
+                $this->comment("  ✓ [{$exercise->id}] {$exercise->name}");
             }
         }
 
@@ -166,7 +166,7 @@ class EnableShowInFeed extends Command
             ['ID', 'Title', 'Type', 'User ID', 'Last Logged'],
             $availableExercises->map(fn($e) => [
                 $e->id,
-                $e->title,
+                $e->name,
                 $e->strategyTypeName(),
                 $e->user_id ?? 'global',
                 $e->lift_logs_max_logged_at 
@@ -201,7 +201,7 @@ class EnableShowInFeed extends Command
             ['ID', 'Title', 'Type', 'User ID'],
             $exercises->map(fn($e) => [
                 $e->id,
-                $e->title,
+                $e->name,
                 $e->strategyTypeName(),
                 $e->user_id ?? 'global'
             ])
@@ -226,7 +226,7 @@ class EnableShowInFeed extends Command
             $this->newLine();
             $this->info("Successfully enabled show_in_feed for {$exercises->count()} exercises:");
             foreach ($exercises as $exercise) {
-                $this->comment("  ✓ [{$exercise->id}] {$exercise->title}");
+                $this->comment("  ✓ [{$exercise->id}] {$exercise->name}");
             }
         }
 

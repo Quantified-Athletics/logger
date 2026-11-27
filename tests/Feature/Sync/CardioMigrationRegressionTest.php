@@ -28,14 +28,14 @@ class CardioMigrationRegressionTest extends TestCase
 
         // Create a cardio exercise
         $this->cardioExercise = Exercise::create([
-            'title' => 'Run',
+            'name' => 'Run',
             'canonical_name' => 'run',
             'log_type' => 'cardio-distance',
         ]);
 
         // Create a regular exercise
         $this->barbellExercise = Exercise::create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'canonical_name' => 'bench_press',
             'log_type' => 'barbell',
         ]);

@@ -26,7 +26,7 @@ class PREventSystemTest extends TestCase
         $this->user = User::factory()->create();
         $this->exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'log_type' => 'barbell',
         ]);
     }
@@ -323,7 +323,7 @@ class PREventSystemTest extends TestCase
     {
         $bodyweightExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Pull-ups',
+            'name' => 'Pull-ups',
             'log_type' => 'bodyweight',
         ]);
 

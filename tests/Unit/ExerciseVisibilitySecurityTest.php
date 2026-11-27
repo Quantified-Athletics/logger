@@ -32,8 +32,8 @@ class ExerciseVisibilitySecurityTest extends TestCase
         Auth::logout();
         
         // Create various exercises
-        Exercise::factory()->create(['title' => 'Global Exercise']);
-        Exercise::factory()->create(['user_id' => $user->id, 'title' => 'User Exercise']);
+        Exercise::factory()->create(['name' => 'Global Exercise']);
+        Exercise::factory()->create(['user_id' => $user->id, 'name' => 'User Exercise']);
         
         // Test direct model query
         $exercises = Exercise::availableToUser()->get();
@@ -50,8 +50,8 @@ class ExerciseVisibilitySecurityTest extends TestCase
         $user = User::factory()->create();
         
         // Create exercises
-        Exercise::factory()->create(['title' => 'Global Exercise']);
-        Exercise::factory()->create(['user_id' => $user->id, 'title' => 'User Exercise']);
+        Exercise::factory()->create(['name' => 'Global Exercise']);
+        Exercise::factory()->create(['user_id' => $user->id, 'name' => 'User Exercise']);
         
         // Test with non-existent user ID
         $exercises = Exercise::availableToUser(99999)->get();
@@ -64,8 +64,8 @@ class ExerciseVisibilitySecurityTest extends TestCase
         $user = User::factory()->create(['show_global_exercises' => true]);
         
         // Create exercises
-        $globalExercise = Exercise::factory()->create(['title' => 'Global Exercise']);
-        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'title' => 'User Exercise']);
+        $globalExercise = Exercise::factory()->create(['name' => 'Global Exercise']);
+        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'name' => 'User Exercise']);
         
         // Verify user can access exercises
         $exercises = Exercise::availableToUser($user->id)->get();
@@ -87,19 +87,19 @@ class ExerciseVisibilitySecurityTest extends TestCase
         $user2 = User::factory()->create(['show_global_exercises' => false]);
         
         // Create exercises for each user
-        $globalExercise = Exercise::factory()->create(['title' => 'Global Exercise']);
-        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'title' => 'User 1 Exercise']);
-        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'title' => 'User 2 Exercise']);
+        $globalExercise = Exercise::factory()->create(['name' => 'Global Exercise']);
+        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'name' => 'User 1 Exercise']);
+        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'name' => 'User 2 Exercise']);
         
         // User 1 should only see their own exercises
         $user1Exercises = Exercise::availableToUser($user1->id)->get();
         $this->assertCount(1, $user1Exercises);
-        $this->assertEquals('User 1 Exercise', $user1Exercises->first()->title);
+        $this->assertEquals('User 1 Exercise', $user1Exercises->first()->name);
         
         // User 2 should only see their own exercises
         $user2Exercises = Exercise::availableToUser($user2->id)->get();
         $this->assertCount(1, $user2Exercises);
-        $this->assertEquals('User 2 Exercise', $user2Exercises->first()->title);
+        $this->assertEquals('User 2 Exercise', $user2Exercises->first()->name);
     }
 
     /** @test */
@@ -113,19 +113,19 @@ class ExerciseVisibilitySecurityTest extends TestCase
         $adminUser->roles()->attach($adminRole);
         
         // Create exercises
-        $globalExercise = Exercise::factory()->create(['title' => 'Global Exercise']);
-        $user1Exercise = Exercise::factory()->create(['user_id' => $regularUser->id, 'title' => 'Regular User Exercise']);
-        $user2Exercise = Exercise::factory()->create(['user_id' => $adminUser->id, 'title' => 'Admin User Exercise']);
+        $globalExercise = Exercise::factory()->create(['name' => 'Global Exercise']);
+        $user1Exercise = Exercise::factory()->create(['user_id' => $regularUser->id, 'name' => 'Regular User Exercise']);
+        $user2Exercise = Exercise::factory()->create(['user_id' => $adminUser->id, 'name' => 'Admin User Exercise']);
         
         // Regular user should only see their own exercises
         $regularUserExercises = Exercise::availableToUser($regularUser->id)->get();
         $this->assertCount(1, $regularUserExercises);
-        $this->assertEquals('Regular User Exercise', $regularUserExercises->first()->title);
+        $this->assertEquals('Regular User Exercise', $regularUserExercises->first()->name);
         
         // Admin user should see all exercises
         $adminUserExercises = Exercise::availableToUser($adminUser->id)->get();
         $this->assertCount(3, $adminUserExercises);
-        $exerciseTitles = $adminUserExercises->pluck('title')->toArray();
+        $exerciseTitles = $adminUserExercises->pluck('name')->toArray();
         $this->assertContains('Global Exercise', $exerciseTitles);
         $this->assertContains('Regular User Exercise', $exerciseTitles);
         $this->assertContains('Admin User Exercise', $exerciseTitles);
@@ -137,8 +137,8 @@ class ExerciseVisibilitySecurityTest extends TestCase
         $user = User::factory()->create(['show_global_exercises' => false]);
         
         // Create exercises
-        $globalExercise = Exercise::factory()->create(['title' => 'Global Exercise']);
-        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'title' => 'User Exercise']);
+        $globalExercise = Exercise::factory()->create(['name' => 'Global Exercise']);
+        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'name' => 'User Exercise']);
         
         // Test override to show global exercises
         $exercises = Exercise::availableToUser($user->id, true)->get();
@@ -148,7 +148,7 @@ class ExerciseVisibilitySecurityTest extends TestCase
         $user->update(['show_global_exercises' => true]);
         $exercises = Exercise::availableToUser($user->id, false)->get();
         $this->assertCount(1, $exercises);
-        $this->assertEquals('User Exercise', $exercises->first()->title);
+        $this->assertEquals('User Exercise', $exercises->first()->name);
     }
 
     /** @test */
@@ -158,9 +158,9 @@ class ExerciseVisibilitySecurityTest extends TestCase
         $otherUser = User::factory()->create();
         
         // Create exercises
-        $globalExercise = Exercise::factory()->create(['title' => 'Global Exercise']);
-        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'title' => 'User Exercise']);
-        $otherUserExercise = Exercise::factory()->create(['user_id' => $otherUser->id, 'title' => 'Other User Exercise']);
+        $globalExercise = Exercise::factory()->create(['name' => 'Global Exercise']);
+        $userExercise = Exercise::factory()->create(['user_id' => $user->id, 'name' => 'User Exercise']);
+        $otherUserExercise = Exercise::factory()->create(['user_id' => $otherUser->id, 'name' => 'Other User Exercise']);
         
         // Create lift logs to make exercises appear in top exercises
         \App\Models\LiftLog::factory()->create(['user_id' => $user->id, 'exercise_id' => $userExercise->id]);
@@ -169,7 +169,7 @@ class ExerciseVisibilitySecurityTest extends TestCase
         $exerciseService = app(ExerciseService::class);
         
         $displayExercises = $exerciseService->getDisplayExercises(5);
-        $exerciseTitles = $displayExercises->pluck('title')->toArray();
+        $exerciseTitles = $displayExercises->pluck('name')->toArray();
         
         // Should only see user's own exercises
         $this->assertNotContains('Global Exercise', $exerciseTitles);
@@ -185,8 +185,8 @@ class ExerciseVisibilitySecurityTest extends TestCase
         $user = User::factory()->create();
         
         // Create exercises
-        Exercise::factory()->create(['title' => 'Global Exercise']);
-        Exercise::factory()->create(['user_id' => $user->id, 'title' => 'User Exercise']);
+        Exercise::factory()->create(['name' => 'Global Exercise']);
+        Exercise::factory()->create(['user_id' => $user->id, 'name' => 'User Exercise']);
         
         // Test with potential SQL injection attempts
         $maliciousInputs = [
@@ -211,9 +211,9 @@ class ExerciseVisibilitySecurityTest extends TestCase
         $user2 = User::factory()->create(['show_global_exercises' => false]);
         
         // Create exercises
-        $globalExercise = Exercise::factory()->create(['title' => 'Global Exercise']);
-        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'title' => 'User 1 Exercise']);
-        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'title' => 'User 2 Exercise']);
+        $globalExercise = Exercise::factory()->create(['name' => 'Global Exercise']);
+        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'name' => 'User 1 Exercise']);
+        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'name' => 'User 2 Exercise']);
         
         // Simulate concurrent requests
         $user1Exercises = Exercise::availableToUser($user1->id)->get();
@@ -221,13 +221,13 @@ class ExerciseVisibilitySecurityTest extends TestCase
         
         // User 1 should see global + their own
         $this->assertCount(2, $user1Exercises);
-        $user1Titles = $user1Exercises->pluck('title')->toArray();
+        $user1Titles = $user1Exercises->pluck('name')->toArray();
         $this->assertContains('Global Exercise', $user1Titles);
         $this->assertContains('User 1 Exercise', $user1Titles);
         
         // User 2 should see only their own
         $this->assertCount(1, $user2Exercises);
-        $user2Titles = $user2Exercises->pluck('title')->toArray();
+        $user2Titles = $user2Exercises->pluck('name')->toArray();
         $this->assertNotContains('Global Exercise', $user2Titles);
         $this->assertContains('User 2 Exercise', $user2Titles);
     }
@@ -239,9 +239,9 @@ class ExerciseVisibilitySecurityTest extends TestCase
         $user2 = User::factory()->create(['show_global_exercises' => true]);
         
         // Create exercises
-        $globalExercise = Exercise::factory()->create(['title' => 'Global Exercise']);
-        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'title' => 'User 1 Exercise']);
-        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'title' => 'User 2 Exercise']);
+        $globalExercise = Exercise::factory()->create(['name' => 'Global Exercise']);
+        $user1Exercise = Exercise::factory()->create(['user_id' => $user1->id, 'name' => 'User 1 Exercise']);
+        $user2Exercise = Exercise::factory()->create(['user_id' => $user2->id, 'name' => 'User 2 Exercise']);
         
         // Both users initially see global exercises
         $user1Exercises = Exercise::availableToUser($user1->id)->get();
@@ -255,12 +255,12 @@ class ExerciseVisibilitySecurityTest extends TestCase
         // User 1 should now see only their own exercises
         $user1Exercises = Exercise::availableToUser($user1->id)->get();
         $this->assertCount(1, $user1Exercises);
-        $this->assertEquals('User 1 Exercise', $user1Exercises->first()->title);
+        $this->assertEquals('User 1 Exercise', $user1Exercises->first()->name);
         
         // User 2 should still see global exercises
         $user2Exercises = Exercise::availableToUser($user2->id)->get();
         $this->assertCount(2, $user2Exercises);
-        $user2Titles = $user2Exercises->pluck('title')->toArray();
+        $user2Titles = $user2Exercises->pluck('name')->toArray();
         $this->assertContains('Global Exercise', $user2Titles);
         $this->assertContains('User 2 Exercise', $user2Titles);
     }

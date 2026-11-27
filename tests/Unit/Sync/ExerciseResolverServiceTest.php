@@ -27,7 +27,7 @@ class ExerciseResolverServiceTest extends TestCase
     public function test_exact_canonical_name_match(): void
     {
         $exercise = Exercise::create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'canonical_name' => 'bench_press',
             'log_type' => 'barbell',
         ]);
@@ -42,7 +42,7 @@ class ExerciseResolverServiceTest extends TestCase
     public function test_case_insensitive_title_match(): void
     {
         $exercise = Exercise::create([
-            'title' => 'Deadlift',
+            'name' => 'Deadlift',
             'canonical_name' => 'deadlift',
             'log_type' => 'barbell',
         ]);
@@ -57,7 +57,7 @@ class ExerciseResolverServiceTest extends TestCase
     public function test_case_insensitive_alias_match(): void
     {
         $exercise = Exercise::create([
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'canonical_name' => 'back_squat',
             'log_type' => 'barbell',
         ]);
@@ -79,7 +79,7 @@ class ExerciseResolverServiceTest extends TestCase
     {
         // 1. User specific exercise
         $userExercise = Exercise::create([
-            'title' => 'User Push Up',
+            'name' => 'User Push Up',
             'canonical_name' => 'user_push_up',
             'log_type' => 'bodyweight',
             'user_id' => $this->user->id,
@@ -88,7 +88,7 @@ class ExerciseResolverServiceTest extends TestCase
         // 2. Another user specific exercise
         $otherUser = User::factory()->create();
         $otherExercise = Exercise::create([
-            'title' => 'Other Push Up',
+            'name' => 'Other Push Up',
             'canonical_name' => 'other_push_up',
             'log_type' => 'bodyweight',
             'user_id' => $otherUser->id,
@@ -108,7 +108,7 @@ class ExerciseResolverServiceTest extends TestCase
     public function test_resolve_with_canonical_name_param(): void
     {
         $exercise = Exercise::create([
-            'title' => 'Barbell Bench Press',
+            'name' => 'Barbell Bench Press',
             'canonical_name' => 'bb_bench_press',
             'log_type' => 'barbell',
         ]);
@@ -116,26 +116,26 @@ class ExerciseResolverServiceTest extends TestCase
         // Should resolve using exact canonical name parameter
         $resolved = $this->resolver->resolve('Mismatched Title', $this->user, 'barbell', 'bb_bench_press');
         $this->assertEquals($exercise->id, $resolved->id);
-        $this->assertEquals('Mismatched Title', $resolved->fresh()->title); // Title updated because it differed
+        $this->assertEquals('Mismatched Title', $resolved->fresh()->name); // Title updated because it differed
     }
 
     public function test_resolve_updates_mismatched_title(): void
     {
         $exercise = Exercise::create([
-            'title' => 'Old Title',
+            'name' => 'Old Title',
             'canonical_name' => 'bench_press',
             'log_type' => 'barbell',
         ]);
 
         $resolved = $this->resolver->resolve('New Title', $this->user, null, 'bench_press');
         $this->assertEquals($exercise->id, $resolved->id);
-        $this->assertEquals('New Title', $resolved->fresh()->title);
+        $this->assertEquals('New Title', $resolved->fresh()->name);
     }
 
     public function test_soft_deleted_exclusion(): void
     {
         $exercise = Exercise::create([
-            'title' => 'Soft Deleted Pull Up',
+            'name' => 'Soft Deleted Pull Up',
             'canonical_name' => 'soft_deleted_pull_up',
             'log_type' => 'bodyweight',
         ]);
@@ -152,7 +152,7 @@ class ExerciseResolverServiceTest extends TestCase
     {
         // cardio log type should derive cardio exercise type
         $cardio = $this->resolver->resolve('Super Run', $this->user, 'cardio');
-        $this->assertEquals('Super Run', $cardio->title);
+        $this->assertEquals('Super Run', $cardio->name);
         $this->assertEquals('cardio', $cardio->strategyTypeName());
 
         // bodyweight log type should derive bodyweight exercise type

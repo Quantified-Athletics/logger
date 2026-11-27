@@ -200,7 +200,7 @@ class ConnectionTest extends TestCase
         $response = $this->get(route('feed.index'));
         
         // Check that the feed shows the PR
-        $response->assertSee($exercise->title);
+        $response->assertSee($exercise->name);
         
         // After viewing, the PR should be marked as read
         $user2->refresh();

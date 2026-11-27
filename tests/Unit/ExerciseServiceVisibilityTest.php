@@ -33,14 +33,14 @@ class ExerciseServiceVisibilityTest extends TestCase
         $this->otherUser = User::factory()->create(['show_global_exercises' => true]);
         
         // Create exercises
-        $this->globalExercise = Exercise::factory()->create(['title' => 'Global Exercise']);
+        $this->globalExercise = Exercise::factory()->create(['name' => 'Global Exercise']);
         $this->userExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'User Exercise'
+            'name' => 'User Exercise'
         ]);
         $this->otherUserExercise = Exercise::factory()->create([
             'user_id' => $this->otherUser->id,
-            'title' => 'Other User Exercise'
+            'name' => 'Other User Exercise'
         ]);
     }
 
@@ -67,7 +67,7 @@ class ExerciseServiceVisibilityTest extends TestCase
         $this->user->update(['show_global_exercises' => true]);
         $topExercises = $this->exerciseService->getTopExercises(5);
         
-        $exerciseTitles = $topExercises->pluck('title')->toArray();
+        $exerciseTitles = $topExercises->pluck('name')->toArray();
         $this->assertContains('Global Exercise', $exerciseTitles);
         $this->assertContains('User Exercise', $exerciseTitles);
         $this->assertNotContains('Other User Exercise', $exerciseTitles);
@@ -77,7 +77,7 @@ class ExerciseServiceVisibilityTest extends TestCase
         $this->user->update(['show_global_exercises' => false]);
         $topExercises = $this->exerciseService->getTopExercises(5);
         
-        $exerciseTitles = $topExercises->pluck('title')->toArray();
+        $exerciseTitles = $topExercises->pluck('name')->toArray();
         $this->assertContains('Global Exercise', $exerciseTitles); // Still visible because user has lift logs
         $this->assertContains('User Exercise', $exerciseTitles);
         $this->assertNotContains('Other User Exercise', $exerciseTitles);
@@ -102,7 +102,7 @@ class ExerciseServiceVisibilityTest extends TestCase
         $this->user->update(['show_global_exercises' => true]);
         $displayExercises = $this->exerciseService->getDisplayExercises(5);
         
-        $exerciseTitles = $displayExercises->pluck('title')->toArray();
+        $exerciseTitles = $displayExercises->pluck('name')->toArray();
         $this->assertContains('Global Exercise', $exerciseTitles);
         $this->assertContains('User Exercise', $exerciseTitles);
         $this->assertNotContains('Other User Exercise', $exerciseTitles);
@@ -112,7 +112,7 @@ class ExerciseServiceVisibilityTest extends TestCase
         $this->user->update(['show_global_exercises' => false]);
         $displayExercises = $this->exerciseService->getDisplayExercises(5);
         
-        $exerciseTitles = $displayExercises->pluck('title')->toArray();
+        $exerciseTitles = $displayExercises->pluck('name')->toArray();
         $this->assertContains('Global Exercise', $exerciseTitles); // Still visible because user has lift logs
         $this->assertContains('User Exercise', $exerciseTitles);
         $this->assertNotContains('Other User Exercise', $exerciseTitles);
@@ -129,12 +129,12 @@ class ExerciseServiceVisibilityTest extends TestCase
         
         // Create additional exercises with different creation times
         $recentGlobalExercise = Exercise::factory()->create([
-            'title' => 'Recent Global Exercise',
+            'name' => 'Recent Global Exercise',
             'created_at' => now()->subHour()
         ]);
         $recentUserExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Recent User Exercise',
+            'name' => 'Recent User Exercise',
             'created_at' => now()->subMinutes(30)
         ]);
 
@@ -147,7 +147,7 @@ class ExerciseServiceVisibilityTest extends TestCase
         $this->user->update(['show_global_exercises' => true]);
         $displayExercises = $this->exerciseService->getDisplayExercises(5);
         
-        $exerciseTitles = $displayExercises->pluck('title')->toArray();
+        $exerciseTitles = $displayExercises->pluck('name')->toArray();
         $this->assertContains('User Exercise', $exerciseTitles); // From top exercises
         $this->assertContains('Recent Global Exercise', $exerciseTitles); // From recent fill
         $this->assertContains('Recent User Exercise', $exerciseTitles); // From recent fill
@@ -158,7 +158,7 @@ class ExerciseServiceVisibilityTest extends TestCase
         $this->user->update(['show_global_exercises' => false]);
         $displayExercises = $this->exerciseService->getDisplayExercises(5);
         
-        $exerciseTitles = $displayExercises->pluck('title')->toArray();
+        $exerciseTitles = $displayExercises->pluck('name')->toArray();
         $this->assertContains('User Exercise', $exerciseTitles); // From top exercises
         $this->assertContains('Recent Global Exercise', $exerciseTitles); // Still visible because user has lift logs
         $this->assertContains('Recent User Exercise', $exerciseTitles); // From recent fill
@@ -193,7 +193,7 @@ class ExerciseServiceVisibilityTest extends TestCase
         // Admin should see all exercises regardless of preference
         $displayExercises = $this->exerciseService->getDisplayExercises(5);
         
-        $exerciseTitles = $displayExercises->pluck('title')->toArray();
+        $exerciseTitles = $displayExercises->pluck('name')->toArray();
         $this->assertContains('Global Exercise', $exerciseTitles);
         $this->assertContains('User Exercise', $exerciseTitles);
         $this->assertContains('Other User Exercise', $exerciseTitles);
@@ -251,12 +251,12 @@ class ExerciseServiceVisibilityTest extends TestCase
         // Create additional recent exercises
         $recentExercise1 = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Recent Exercise 1',
+            'name' => 'Recent Exercise 1',
             'created_at' => now()->subHour()
         ]);
         $recentExercise2 = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Recent Exercise 2',
+            'name' => 'Recent Exercise 2',
             'created_at' => now()->subMinutes(30)
         ]);
 
@@ -268,7 +268,7 @@ class ExerciseServiceVisibilityTest extends TestCase
         $displayExercises = $this->exerciseService->getDisplayExercises(3);
         
         // Should include the top exercise and recent ones, but not duplicate the top exercise
-        $exerciseTitles = $displayExercises->pluck('title')->toArray();
+        $exerciseTitles = $displayExercises->pluck('name')->toArray();
         $this->assertContains('User Exercise', $exerciseTitles);
         $this->assertContains('Recent Exercise 1', $exerciseTitles);
         $this->assertContains('Recent Exercise 2', $exerciseTitles);
@@ -282,9 +282,9 @@ class ExerciseServiceVisibilityTest extends TestCase
     public function service_maintains_correct_ordering()
     {
         // Create exercises with specific lift log counts to control ordering
-        $exercise1 = Exercise::factory()->create(['user_id' => $this->user->id, 'title' => 'Exercise 1']);
-        $exercise2 = Exercise::factory()->create(['user_id' => $this->user->id, 'title' => 'Exercise 2']);
-        $exercise3 = Exercise::factory()->create(['user_id' => $this->user->id, 'title' => 'Exercise 3']);
+        $exercise1 = Exercise::factory()->create(['user_id' => $this->user->id, 'name' => 'Exercise 1']);
+        $exercise2 = Exercise::factory()->create(['user_id' => $this->user->id, 'name' => 'Exercise 2']);
+        $exercise3 = Exercise::factory()->create(['user_id' => $this->user->id, 'name' => 'Exercise 3']);
         
         // Create lift logs with different counts (exercise2 should be first, then exercise3, then exercise1)
         LiftLog::factory()->count(1)->create(['user_id' => $this->user->id, 'exercise_id' => $exercise1->id]);
@@ -296,8 +296,8 @@ class ExerciseServiceVisibilityTest extends TestCase
         $topExercises = $this->exerciseService->getTopExercises(3);
         
         // Should be ordered by lift log count descending
-        $this->assertEquals('Exercise 2', $topExercises->first()->title);
-        $this->assertEquals('Exercise 3', $topExercises->skip(1)->first()->title);
-        $this->assertEquals('Exercise 1', $topExercises->last()->title);
+        $this->assertEquals('Exercise 2', $topExercises->first()->name);
+        $this->assertEquals('Exercise 3', $topExercises->skip(1)->first()->name);
+        $this->assertEquals('Exercise 1', $topExercises->last()->name);
     }
 }

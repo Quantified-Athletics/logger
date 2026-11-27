@@ -73,7 +73,7 @@ class ChangesController
             $logData = [
                 'id' => $liftLog->id,
                 'exerciseId' => $liftLog->exercise->canonical_name,
-                'exerciseName' => $liftLog->exercise->title,
+                'exerciseName' => $liftLog->exercise->name,
                 'date' => $liftLog->logged_at->toDateString(),
                 'logType' => $logType,
                 'sets' => $sets,
@@ -154,13 +154,13 @@ class ChangesController
     {
         $exercises = \App\Models\Exercise::where('user_id', $user->id)
             ->whereNull('deleted_at')
-            ->orderBy('title', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
 
         return $exercises->map(function ($exercise) {
             return [
                 'id' => $exercise->canonical_name,
-                'name' => $exercise->title,
+                'name' => $exercise->name,
                 'logType' => $exercise->log_type ?: 'barbell',
                 'exerciseType' => $exercise->strategyTypeName(),
             ];

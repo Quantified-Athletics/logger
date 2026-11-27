@@ -20,7 +20,7 @@ class ExerciseAliasDisplayTest extends TestCase
     public function test_lift_log_table_shows_aliases()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
         
         ExerciseAlias::factory()->create([
             'user_id' => $user->id,
@@ -50,7 +50,7 @@ class ExerciseAliasDisplayTest extends TestCase
     public function test_lift_log_charts_use_aliases()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
         
         ExerciseAlias::factory()->create([
             'user_id' => $user->id,
@@ -82,8 +82,8 @@ class ExerciseAliasDisplayTest extends TestCase
     public function test_lift_log_index_shows_aliases_for_multiple_exercises()
     {
         $user = User::factory()->create();
-        $exercise1 = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
-        $exercise2 = Exercise::factory()->create(['title' => 'Back Squat', 'user_id' => null]);
+        $exercise1 = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
+        $exercise2 = Exercise::factory()->create(['name' => 'Back Squat', 'user_id' => null]);
         
         ExerciseAlias::factory()->create([
             'user_id' => $user->id,
@@ -135,7 +135,7 @@ class ExerciseAliasDisplayTest extends TestCase
     {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
         
         ExerciseAlias::factory()->create([
             'user_id' => $user1->id,
@@ -189,7 +189,7 @@ class ExerciseAliasDisplayTest extends TestCase
     public function test_exercise_show_logs_page_displays_alias_in_title()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
         
         ExerciseAlias::factory()->create([
             'user_id' => $user->id,

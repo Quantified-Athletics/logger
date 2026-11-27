@@ -20,7 +20,7 @@ class CarryLogTypeMigrationTest extends TestCase
 
         // 1. Existing carry exercise (non-split)
         $farmersEx = Exercise::create([
-            'title' => "Farmer's Carry",
+            'name' => "Farmer's Carry",
             'canonical_name' => 'farmers_carry',
             'log_type' => 'weighted-carry',
         ]);
@@ -50,7 +50,7 @@ class CarryLogTypeMigrationTest extends TestCase
 
         // 2. Retired original split exercise
         $retiredEx = Exercise::create([
-            'title' => 'Mixed Rack Carry',
+            'name' => 'Mixed Rack Carry',
             'canonical_name' => 'mixed_rack_carry',
             'log_type' => 'weighted-carry',
         ]);
@@ -71,7 +71,7 @@ class CarryLogTypeMigrationTest extends TestCase
 
         // 3. Genuine static hold (must be UNTOUCHED)
         $plankEx = Exercise::create([
-            'title' => 'Plank',
+            'name' => 'Plank',
             'canonical_name' => 'plank',
             'log_type' => 'static-hold',
         ]);

@@ -106,7 +106,7 @@ class ExerciseReconciler
             ->first();
 
         if ($exercise) {
-            $exercise->update(['title' => $op['new_title']]);
+            $exercise->update(['name' => $op['new_title']]);
             Log::info("ExerciseReconciler: Renamed exercise '{$op['canonical_name']}' from '{$op['old_title']}' to '{$op['new_title']}'");
         } else {
             Log::warning("ExerciseReconciler: Exercise '{$op['canonical_name']}' not found for rename.");
@@ -140,7 +140,7 @@ class ExerciseReconciler
         if ($exercise) {
             $exercise->update([
                 'canonical_name' => $op['new_canonical'],
-                'title' => $op['new_title']
+                'name' => $op['new_title']
             ]);
 
             // Auto-create alias mapping old canonical to the renamed exercise
@@ -161,7 +161,7 @@ class ExerciseReconciler
         Exercise::firstOrCreate(
             ['canonical_name' => $op['canonical_name'], 'user_id' => null],
             [
-                'title' => $op['title'],
+                'name' => $op['title'],
                 'log_type' => $op['log_type'] ?? LogTypeTable::logTypeForExerciseType($op['exercise_type'] ?? null) ?? LogTypeTable::DEFAULT_LOG_TYPE,
                 'show_in_feed' => true
             ]
@@ -178,7 +178,7 @@ class ExerciseReconciler
             ->first();
 
         if ($exercise) {
-            $exercise->update(['title' => $op['old_title']]);
+            $exercise->update(['name' => $op['old_title']]);
             Log::info("ExerciseReconciler Rollback: Restored title of '{$op['canonical_name']}' to '{$op['old_title']}'");
         }
     }
@@ -213,7 +213,7 @@ class ExerciseReconciler
 
             $exercise->update([
                 'canonical_name' => $op['old_canonical'],
-                'title' => $op['old_title']
+                'name' => $op['old_title']
             ]);
 
             Log::info("ExerciseReconciler Rollback: Restored canonical '{$op['new_canonical']}' to '{$op['old_canonical']}' (title: '{$op['old_title']}')");

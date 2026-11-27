@@ -31,19 +31,19 @@ class PersistGlobalExercisesChangeIdentificationTest extends TestCase
         
         // Create test exercises
         $exercise1 = new Exercise();
-        $exercise1->title = 'Push Up';
+        $exercise1->name = 'Push Up';
         $exercise1->description = 'A basic push up';
         $exercise1->canonical_name = 'push_up';
         $exercise1->log_type = 'bodyweight';
         
         $exercise2 = new Exercise();
-        $exercise2->title = 'Pull Up';
+        $exercise2->name = 'Pull Up';
         $exercise2->description = 'A basic pull up';
         $exercise2->canonical_name = 'pull_up';
         $exercise2->log_type = 'bodyweight';
         
         $exercise3 = new Exercise();
-        $exercise3->title = 'New Exercise';
+        $exercise3->name = 'New Exercise';
         $exercise3->description = 'A new exercise';
         $exercise3->canonical_name = 'new_exercise';
         $exercise3->log_type = 'banded';
@@ -91,7 +91,7 @@ class PersistGlobalExercisesChangeIdentificationTest extends TestCase
         $command = $this->getCommand();
         
         $exercise = new Exercise();
-        $exercise->title = 'Push Up';
+        $exercise->name = 'Push Up';
         $exercise->canonical_name = 'push_up';
         $exercise->log_type = 'bodyweight';
         
@@ -115,7 +115,7 @@ class PersistGlobalExercisesChangeIdentificationTest extends TestCase
         
         // Exercise with banded_resistance exercise_type in database
         $exercise = new Exercise();
-        $exercise->title = 'Band Pull';
+        $exercise->name = 'Band Pull';
         $exercise->description = 'Pull with resistance band';
         $exercise->canonical_name = 'band_pull';
         $exercise->log_type = 'banded';
@@ -150,17 +150,17 @@ class PersistGlobalExercisesChangeIdentificationTest extends TestCase
         
         // Create exercises with different scenarios
         $exercise1 = new Exercise();
-        $exercise1->title = 'Unchanged Exercise';
+        $exercise1->name = 'Unchanged Exercise';
         $exercise1->canonical_name = 'unchanged';
         $exercise1->log_type = 'bodyweight';
         
         $exercise2 = new Exercise();
-        $exercise2->title = 'Updated Exercise';
+        $exercise2->name = 'Updated Exercise';
         $exercise2->canonical_name = 'updated';
         $exercise2->log_type = 'banded';
         
         $exercise3 = new Exercise();
-        $exercise3->title = 'New Exercise';
+        $exercise3->name = 'New Exercise';
         $exercise3->canonical_name = 'new_exercise';
         $exercise3->log_type = 'banded';
         

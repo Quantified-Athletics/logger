@@ -79,7 +79,7 @@ class LiftLogTablePresenter
             return $exercise->aliases->first()->alias_name;
         }
         
-        return $exercise->title;
+        return $exercise->name;
     }
 
     /**

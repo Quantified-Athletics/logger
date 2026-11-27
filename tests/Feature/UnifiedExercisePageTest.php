@@ -129,7 +129,7 @@ class UnifiedExercisePageTest extends TestCase
 
         $response->assertStatus(200);
         // Verify the page loads successfully with the parameters
-        $response->assertSee($this->exercise->title);
+        $response->assertSee($this->exercise->name);
     }
 
     /** @test */

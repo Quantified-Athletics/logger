@@ -74,8 +74,9 @@ class ExerciseNameReadersTest extends TestCase
     ];
 
     /**
-     * Input keys named `title` that stay: the sync endpoint's wire key, the reconciler's op keys and
-     * the global exercises CSV's own column.
+     * Input keys named `title` that stay: the sync endpoint's wire key, the reconciler's op keys, the
+     * merge map's target key, the global exercises CSV's own column, and the web form's validation
+     * label, which keeps its messages' words ("The title field is required.").
      *
      * @var array<int, string>
      */
@@ -83,6 +84,8 @@ class ExerciseNameReadersTest extends TestCase
         '/\$request->(input|filled|has)\(\'title\'/',
         '/\'title\' => \[?\'required/',
         '/\$op\[\'(title|new_title|old_title)\'\]/',
+        '/\$merge\[\'title\'\]/',
+        '/\[\'name\' => \'title\'\]/',
         '/\$(rowData|csvData|csvEntry)\[\'title\'\]/',
         '/\$(header|requiredColumns) = \[\'title\'/',
         '/\'title\' => \$exercise->name\b/',
@@ -175,7 +178,9 @@ class ExerciseNameReadersTest extends TestCase
         $this->withHeaders($this->syncHeaders)->postJson('/api/sync/exercises', [
             'name' => 'Zercher Squat',
             'canonical_name' => 'zercher_squat',
-        ])->assertStatus(422)->assertJsonValidationErrors('title');
+        ])->assertStatus(422);
+
+        $this->assertSame(0, Exercise::where('canonical_name', 'zercher_squat')->count());
     }
 
     #[Test]
@@ -244,7 +249,9 @@ class ExerciseNameReadersTest extends TestCase
     public function the_reconciler_keeps_its_title_op_keys_and_writes_name(): void
     {
         $exercise = Exercise::factory()->create(['name' => 'Test Exercise', 'canonical_name' => 'test_ex', 'user_id' => null]);
-        $path = tempnam(sys_get_temp_dir(), 'reconcile').'.json';
+        $file = 'exercise-name-readers-test.json';
+        $path = database_path("changesets/exercises/{$file}");
+        File::ensureDirectoryExists(dirname($path));
         File::put($path, json_encode(['operations' => [[
             'action' => 'rename',
             'canonical_name' => 'test_ex',
@@ -257,7 +264,7 @@ class ExerciseNameReadersTest extends TestCase
         ]]]));
 
         try {
-            ExerciseReconciler::apply($path);
+            ExerciseReconciler::apply($file);
 
             $this->assertSame('Test Exercise Renamed', $exercise->refresh()->name);
             $this->assertSame('New Exercise', Exercise::where('canonical_name', 'new_ex')->sole()->name);
@@ -321,6 +328,14 @@ class ExerciseNameReadersTest extends TestCase
             'name' => 'Zercher Squat',
             'log_type' => 'barbell',
         ])->assertSessionHasErrors(['name' => 'An exercise with this name already exists.']);
+    }
+
+    #[Test]
+    public function the_web_create_form_without_a_name_keeps_the_required_message_words(): void
+    {
+        $this->actingAs($this->user)->post(route('exercises.store'), [
+            'log_type' => 'barbell',
+        ])->assertSessionHasErrors(['name' => 'The title field is required.']);
     }
 
     private function userExercise(): Exercise

@@ -28,7 +28,7 @@ class NotificationTest extends TestCase
 
         $exercise = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'show_in_feed' => true,
         ]);
 

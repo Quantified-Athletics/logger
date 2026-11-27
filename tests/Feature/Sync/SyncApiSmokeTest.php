@@ -188,7 +188,7 @@ class SyncApiSmokeTest extends TestCase
 
         // 4. Deleting a log belonging to another user returns 404
         $otherUser = User::factory()->create();
-        $exercise = Exercise::create(['title' => 'Squat', 'canonical_name' => 'squat']);
+        $exercise = Exercise::create(['name' => 'Squat', 'canonical_name' => 'squat']);
         $otherLog = LiftLog::create([
             'user_id' => $otherUser->id,
             'exercise_id' => $exercise->id,

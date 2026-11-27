@@ -96,12 +96,12 @@ class RegularExerciseTypeTest extends TestCase
     public function it_processes_exercise_data_correctly()
     {
         $inputData = [
-            'title' => 'Bench Press'
+            'name' => 'Bench Press'
         ];
 
         $processedData = $this->strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Bench Press', $processedData['title']);
+        $this->assertEquals('Bench Press', $processedData['name']);
         $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 

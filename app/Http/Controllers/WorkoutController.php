@@ -36,10 +36,10 @@ class WorkoutController extends Controller
         $userId = Auth::id();
         
         return Exercise::availableToUser($userId)
-            ->select('title')
-            ->orderBy('title')
+            ->select('name')
+            ->orderBy('name')
             ->get()
-            ->pluck('title')
+            ->pluck('name')
             ->unique()
             ->values();
     }
@@ -96,7 +96,7 @@ class WorkoutController extends Controller
                     // Simple workout: use workout_exercises table
                     $exerciseCount = $workout->exercises->count();
                     if ($exerciseCount > 0) {
-                        $exerciseNames = $workout->exercises->pluck('exercise.title')->filter()->toArray();
+                        $exerciseNames = $workout->exercises->pluck('exercise.name')->filter()->toArray();
                         $line2 = implode(', ', $exerciseNames);
                     } else {
                         $line2 = 'No exercises';
