@@ -44,6 +44,7 @@ class RecommendationsRemovedTest extends TestCase
         $this->assertFileDoesNotExist(app_path('Http/Controllers/RecommendationController.php'));
         $this->assertFileDoesNotExist(app_path('Services/RecommendationEngine.php'));
         $this->assertFileDoesNotExist(app_path('Services/ActivityAnalysisService.php'));
+        $this->assertFileDoesNotExist(app_path('Services/UserActivityAnalysis.php'));
     }
 
     public function test_recommendations_view_is_gone(): void
@@ -53,7 +54,7 @@ class RecommendationsRemovedTest extends TestCase
 
     public function test_no_remaining_class_references_the_removed_ones(): void
     {
-        $needles = ['RecommendationController', 'RecommendationEngine', 'ActivityAnalysisService', 'recommendations.'];
+        $needles = ['RecommendationController', 'RecommendationEngine', 'ActivityAnalysisService', 'UserActivityAnalysis', 'recommendations.'];
         $offenders = [];
 
         foreach (['app', 'config', 'routes', 'resources'] as $directory) {
