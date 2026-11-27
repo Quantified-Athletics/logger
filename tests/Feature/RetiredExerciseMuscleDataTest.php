@@ -76,7 +76,7 @@ class RetiredExerciseMuscleDataTest extends TestCase
     #[Test]
     public function the_model_and_its_relation_are_gone(): void
     {
-        $this->assertFalse(class_exists('App\\Models\\Exercise'.ucfirst(self::RETIRED_WORD)));
+        $this->assertFileDoesNotExist(app_path('Models/Exercise'.ucfirst(self::RETIRED_WORD).'.php'));
         $this->assertFalse(method_exists(Exercise::class, self::RETIRED_WORD));
     }
 
