@@ -46,7 +46,7 @@ Operations and monitoring are documented in `docs/sync/sync-api-operations-and-m
 ### Existing tables you'll interact with
 
 - `users` — name, email, password, weight_unit. Add `HasApiTokens` trait.
-- `exercises` — title, canonical_name, exercise_type (regular/bodyweight/banded_*/cardio/static_hold), user_id (null = global). Has aliases via `exercise_aliases`.
+- `exercises` — title, canonical_name, log_type (Athlete's log types; `config/log_types.php` gives each one its strategy), user_id (null = global). Has aliases via `exercise_aliases`.
 - `lift_logs` — exercise_id, user_id, logged_at, comments, workout_id, is_pr, pr_count. Soft deletes.
 - `lift_sets` — lift_log_id, weight, unit, reps, time, band_color, notes. Soft deletes.
 - `personal_records` — user_id, exercise_id, lift_log_id, pr_type, value, previous_pr_id.
@@ -59,7 +59,7 @@ This feature adds a proper `distance` column to `lift_sets` and migrates existin
 
 ### ExerciseType strategy pattern
 
-Each exercise type (regular, bodyweight, banded_resistance, banded_assistance, cardio, static_hold) has a strategy class in `app/Services/ExerciseTypes/`. These strategies handle:
+Each strategy (regular, bodyweight, banded_resistance, banded_assistance, cardio, static_hold, timed_output, load_output) has a class in `app/Services/ExerciseTypes/`, picked from the exercise's `log_type`. The old `exercise_type` column is unread and unwritten. These strategies handle:
 - Validation rules for the web UI logging form
 - Data processing (normalize input for storage)
 - Display formatting
