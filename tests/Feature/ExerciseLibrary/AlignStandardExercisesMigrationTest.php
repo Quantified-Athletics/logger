@@ -177,7 +177,12 @@ class AlignStandardExercisesMigrationTest extends TestCase
             $source = Exercise::withTrashed()->where('canonical_name', $canonicalName)->firstOrFail();
             $this->assertSame(0, ExerciseAlias::query()->where('exercise_id', $source->id)->count());
         }
-        $this->assertSame(count($this->idsOf('merge')), ExerciseAlias::query()->where('user_id', $user->id)->count());
+        $targets = array_values(array_unique(array_filter(array_column($this->ops, 'into'))));
+        $this->assertSame(count($targets), ExerciseAlias::query()->where('user_id', $user->id)->count());
+        foreach ($targets as $canonicalName) {
+            $target = Exercise::query()->whereNull('user_id')->where('canonical_name', $canonicalName)->firstOrFail();
+            $this->assertSame(1, ExerciseAlias::query()->where('user_id', $user->id)->where('exercise_id', $target->id)->count());
+        }
     }
 
     #[Test]
