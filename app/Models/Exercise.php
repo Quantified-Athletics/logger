@@ -20,10 +20,41 @@ class Exercise extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'description', 'canonical_name', 'user_id', 'log_type'])
+            ->logOnly(['name', 'description', 'canonical_name', 'user_id', 'log_type', ...self::RECORD_FIELD_COLUMNS])
             ->logOnlyDirty()
             ->dontSubmitEmptyLogs();
     }
+
+    /**
+     * The columns carrying the shared exercise record's fields beyond `canonical_name`, `name` and
+     * `log_type`. Logger stores them and reads none of them.
+     */
+    public const RECORD_FIELD_COLUMNS = [
+        'former_ids',
+        'equipment',
+        'primary_muscles',
+        'core_muscles',
+        'regions_loaded',
+        'primary_movements',
+        'core_movements',
+        'motion',
+        'modalities',
+        'kinds',
+        'laterality',
+        'families',
+        'category',
+        'max_per_week',
+        'repeat_cooldown',
+        'suggestion_count',
+        'suggestion_period',
+        'video',
+        'generator_eligible',
+        'historic_reps',
+        'modifier',
+        'members',
+        'bucket',
+        'tags',
+    ];
 
     protected $fillable = [
         'name',
@@ -32,12 +63,30 @@ class Exercise extends Model
         'user_id',
         'log_type',
         'show_in_feed',
+        ...self::RECORD_FIELD_COLUMNS,
     ];
 
     protected $casts = [
         'log_type' => 'string',
         'show_in_feed' => 'boolean',
         'deleted_at' => 'datetime',
+        'former_ids' => 'array',
+        'equipment' => 'array',
+        'primary_muscles' => 'array',
+        'core_muscles' => 'array',
+        'regions_loaded' => 'array',
+        'primary_movements' => 'array',
+        'core_movements' => 'array',
+        'modalities' => 'array',
+        'kinds' => 'array',
+        'families' => 'array',
+        'historic_reps' => 'array',
+        'members' => 'array',
+        'tags' => 'array',
+        'max_per_week' => 'integer',
+        'repeat_cooldown' => 'integer',
+        'suggestion_count' => 'integer',
+        'generator_eligible' => 'boolean',
     ];
 
     protected static function boot()
