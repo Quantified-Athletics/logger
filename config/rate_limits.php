@@ -67,6 +67,13 @@ return [
         'per_hour' => null,
     ],
 
+    // Unauthenticated gym track-program read. Keyed on device id, falling back to IP: athletes at a
+    // gym share one IP, so an IP key would block them.
+    'track_programs' => [
+        'per_minute' => 30,
+        'per_hour' => 600,
+    ],
+
     // Prism write endpoints. Generous write ceiling; cheap keyed upserts. Keyed per user.
     'prism_write' => [
         'per_minute' => 120,
