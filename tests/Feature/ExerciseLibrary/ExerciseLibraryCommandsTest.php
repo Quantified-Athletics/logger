@@ -154,6 +154,42 @@ class ExerciseLibraryCommandsTest extends TestCase
     }
 
     #[Test]
+    public function either_or_lists_and_maps_with_null_values_apply_as_given(): void
+    {
+        $exercise = $this->standard('banded_chop', 'Banded Chop');
+
+        $this->artisan('exercise-library:apply', ['--ops' => $this->opsFile([[
+            'op' => 'update', 'id' => 'banded_chop',
+            'set' => ['equipment' => [['band', 'cable-machine'], 'plate'], 'regionsLoaded' => ['hands' => null, 'neck' => 'light']],
+            'reason' => 'either-or',
+        ]])])->assertExitCode(0);
+
+        $exercise->refresh();
+        $this->assertSame([['band', 'cable-machine'], 'plate'], $exercise->equipment);
+        $this->assertSame(['hands' => null, 'neck' => 'light'], $exercise->regions_loaded);
+    }
+
+    #[Test]
+    public function a_value_of_the_wrong_kind_is_refused(): void
+    {
+        $this->standard('back_squat', 'Back Squat');
+
+        foreach ([
+            ['maxPerWeek' => 'two'],
+            ['equipment' => 'barbell'],
+            ['equipment' => [['barbell', 3]]],
+            ['regionsLoaded' => ['neck' => ['light']]],
+            ['generatorEligible' => 'yes'],
+            ['aliases' => [['Squat']]],
+            ['name' => null],
+        ] as $set) {
+            $this->artisan('exercise-library:apply', ['--ops' => $this->opsFile([
+                ['op' => 'update', 'id' => 'back_squat', 'set' => $set, 'reason' => 'r'],
+            ]), '--check' => true])->assertFailed();
+        }
+    }
+
+    #[Test]
     public function null_clears_a_column_and_an_empty_list_counts_as_absent(): void
     {
         $exercise = $this->standard('back_squat', 'Back Squat');
@@ -361,7 +397,7 @@ class ExerciseLibraryCommandsTest extends TestCase
     public function an_add_with_a_log_type_outside_the_registry_is_refused(): void
     {
         $this->artisan('exercise-library:apply', ['--ops' => $this->opsFile([
-            ['op' => 'add', 'id' => 'sled_push', 'set' => ['name' => 'Sled Push', 'logType' => 'sled'], 'reason' => 'new'],
+            ['op' => 'add', 'id' => 'sled_push', 'set' => ['name' => 'Sled Push', 'logType' => 'sledge'], 'reason' => 'new'],
         ])])->assertFailed();
 
         $this->assertFalse(Exercise::query()->where('canonical_name', 'sled_push')->exists());
