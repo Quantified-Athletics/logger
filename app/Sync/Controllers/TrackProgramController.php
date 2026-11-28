@@ -47,16 +47,16 @@ class TrackProgramController
      */
     private function body(array $publicationIds): string
     {
+        // Sorted in PHP: an ORDER BY would make MySQL sort rows that each carry up to 2 MB of `raw`.
         $publications = PrismAthletePublication::query()
             ->whereIn('id', $publicationIds)
-            ->orderBy('track')
-            ->orderBy('start_date')
-            ->orderBy('id')
-            ->get();
+            ->get()
+            ->sortBy([['track', 'asc'], ['start_date', 'asc'], ['id', 'asc']])
+            ->values();
 
         return json_encode([
             'programs' => $publications->map(fn (PrismAthletePublication $publication): array => $this->program($publication))->all(),
-        ], JSON_THROW_ON_ERROR);
+        ], JSON_THROW_ON_ERROR | JSON_PRESERVE_ZERO_FRACTION);
     }
 
     /**

@@ -104,6 +104,13 @@ class TrackProgramsReadTest extends TestCase
         $this->assertNotEmpty($response->headers->get('ETag'));
     }
 
+    public function test_a_whole_number_float_in_raw_stays_a_float(): void
+    {
+        $this->publish('prog-1', rawJson: '{"metadata":{"load":100.0},"workouts":[]}');
+
+        $this->assertStringContainsString('"raw":{"metadata":{"load":100.0},"workouts":[]}', $this->read()->getContent());
+    }
+
     public function test_program_name_is_null_when_absent(): void
     {
         $this->publish('prog-1', rawJson: '{"metadata":{},"workouts":[]}');
