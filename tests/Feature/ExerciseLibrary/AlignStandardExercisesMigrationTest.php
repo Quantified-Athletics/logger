@@ -7,9 +7,11 @@ use App\Models\Exercise;
 use App\Models\ExerciseAlias;
 use App\Models\ExerciseMergeLog;
 use App\Models\LiftLog;
+use App\Models\RehydrationSignal;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Attributes\Test;
 use Spatie\Activitylog\Models\Activity;
 use Tests\TestCase;
@@ -224,5 +226,82 @@ class AlignStandardExercisesMigrationTest extends TestCase
         }
 
         $this->assertSame($before, $this->databaseSnapshot());
+    }
+
+    /**
+     * Next to the fixture's user (logs on every merged row), a user whose only log on a merged row is
+     * soft-deleted and a user with a log only on a row the file doesn't merge.
+     *
+     * @return array{user: User, softDeletedOnly: User, unaffected: User}
+     */
+    private function seedStandardRowsWithBystanders(): array
+    {
+        ['user' => $user] = $this->seedStandardRows();
+
+        $mergedRow = Exercise::query()->where('canonical_name', $this->idsOf('merge')[1])->firstOrFail();
+        $softDeletedOnly = User::factory()->create();
+        LiftLog::factory()->create(['exercise_id' => $mergedRow->id, 'user_id' => $softDeletedOnly->id])->delete();
+
+        $untouchedRow = Exercise::query()->where('canonical_name', self::UNTOUCHED[0])->firstOrFail();
+        $unaffected = User::factory()->create();
+        LiftLog::factory()->create(['exercise_id' => $untouchedRow->id, 'user_id' => $unaffected->id]);
+
+        return ['user' => $user, 'softDeletedOnly' => $softDeletedOnly, 'unaffected' => $unaffected];
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    private function signalRows(): array
+    {
+        return RehydrationSignal::query()->orderBy('id')->get()->map->getAttributes()->all();
+    }
+
+    #[Test]
+    public function a_run_that_merges_raises_one_rehydration_signal_per_affected_user(): void
+    {
+        ['user' => $user, 'softDeletedOnly' => $softDeletedOnly, 'unaffected' => $unaffected] = $this->seedStandardRowsWithBystanders();
+        $this->assertGreaterThan(1, count($this->idsOf('merge')));
+
+        $this->migration()->up();
+
+        $this->assertSame(1, RehydrationSignal::query()->count());
+        $this->assertDatabaseHas('rehydration_signals', ['user_id' => $user->id, 'reason' => 'exercise-merge']);
+        $this->assertDatabaseMissing('rehydration_signals', ['user_id' => $softDeletedOnly->id]);
+        $this->assertDatabaseMissing('rehydration_signals', ['user_id' => $unaffected->id]);
+        $this->assertDatabaseMissing('rehydration_signals', ['user_id' => null]);
+    }
+
+    #[Test]
+    public function a_second_run_raises_no_rehydration_signal(): void
+    {
+        $this->seedStandardRowsWithBystanders();
+        $this->migration()->up();
+        $signalsAfterFirstRun = $this->signalRows();
+        $this->assertNotEmpty($signalsAfterFirstRun);
+
+        Carbon::setTestNow(now()->addHour());
+        try {
+            $this->migration()->up();
+        } finally {
+            Carbon::setTestNow();
+        }
+
+        $this->assertSame($signalsAfterFirstRun, $this->signalRows());
+    }
+
+    #[Test]
+    public function a_refused_file_raises_no_rehydration_signal(): void
+    {
+        $this->seedStandardRowsWithBystanders();
+        Exercise::query()->where('canonical_name', $this->idsOf('update')[0])->firstOrFail()->forceDelete();
+
+        try {
+            $this->migration()->up();
+            $this->fail('The migration applied a file that names a row no standard exercise has.');
+        } catch (ExerciseLibraryOpsRefusedException) {
+        }
+
+        $this->assertSame(0, RehydrationSignal::query()->count());
     }
 }
