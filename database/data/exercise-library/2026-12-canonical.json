@@ -26,6 +26,19 @@
           "Seated Ab Twist",
           "Seated Ab Twists"
         ],
+        "formerIds": [
+          "ab_twist",
+          "db_ab_twists",
+          "heavy_ab_twists",
+          "plate_twist",
+          "plate_twists",
+          "seated_ab_twist",
+          "seated_ab_twists",
+          "seated_plate_twist",
+          "seated_plate_twists",
+          "seated_twists",
+          "weighted_trunk_twists"
+        ],
         "equipment": [
           [
             "plate",
@@ -66,7 +79,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -74,6 +87,9 @@
       "set": {
         "aliases": [
           "tempo_ab_wheel_rollout"
+        ],
+        "formerIds": [
+          "ab_wheel_rollouts"
         ],
         "equipment": [
           "ab-wheel"
@@ -103,7 +119,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "add",
@@ -193,6 +209,10 @@
           "Barbell Lunge",
           "Barbell Lunges"
         ],
+        "formerIds": [
+          "barbell_lunge",
+          "barbell_lunges"
+        ],
         "equipment": [
           "barbell",
           "squat-rack"
@@ -231,7 +251,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -244,6 +264,12 @@
           "1 and a Quarter Back Squat",
           "No-Pause Back Squats",
           "Front or Back Squat"
+        ],
+        "formerIds": [
+          "1_and_a_quarter_back_squat",
+          "back_or_front_squat",
+          "back_squats",
+          "no_pause_back_squats"
         ],
         "equipment": [
           "barbell",
@@ -284,7 +310,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -300,7 +326,10 @@
           "Slam Ball"
         ],
         "formerIds": [
-          "ball_slams_or_d_ball_to_shoulder"
+          "ball_slams",
+          "ball_slams_or_d_ball_to_shoulder",
+          "slam_ball",
+          "slam_balls"
         ],
         "equipment": [
           "slam-ball"
@@ -362,7 +391,20 @@
           "Banded/Cable Chop"
         ],
         "formerIds": [
-          "band_or_plate_chops"
+          "band_cable_chop",
+          "band_chops",
+          "band_or_plate_chop",
+          "band_or_plate_chops",
+          "banded_cable_chop",
+          "banded_cable_or_plate_chops",
+          "banded_chops",
+          "banded_or_cable_chop",
+          "banded_or_cable_chops",
+          "banded_or_cable_or_plate_chop",
+          "banded_or_cable_or_plate_chops",
+          "banded_or_plate_chop",
+          "banded_or_plate_chops",
+          "chop_banded"
         ],
         "equipment": [
           [
@@ -405,6 +447,10 @@
           "Fire Hydrant",
           "Fire Hydrants"
         ],
+        "formerIds": [
+          "fire_hydrant",
+          "fire_hydrants"
+        ],
         "equipment": [
           "band"
         ],
@@ -427,7 +473,7 @@
         "modifier": "/side",
         "createdAt": "2026-10-18T23:19:17.925Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -435,6 +481,9 @@
       "set": {
         "aliases": [
           "Banded SA Lat Pulldown"
+        ],
+        "formerIds": [
+          "lat_pulldown_banded_sa"
         ],
         "equipment": [
           "band"
@@ -464,7 +513,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -474,6 +523,11 @@
           "Banded Cable Tricep Extension",
           "Banded or Cable Tricep Extension",
           "Banded/Cable Tricep Extension"
+        ],
+        "formerIds": [
+          "banded_cable_tricep_extension",
+          "banded_or_cable_tricep_extension",
+          "tricep_extension_banded_or_cable"
         ],
         "equipment": [
           [
@@ -505,7 +559,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -528,8 +582,16 @@
           "Tricep Pressdowns"
         ],
         "formerIds": [
+          "band_tricep_pressdowns",
           "banded_cable_tricep_pressdown",
-          "tricep_extension_banded"
+          "banded_or_cable_tricep_pressdown",
+          "banded_tricep_pressdowns",
+          "banded_tricep_pushdown",
+          "cable_tricep_pressdown",
+          "cable_tricep_pushdown",
+          "tricep_extension_banded",
+          "tricep_pressdown_banded_or_cable",
+          "tricep_pressdowns"
         ],
         "equipment": [
           [
@@ -580,7 +642,10 @@
           "Muscle-Ups"
         ],
         "formerIds": [
-          "muscle_up"
+          "bar_mu",
+          "bar_muscle_up",
+          "muscle_up",
+          "muscle_ups"
         ],
         "logType": "bodyweight",
         "equipment": [
@@ -637,8 +702,15 @@
           "Bicep Curl (Barbell)"
         ],
         "formerIds": [
+          "barbell_bicep_curls",
+          "barbell_curl",
+          "bb_bicep_curls",
+          "bicep_curl",
           "bicep_curl_barbell_1",
-          "empty_barbell_bicep_curls"
+          "bicep_curls",
+          "empty_barbell_bicep_curl",
+          "empty_barbell_bicep_curls",
+          "empty_bicep_curls_barbell"
         ],
         "logType": "barbell",
         "equipment": [
@@ -686,6 +758,11 @@
           "BB Front Rack Lunge",
           "Front-Rack Lunge"
         ],
+        "formerIds": [
+          "bb_front_rack_lunge",
+          "front_rack_lunge",
+          "front_rack_lunges"
+        ],
         "equipment": [
           "barbell",
           "squat-rack"
@@ -724,7 +801,7 @@
         "modifier": "/leg",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -745,8 +822,14 @@
           "Bent Rows"
         ],
         "formerIds": [
+          "barbell_bent_over_row",
+          "barbell_rows",
+          "bb_bent_row",
+          "bent_over_barbell_row",
+          "bent_over_row",
           "bent_over_row_pronated",
-          "bent_row"
+          "bent_row",
+          "bent_rows"
         ],
         "equipment": [
           "barbell"
@@ -825,6 +908,11 @@
           "Bear Hug March In Place",
           "Bearhug Walk or March"
         ],
+        "formerIds": [
+          "bear_hug_march_in_place",
+          "bearhug_march",
+          "bearhug_walk_or_march"
+        ],
         "equipment": [
           "d-ball"
         ],
@@ -850,7 +938,7 @@
         "generatorEligible": false,
         "createdAt": "2026-07-24T16:16:54.135Z"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -862,6 +950,11 @@
           "Bearhug Dball Carry",
           "Bearhug Walk",
           "Candy Bag Carry"
+        ],
+        "formerIds": [
+          "bear_hug_carry",
+          "bearhug_dball_carry",
+          "bearhug_walk"
         ],
         "equipment": [
           "slam-ball"
@@ -889,7 +982,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, coreMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, coreMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -1015,7 +1108,9 @@
         ],
         "formerIds": [
           "bike",
-          "cal_bike"
+          "bike_for_cals",
+          "cal_bike",
+          "cals_bike"
         ],
         "equipment": [
           "bike"
@@ -1061,6 +1156,9 @@
         "aliases": [
           "Box Jumps"
         ],
+        "formerIds": [
+          "box_jumps"
+        ],
         "logType": "bodyweight",
         "equipment": [
           "box"
@@ -1100,7 +1198,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -1109,6 +1207,9 @@
         "aliases": [
           "Box Jump Overs",
           "Box Jump Over"
+        ],
+        "formerIds": [
+          "box_jump_over"
         ],
         "equipment": [
           "box"
@@ -1139,7 +1240,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -1205,6 +1306,12 @@
           "Box Jumps/push-offs",
           "Lateral Push-Offs"
         ],
+        "formerIds": [
+          "box_jumps_push_offs",
+          "box_pushoffs",
+          "lateral_push_offs",
+          "push_offs"
+        ],
         "equipment": [
           [
             "box",
@@ -1238,7 +1345,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -1292,7 +1399,9 @@
           "Burpee Broad Jump"
         ],
         "formerIds": [
-          "burpee_broad_jump"
+          "broad_jumps",
+          "burpee_broad_jump",
+          "standing_broad_jump"
         ],
         "logType": "bodyweight",
         "primaryMuscles": [
@@ -1360,6 +1469,7 @@
         ],
         "formerIds": [
           "bulgarian_split_squat_1",
+          "bulgarian_split_squat_2_db",
           "split_squat_hungarian_2_db"
         ],
         "logType": "dual-dumbbell",
@@ -1437,6 +1547,9 @@
           "Burpee",
           "BUR-R-PEES"
         ],
+        "formerIds": [
+          "bur_r_pees"
+        ],
         "logType": "bodyweight",
         "primaryMuscles": [
           "chest",
@@ -1472,7 +1585,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, logType, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, logType, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -1480,6 +1593,9 @@
       "set": {
         "aliases": [
           "Bar Facing Burpees"
+        ],
+        "formerIds": [
+          "bar_facing_burpees"
         ],
         "primaryMuscles": [
           "chest",
@@ -1505,12 +1621,15 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
       "id": "cable_bicep_curl",
       "set": {
+        "formerIds": [
+          "bicep_curl_cable"
+        ],
         "equipment": [
           "cable-machine"
         ],
@@ -1533,7 +1652,7 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -1543,7 +1662,8 @@
           "Cable Fly"
         ],
         "formerIds": [
-          "cable_fly"
+          "cable_fly",
+          "chest_fly_cable"
         ],
         "equipment": [
           "cable-machine"
@@ -1574,7 +1694,8 @@
           "Lat Pull-Down (Cable Machine)"
         ],
         "formerIds": [
-          "lat_pull_down_machine"
+          "lat_pull_down_machine",
+          "lat_pulldown_cable"
         ],
         "equipment": [
           "cable-machine"
@@ -1606,6 +1727,9 @@
           "Row (Cable)",
           "Cable Rows"
         ],
+        "formerIds": [
+          "cable_rows"
+        ],
         "equipment": [
           [
             "band",
@@ -1633,7 +1757,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -1738,9 +1862,19 @@
           "Cal"
         ],
         "formerIds": [
+          "aerobic_calories",
+          "cal_cardio",
           "cal_cardio_sprint",
+          "cal_sprint",
+          "calories_cardio",
           "cardio_1",
-          "cardio_sprint"
+          "cardio_2",
+          "cardio_cal",
+          "cardio_cals",
+          "cardio_for_calories",
+          "cardio_re_test",
+          "cardio_sprint",
+          "max_effort_cardio"
         ],
         "equipment": [
           "cardio-machine"
@@ -1844,8 +1978,14 @@
         ],
         "formerIds": [
           "bench_supported_row_1_db",
+          "chest_elevated_2_db_row",
+          "chest_supported_db_row",
           "chest_supported_row_1",
-          "chest_supported_row_2_db"
+          "chest_supported_row_2_db",
+          "incline_prone_row",
+          "prone_db_row",
+          "seal_row",
+          "seal_rows"
         ],
         "equipment": [
           "dumbbells"
@@ -1889,6 +2029,11 @@
           "Barbell Chest Supported Row",
           "Seal Row (Barbell)"
         ],
+        "formerIds": [
+          "barbell_chest_supported_row",
+          "chest_supported_barbell_row",
+          "seal_row_barbell"
+        ],
         "equipment": [
           "barbell"
         ],
@@ -1920,7 +2065,7 @@
         ],
         "createdAt": "2026-07-01T20:38:29.981Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -1929,6 +2074,10 @@
         "aliases": [
           "Incline Lever Row",
           "Incline Leverage Row"
+        ],
+        "formerIds": [
+          "incline_lever_row",
+          "incline_leverage_row"
         ],
         "equipment": [
           "machine"
@@ -1949,7 +2098,7 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -1968,7 +2117,9 @@
           "Chest To Bar (Scaled, Strict)"
         ],
         "formerIds": [
-          "chest_to_bar_scaled_strict"
+          "chest_to_bar_pull_up",
+          "chest_to_bar_scaled_strict",
+          "ctb_pull_ups"
         ],
         "primaryMuscles": [
           "lats",
@@ -2050,6 +2201,9 @@
         "aliases": [
           "Chin Up Assis"
         ],
+        "formerIds": [
+          "chin_up_assis"
+        ],
         "equipment": [
           "machine"
         ],
@@ -2069,7 +2223,7 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "merge",
@@ -2086,6 +2240,10 @@
           "Clamshell",
           "Banded Clamshell",
           "Banded Clamshells"
+        ],
+        "formerIds": [
+          "banded_clamshell",
+          "banded_clamshells"
         ],
         "primaryMuscles": [
           "glutes"
@@ -2109,7 +2267,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -2122,6 +2280,9 @@
           "Clean And Jerks",
           "Clean and Jerk",
           "Clean and Jerks"
+        ],
+        "formerIds": [
+          "clean_and_jerks"
         ],
         "equipment": [
           "barbell"
@@ -2155,7 +2316,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -2192,6 +2353,9 @@
       "op": "update",
       "id": "clean_complex_4",
       "set": {
+        "formerIds": [
+          "clean_deadlift_clean_pull_power_cleans"
+        ],
         "equipment": [
           "barbell"
         ],
@@ -2222,12 +2386,15 @@
         ],
         "bucket": "clean_complex"
       },
-      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt, members, bucket"
+      "reason": "plan §5.2: the canonical record's formerIds, equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt, members, bucket"
     },
     {
       "op": "update",
       "id": "clean_complex_5",
       "set": {
+        "formerIds": [
+          "clean_pull_hang_power_cleans_power_cleans"
+        ],
         "equipment": [
           "barbell"
         ],
@@ -2258,7 +2425,7 @@
         ],
         "bucket": "clean_complex"
       },
-      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt, members, bucket"
+      "reason": "plan §5.2: the canonical record's formerIds, equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt, members, bucket"
     },
     {
       "op": "update",
@@ -2309,6 +2476,9 @@
           "Close-Grip Push-Up",
           "Close-Grip Push-Ups"
         ],
+        "formerIds": [
+          "close_grip_push_up"
+        ],
         "primaryMuscles": [
           "chest",
           "triceps"
@@ -2331,7 +2501,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -2357,6 +2527,7 @@
           "Side or Copenhagen Plank"
         ],
         "formerIds": [
+          "copenhagen_plank_hold",
           "side_or_copenhagen_plank"
         ],
         "equipment": [
@@ -2403,6 +2574,10 @@
           "Cossack Squats",
           "Goblet Cossack Squat"
         ],
+        "formerIds": [
+          "cossack_squats",
+          "goblet_cossack_squats"
+        ],
         "primaryMuscles": [
           "quads",
           "glutes"
@@ -2434,7 +2609,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -2447,6 +2622,7 @@
           "Crossbody V-Ups"
         ],
         "formerIds": [
+          "crossbody_v_up",
           "crossbody_v_ups"
         ],
         "coreMuscles": [
@@ -2514,7 +2690,13 @@
         ],
         "formerIds": [
           "cyclist_squat_barbell_back_rack",
-          "cyclist_squat_barbell_front_rack"
+          "cyclist_squat_barbell_front_rack",
+          "cyclist_squats",
+          "cylist_squat",
+          "db_kb_cyclist_squat",
+          "goblet_cyclist_squat",
+          "heels_elevated_cyclist_squat",
+          "tempo_db_kb_cyclist_squat"
         ],
         "equipment": [
           "dumbbells"
@@ -2573,6 +2755,8 @@
           "DB Arnold Press"
         ],
         "formerIds": [
+          "alt_arnold_press",
+          "arnold_press",
           "db_arnold_press_1"
         ],
         "equipment": [
@@ -2620,6 +2804,10 @@
           "B-Stance Single Leg RDL",
           "DB B-Stance RDL"
         ],
+        "formerIds": [
+          "b_stance_rdl",
+          "b_stance_single_leg_rdl"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -2650,7 +2838,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -2669,8 +2857,15 @@
           "Plate Bent Lateral Raise"
         ],
         "formerIds": [
+          "bent_over_lateral_db_raise",
           "bent_over_lateral_raise",
-          "bent_over_lateral_raise_2_db"
+          "bent_over_lateral_raise_2_db",
+          "bent_over_lateral_raises",
+          "db_bent_over_lateral_raises",
+          "db_or_plate_bent_lateral_raise",
+          "dumbbell_bent_over_lateral_raise",
+          "plate_bent_lateral_raise",
+          "sa_bent_over_lateral_raise"
         ],
         "equipment": [
           "dumbbells"
@@ -2718,7 +2913,10 @@
           "Bicep Curl (2-DB)"
         ],
         "formerIds": [
-          "bicep_curl_2_db"
+          "bicep_curl_2_db",
+          "db_bicep_curls",
+          "db_curl",
+          "db_curls"
         ],
         "equipment": [
           "dumbbells"
@@ -2769,8 +2967,15 @@
           "DB/KB Box Step-Ups"
         ],
         "formerIds": [
+          "box_step_up_2_db",
+          "box_step_ups_2_db",
+          "db_box_step_ups",
           "db_kb_box_step_ups",
-          "weighted_step_up"
+          "db_step_up",
+          "weighted_box_step_up",
+          "weighted_step_up",
+          "weighted_step_ups",
+          "wtd_step_ups"
         ],
         "equipment": [
           "dumbbells",
@@ -2823,7 +3028,8 @@
           "Cluster"
         ],
         "formerIds": [
-          "clusters"
+          "clusters",
+          "clusters_2_db"
         ],
         "logType": "dual-dumbbell",
         "equipment": [
@@ -2864,6 +3070,10 @@
           "DB Concentration Curl",
           "Concentration Curls"
         ],
+        "formerIds": [
+          "concentration_curl",
+          "concentration_curl_db"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -2893,7 +3103,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "add",
@@ -2943,6 +3153,9 @@
         "aliases": [
           "DB Front Raise"
         ],
+        "formerIds": [
+          "front_raise_2_db"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -2971,7 +3184,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "add",
@@ -2994,8 +3207,16 @@
           "Single DB Glute Bridge"
         ],
         "formerIds": [
+          "banded_db_glute_bridge",
+          "banded_glute_bridge_hold",
+          "db_banded_glute_bridge",
+          "db_glute_bridge_hold",
           "feet_elevated_glute_bridge_db",
-          "glute_bridge"
+          "glute_bridge",
+          "glute_bridge_db",
+          "glute_bridge_hold",
+          "glute_bridges",
+          "single_db_glute_bridge"
         ],
         "logType": "single-dumbbell",
         "equipment": [
@@ -3036,6 +3257,9 @@
         "aliases": [
           "DB Hang Snatch"
         ],
+        "formerIds": [
+          "hang_snatch_db"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -3068,7 +3292,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -3082,6 +3306,9 @@
           "Lateral DB Lunge"
         ],
         "formerIds": [
+          "lateral_db_lunge",
+          "lateral_lunge",
+          "lateral_lunges",
           "lateral_lunges_2_db"
         ],
         "equipment": [
@@ -3152,6 +3379,17 @@
           "DB/KB Lunges",
           "Back Rack Or Db Lunges"
         ],
+        "formerIds": [
+          "2_db_kb_lunges",
+          "alt_db_lunges",
+          "db_kb_lunges",
+          "db_lunges",
+          "dumbbell_lunge",
+          "dumbbell_lunges",
+          "lunges_2_db",
+          "two_db_kb_lunges",
+          "weighted_lunges"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -3190,7 +3428,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -3198,6 +3436,9 @@
       "set": {
         "aliases": [
           "DB Overhead Lunge"
+        ],
+        "formerIds": [
+          "overhead_lunges_db"
         ],
         "equipment": [
           "dumbbells"
@@ -3236,7 +3477,7 @@
         "modifier": "10/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -3247,6 +3488,12 @@
           "KB Pike Leg Lift Over",
           "KB Leg Lift Over",
           "KB Pike Leg Lift Overs"
+        ],
+        "formerIds": [
+          "kb_leg_lift_over",
+          "kb_pike_leg_lift_over",
+          "kb_pike_leg_lift_overs",
+          "pike_leg_lift_over_db"
         ],
         "equipment": [
           "dumbbells"
@@ -3275,7 +3522,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -3292,7 +3539,11 @@
           "DB Pull Throughs"
         ],
         "formerIds": [
-          "plank_pull_through_db"
+          "db_pull_through",
+          "db_pull_throughs",
+          "plank_pull_through",
+          "plank_pull_through_db",
+          "plank_pull_throughs"
         ],
         "equipment": [
           "dumbbells"
@@ -3344,7 +3595,9 @@
           "DB Preacher Curl"
         ],
         "formerIds": [
-          "preacher_curl_db"
+          "isolated_bicep_db",
+          "preacher_curl_db",
+          "preacher_curls_db"
         ],
         "logType": "single-dumbbell",
         "equipment": [
@@ -3395,8 +3648,15 @@
           "Dumbbell Bench Pull-Over"
         ],
         "formerIds": [
+          "bench_pull_over",
+          "bench_pullover",
+          "db_bench_pullover",
           "db_pullover_1",
-          "pullover_db"
+          "db_pullovers",
+          "dumbbell_bench_pull_over",
+          "dumbbell_pullover",
+          "pullover_db",
+          "pullovers_db"
         ],
         "equipment": [
           "dumbbells"
@@ -3442,6 +3702,11 @@
           "DB Reverse Lunge",
           "2-DB Reverse Lunge"
         ],
+        "formerIds": [
+          "2_db_reverse_lunge",
+          "reverse_lunges_2_db",
+          "two_db_reverse_lunge"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -3473,7 +3738,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -3493,7 +3758,11 @@
         ],
         "formerIds": [
           "bench_press_2_db_seesaw",
+          "db_kb_seesaw_press",
+          "db_seesaw_bench_press",
           "db_seesaw_press_1",
+          "seesaw_press",
+          "seesaw_press_2_db",
           "seesaw_press_seated_2_db",
           "strict_press_2_db_seesaw"
         ],
@@ -3552,8 +3821,13 @@
           "Alternating DB Snatches"
         ],
         "formerIds": [
+          "alt_db_snatch",
+          "alt_db_snatches",
+          "alternating_db_snatch",
+          "alternating_db_snatches",
           "db_snatches",
-          "snatch_single_arm_db"
+          "snatch_single_arm_db",
+          "snatches_db"
         ],
         "equipment": [
           "dumbbells"
@@ -3618,8 +3892,12 @@
           "Split Squats"
         ],
         "formerIds": [
+          "2_db_or_goblet_split_squat",
+          "2_db_split_squat",
+          "db_split_squats",
           "split_squat",
-          "split_squat_2_db"
+          "split_squat_2_db",
+          "split_squats"
         ],
         "logType": "dual-dumbbell",
         "equipment": [
@@ -3677,6 +3955,9 @@
         "formerIds": [
           "lunge_step_back",
           "lunge_step_back_2_db",
+          "step_back_lunge",
+          "step_back_lunges",
+          "step_back_lunges_2_db",
           "two_db_step_back_lunge"
         ],
         "logType": "dual-dumbbell",
@@ -3726,8 +4007,13 @@
         ],
         "formerIds": [
           "2_db_press",
+          "2_db_strict_press",
+          "db_press",
+          "dual_db_strict_press",
           "dumbbell_shoulder_press",
-          "strict_press_2_db"
+          "dumbbell_strict_press",
+          "strict_press_2_db",
+          "two_db_strict_press"
         ],
         "equipment": [
           "dumbbells"
@@ -3770,6 +4056,9 @@
         "aliases": [
           "DB Sumo Squat"
         ],
+        "formerIds": [
+          "sumo_squat_2_db"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -3800,7 +4089,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -3832,9 +4121,16 @@
           "Tripod Row DB/KB"
         ],
         "formerIds": [
+          "3_point_db_row",
+          "3_point_row",
+          "db_kb_tripod_row",
+          "db_tripod_rows",
+          "kb_tripod_row",
           "single_arm_bent_over_db_kb_row",
+          "single_arm_db_bent_over_row",
           "single_arm_db_row",
           "single_arm_row",
+          "singles_arm_bent_over_db_kb_row",
           "tripod_row",
           "tripod_row_db_kb"
         ],
@@ -3891,7 +4187,12 @@
           "Walking DB Lunges"
         ],
         "formerIds": [
-          "lunge_walking_2_db"
+          "2_db_suitcase_walking_lunge",
+          "bodyweight_or_2_db_walking_lunge",
+          "lunge_walking_2_db",
+          "two_db_suitcase_walking_lunge",
+          "walking_db_lunges",
+          "walking_lunges_2_db"
         ],
         "logType": "dual-dumbbell",
         "equipment": [
@@ -3941,7 +4242,9 @@
           "Z-Press Hold"
         ],
         "formerIds": [
-          "z_press_2_db"
+          "2_db_z_press",
+          "z_press_2_db",
+          "z_press_hold"
         ],
         "logType": "dual-dumbbell",
         "equipment": [
@@ -3991,6 +4294,10 @@
           "Dball To Shoulder",
           "Dball to Shoulder"
         ],
+        "formerIds": [
+          "ball_to_shoulder",
+          "d_ball_to_shoulder"
+        ],
         "equipment": [
           "slam-ball"
         ],
@@ -4032,7 +4339,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -4048,6 +4355,15 @@
           "Weighted Deadbug Hold",
           "Banded Dead Bug",
           "Weighted Deadbugs"
+        ],
+        "formerIds": [
+          "alt_deadbug",
+          "alternating_deadbug",
+          "banded_dead_bug",
+          "weighted_dead_bug_w_pullover",
+          "weighted_deadbug",
+          "weighted_deadbug_hold",
+          "weighted_deadbugs"
         ],
         "coreMuscles": [
           "rectus_abdominis"
@@ -4073,7 +4389,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -4083,6 +4399,9 @@
           "deadlifts",
           "Deadlifts",
           "Barbell Deadlift"
+        ],
+        "formerIds": [
+          "barbell_deadlift"
         ],
         "equipment": [
           "barbell"
@@ -4123,7 +4442,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -4132,6 +4451,9 @@
         "name": "Trap Bar Deadlift",
         "aliases": [
           "Deadlift (Trap Bar)"
+        ],
+        "formerIds": [
+          "trap_bar_deadlift"
         ],
         "equipment": [
           "barbell"
@@ -4156,7 +4478,7 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.996Z"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -4168,7 +4490,8 @@
           "HSPU Tempo Negative (50lbs DB)"
         ],
         "formerIds": [
-          "hpsu_tempo_negative_50lbs_db"
+          "hpsu_tempo_negative_50lbs_db",
+          "hspu_on_2_db_50lbs"
         ],
         "equipment": [
           "wall"
@@ -4251,6 +4574,9 @@
           "Deficit or Regular Push-Ups"
         ],
         "formerIds": [
+          "deficit_or_regular_push_up",
+          "deficit_or_regular_push_ups",
+          "deficit_push_up",
           "push_up_deficit_paralelites"
         ],
         "logType": "bodyweight",
@@ -4290,6 +4616,12 @@
           "Matador/Ring/Bench Dips",
           "Pulsing Dips"
         ],
+        "formerIds": [
+          "matador_dip",
+          "matador_dips",
+          "matador_ring_bench_dips",
+          "pulsing_dips"
+        ],
         "logType": "bodyweight",
         "equipment": [
           "matador"
@@ -4324,7 +4656,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, logType, equipment, primaryMuscles, primaryMovements, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, logType, equipment, primaryMuscles, primaryMovements, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, video, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -4337,6 +4669,9 @@
           "DU",
           "Double-Unders",
           "DUs"
+        ],
+        "formerIds": [
+          "double_unders"
         ],
         "equipment": [
           "jump-rope"
@@ -4375,7 +4710,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "add",
@@ -4391,8 +4726,12 @@
           "Single Arm DB Bench Press"
         ],
         "formerIds": [
+          "2_db_bench_press",
           "bench_press_2_db",
-          "dumbbell_bench_press_1"
+          "db_bench",
+          "db_bench_press",
+          "dumbbell_bench_press_1",
+          "single_arm_db_bench_press"
         ],
         "logType": "dual-dumbbell",
         "equipment": [
@@ -4441,6 +4780,12 @@
           "Floor Press",
           "DB/KB Floor Press"
         ],
+        "formerIds": [
+          "2_db_floor_press",
+          "db_floor_press",
+          "db_kb_floor_press",
+          "floor_press"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -4471,7 +4816,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -4487,6 +4832,12 @@
           "Dumbbell Lateral Raise"
         ],
         "formerIds": [
+          "db_lateral_raise",
+          "db_lateral_raises",
+          "dumbbell_lateral_raise",
+          "lateral_db_raise",
+          "lateral_db_raises",
+          "lateral_raise",
           "lateral_raises_2_db"
         ],
         "equipment": [
@@ -4530,6 +4881,10 @@
           "Push Press (2-DB)",
           "DB Push Press"
         ],
+        "formerIds": [
+          "2_db_push_press",
+          "db_push_press"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -4568,7 +4923,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "merge",
@@ -4608,10 +4963,24 @@
           "Seated Banded or Cable Facepull"
         ],
         "formerIds": [
+          "banded_cable_face_pull",
+          "banded_cable_facepull",
+          "banded_face_pulls",
+          "banded_facepull",
           "banded_facepulls",
           "banded_or_cable_face_pulls",
+          "banded_or_cable_facepull",
+          "banded_or_cable_facepulls",
+          "banded_or_cable_lat_facepull",
+          "cable_face_pulls",
+          "cable_facepull",
+          "cable_lat_facepull",
           "face_pull",
-          "face_pull_cable_machine"
+          "face_pull_cable_machine",
+          "face_pulls_banded_or_cable",
+          "seated_banded_facepull",
+          "seated_banded_or_cable_facepull",
+          "seated_face_pull"
         ],
         "equipment": [
           [
@@ -4665,6 +5034,17 @@
           "Farmer or Bear Hug Carry",
           "KB Farmer's Carry"
         ],
+        "formerIds": [
+          "2_kb_farmer_carry",
+          "2_kb_farmer_walk",
+          "2_kb_farmers_carry",
+          "db_kb_farmer_carry",
+          "famers_carry",
+          "farmer_carry",
+          "farmer_or_bear_hug_carry",
+          "kb_farmer_carry",
+          "kb_farmers_carry"
+        ],
         "equipment": [
           "kettlebell"
         ],
@@ -4685,7 +5065,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, coreMuscles, coreMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, coreMuscles, coreMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -4693,6 +5073,9 @@
       "set": {
         "aliases": [
           "Feet Elevated Glute Bridge"
+        ],
+        "formerIds": [
+          "glute_bridge_feet_elevated"
         ],
         "equipment": [
           [
@@ -4725,7 +5108,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "merge",
@@ -4742,6 +5125,12 @@
           "Feet-Up Ring Row",
           "Feet Elevated Ring Rows",
           "FE Ring Rows"
+        ],
+        "formerIds": [
+          "elevated_ring_row",
+          "fe_ring_rows",
+          "feet_elevated_ring_rows",
+          "feet_up_ring_row"
         ],
         "equipment": [
           "rings"
@@ -4772,7 +5161,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -4781,6 +5170,10 @@
         "aliases": [
           "Db Floor Flys",
           "DB Floor Flys"
+        ],
+        "formerIds": [
+          "chest_flyes_2_db_floor",
+          "db_floor_flys"
         ],
         "equipment": [
           "dumbbells"
@@ -4809,7 +5202,7 @@
         ],
         "createdAt": "2026-04-24T20:48:25.995Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -4820,6 +5213,11 @@
           "Front squats",
           "Front or Goblet Squat",
           "Front or Goblet Squats"
+        ],
+        "formerIds": [
+          "front_or_goblet_squat",
+          "front_or_goblet_squats",
+          "front_squats"
         ],
         "equipment": [
           "barbell",
@@ -4863,7 +5261,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -4906,6 +5304,9 @@
         "aliases": [
           "Ghd Sit Ups"
         ],
+        "formerIds": [
+          "ghd_sit_ups"
+        ],
         "logType": "bodyweight",
         "equipment": [
           "ghd"
@@ -4929,7 +5330,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, logType, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, logType, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -4968,6 +5369,10 @@
           "Glute Bridge Marching",
           "Mini Band Glute Bridge March"
         ],
+        "formerIds": [
+          "glute_bridge_marching",
+          "mini_band_glute_bridge_march"
+        ],
         "primaryMuscles": [
           "glutes",
           "hamstrings"
@@ -4990,7 +5395,7 @@
         ],
         "createdAt": "2026-07-24T16:16:54.135Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -5047,6 +5452,11 @@
           "Goblet Bulgarian Split Squats",
           "Kb Goblet Bulgarian Split Squat"
         ],
+        "formerIds": [
+          "bulgarian_split_squat_goblet",
+          "goblet_bulgarian_split_squats",
+          "kb_goblet_bulgarian_split_squat"
+        ],
         "equipment": [
           "kettlebell"
         ],
@@ -5074,7 +5484,7 @@
         "generatorEligible": true,
         "createdAt": "2026-09-20T16:13:13.484Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -5087,6 +5497,14 @@
           "Goblet Squat Hold",
           "Goblet B-Stance Squat",
           "KB Goblet Squat"
+        ],
+        "formerIds": [
+          "db_goblet_squat",
+          "goblet_b_stance_squats",
+          "goblet_front_squats",
+          "goblet_squat_hold",
+          "goblet_squats",
+          "kb_goblet_squat"
         ],
         "logType": "single-dumbbell",
         "equipment": [
@@ -5130,7 +5548,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -5143,6 +5561,8 @@
           "Barbell Good Morning"
         ],
         "formerIds": [
+          "barbell_good_morning",
+          "good_morning",
           "good_mornings_barbell"
         ],
         "equipment": [
@@ -5184,6 +5604,12 @@
           "Alt Gorilla Rows",
           "Alt. Gorilla Rows"
         ],
+        "formerIds": [
+          "alt_gorilla_rows",
+          "alt_kb_gorilla_row",
+          "gorilla_rows",
+          "kb_gorilla_row"
+        ],
         "equipment": [
           "kettlebell"
         ],
@@ -5219,7 +5645,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, video, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, video, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -5228,6 +5654,10 @@
         "aliases": [
           "Half Kneeling Press",
           "Half Kneeled Shoulder Press"
+        ],
+        "formerIds": [
+          "half_kneeling_press",
+          "half_kneeling_shoulder_press"
         ],
         "equipment": [
           "dumbbells"
@@ -5254,7 +5684,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "merge",
@@ -5269,6 +5699,10 @@
         "aliases": [
           "Half Kneeling Cable Or Plate Chop",
           "Half-Kneeling Cable or Plate Chop"
+        ],
+        "formerIds": [
+          "half_kneeling_cable_or_plate_chop",
+          "half_kneeling_chop_banded_cable_or_plate"
         ],
         "equipment": [
           [
@@ -5301,7 +5735,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "merge",
@@ -5326,7 +5760,14 @@
           "Hammer Curls"
         ],
         "formerIds": [
+          "2_db_hammer_curl",
+          "2_db_hammer_curls",
+          "alternating_db_hammer_curl",
+          "db_hammer_curl",
+          "db_hammer_curls",
+          "dumbbell_hammer_curl",
           "hammer_curl_1",
+          "hammer_curls",
           "hammerhead_curl"
         ],
         "logType": "dual-dumbbell",
@@ -5386,7 +5827,8 @@
           "HS Hold"
         ],
         "formerIds": [
-          "handstand"
+          "handstand",
+          "hs_hold"
         ],
         "logType": "static-hold",
         "equipment": [
@@ -5473,7 +5915,8 @@
         ],
         "formerIds": [
           "ak_hang_power_clean",
-          "bk_hang_power_clean"
+          "bk_hang_power_clean",
+          "hang_power_cleans"
         ],
         "equipment": [
           "barbell"
@@ -5523,7 +5966,8 @@
           "snatch"
         ],
         "formerIds": [
-          "hang_power_snatch_1"
+          "hang_power_snatch_1",
+          "hang_power_snatch_barbell"
         ],
         "equipment": [
           "barbell"
@@ -5568,6 +6012,14 @@
           "Hanging Leg",
           "Strict Hanging Leg"
         ],
+        "formerIds": [
+          "hanging_leg",
+          "hanging_leg_raises",
+          "leg_raise",
+          "leg_raises",
+          "strict_hanging_leg",
+          "strict_hanging_leg_raise"
+        ],
         "logType": "bodyweight",
         "equipment": [
           "pull-up-bar"
@@ -5600,7 +6052,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, logType, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -5690,6 +6142,8 @@
           "Hip Thrust (Barbell)"
         ],
         "formerIds": [
+          "barbell_hip_thrust",
+          "hip_thrust",
           "hip_thrust_barbell"
         ],
         "equipment": [
@@ -5734,6 +6188,11 @@
           "KB or Plate Hip to Halo",
           "Plate/KB Hip to Halo"
         ],
+        "formerIds": [
+          "kb_or_plate_hip_to_halo",
+          "kb_plate_hip_to_halo",
+          "plate_kb_hip_to_halo"
+        ],
         "equipment": [
           "dumbbells",
           "plate",
@@ -5766,7 +6225,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -5776,6 +6235,12 @@
           "Flutter Kicks",
           "Hollow Body Flutter Kick",
           "Hollow Body Flutters Kicks"
+        ],
+        "formerIds": [
+          "flutter_kick",
+          "flutter_kicks",
+          "hollow_body_flutter_kick",
+          "hollow_body_flutters_kicks"
         ],
         "coreMuscles": [
           "rectus_abdominis"
@@ -5801,7 +6266,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -5809,6 +6274,9 @@
       "set": {
         "aliases": [
           "Hollow Hold"
+        ],
+        "formerIds": [
+          "hollow_hold"
         ],
         "coreMuscles": [
           "rectus_abdominis"
@@ -5836,7 +6304,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -5846,6 +6314,9 @@
         "aliases": [
           "Hollow Body Pullovers",
           "Hollow Body Pullover (Banded)"
+        ],
+        "formerIds": [
+          "hollow_body_pullovers"
         ],
         "equipment": [
           "dumbbells"
@@ -5881,7 +6352,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "merge",
@@ -5895,6 +6366,9 @@
       "set": {
         "aliases": [
           "HS Walk"
+        ],
+        "formerIds": [
+          "handstand_walk"
         ],
         "equipment": [
           "open-space"
@@ -5925,7 +6399,7 @@
         "generatorEligible": false,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -5941,7 +6415,9 @@
           "Handstand Push-Up (Wall)"
         ],
         "formerIds": [
-          "handstand_push_up_wall"
+          "handstand_push_up",
+          "handstand_push_up_wall",
+          "strict_hspu"
         ],
         "logType": "bodyweight",
         "equipment": [
@@ -5996,6 +6472,11 @@
           "Incline 2-DB Bench Press",
           "Incline DB Bench Press"
         ],
+        "formerIds": [
+          "incline_bench_press_2_db",
+          "incline_db_bench_press",
+          "incline_dumbbell_press"
+        ],
         "equipment": [
           "dumbbells",
           "incline-bench"
@@ -6024,7 +6505,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -6073,6 +6554,9 @@
         "aliases": [
           "Incline Dumbbell Curl"
         ],
+        "formerIds": [
+          "incline_dumbbell_curl"
+        ],
         "equipment": [
           "dumbbells",
           "incline-bench"
@@ -6096,7 +6580,7 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "add",
@@ -6111,6 +6595,8 @@
           "Jumping Squats"
         ],
         "formerIds": [
+          "jump_squats",
+          "jumping_squats",
           "squat_jumps"
         ],
         "logType": "bodyweight",
@@ -6148,7 +6634,9 @@
           "Bent Over KB Row"
         ],
         "formerIds": [
-          "bent_over_row_1_kb"
+          "bent_over_kb_row",
+          "bent_over_row_1_kb",
+          "bent_over_row_kb"
         ],
         "logType": "kettlebell",
         "equipment": [
@@ -6193,7 +6681,8 @@
           "Half Kneeling DB Press"
         ],
         "formerIds": [
-          "half_kneeling_db_press"
+          "half_kneeling_db_press",
+          "half_kneeling_press_kb"
         ],
         "logType": "kettlebell",
         "equipment": [
@@ -6238,6 +6727,13 @@
           "Kneeling KB Horn Grip Press Out",
           "Kneeling KB Horn Grip Press Outs"
         ],
+        "formerIds": [
+          "horn_grip_press_out",
+          "horn_grip_press_out_kb",
+          "horn_grip_press_outs",
+          "kneeling_kb_horn_grip_press_out",
+          "kneeling_kb_horn_grip_press_outs"
+        ],
         "equipment": [
           "kettlebells"
         ],
@@ -6264,7 +6760,7 @@
         "generatorEligible": false,
         "createdAt": "2026-09-27T18:10:57.818Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -6274,6 +6770,10 @@
           "Kb Side Bends",
           "KB Side Bend",
           "KB Side Bends"
+        ],
+        "formerIds": [
+          "kb_side_bends",
+          "side_bend_kb"
         ],
         "equipment": [
           "kettlebell"
@@ -6300,7 +6800,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "merge",
@@ -6314,6 +6814,9 @@
       "set": {
         "aliases": [
           "Deadlift Kettlebell"
+        ],
+        "formerIds": [
+          "deadlift_kettlebell"
         ],
         "equipment": [
           "kettlebell"
@@ -6339,7 +6842,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, createdAt"
     },
     {
       "op": "merge",
@@ -6360,6 +6863,8 @@
           "KB Swing"
         ],
         "formerIds": [
+          "eye_level_kb_swings",
+          "kb_swing",
           "kb_swings",
           "kettlebell_swing"
         ],
@@ -6454,6 +6959,9 @@
       "op": "update",
       "id": "kipping_leg_raise",
       "set": {
+        "formerIds": [
+          "kipping_leg_raises"
+        ],
         "equipment": [
           "pull-up-bar"
         ],
@@ -6481,7 +6989,7 @@
         "generatorEligible": false,
         "createdAt": "2026-04-24T22:49:34.637Z"
       },
-      "reason": "plan §5.2: the canonical record's equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, createdAt"
     },
     {
       "op": "merge",
@@ -6545,6 +7053,12 @@
           "Smashing Pumpkins Kneeling Rotational Ball Slam",
           "Smashing Pumpkins"
         ],
+        "formerIds": [
+          "kneeling_rotational_ball_slams",
+          "smashing_pumpkins",
+          "smashing_pumpkins_kneeling_rotational_ball_slam",
+          "tall_kneeling_rotational_ball_slams"
+        ],
         "equipment": [
           "slam-ball"
         ],
@@ -6573,7 +7087,7 @@
         "generatorEligible": false,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "add",
@@ -6716,6 +7230,10 @@
           "Landmine Hack Squats",
           "Landmine Hack"
         ],
+        "formerIds": [
+          "landmine_hack",
+          "landmine_hack_squats"
+        ],
         "equipment": [
           "barbell",
           "landmine"
@@ -6747,7 +7265,7 @@
         ],
         "createdAt": "2026-09-07T01:46:44.476Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -6761,7 +7279,11 @@
           "Half-Kneeling Landmine Press"
         ],
         "formerIds": [
-          "half_kneeling"
+          "half_kneeling",
+          "half_kneeling_landmine_press",
+          "landmine_sa_press",
+          "landmine_shoulder_press",
+          "single_arm_landmine_press"
         ],
         "equipment": [
           "barbell",
@@ -6802,6 +7324,9 @@
         "aliases": [
           "Landmine Bent Row"
         ],
+        "formerIds": [
+          "landmine_bent_row"
+        ],
         "equipment": [
           "barbell",
           "landmine"
@@ -6835,7 +7360,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "merge",
@@ -6881,8 +7406,22 @@
           "Lat Pull-downs"
         ],
         "formerIds": [
+          "banded_cable_lat_pulldown",
+          "banded_lat_pull_down",
+          "banded_lat_pulldown",
+          "banded_lat_pulldowns",
+          "banded_or_cable_lat_pulldown",
+          "banded_or_cable_lat_pulldowns",
+          "banded_pulldowns",
+          "cable_or_banded_lat_pulldown",
+          "cable_or_banded_lat_pulldowns",
+          "cable_pulldown",
+          "lat_pull_down",
           "lat_pull_down_kneeled",
-          "lat_pulldown_banded_or_cable"
+          "lat_pull_downs",
+          "lat_pulldown_3",
+          "lat_pulldown_banded_or_cable",
+          "lat_pulldowns"
         ],
         "equipment": [
           [
@@ -6976,7 +7515,10 @@
           "Lateral Box Step-Ups"
         ],
         "formerIds": [
-          "lateral_box_step_up_1"
+          "lateral_box_step_up_1",
+          "lateral_box_step_ups",
+          "lateral_step_up",
+          "lateral_step_ups"
         ],
         "equipment": [
           [
@@ -7024,7 +7566,9 @@
           "Lateral Medicine Ball Toss"
         ],
         "formerIds": [
-          "lateral_medball_toss_1"
+          "lateral_ball_toss",
+          "lateral_medball_toss_1",
+          "lateral_medicine_ball_toss"
         ],
         "equipment": [
           "wall-ball"
@@ -7066,6 +7610,9 @@
         "aliases": [
           "Lateral Raise Dumbbell"
         ],
+        "formerIds": [
+          "lateral_raise_dumbbell"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -7088,7 +7635,7 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -7096,6 +7643,9 @@
       "set": {
         "aliases": [
           "Lean Away DB Lateral Raise"
+        ],
+        "formerIds": [
+          "lean_away_lateral_raise_db"
         ],
         "equipment": [
           "dumbbells"
@@ -7123,7 +7673,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -7162,6 +7712,7 @@
           "Leg Press"
         ],
         "formerIds": [
+          "angled_leg_press",
           "leg_press"
         ],
         "equipment": [
@@ -7212,6 +7763,10 @@
           "Mixed Rack 2-DB/KB Farmer Carry",
           "Mixed Rack Carry (DB)"
         ],
+        "formerIds": [
+          "mixed_rack_2_db_kb_farmer_carry",
+          "mixed_rack_carry_2_db"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -7237,7 +7792,7 @@
         "modifier": "/side",
         "createdAt": "2026-09-04T18:43:08.958Z"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, modifier, createdAt"
     },
     {
       "op": "update",
@@ -7247,6 +7802,9 @@
         "aliases": [
           "Mixed Rack Carry (2-KB)",
           "Mixed Rack Carry (KB)"
+        ],
+        "formerIds": [
+          "mixed_rack_carry"
         ],
         "equipment": [
           "kettlebell"
@@ -7276,7 +7834,7 @@
         "modifier": "/side",
         "createdAt": "2026-09-04T18:43:08.957Z"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, modifier, createdAt"
     },
     {
       "op": "update",
@@ -7285,6 +7843,9 @@
         "name": "Muscle Snatch (Barbell)",
         "aliases": [
           "Muscle Snatch"
+        ],
+        "formerIds": [
+          "muscle_snatch_barbell"
         ],
         "equipment": [
           "barbell"
@@ -7308,7 +7869,7 @@
         "generatorEligible": false,
         "createdAt": "2026-07-24T18:57:34.987Z"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "merge",
@@ -7324,6 +7885,9 @@
           "ohs",
           "Overhead Squats",
           "OHS"
+        ],
+        "formerIds": [
+          "overhead_squats"
         ],
         "equipment": [
           "barbell",
@@ -7364,7 +7928,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -7376,7 +7940,10 @@
           "Pallof Press"
         ],
         "formerIds": [
-          "pallof_press_1"
+          "banded_or_cable_pallof_press",
+          "banded_pallof_press",
+          "pallof_press_1",
+          "pallof_press_banded_or_cable"
         ],
         "equipment": [
           [
@@ -7415,6 +7982,9 @@
       "op": "update",
       "id": "parallette_push_up_feet_elevated",
       "set": {
+        "formerIds": [
+          "push_up_parallettes_feet_elevated"
+        ],
         "equipment": [
           "parallettes"
         ],
@@ -7439,7 +8009,7 @@
         "generatorEligible": true,
         "createdAt": "2026-07-03T18:12:34.415Z"
       },
-      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -7447,6 +8017,9 @@
       "set": {
         "aliases": [
           "Partner Medball Toss"
+        ],
+        "formerIds": [
+          "partner_ball_toss"
         ],
         "equipment": [
           "wall-ball"
@@ -7476,7 +8049,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -7524,6 +8097,14 @@
           "Pike Leg Overs",
           "Pike Leg Lifts"
         ],
+        "formerIds": [
+          "alt_pike_leg_lift_overs",
+          "kb_leg_liftover",
+          "pike_leg_lift",
+          "pike_leg_lift_over",
+          "pike_leg_lifts",
+          "pike_leg_overs"
+        ],
         "coreMuscles": [
           "rectus_abdominis",
           "obliques"
@@ -7549,7 +8130,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -7558,6 +8139,9 @@
         "aliases": [
           "pistol",
           "Pistols"
+        ],
+        "formerIds": [
+          "pistol_squats"
         ],
         "primaryMuscles": [
           "quads",
@@ -7585,7 +8169,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -7599,7 +8183,9 @@
           "Plank Hold"
         ],
         "formerIds": [
-          "plank_hold_1"
+          "plank_hold_1",
+          "weighted_plank",
+          "weighted_plank_hold"
         ],
         "coreMuscles": [
           "rectus_abdominis"
@@ -7642,7 +8228,12 @@
           "Plank Hold Shoulder Taps"
         ],
         "formerIds": [
-          "plank_shoulder_taps_1"
+          "plank_hold_shoulder_taps",
+          "plank_shoulder_tap",
+          "plank_shoulder_taps_1",
+          "shoulder_tap",
+          "shoulder_taps",
+          "shoulder_taps_in_plank_position"
         ],
         "primaryMuscles": [
           "shoulders"
@@ -7721,6 +8312,9 @@
         "aliases": [
           "Plate OH Alt. Lunges"
         ],
+        "formerIds": [
+          "overhead_lunges_plate"
+        ],
         "equipment": [
           "plate"
         ],
@@ -7754,7 +8348,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, laterality, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, laterality, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -7769,6 +8363,15 @@
           "Weighted OH Sit-Up",
           "Plate OH Sit-Ups",
           "Plate OH Situps"
+        ],
+        "formerIds": [
+          "oh_plate_sit_ups",
+          "oh_sit_ups",
+          "plate_oh_sit_ups",
+          "plate_oh_situp",
+          "plate_oh_situps",
+          "plate_overhead_sit_ups",
+          "weighted_oh_sit_up"
         ],
         "equipment": [
           "plate"
@@ -7803,7 +8406,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -7812,6 +8415,9 @@
         "aliases": [
           "Plate Sit Ups",
           "Plate Sit-Ups"
+        ],
+        "formerIds": [
+          "plate_sit_ups"
         ],
         "equipment": [
           "plate"
@@ -7841,7 +8447,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -7854,6 +8460,12 @@
           "Cleans from the Hip",
           "Cleans from the Knees",
           "3-Position Clean"
+        ],
+        "formerIds": [
+          "cleans_from_the_ground",
+          "cleans_from_the_hip",
+          "cleans_from_the_knees",
+          "power_cleans"
         ],
         "equipment": [
           "barbell"
@@ -7893,7 +8505,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -7901,6 +8513,9 @@
       "set": {
         "aliases": [
           "Power Snatch"
+        ],
+        "formerIds": [
+          "power_snatches_barbell"
         ],
         "equipment": [
           "barbell"
@@ -7930,7 +8545,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -7938,6 +8553,9 @@
       "set": {
         "aliases": [
           "Isolated Bicep Curl"
+        ],
+        "formerIds": [
+          "isolated_bicep_curl"
         ],
         "equipment": [
           "barbell"
@@ -7961,7 +8579,7 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "merge",
@@ -7975,6 +8593,10 @@
       "set": {
         "aliases": [
           "Isolated Hammerhead Curl"
+        ],
+        "formerIds": [
+          "isolated_hammerhead_curl",
+          "preacher_hammer_curl_db"
         ],
         "equipment": [
           "dumbbells"
@@ -7998,7 +8620,7 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -8095,6 +8717,9 @@
           "Barbell Push Press",
           "Push-Press"
         ],
+        "formerIds": [
+          "barbell_push_press"
+        ],
         "equipment": [
           "barbell",
           "squat-rack"
@@ -8139,7 +8764,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -8160,6 +8785,16 @@
           "Unbroken Pushups",
           "Unweighted Push-Ups",
           "Weighted or Banded Push-Ups"
+        ],
+        "formerIds": [
+          "pulsing_push_ups",
+          "push_ups",
+          "regular_push_up",
+          "ub_push_ups",
+          "unbroken_push_ups",
+          "unbroken_pushups",
+          "unweighted_push_ups",
+          "weighted_or_banded_push_ups"
         ],
         "logType": "bodyweight",
         "primaryMuscles": [
@@ -8198,7 +8833,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, logType, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, logType, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "merge",
@@ -8220,6 +8855,9 @@
           "RDLs"
         ],
         "formerIds": [
+          "barbell_rdl",
+          "barbell_rdls",
+          "bb_rdl",
           "romanian_deadlift"
         ],
         "logType": "barbell",
@@ -8267,6 +8905,11 @@
           "Alt. Renegade Row",
           "DB Renegade Row"
         ],
+        "formerIds": [
+          "alt_renegade_row",
+          "db_renegade_row",
+          "renegade_rows"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -8299,7 +8942,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -8327,6 +8970,12 @@
           "Bent Reverse Fly",
           "Bent Flys"
         ],
+        "formerIds": [
+          "2_db_rear_delt_fly",
+          "bent_flys",
+          "bent_reverse_fly",
+          "rear_deltoid_fly"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -8350,7 +8999,7 @@
         ],
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -8358,6 +9007,9 @@
       "set": {
         "aliases": [
           "Reverse Plank"
+        ],
+        "formerIds": [
+          "reverse_plank"
         ],
         "primaryMuscles": [
           "glutes"
@@ -8387,7 +9039,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, families, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, families, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "add",
@@ -8449,6 +9101,12 @@
           "Ring or Cable Rows",
           "Ring/Cable Rows"
         ],
+        "formerIds": [
+          "horizontal_rows",
+          "ring_cable_rows",
+          "ring_or_cable_rows",
+          "row_ring_cable"
+        ],
         "equipment": [
           [
             "cable-machine",
@@ -8482,7 +9140,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -8496,6 +9154,8 @@
         ],
         "formerIds": [
           "inverted_row",
+          "pulsing_ring_rows",
+          "ring_rows",
           "trx_row"
         ],
         "logType": "bodyweight",
@@ -8555,6 +9215,9 @@
           "standing_rotational_ball_slams",
           "Rotational Ball Slams"
         ],
+        "formerIds": [
+          "rotational_ball_slams"
+        ],
         "equipment": [
           "slam-ball"
         ],
@@ -8591,7 +9254,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -8650,6 +9313,11 @@
           "Rower Seat",
           "Rower Hamstring Curls"
         ],
+        "formerIds": [
+          "rower_hamstring_curl",
+          "rower_seat",
+          "rower_seat_hamstring_curls"
+        ],
         "equipment": [
           "rower"
         ],
@@ -8683,7 +9351,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "add",
@@ -8700,6 +9368,8 @@
           "Partner Run"
         ],
         "formerIds": [
+          "mile_run",
+          "partner_run",
           "running"
         ],
         "logType": "cardio-distance",
@@ -8751,6 +9421,10 @@
           "SA DB Strict Press",
           "Single Arm DB Strict Press"
         ],
+        "formerIds": [
+          "single_arm_db_strict_press",
+          "strict_press_db"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -8782,7 +9456,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -8797,7 +9471,11 @@
           "SA Farmer's Carry"
         ],
         "formerIds": [
-          "farmers_carry_single_arm"
+          "farmers_carry_single_arm",
+          "sa_kb_farmer_carry",
+          "single_arm_farmer_carry",
+          "single_arm_farmers_carry",
+          "single_arm_kb_carry"
         ],
         "equipment": [
           "kettlebell"
@@ -8834,7 +9512,8 @@
           "Box Squat (Safety Bar)"
         ],
         "formerIds": [
-          "box_squat_safety_bar"
+          "box_squat_safety_bar",
+          "ssb_box_squat"
         ],
         "logType": "barbell",
         "equipment": [
@@ -8889,6 +9568,13 @@
           "DB Seated Press",
           "Seated Alternating DB Press"
         ],
+        "formerIds": [
+          "2_db_seated_strict_press",
+          "db_seated_press",
+          "seated_press_2_db",
+          "seated_strict_press",
+          "two_db_seated_strict_press"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -8916,7 +9602,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -8924,6 +9610,9 @@
       "set": {
         "aliases": [
           "Seated Row"
+        ],
+        "formerIds": [
+          "seated_row"
         ],
         "equipment": [
           "machine"
@@ -8944,7 +9633,7 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "merge",
@@ -8969,7 +9658,10 @@
           "Shoulder To Overhead"
         ],
         "formerIds": [
-          "push_s2oh"
+          "push_s2o",
+          "push_s2oh",
+          "push_shoulder_to_overhead",
+          "shoulder_to_oh"
         ],
         "equipment": [
           "barbell"
@@ -9026,6 +9718,12 @@
           "1-DB S2OH",
           "SA DB StOH"
         ],
+        "formerIds": [
+          "1_db_s2oh",
+          "one_db_s2oh",
+          "sa_db_stoh",
+          "sa_shoulder_to_overhead"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -9056,7 +9754,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -9065,6 +9763,10 @@
         "aliases": [
           "Side Plank Hip Taps",
           "Side Plank Dip"
+        ],
+        "formerIds": [
+          "side_plank_dip",
+          "side_plank_hip_taps"
         ],
         "coreMuscles": [
           "rectus_abdominis"
@@ -9096,7 +9798,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, families, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, families, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -9105,6 +9807,10 @@
         "aliases": [
           "Side Plank Hold",
           "Alternating Side Plank"
+        ],
+        "formerIds": [
+          "alternating_side_plank",
+          "side_plank"
         ],
         "coreMuscles": [
           "rectus_abdominis"
@@ -9140,7 +9846,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, families, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, families, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -9190,6 +9896,9 @@
         "aliases": [
           "Single-Arm Overhead Carry (DB)"
         ],
+        "formerIds": [
+          "single_arm_oh_carry_1_db"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -9219,7 +9928,7 @@
         "modifier": "/side",
         "createdAt": "2026-09-04T18:43:08.958Z"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, generatorEligible, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, generatorEligible, modifier, createdAt"
     },
     {
       "op": "update",
@@ -9232,6 +9941,11 @@
           "KB Single Arm OH or Front Rack Carry",
           "Single-Arm Overhead Carry (KB)",
           "Single-Arm OH Carry"
+        ],
+        "formerIds": [
+          "kb_single_arm_oh_carry",
+          "kb_single_arm_oh_or_front_rack_carry",
+          "single_arm_oh_carry"
         ],
         "equipment": [
           "kettlebell"
@@ -9269,7 +9983,7 @@
         "modifier": "/side",
         "createdAt": "2026-09-04T18:43:08.958Z"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, generatorEligible, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, generatorEligible, modifier, createdAt"
     },
     {
       "op": "update",
@@ -9278,6 +9992,10 @@
         "aliases": [
           "Single Arm OH Sit-Ups",
           "Single Arm OH Sit-Up"
+        ],
+        "formerIds": [
+          "single_arm_oh_sit_up",
+          "single_arm_oh_sit_ups"
         ],
         "equipment": [
           "dumbbells"
@@ -9312,7 +10030,7 @@
         "modifier": "50/side",
         "createdAt": "2026-09-20T17:08:21.586Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -9320,6 +10038,9 @@
       "set": {
         "aliases": [
           "Single Leg Crossbody T2B"
+        ],
+        "formerIds": [
+          "single_leg_cross_body_toes_to_bar"
         ],
         "equipment": [
           "pull-up-bar"
@@ -9350,7 +10071,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -9362,6 +10083,11 @@
           "Single-Leg KB RDL",
           "Single Leg Deadlift",
           "SL Deadlifts"
+        ],
+        "formerIds": [
+          "kb_single_leg_rdl",
+          "single_leg_deadlift",
+          "single_leg_romanian_deadlift_kb"
         ],
         "equipment": [
           "kettlebell"
@@ -9394,7 +10120,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -9451,6 +10177,8 @@
           "Abmat Sit-Up"
         ],
         "formerIds": [
+          "abmat_sit_ups",
+          "sit_up",
           "sit_ups"
         ],
         "logType": "bodyweight",
@@ -9538,6 +10266,14 @@
           "Single DB Skullcrusher",
           "Skullcrushers"
         ],
+        "formerIds": [
+          "barbell_skull_crusher",
+          "db_skull_crusher",
+          "db_skull_crushers",
+          "db_skullcrusher",
+          "single_db_skullcrusher",
+          "skull_crushers"
+        ],
         "equipment": [
           "barbell"
         ],
@@ -9571,7 +10307,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -9580,6 +10316,9 @@
         "aliases": [
           "Single-Leg Glute Bridge",
           "SL Glute Bridge"
+        ],
+        "formerIds": [
+          "single_leg_glute_bridge"
         ],
         "primaryMuscles": [
           "glutes",
@@ -9607,7 +10346,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -9618,6 +10357,9 @@
           "Single Leg Romanian Deadlift",
           "Single-Leg RDL",
           "SL RDL"
+        ],
+        "formerIds": [
+          "single_leg_rdl"
         ],
         "primaryMuscles": [
           "hamstrings",
@@ -9649,7 +10391,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -9711,6 +10453,9 @@
       "op": "update",
       "id": "snatch",
       "set": {
+        "formerIds": [
+          "snatches_barbell"
+        ],
         "equipment": [
           "barbell"
         ],
@@ -9744,7 +10489,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -9880,6 +10625,9 @@
         "aliases": [
           "Squat Clean"
         ],
+        "formerIds": [
+          "squat_cleans"
+        ],
         "equipment": [
           "barbell"
         ],
@@ -9905,7 +10653,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, video, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, video, generatorEligible, createdAt"
     },
     {
       "op": "merge",
@@ -9930,8 +10678,14 @@
           "Negative Chin-Ups"
         ],
         "formerIds": [
+          "chin_up",
           "chin_ups",
-          "chinups"
+          "chinups",
+          "strict_chin_ups",
+          "strict_chinup",
+          "weighted_chin_up",
+          "weighted_strict_chin_up",
+          "weighted_strict_chin_ups"
         ],
         "equipment": [
           "pull-up-bar"
@@ -9984,6 +10738,7 @@
           "Strict or Push Press"
         ],
         "formerIds": [
+          "barbell_strict_press",
           "military_press",
           "press",
           "strict_or_push_press"
@@ -10056,6 +10811,17 @@
           "Pull-Up",
           "Weighted Strict Pull-Ups"
         ],
+        "formerIds": [
+          "pull_up",
+          "pull_up_w_3sec_lowering_phase",
+          "pull_ups",
+          "strict_pull_ups",
+          "strict_pullup",
+          "strict_pullups",
+          "strict_weighted_kipping_pull_ups",
+          "weighted_strict_pull_up",
+          "weighted_strict_pull_ups"
+        ],
         "equipment": [
           "pull-up-bar"
         ],
@@ -10106,7 +10872,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -10115,6 +10881,9 @@
         "name": "Suitcase March (1-DB)",
         "aliases": [
           "Suitcase March (DB)"
+        ],
+        "formerIds": [
+          "suitcase_march_1_db"
         ],
         "equipment": [
           "dumbbells"
@@ -10134,7 +10903,7 @@
         "generatorEligible": true,
         "createdAt": "2026-09-04T18:43:08.958Z"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, coreMuscles, regionsLoaded, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, coreMuscles, regionsLoaded, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -10144,6 +10913,10 @@
         "aliases": [
           "Suitcase March",
           "Suitcase March (KB)"
+        ],
+        "formerIds": [
+          "suitcase_march",
+          "suitcase_march_1_kb"
         ],
         "equipment": [
           "kettlebell"
@@ -10163,7 +10936,7 @@
         "generatorEligible": true,
         "createdAt": "2026-09-04T18:43:08.958Z"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, coreMuscles, regionsLoaded, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, coreMuscles, regionsLoaded, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -10244,7 +11017,11 @@
         ],
         "formerIds": [
           "bent_over_row_supinated",
-          "supinated_bent_over_row_barbell"
+          "supinated_barbell_bent_row",
+          "supinated_barbell_row",
+          "supinated_bent_over_barbell_row",
+          "supinated_bent_over_row_barbell",
+          "supinated_bent_row"
         ],
         "equipment": [
           "barbell"
@@ -10328,6 +11105,9 @@
         "aliases": [
           "Supinated Ring Row"
         ],
+        "formerIds": [
+          "supinated_ring_rows"
+        ],
         "equipment": [
           "rings"
         ],
@@ -10355,7 +11135,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -10388,6 +11168,9 @@
         "aliases": [
           "3 Position Power Clean"
         ],
+        "formerIds": [
+          "3_position_power_clean"
+        ],
         "primaryMuscles": [
           "glutes",
           "hamstrings",
@@ -10405,7 +11188,7 @@
         "generatorEligible": false,
         "createdAt": "2026-10-05T02:02:56.446Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, primaryMuscles, primaryMovements, families, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, primaryMuscles, primaryMovements, families, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -10468,7 +11251,9 @@
           "Toes-To-Bar"
         ],
         "formerIds": [
-          "kipping_toes_to_bar"
+          "kipping_toes_to_bar",
+          "kipping_ttb",
+          "toes_to_bars"
         ],
         "logType": "bodyweight",
         "equipment": [
@@ -10533,6 +11318,10 @@
           "Db Kickback",
           "Db Tricep Kickbacks"
         ],
+        "formerIds": [
+          "db_kickback",
+          "tricep_kickbacks"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -10560,7 +11349,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -10568,6 +11357,9 @@
       "set": {
         "aliases": [
           "Tricep Dumbbell Kickback"
+        ],
+        "formerIds": [
+          "tricep_dumbbell_kickback"
         ],
         "equipment": [
           "dumbbells"
@@ -10594,7 +11386,7 @@
         ],
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -10603,6 +11395,9 @@
         "aliases": [
           "Tricep Pushdown"
         ],
+        "formerIds": [
+          "tricep_pushdown"
+        ],
         "equipment": [
           "cable-machine"
         ],
@@ -10625,12 +11420,15 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
       "id": "tricep_rope_pushdown",
       "set": {
+        "formerIds": [
+          "tricep_pushdown_cable_rope"
+        ],
         "equipment": [
           "cable-machine"
         ],
@@ -10653,7 +11451,7 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "merge",
@@ -10668,6 +11466,10 @@
         "aliases": [
           "turkish sit-up",
           "Turkish Sit-Up"
+        ],
+        "formerIds": [
+          "turkish_sit_up",
+          "turkish_sit_ups"
         ],
         "equipment": [
           "kettlebell"
@@ -10703,7 +11505,7 @@
         "modifier": "/side",
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
       "op": "update",
@@ -10721,7 +11523,14 @@
           "DB/KB Bent Row"
         ],
         "formerIds": [
-          "bent_over_row_2_db"
+          "2_db_bent_over_row",
+          "bent_db_rows",
+          "bent_over_db_row",
+          "bent_over_row_2_db",
+          "db_bent_over_row",
+          "db_bent_over_rows",
+          "db_kb_bent_row",
+          "dual_dumbbell_bent_row"
         ],
         "equipment": [
           "dumbbells"
@@ -10776,9 +11585,15 @@
           "DB Bench Flies"
         ],
         "formerIds": [
+          "2_db_chest_fly",
           "chest_fly_2_db",
           "chest_flyes_2_db",
-          "db_bench_fly"
+          "db_bench_flies",
+          "db_bench_fly",
+          "db_bench_flys",
+          "db_chest_fly",
+          "db_pec_fly",
+          "dumbbell_bench_fly"
         ],
         "logType": "dual-dumbbell",
         "equipment": [
@@ -10822,6 +11637,10 @@
           "2 Db Front Rack Walking Lunges",
           "2-DB Front Rack Walking Lunges"
         ],
+        "formerIds": [
+          "2_db_front_rack_walking_lunges",
+          "front_rack_walking_lunges_2_db"
+        ],
         "equipment": [
           "dumbbells"
         ],
@@ -10852,7 +11671,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -10866,6 +11685,13 @@
           "2-KB Front Rack Carry",
           "Double KB Front Rack Carry",
           "KB Front Rack Carry"
+        ],
+        "formerIds": [
+          "2_kb_front_rack_carry",
+          "double_kb_front_rack_carry",
+          "front_rack_carry",
+          "front_rack_carry_2_kb",
+          "kb_front_rack_carry"
         ],
         "equipment": [
           "kettlebell"
@@ -10890,7 +11716,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -10902,6 +11728,8 @@
           "2-KB RDL"
         ],
         "formerIds": [
+          "2_kb_rdl",
+          "dual_kettlebell_rdl",
           "romanian_deadlift_2_kb"
         ],
         "equipment": [
@@ -10939,6 +11767,9 @@
       "set": {
         "aliases": [
           "V-Up"
+        ],
+        "formerIds": [
+          "v_ups"
         ],
         "coreMuscles": [
           "rectus_abdominis"
@@ -10980,7 +11811,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -11024,6 +11855,9 @@
         "aliases": [
           "Wall Ball"
         ],
+        "formerIds": [
+          "wall_balls"
+        ],
         "equipment": [
           "wall-ball",
           "wall-ball-target"
@@ -11063,7 +11897,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -11144,6 +11978,9 @@
         "aliases": [
           "Wall Walks"
         ],
+        "formerIds": [
+          "wall_walks"
+        ],
         "equipment": [
           "wall"
         ],
@@ -11191,7 +12028,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, coreMovements, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, coreMovements, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, video, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -11203,6 +12040,13 @@
           "Weighted Hollow Body Flutter Kicks",
           "Weighted Hollow Flutters",
           "Weighted Flutter Kicks"
+        ],
+        "formerIds": [
+          "hollow_body_weighted_flutter_kicks",
+          "weighted_flutter_kicks",
+          "weighted_hollow_body_flutter_kick",
+          "weighted_hollow_body_flutter_kicks",
+          "weighted_hollow_flutters"
         ],
         "equipment": [
           "dumbbells"
@@ -11229,7 +12073,7 @@
         "generatorEligible": false,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
@@ -11237,6 +12081,9 @@
       "set": {
         "aliases": [
           "Weighted Pull-Up"
+        ],
+        "formerIds": [
+          "weighted_pull_ups"
         ],
         "equipment": [
           "pull-up-bar"
@@ -11266,7 +12113,7 @@
         "generatorEligible": true,
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, createdAt"
     },
     {
       "op": "merge",
