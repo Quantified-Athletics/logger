@@ -3,9 +3,14 @@
 namespace App\Services;
 
 use App\Models\Exercise;
+use App\Models\ExerciseAlias;
+use App\Models\ExerciseMatchingAlias;
 use App\Models\ExerciseMergeLog;
 use App\Models\LiftLog;
+use App\Models\PersonalRecord;
+use App\Models\PRDetectionLog;
 use App\Models\User;
+use App\Models\WorkoutExercise;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -152,6 +157,111 @@ class ExerciseMergeService
             ]);
             throw $e;
         }
+    }
+
+    /**
+     * Fold one standard exercise into another for the exercise library's ops (#42). The admin screen's
+     * `mergeExercises` only folds a user's exercise into a standard one and needs an admin, so the
+     * library's standard-to-standard merges come here instead; that path is unchanged.
+     *
+     * Every lift log (soft-deleted ones too), personal record, PR detection log, workout entry and
+     * matching alias moves to the target. A user alias moves unless that user already has one on the
+     * target; where the user had deleted one there, that row still holds the one slot per user and
+     * exercise, so it is restored under the moving alias's name instead. A standard alias moves unless the target already has that name, or the caller retires
+     * the source's standard aliases because the same ops file sets the target's. The source is then
+     * soft-deleted and an `ExerciseMergeLog` row records the merge with its reason.
+     */
+    public function mergeStandardExercise(Exercise $source, Exercise $target, string $reason, bool $retireStandardAliases): ExerciseMergeLog
+    {
+        if (! $source->isGlobal() || ! $target->isGlobal()) {
+            throw new \InvalidArgumentException('Only a standard exercise can be folded into a standard exercise.');
+        }
+
+        if ($source->id === $target->id) {
+            throw new \InvalidArgumentException('Cannot merge exercise into itself.');
+        }
+
+        return DB::transaction(function () use ($source, $target, $reason, $retireStandardAliases): ExerciseMergeLog {
+            $liftLogIds = LiftLog::withTrashed()->where('exercise_id', $source->id)->orderBy('id')->pluck('id')->all();
+
+            LiftLog::withTrashed()->where('exercise_id', $source->id)->update(['exercise_id' => $target->id]);
+            PersonalRecord::withTrashed()->where('exercise_id', $source->id)->update(['exercise_id' => $target->id]);
+            PRDetectionLog::query()->where('exercise_id', $source->id)->update(['exercise_id' => $target->id]);
+            WorkoutExercise::query()->where('exercise_id', $source->id)->update(['exercise_id' => $target->id]);
+
+            $targetMatchingAliases = ExerciseMatchingAlias::query()->where('exercise_id', $target->id)->pluck('alias')->all();
+            ExerciseMatchingAlias::query()
+                ->where('exercise_id', $source->id)
+                ->whereNotIn('alias', $targetMatchingAliases)
+                ->update(['exercise_id' => $target->id]);
+
+            $movedAliasIds = [];
+            $retiredAliasIds = [];
+            $revivedAliases = [];
+            foreach (ExerciseAlias::query()->where('exercise_id', $source->id)->orderBy('id')->get() as $alias) {
+                $targetAlready = ExerciseAlias::query()->where('exercise_id', $target->id);
+                $targetAlready = $alias->user_id === null
+                    ? $targetAlready->whereNull('user_id')->where('alias_name', $alias->alias_name)
+                    : $targetAlready->where('user_id', $alias->user_id);
+
+                if (($alias->user_id === null && $retireStandardAliases) || $targetAlready->exists()) {
+                    $alias->delete();
+                    $retiredAliasIds[] = $alias->id;
+
+                    continue;
+                }
+
+                $deletedOnTarget = $alias->user_id === null ? null : ExerciseAlias::onlyTrashed()
+                    ->where('exercise_id', $target->id)
+                    ->where('user_id', $alias->user_id)
+                    ->first();
+
+                if ($deletedOnTarget !== null) {
+                    $revivedAliases[] = ['id' => $deletedOnTarget->id, 'previous_alias_name' => $deletedOnTarget->alias_name];
+                    $deletedOnTarget->alias_name = $alias->alias_name;
+                    $deletedOnTarget->restore();
+                    $alias->delete();
+                    $retiredAliasIds[] = $alias->id;
+
+                    continue;
+                }
+
+                $alias->update(['exercise_id' => $target->id]);
+                $movedAliasIds[] = $alias->id;
+            }
+
+            $source->delete();
+
+            return ExerciseMergeLog::create([
+                'source_exercise_id' => $source->id,
+                'source_exercise_title' => $source->name,
+                'target_exercise_id' => $target->id,
+                'target_exercise_title' => $target->name,
+                'admin_user_id' => null,
+                'admin_email' => null,
+                'lift_log_ids' => $liftLogIds,
+                'lift_log_count' => count($liftLogIds),
+                'alias_created' => false,
+                'snapshot' => [
+                    'reason' => $reason,
+                    'source' => [
+                        'id' => $source->id,
+                        'canonical_name' => $source->canonical_name,
+                        'name' => $source->name,
+                        'log_type' => $source->log_type,
+                    ],
+                    'target' => [
+                        'id' => $target->id,
+                        'canonical_name' => $target->canonical_name,
+                        'name' => $target->name,
+                        'log_type' => $target->log_type,
+                    ],
+                    'aliases_moved' => $movedAliasIds,
+                    'aliases_retired' => $retiredAliasIds,
+                    'aliases_revived' => $revivedAliases,
+                ],
+            ]);
+        });
     }
 
     /**

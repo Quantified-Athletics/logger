@@ -200,6 +200,11 @@ Do not print it prematurely. Do not print it if any milestone has not passed.
 - **Index and constraint names must fit MySQL's 64 characters.** SQLite has no limit, so tests pass while the
   production deploy fails part-way through the migration. Laravel builds a name from the table and every column:
   with a long table name or a multi-column index, pass a short name explicitly.
+- **A unique index counts soft-deleted rows.** Before repointing or creating a row under a unique key (such as
+  one user alias per user and exercise), look with `withTrashed()` too: a query that sees only live rows passes,
+  and the write then fails.
+- **MySQL returns a JSON object's keys in its own order.** Eloquent's `array` cast compares maps order and all,
+  so compare a stored map without regard to key order before calling it changed. SQLite keeps the order.
 - **New columns on existing tables must be nullable**, added to the model's `$fillable`, and given casts in the `casts()` method where needed. If a column changes how existing data is interpreted, update all upstream readers in the same milestone.
 - **Never repurpose a column** for something it wasn't designed for. New features get proper schema.
 - **One source of truth per datum.** Don't store the same information in two shapes — derive it at read time.
