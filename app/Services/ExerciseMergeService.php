@@ -166,7 +166,8 @@ class ExerciseMergeService
      *
      * Every lift log (soft-deleted ones too), personal record, PR detection log, workout entry and
      * matching alias moves to the target. A user alias moves unless that user already has one on the
-     * target. A standard alias moves unless the target already has that name, or the caller retires
+     * target; where the user had deleted one there, that row still holds the one slot per user and
+     * exercise, so it is restored under the moving alias's name instead. A standard alias moves unless the target already has that name, or the caller retires
      * the source's standard aliases because the same ops file sets the target's. The source is then
      * soft-deleted and an `ExerciseMergeLog` row records the merge with its reason.
      */
@@ -196,6 +197,7 @@ class ExerciseMergeService
 
             $movedAliasIds = [];
             $retiredAliasIds = [];
+            $revivedAliases = [];
             foreach (ExerciseAlias::query()->where('exercise_id', $source->id)->orderBy('id')->get() as $alias) {
                 $targetAlready = ExerciseAlias::query()->where('exercise_id', $target->id);
                 $targetAlready = $alias->user_id === null
@@ -203,6 +205,21 @@ class ExerciseMergeService
                     : $targetAlready->where('user_id', $alias->user_id);
 
                 if (($alias->user_id === null && $retireStandardAliases) || $targetAlready->exists()) {
+                    $alias->delete();
+                    $retiredAliasIds[] = $alias->id;
+
+                    continue;
+                }
+
+                $deletedOnTarget = $alias->user_id === null ? null : ExerciseAlias::onlyTrashed()
+                    ->where('exercise_id', $target->id)
+                    ->where('user_id', $alias->user_id)
+                    ->first();
+
+                if ($deletedOnTarget !== null) {
+                    $revivedAliases[] = ['id' => $deletedOnTarget->id, 'previous_alias_name' => $deletedOnTarget->alias_name];
+                    $deletedOnTarget->alias_name = $alias->alias_name;
+                    $deletedOnTarget->restore();
                     $alias->delete();
                     $retiredAliasIds[] = $alias->id;
 
@@ -241,6 +258,7 @@ class ExerciseMergeService
                     ],
                     'aliases_moved' => $movedAliasIds,
                     'aliases_retired' => $retiredAliasIds,
+                    'aliases_revived' => $revivedAliases,
                 ],
             ]);
         });

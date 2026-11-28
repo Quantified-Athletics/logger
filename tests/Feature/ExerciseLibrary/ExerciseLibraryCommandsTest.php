@@ -468,6 +468,61 @@ class ExerciseLibraryCommandsTest extends TestCase
     }
 
     #[Test]
+    public function a_user_alias_moves_onto_a_target_where_that_user_deleted_an_earlier_one(): void
+    {
+        $source = $this->standard('air_squats', 'Air Squats', 'bodyweight');
+        $target = $this->standard('air_squat', 'Air Squat', 'bodyweight');
+        $user = User::factory()->create();
+        ExerciseAlias::create(['user_id' => $user->id, 'exercise_id' => $target->id, 'alias_name' => 'Old Name'])->delete();
+        $sourceAlias = ExerciseAlias::create(['user_id' => $user->id, 'exercise_id' => $source->id, 'alias_name' => 'My Squats']);
+
+        $this->artisan('exercise-library:apply', ['--ops' => $this->opsFile([
+            ['op' => 'merge', 'id' => 'air_squats', 'into' => 'air_squat', 'reason' => 'same lift'],
+        ])])->assertExitCode(0);
+
+        $this->assertSame('My Squats', ExerciseAlias::query()->where('user_id', $user->id)->where('exercise_id', $target->id)->sole()->alias_name);
+        $this->assertSoftDeleted($sourceAlias);
+        $this->assertSame(
+            'Old Name',
+            ExerciseMergeLog::query()->sole()->snapshot['aliases_revived'][0]['previous_alias_name'],
+        );
+    }
+
+    #[Test]
+    public function a_second_run_ignores_the_key_order_a_stored_map_comes_back_in(): void
+    {
+        $exercise = $this->standard('back_squat', 'Back Squat');
+        Exercise::query()->toBase()->where('id', $exercise->id)->update(['regions_loaded' => '{"neck":"light","lower-back":"heavy"}']);
+        $before = $this->databaseSnapshot();
+
+        $this->artisan('exercise-library:apply', ['--ops' => $this->opsFile([[
+            'op' => 'update', 'id' => 'back_squat',
+            'set' => ['regionsLoaded' => ['lower-back' => 'heavy', 'neck' => 'light']], 'reason' => 'same map',
+        ]])])->expectsOutputToContain('1 unchanged')->assertExitCode(0);
+
+        $this->assertEquals($before, $this->databaseSnapshot());
+    }
+
+    #[Test]
+    public function a_former_ids_update_keeps_the_ids_the_same_file_merges_in(): void
+    {
+        $this->standard('air_squats', 'Air Squats', 'bodyweight');
+        $target = $this->standard('air_squat', 'Air Squat', 'bodyweight');
+        $file = $this->opsFile([
+            ['op' => 'merge', 'id' => 'air_squats', 'into' => 'air_squat', 'reason' => 'same lift'],
+            ['op' => 'update', 'id' => 'air_squat', 'set' => ['formerIds' => ['bodyweight_squat']], 'reason' => 'history'],
+        ]);
+
+        $this->artisan('exercise-library:apply', ['--ops' => $file])->assertExitCode(0);
+        $afterFirst = $this->databaseSnapshot();
+        $this->artisan('exercise-library:apply', ['--ops' => $file])->assertExitCode(0);
+
+        $this->assertEquals($afterFirst, $this->databaseSnapshot());
+        $this->assertSame(['bodyweight_squat', 'air_squats'], $target->refresh()->former_ids);
+        $this->artisan('exercise-library:apply', ['--ops' => $file, '--check' => true])->assertExitCode(0);
+    }
+
+    #[Test]
     public function export_prints_the_standard_exercises_in_the_contract_shape(): void
     {
         $squat = $this->standard('back_squat', 'Back Squat');

@@ -297,6 +297,13 @@ class ExerciseLibraryOpsService
     {
         $report = ['added' => 0, 'updated' => 0, 'merged' => 0, 'already_merged' => 0, 'unchanged' => 0];
 
+        $mergedInto = [];
+        foreach ($ops as $op) {
+            if ($op['op'] === 'merge') {
+                $mergedInto[$op['into']][] = $op['id'];
+            }
+        }
+
         foreach ($ops as $op) {
             if ($op['op'] === 'merge') {
                 continue;
@@ -306,7 +313,12 @@ class ExerciseLibraryOpsService
             $isNew = $exercise === null;
             $exercise ??= new Exercise(['canonical_name' => $op['id'], 'user_id' => null]);
 
-            $changed = $this->applySet($exercise, $op['set'] ?? [], $op['reason']);
+            $set = $op['set'] ?? [];
+            if (array_key_exists('formerIds', $set)) {
+                $set['formerIds'] = $this->keepingMergedIds($set['formerIds'] ?? [], $mergedInto[$op['id']] ?? []);
+            }
+
+            $changed = $this->applySet($exercise, $set, $op['reason']);
             $report[$isNew ? 'added' : ($changed ? 'updated' : 'unchanged')]++;
         }
 
@@ -351,6 +363,19 @@ class ExerciseLibraryOpsService
     }
 
     /**
+     * The ids this file merges into a record stay in its `formerIds` when the same file sets that
+     * field without them; otherwise a second run would drop the ids the first run's merges added.
+     *
+     * @param  list<mixed>  $formerIds
+     * @param  list<string>  $mergedIds
+     * @return list<mixed>
+     */
+    private function keepingMergedIds(array $formerIds, array $mergedIds): array
+    {
+        return [...$formerIds, ...array_values(array_diff($mergedIds, array_filter($formerIds, 'is_string')))];
+    }
+
+    /**
      * Set the op's fields on the exercise and log what changed, old values included, under the reason.
      *
      * @param  array<string, mixed>  $set
@@ -366,7 +391,8 @@ class ExerciseLibraryOpsService
             match ($definition['kind']) {
                 RecordFields::KIND_ALIASES => null,
                 RecordFields::KIND_TIMESTAMP => $value === null ? null : $exercise->setAttribute($definition['column'], Carbon::parse($value)),
-                RecordFields::KIND_LIST, RecordFields::KIND_MAP => $exercise->setAttribute($definition['column'], $value === [] ? null : $value),
+                RecordFields::KIND_LIST => $exercise->setAttribute($definition['column'], $value === [] ? null : $value),
+                RecordFields::KIND_MAP => $this->setMap($exercise, $definition['column'], $value),
                 default => $exercise->setAttribute($definition['column'], $value),
             };
         }
@@ -403,6 +429,31 @@ class ExerciseLibraryOpsService
             ->log($reason);
 
         return true;
+    }
+
+    /**
+     * Set a map column unless it already holds the same entries. MySQL's JSON columns return keys in
+     * their own order, and Eloquent's dirty check would read that order as a change.
+     *
+     * @param  array<string, string|null>|null  $map
+     */
+    private function setMap(Exercise $exercise, string $column, ?array $map): void
+    {
+        $map = $map === [] ? null : $map;
+        $current = $exercise->getAttribute($column);
+
+        if (is_array($current) && $map !== null) {
+            $sortedCurrent = $current;
+            $sortedMap = $map;
+            ksort($sortedCurrent);
+            ksort($sortedMap);
+
+            if ($sortedCurrent === $sortedMap) {
+                return;
+            }
+        }
+
+        $exercise->setAttribute($column, $map);
     }
 
     /**
