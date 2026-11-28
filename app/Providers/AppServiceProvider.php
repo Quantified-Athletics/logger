@@ -63,6 +63,10 @@ class AppServiceProvider extends ServiceProvider
             return $this->buildLimits('telemetry', $request->header('X-Device-Id') ?: $request->ip());
         });
 
+        RateLimiter::for('track-programs', function (Request $request) {
+            return $this->buildLimits('track_programs', $request->header('X-Device-Id') ?: $request->ip());
+        });
+
         // Prism sync throttles. Keyed per authenticated user.
         RateLimiter::for('prism-write', function (Request $request) {
             return $this->buildLimits('prism_write', $request->user()?->id ?: $request->ip());

@@ -19,6 +19,7 @@ use App\Sync\Controllers\PrismPreferencesController;
 use App\Sync\Controllers\PrismProgramController;
 use App\Sync\Controllers\PrismProgramDestinationController;
 use App\Sync\Controllers\RestoreController;
+use App\Sync\Controllers\TrackProgramController;
 use App\Sync\Controllers\WhoAmIController;
 use App\Sync\Middleware\EnsureAthletePublicationsReadToken;
 use App\Sync\Middleware\EnsureFullAccessToken;
@@ -32,6 +33,8 @@ Route::post('/auth/apple', [AuthController::class, 'appleAuth']);
 Route::post('/auth/check', [AuthController::class, 'checkEmail'])->middleware('throttle:email-check');
 Route::post('/telemetry', [\App\Sync\Controllers\TelemetryController::class, 'store'])
     ->middleware(['device-id', 'throttle:telemetry', 'log-sync-request']);
+Route::get('/gyms/{gym}/track-programs', [TrackProgramController::class, 'index'])
+    ->middleware(['device-id', 'throttle:track-programs']);
 Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
 Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
