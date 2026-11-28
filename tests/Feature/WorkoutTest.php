@@ -65,7 +65,7 @@ class WorkoutTest extends TestCase
         $adminRole = Role::where('name', 'Admin')->first();
         $user->roles()->attach($adminRole);
         $exercise = Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => null,
         ]);
 
@@ -98,11 +98,11 @@ class WorkoutTest extends TestCase
         ]);
         
         $exercise1 = Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => null,
         ]);
         $exercise2 = Exercise::factory()->create([
-            'title' => 'Squat',
+            'name' => 'Squat',
             'user_id' => null,
         ]);
 
@@ -127,7 +127,7 @@ class WorkoutTest extends TestCase
         $response = $this->actingAs($user)->get(route('workouts.index'));
 
         $response->assertOk();
-        // With 2 exercises without intelligence, it shows the exercise names directly
+        // With 2 exercises, it shows the exercise names directly
         $response->assertSee('Bench Press & Squat', false);
     }
 
@@ -140,9 +140,9 @@ class WorkoutTest extends TestCase
             'name' => 'Push Day',
         ]);
         
-        $exercise1 = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
-        $exercise2 = Exercise::factory()->create(['title' => 'Dips', 'user_id' => null]);
-        $exercise3 = Exercise::factory()->create(['title' => 'Tricep Extensions', 'user_id' => null]);
+        $exercise1 = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
+        $exercise2 = Exercise::factory()->create(['name' => 'Dips', 'user_id' => null]);
+        $exercise3 = Exercise::factory()->create(['name' => 'Tricep Extensions', 'user_id' => null]);
 
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -212,7 +212,7 @@ class WorkoutTest extends TestCase
     {
         $user = User::factory()->create();
         $workout = Workout::factory()->create(['user_id' => $user->id, 'name' => 'Test Workout']);
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Bench Press']);
         
         WorkoutExercise::create([
             'workout_id' => $workout->id,
@@ -223,7 +223,7 @@ class WorkoutTest extends TestCase
         $response = $this->actingAs($user)->get(route('workouts.index'));
 
         $response->assertOk();
-        // With 1 exercise without intelligence, it just shows the exercise name
+        // With 1 exercise, it just shows the exercise name
         $response->assertSee('Bench Press');
         $response->assertDontSee('Test Workout');
         
@@ -288,7 +288,7 @@ class WorkoutTest extends TestCase
             'wod_syntax' => '[Bench Press]: 5x5'
         ]);
         
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Bench Press']);
         WorkoutExercise::create([
             'workout_id' => $workout->id,
             'exercise_id' => $exercise->id,
@@ -315,30 +315,9 @@ class WorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        // Add exercises with intelligence data
-        $exercise1 = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
-        $exercise2 = Exercise::factory()->create(['title' => 'Overhead Press', 'user_id' => null]);
-        
-        // Create intelligence data for push exercises
-        \App\Models\ExerciseIntelligence::create([
-            'exercise_id' => $exercise1->id,
-            'muscle_data' => json_encode([]),
-            'primary_mover' => 'chest',
-            'largest_muscle' => 'chest',
-            'movement_archetype' => 'push',
-            'category' => 'strength',
-            'difficulty_level' => 3,
-        ]);
-        
-        \App\Models\ExerciseIntelligence::create([
-            'exercise_id' => $exercise2->id,
-            'muscle_data' => json_encode([]),
-            'primary_mover' => 'shoulders',
-            'largest_muscle' => 'shoulders',
-            'movement_archetype' => 'push',
-            'category' => 'strength',
-            'difficulty_level' => 3,
-        ]);
+        // Add exercises
+        $exercise1 = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
+        $exercise2 = Exercise::factory()->create(['name' => 'Overhead Press', 'user_id' => null]);
         
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise1->id, 'order' => 1]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise2->id, 'order' => 2]);
@@ -346,8 +325,9 @@ class WorkoutTest extends TestCase
         $response = $this->actingAs($user)->get(route('workouts.index'));
         
         $response->assertOk();
-        // Should show generated label, not the stored name
-        $response->assertSee('Push Day • 2 exercises', false);
+        // Should show the generated fallback label, not the stored name
+        $response->assertSee('Bench Press & Overhead Press', false);
+        $response->assertDontSee('Push Day', false);
         // Verify the generated label is used by checking the view data
         $response->assertViewHas('data', function ($data) {
             $components = $data['components'];
@@ -356,7 +336,7 @@ class WorkoutTest extends TestCase
                     $rows = $component['data']['rows'];
                     if (!empty($rows)) {
                         // First row should have the generated label, not "Workout"
-                        return $rows[0]['line1'] === 'Push Day • 2 exercises';
+                        return $rows[0]['line1'] === 'Bench Press & Overhead Press';
                     }
                 }
             }
@@ -378,7 +358,7 @@ class WorkoutTest extends TestCase
             'wod_syntax' => '[Bench Press]: 5x5',
         ]);
         
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order' => 1]);
         
         $response = $this->actingAs($admin)->get(route('workouts.index'));
@@ -402,16 +382,7 @@ class WorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $pullUp = Exercise::factory()->create(['title' => 'Pull-Up', 'user_id' => null]);
-        \App\Models\ExerciseIntelligence::create([
-            'exercise_id' => $pullUp->id,
-            'muscle_data' => json_encode([]),
-            'primary_mover' => 'back',
-            'largest_muscle' => 'back',
-            'movement_archetype' => 'pull',
-            'category' => 'strength',
-            'difficulty_level' => 3,
-        ]);
+        $pullUp = Exercise::factory()->create(['name' => 'Pull-Up', 'user_id' => null]);
         WorkoutExercise::create(['workout_id' => $simpleWorkout->id, 'exercise_id' => $pullUp->id, 'order' => 1]);
         
         // Create an advanced workout
@@ -424,8 +395,16 @@ class WorkoutTest extends TestCase
         $response = $this->actingAs($admin)->get(route('workouts.index'));
         
         $response->assertOk();
-        // Simple workout should show generated label
-        $response->assertSee('Pull Day • 1 exercise', false);
+        // Simple workout should show the generated fallback label
+        $response->assertViewHas('data', function ($data) {
+            foreach ($data['components'] as $component) {
+                if (($component['type'] ?? null) === 'table') {
+                    return collect($component['data']['rows'])->pluck('line1')->contains('Pull-Up');
+                }
+            }
+            return false;
+        });
+        $response->assertDontSee('Pull Day', false);
         // Advanced workout should show stored name
         $response->assertSee('Murph WOD');
     }
@@ -488,8 +467,8 @@ class WorkoutTest extends TestCase
             'wod_syntax' => null,
         ]);
         
-        $exercise1 = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
-        $exercise2 = Exercise::factory()->create(['title' => 'Squat', 'user_id' => null]);
+        $exercise1 = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
+        $exercise2 = Exercise::factory()->create(['name' => 'Squat', 'user_id' => null]);
         
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise1->id, 'order' => 1]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise2->id, 'order' => 2]);
@@ -510,8 +489,8 @@ class WorkoutTest extends TestCase
         $admin->roles()->attach($adminRole);
         
         // Create exercises that will be matched by the WOD syntax
-        Exercise::factory()->create(['title' => 'Strict Press', 'user_id' => null]);
-        Exercise::factory()->create(['title' => 'Push-Ups', 'user_id' => null]);
+        Exercise::factory()->create(['name' => 'Strict Press', 'user_id' => null]);
+        Exercise::factory()->create(['name' => 'Push-Ups', 'user_id' => null]);
         
         // Create an advanced workout
         $workout = Workout::factory()->create([
@@ -612,7 +591,7 @@ class WorkoutTest extends TestCase
         ]);
         
         // Add an exercise so the workout shows up properly
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press', 'user_id' => null]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order' => 1]);
         
         $response = $this->actingAs($user)->get(route('workouts.index'));
@@ -650,7 +629,7 @@ class WorkoutTest extends TestCase
         ]);
         
         // Add an exercise so the workout shows up properly
-        $exercise = Exercise::factory()->create(['title' => 'Squat', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Squat', 'user_id' => null]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order' => 1]);
         
         $response = $this->actingAs($user)->get(route('workouts.index'));
@@ -687,7 +666,7 @@ class WorkoutTest extends TestCase
         ]);
         
         // Add an exercise so the workout shows up properly
-        $exercise = Exercise::factory()->create(['title' => 'Deadlift', 'user_id' => null]);
+        $exercise = Exercise::factory()->create(['name' => 'Deadlift', 'user_id' => null]);
         WorkoutExercise::create(['workout_id' => $workout->id, 'exercise_id' => $exercise->id, 'order' => 1]);
         
         $response = $this->actingAs($user)->get(route('workouts.index'));

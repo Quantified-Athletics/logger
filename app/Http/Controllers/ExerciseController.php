@@ -74,7 +74,7 @@ class ExerciseController extends Controller
                 },
                 'user' // Load user relationship for ownership display
             ])
-            ->orderBy('title', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
 
         // Apply aliases to exercises
@@ -104,7 +104,7 @@ class ExerciseController extends Controller
                 
                 $listBuilder->item(
                     (string) $exercise->id,
-                    $exercise->title,
+                    $exercise->name,
                     route('exercises.edit', $exercise),
                     $ownershipLabel,
                     'exercise-history'
@@ -390,18 +390,18 @@ class ExerciseController extends Controller
         $this->authorize('promoteToGlobal', $exercise);
         
         if ($exercise->isGlobal()) {
-            return back()->withErrors(['error' => "Exercise '{$exercise->title}' is already global."]);
+            return back()->withErrors(['error' => "Exercise '{$exercise->name}' is already global."]);
         }
 
         // Check if a global exercise with the same name already exists
-        if (Exercise::global()->where('title', $exercise->title)->exists()) {
-            return back()->withErrors(['error' => "A global exercise with the name '{$exercise->title}' already exists."]);
+        if (Exercise::global()->where('name', $exercise->name)->exists()) {
+            return back()->withErrors(['error' => "A global exercise with the name '{$exercise->name}' already exists."]);
         }
 
         $exercise->update(['user_id' => null]);
 
         return redirect()->route('exercises.edit', $exercise)
-            ->with('success', "Exercise '{$exercise->title}' promoted to global status successfully.");
+            ->with('success', "Exercise '{$exercise->name}' promoted to global status successfully.");
     }
 
     /**
@@ -412,14 +412,14 @@ class ExerciseController extends Controller
         $this->authorize('unpromoteToUser', $exercise);
         
         if (!$exercise->isGlobal()) {
-            return back()->withErrors(['error' => "Exercise '{$exercise->title}' is not a global exercise."]);
+            return back()->withErrors(['error' => "Exercise '{$exercise->name}' is not a global exercise."]);
         }
 
         // Determine original owner from earliest lift log
         $originalOwner = $this->determineOriginalOwner($exercise);
         
         if (!$originalOwner) {
-            return back()->withErrors(['error' => "Cannot determine original owner for exercise '{$exercise->title}'."]);
+            return back()->withErrors(['error' => "Cannot determine original owner for exercise '{$exercise->name}'."]);
         }
 
         // Check if other users have lift logs with this exercise
@@ -430,13 +430,13 @@ class ExerciseController extends Controller
 
         if ($otherUsersCount > 0) {
             $userText = $otherUsersCount === 1 ? 'user has' : 'users have';
-            return back()->withErrors(['error' => "Cannot unpromote exercise '{$exercise->title}': {$otherUsersCount} other {$userText} workout logs with this exercise. The exercise must remain global to preserve their data."]);
+            return back()->withErrors(['error' => "Cannot unpromote exercise '{$exercise->name}': {$otherUsersCount} other {$userText} workout logs with this exercise. The exercise must remain global to preserve their data."]);
         }
 
         $exercise->update(['user_id' => $originalOwner->id]);
 
         return redirect()->route('exercises.edit', $exercise)
-            ->with('success', "Exercise '{$exercise->title}' unpromoted to personal exercise successfully.");
+            ->with('success', "Exercise '{$exercise->name}' unpromoted to personal exercise successfully.");
     }
 
     public function showLogs(Request $request, Exercise $exercise)
@@ -468,7 +468,7 @@ class ExerciseController extends Controller
 
         // Check if exercise can be merged
         if (!$this->exerciseMergeService->canBeMerged($exercise)) {
-            return back()->withErrors(['error' => "Exercise '{$exercise->title}' cannot be merged. It must be a user exercise with compatible global targets available."]);
+            return back()->withErrors(['error' => "Exercise '{$exercise->name}' cannot be merged. It must be a user exercise with compatible global targets available."]);
         }
 
         // Get potential target exercises

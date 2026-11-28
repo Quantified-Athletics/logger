@@ -42,7 +42,7 @@ class RemoveExerciseAliases extends Command
                 $alias->user_id,
                 $alias->user->email ?? 'N/A',
                 $alias->exercise_id,
-                $alias->exercise->title ?? 'N/A',
+                $alias->exercise->name ?? 'N/A',
                 $alias->alias_name,
                 $alias->created_at->format('Y-m-d H:i:s'),
             ];
@@ -81,7 +81,7 @@ class RemoveExerciseAliases extends Command
         $this->warn('You are about to remove ' . $aliasesToRemove->count() . ' alias(es):');
         
         foreach ($aliasesToRemove as $alias) {
-            $this->line('  - ID ' . $alias->id . ': ' . $alias->alias_name . ' (User: ' . ($alias->user->email ?? 'N/A') . ', Exercise: ' . ($alias->exercise->title ?? 'N/A') . ')');
+            $this->line('  - ID ' . $alias->id . ': ' . $alias->alias_name . ' (User: ' . ($alias->user->email ?? 'N/A') . ', Exercise: ' . ($alias->exercise->name ?? 'N/A') . ')');
         }
 
         $this->newLine();

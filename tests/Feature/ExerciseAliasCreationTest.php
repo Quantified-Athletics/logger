@@ -36,7 +36,7 @@ class ExerciseAliasCreationTest extends TestCase
         $user = User::factory()->create();
         $workout = Workout::factory()->create(['user_id' => $user->id]);
         $exercise = Exercise::factory()->create([
-            'title' => 'Kettlebell Swing',
+            'name' => 'Kettlebell Swing',
             'user_id' => $user->id
         ]);
         
@@ -72,7 +72,7 @@ class ExerciseAliasCreationTest extends TestCase
         $response->assertRedirect(route('workouts.edit', $workout->id));
         $response->assertSessionHas('success');
         
-        $exercise = Exercise::where('title', 'Kettlebell Swing')->first();
+        $exercise = Exercise::where('name', 'Kettlebell Swing')->first();
         $this->assertNotNull($exercise);
         
         $this->assertDatabaseHas('exercise_matching_aliases', [
@@ -87,11 +87,11 @@ class ExerciseAliasCreationTest extends TestCase
         $user = User::factory()->create();
         $workout = Workout::factory()->create(['user_id' => $user->id]);
         $exercise1 = Exercise::factory()->create([
-            'title' => 'Kettlebell Swing',
+            'name' => 'Kettlebell Swing',
             'user_id' => $user->id
         ]);
         $exercise2 = Exercise::factory()->create([
-            'title' => 'Dumbbell Swing',
+            'name' => 'Dumbbell Swing',
             'user_id' => $user->id
         ]);
         
@@ -140,7 +140,7 @@ class ExerciseAliasCreationTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'title' => 'Kettlebell Swing',
+            'name' => 'Kettlebell Swing',
             'user_id' => $user->id
         ]);
         
@@ -171,7 +171,7 @@ class ExerciseAliasCreationTest extends TestCase
         
         // Create an exercise with a specific name
         $exercise = Exercise::factory()->create([
-            'title' => 'Back Rack Lunge',
+            'name' => 'Back Rack Lunge',
             'user_id' => $user->id
         ]);
         
@@ -208,12 +208,12 @@ class ExerciseAliasCreationTest extends TestCase
         $workout = Workout::factory()->create(['user_id' => $user->id]);
         
         $recentExercise = Exercise::factory()->create([
-            'title' => 'Recent Exercise',
+            'name' => 'Recent Exercise',
             'user_id' => $user->id
         ]);
         
         $oldExercise = Exercise::factory()->create([
-            'title' => 'Old Exercise',
+            'name' => 'Old Exercise',
             'user_id' => $user->id
         ]);
         
@@ -253,7 +253,7 @@ class ExerciseAliasCreationTest extends TestCase
         $workout = Workout::factory()->create(['user_id' => $user1->id]);
         
         $exercise = Exercise::factory()->create([
-            'title' => 'Private Exercise',
+            'name' => 'Private Exercise',
             'user_id' => $user2->id
         ]);
         

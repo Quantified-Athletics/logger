@@ -38,7 +38,7 @@ class CancelButtonVisibilityTest extends TestCase
     {
         // Setup: Create a user and an exercise
         $user = User::factory()->create();
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
 
         // Act: Visit the page with expand_selection=true
         $response = $this->actingAs($user)->get(route('mobile-entry.lifts', ['expand_selection' => true]));
@@ -70,7 +70,7 @@ class CancelButtonVisibilityTest extends TestCase
     {
         // Setup: Create a user and an exercise
         $user = User::factory()->create();
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
 
         // Act: Visit the page without expand_selection parameter (default collapsed state)
         $response = $this->actingAs($user)->get(route('mobile-entry.lifts'));
@@ -115,7 +115,7 @@ class CancelButtonVisibilityTest extends TestCase
 
         // Test 3: Auto-expanded with one exercise - no cancel button
         Exercise::query()->delete();
-        Exercise::factory()->create(['title' => 'Single Exercise']);
+        Exercise::factory()->create(['name' => 'Single Exercise']);
         
         $responseSingleExpanded = $this->actingAs($user)->get(route('mobile-entry.lifts', ['expand_selection' => true]));
         $responseSingleExpanded->assertOk();
@@ -135,7 +135,7 @@ class CancelButtonVisibilityTest extends TestCase
     {
         // Setup: Create a user and an exercise
         $user = User::factory()->create();
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
 
         // Act: Visit with auto-expanded list
         $response = $this->actingAs($user)->get(route('mobile-entry.lifts', ['expand_selection' => true]));
@@ -158,7 +158,7 @@ class CancelButtonVisibilityTest extends TestCase
     {
         // Setup: Create a user and an exercise
         $user = User::factory()->create();
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
 
         // Act: Visit with collapsed list (default)
         $response = $this->actingAs($user)->get(route('mobile-entry.lifts'));

@@ -3,6 +3,7 @@
 namespace App\Services\ProgressionModels;
 
 use App\Models\LiftLog;
+use App\Services\ExerciseTypes\LogTypeTable;
 use App\Services\OneRepMaxCalculatorService;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -26,7 +27,7 @@ class LinearProgression implements ProgressionModel
             ->join('exercises', 'lift_logs.exercise_id', '=', 'exercises.id')
             ->where('lift_logs.user_id', $userId)
             ->where('lift_logs.exercise_id', $exerciseId)
-            ->where('exercises.exercise_type', '!=', 'bodyweight')
+            ->where(fn ($query) => $query->whereNotIn('exercises.log_type', LogTypeTable::logTypesFor('bodyweight'))->orWhereNull('exercises.log_type'))
             ->where('logged_at', '>=', $forDate->copy()->subWeeks(self::LOOKBACK_WEEKS))
             ->orderBy('logged_at', 'desc')
             ->select('lift_logs.*')
@@ -71,7 +72,7 @@ class LinearProgression implements ProgressionModel
                 ->join('exercises', 'lift_logs.exercise_id', '=', 'exercises.id')
                 ->where('lift_logs.user_id', $userId)
                 ->where('lift_logs.exercise_id', $exerciseId)
-                ->where('exercises.exercise_type', '!=', 'bodyweight')
+                ->where(fn ($query) => $query->whereNotIn('exercises.log_type', LogTypeTable::logTypesFor('bodyweight'))->orWhereNull('exercises.log_type'))
                 ->where('logged_at', '>=', $forDate->copy()->subWeeks(self::LOOKBACK_WEEKS))
                 ->orderBy('logged_at', 'desc')
                 ->select('lift_logs.*')

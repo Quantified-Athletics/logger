@@ -35,11 +35,11 @@ class ImportJsonLiftLogDuplicateTest extends TestCase
     private function createGlobalExercise(string $title, string $canonicalName): Exercise
     {
         return Exercise::create([
-            'title' => $title,
+            'name' => $title,
             'canonical_name' => $canonicalName,
             'description' => 'Test exercise',
             'user_id' => null,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
     }
 

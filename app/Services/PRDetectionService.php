@@ -29,7 +29,7 @@ class PRDetectionService
      */
     public function isLiftLogPR(LiftLog $liftLog, Exercise $exercise, User $user): array
     {
-        $family = $this->prEngine->resolveFamily($exercise->log_type, $exercise->exercise_type);
+        $family = $this->prEngine->resolveFamilyForLogType($exercise->log_type);
 
         if (!$family) {
             $this->lastCalculationSnapshot = [
@@ -100,7 +100,7 @@ class PRDetectionService
         foreach ($logsByExercise as $exerciseId => $exerciseLogs) {
             $firstLog = $exerciseLogs->first();
             $exercise = $firstLog->exercise;
-            $family = $this->prEngine->resolveFamily($exercise->log_type, $exercise->exercise_type);
+            $family = $this->prEngine->resolveFamilyForLogType($exercise->log_type);
 
             if (!$family) {
                 continue;
@@ -126,7 +126,7 @@ class PRDetectionService
     public function detectPRsWithDetails(LiftLog $liftLog): array
     {
         // Resolve the exercise even if it's soft-deleted — the log still belongs to it and its
-        // log_type/exercise_type drive family resolution. Without withTrashed(), a soft-deleted
+        // log_type drives family resolution. Without withTrashed(), a soft-deleted
         // exercise (or user) makes the relation null and reading ->id/->log_type throws.
         $exercise = $liftLog->exercise ?? $liftLog->exercise()->withTrashed()->first();
 
@@ -138,7 +138,7 @@ class PRDetectionService
         }
 
         $userId = $liftLog->user_id;
-        $family = $this->prEngine->resolveFamily($exercise->log_type, $exercise->exercise_type);
+        $family = $this->prEngine->resolveFamilyForLogType($exercise->log_type);
 
         if (!$family) {
             return [];

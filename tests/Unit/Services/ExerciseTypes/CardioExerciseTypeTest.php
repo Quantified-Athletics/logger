@@ -164,14 +164,13 @@ class CardioExerciseTypeTest extends TestCase
     public function it_processes_exercise_data_correctly()
     {
         $inputData = [
-            'title' => 'Running',
-            'exercise_type' => 'cardio',
+            'name' => 'Running'
         ];
 
         $processedData = $this->strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Running', $processedData['title']);
-        $this->assertEquals('cardio', $processedData['exercise_type']);
+        $this->assertEquals('Running', $processedData['name']);
+        $this->assertArrayNotHasKey('exercise_type', $processedData);
         $this->assertFalse($processedData['is_bodyweight']);
     }
 
@@ -184,7 +183,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_distance_display()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -201,7 +200,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_zero_distance_display()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -218,7 +217,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_non_numeric_distance_as_zero()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -235,7 +234,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_long_distances_in_kilometers()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -252,7 +251,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_complete_cardio_display()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         
         // Create multiple sets to test rounds counting
@@ -283,7 +282,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_complete_cardio_display_with_single_round()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -300,7 +299,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_complete_cardio_display_with_long_distance()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         
         // Create multiple sets
@@ -325,7 +324,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_progression_suggestion_for_short_distance()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         
         // Create 3 sets to simulate 3 rounds
@@ -344,7 +343,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_progression_suggestion_for_very_short_distance()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         
         // Create 2 sets to simulate 2 rounds
@@ -363,7 +362,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_progression_suggestion_for_long_distance()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         
         // Create 5 sets to simulate 5 rounds
@@ -382,7 +381,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_null_progression_suggestion_for_invalid_distance()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -399,7 +398,7 @@ class CardioExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_null_progression_suggestion_for_zero_distance()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,

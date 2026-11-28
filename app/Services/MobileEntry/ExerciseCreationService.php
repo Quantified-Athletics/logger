@@ -24,7 +24,7 @@ class ExerciseCreationService
         $selectedDate = $date ? Carbon::parse($date) : Carbon::today();
         
         // Check if exercise already exists
-        $existingExercise = Exercise::where('title', $exerciseName)
+        $existingExercise = Exercise::where('name', $exerciseName)
             ->availableToUser($userId)
             ->first();
         
@@ -38,16 +38,16 @@ class ExerciseCreationService
         
         // Create new exercise
         $exercise = Exercise::create([
-            'title' => $exerciseName,
+            'name' => $exerciseName,
             'user_id' => $userId,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'canonical_name' => $this->generateUniqueCanonicalName($exerciseName, $userId)
         ]);
         
         return [
             'routeParams' => $this->buildRouteParams($exercise->id, $selectedDate),
             'messageType' => 'success',
-            'message' => "Exercise \"{$exercise->title}\" created! Now log your first set."
+            'message' => "Exercise \"{$exercise->name}\" created! Now log your first set."
         ];
     }
     

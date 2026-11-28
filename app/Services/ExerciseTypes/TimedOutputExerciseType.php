@@ -24,7 +24,6 @@ class TimedOutputExerciseType extends BaseExerciseType
     public function processExerciseData(array $data): array
     {
         $processedData = $data;
-        $processedData['exercise_type'] = 'timed_output';
 
         return $processedData;
     }
@@ -66,14 +65,6 @@ class TimedOutputExerciseType extends BaseExerciseType
     public function format1RMTableCellDisplay(LiftLog $liftLog): string
     {
         return 'N/A';
-    }
-
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-stopwatch',
-            'name' => 'Timed Output',
-        ];
     }
 
     public function getChartTitle(): string

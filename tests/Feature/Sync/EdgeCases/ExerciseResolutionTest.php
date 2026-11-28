@@ -45,7 +45,7 @@ class ExerciseResolutionTest extends TestCase
 
         $this->assertEquals('brand_new_exercise', $exercise->canonical_name);
         $this->assertEquals('cardio', $exercise->log_type);
-        $this->assertEquals('cardio', $exercise->exercise_type);
+        $this->assertEquals('cardio', $exercise->strategyTypeName());
     }
 
     /**
@@ -54,9 +54,9 @@ class ExerciseResolutionTest extends TestCase
     public function test_exercise_resolved_by_alias_returns_aliased_exercise(): void
     {
         $exercise = Exercise::create([
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'canonical_name' => 'back_squat',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         ExerciseAlias::create([
@@ -78,9 +78,8 @@ class ExerciseResolutionTest extends TestCase
     public function test_changes_endpoint_always_includes_exercise_name(): void
     {
         $exercise = Exercise::create([
-            'title' => 'Deadlift',
+            'name' => 'Deadlift',
             'canonical_name' => 'deadlift',
-            'exercise_type' => 'regular',
             'log_type' => 'barbell',
         ]);
 
@@ -113,9 +112,8 @@ class ExerciseResolutionTest extends TestCase
     public function test_restore_endpoint_always_includes_exercise_name(): void
     {
         $exercise = Exercise::create([
-            'title' => 'Overhead Press',
+            'name' => 'Overhead Press',
             'canonical_name' => 'overhead_press',
-            'exercise_type' => 'regular',
             'log_type' => 'barbell',
         ]);
 
@@ -146,9 +144,8 @@ class ExerciseResolutionTest extends TestCase
     public function test_exercise_title_update_reflected_in_changes(): void
     {
         $exercise = Exercise::create([
-            'title' => 'Old Title',
+            'name' => 'Old Title',
             'canonical_name' => 'some_exercise',
-            'exercise_type' => 'regular',
             'log_type' => 'barbell',
         ]);
 
@@ -160,7 +157,7 @@ class ExerciseResolutionTest extends TestCase
         $liftLog->liftSets()->create(['weight' => 100, 'reps' => 5, 'unit' => 'lbs']);
 
         // Update the title
-        $exercise->update(['title' => 'New Better Title']);
+        $exercise->update(['name' => 'New Better Title']);
 
         $response = $this->withHeaders($this->headers)
             ->getJson('/api/sync/changes');
@@ -219,7 +216,7 @@ class ExerciseResolutionTest extends TestCase
 
         $exercise = Exercise::where('canonical_name', 'zombie_squat')->first();
         $this->assertNotNull($exercise);
-        $this->assertEquals('Zombie Squat', $exercise->title);
+        $this->assertEquals('Zombie Squat', $exercise->name);
 
         // Verify it comes back with the correct name on restore
         $response = $this->withHeaders($this->headers)

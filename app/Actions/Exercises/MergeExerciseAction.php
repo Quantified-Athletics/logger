@@ -34,11 +34,11 @@ class MergeExerciseAction
         $this->exerciseMergeService->mergeExercises($exercise, $targetExercise, $user, $createAlias);
         
         // Build success message
-        $successMessage = "Exercise '{$exercise->title}' successfully merged into '{$targetExercise->title}'. All workout data has been preserved.";
+        $successMessage = "Exercise '{$exercise->name}' successfully merged into '{$targetExercise->name}'. All workout data has been preserved.";
         
         // Add alias creation note if applicable
         if ($createAlias && $exercise->user) {
-            $successMessage .= " An alias has been created so the owner will continue to see '{$exercise->title}'.";
+            $successMessage .= " An alias has been created so the owner will continue to see '{$exercise->name}'.";
         }
         
         return [

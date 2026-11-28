@@ -274,10 +274,10 @@ class ImportWodifyLiftLog extends Command
         if ($this->option('create-exercises')) {
             $this->line("⚠ Creating exercise: {$exerciseName}");
             return Exercise::create([
-                'title' => $exerciseName,
+                'name' => $exerciseName,
                 'canonical_name' => $canonicalName,
                 'description' => "Imported from Wodify",
-                'exercise_type' => 'regular',
+                'log_type' => 'barbell',
                 'user_id' => $user->id
             ]);
         }
@@ -296,10 +296,10 @@ class ImportWodifyLiftLog extends Command
         
         if ($choice === 'Create new user exercise') {
             return Exercise::create([
-                'title' => $exerciseName,
+                'name' => $exerciseName,
                 'canonical_name' => $canonicalName,
                 'description' => "Imported from Wodify",
-                'exercise_type' => 'regular',
+                'log_type' => 'barbell',
                 'user_id' => $user->id
             ]);
         }

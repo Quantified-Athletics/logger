@@ -27,8 +27,8 @@ class PrefillSuggestedValuesTest extends TestCase
         
         $this->exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Bench Press',
+            'log_type' => 'barbell',
+            'name' => 'Bench Press',
         ]);
     }
 
@@ -236,8 +236,8 @@ class PrefillSuggestedValuesTest extends TestCase
     {
         $bodyweightExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight',
-            'title' => 'Pull-ups',
+            'log_type' => 'bodyweight',
+            'name' => 'Pull-ups',
         ]);
         
         // Create previous log
@@ -283,8 +283,8 @@ class PrefillSuggestedValuesTest extends TestCase
     {
         $bandedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded',
-            'title' => 'Banded Squats',
+            'log_type' => 'banded',
+            'name' => 'Banded Squats',
         ]);
         
         // Create previous log

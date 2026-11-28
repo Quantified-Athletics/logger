@@ -35,7 +35,7 @@ class ExerciseUnpromoteTest extends TestCase
     {
         // Create global exercise with lift logs to establish original owner
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
@@ -66,7 +66,7 @@ class ExerciseUnpromoteTest extends TestCase
     {
         // Create global exercise
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
@@ -86,7 +86,7 @@ class ExerciseUnpromoteTest extends TestCase
     {
         // Create user exercise owned by admin (so they can see it)
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $this->adminUser->id,
         ]);
 
@@ -106,7 +106,7 @@ class ExerciseUnpromoteTest extends TestCase
     {
         // Create global exercise
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
@@ -128,7 +128,7 @@ class ExerciseUnpromoteTest extends TestCase
         // Assert exercise is now owned by original owner
         $this->assertDatabaseHas('exercises', [
             'id' => $globalExercise->id,
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => $this->regularUser->id,
         ]);
 
@@ -152,7 +152,7 @@ class ExerciseUnpromoteTest extends TestCase
     {
         // Create global exercise
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
@@ -187,7 +187,7 @@ class ExerciseUnpromoteTest extends TestCase
         // Assert exercise remains global
         $this->assertDatabaseHas('exercises', [
             'id' => $globalExercise->id,
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
     }
@@ -197,7 +197,7 @@ class ExerciseUnpromoteTest extends TestCase
     {
         // Create global exercise with no lift logs
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
@@ -217,7 +217,7 @@ class ExerciseUnpromoteTest extends TestCase
         // Assert exercise remains global
         $this->assertDatabaseHas('exercises', [
             'id' => $globalExercise->id,
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
     }
@@ -227,7 +227,7 @@ class ExerciseUnpromoteTest extends TestCase
     {
         // Create user exercise
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $this->regularUser->id,
         ]);
 
@@ -250,7 +250,7 @@ class ExerciseUnpromoteTest extends TestCase
     {
         // Create global exercise
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
@@ -273,7 +273,7 @@ class ExerciseUnpromoteTest extends TestCase
     {
         // Create global exercise
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
@@ -295,9 +295,9 @@ class ExerciseUnpromoteTest extends TestCase
     {
         // Create global exercise with specific metadata
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'description' => 'Original description',
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
             'user_id' => null,
             'created_at' => now()->subDays(10),
         ]);
@@ -330,9 +330,9 @@ class ExerciseUnpromoteTest extends TestCase
 
         // Assert metadata is preserved
         $this->assertEquals($this->regularUser->id, $globalExercise->user_id); // Now owned by original owner
-        $this->assertEquals('Global Exercise', $globalExercise->title);
+        $this->assertEquals('Global Exercise', $globalExercise->name);
         $this->assertEquals('Original description', $globalExercise->description);
-        $this->assertEquals('bodyweight', $globalExercise->exercise_type);
+        $this->assertEquals('bodyweight', $globalExercise->strategyTypeName());
         $this->assertEquals($originalCreatedAt->format('Y-m-d H:i:s'), $globalExercise->created_at->format('Y-m-d H:i:s'));
 
         // Assert lift logs are preserved and still reference the exercise
@@ -354,7 +354,7 @@ class ExerciseUnpromoteTest extends TestCase
     {
         // Create global exercise
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
@@ -398,7 +398,7 @@ class ExerciseUnpromoteTest extends TestCase
         // Assert exercise remains global
         $this->assertDatabaseHas('exercises', [
             'id' => $globalExercise->id,
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
     }

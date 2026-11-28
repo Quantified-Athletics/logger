@@ -28,8 +28,8 @@ class ExerciseControllerChartDateRangeTest extends TestCase
         
         $this->user = User::factory()->create();
         $this->exercise = Exercise::factory()->create([
-            'title' => 'Test Exercise',
-            'exercise_type' => 'regular',
+            'name' => 'Test Exercise',
+            'log_type' => 'barbell',
             'user_id' => $this->user->id,
         ]);
     }

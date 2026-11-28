@@ -22,9 +22,9 @@ class ExerciseManagementTest extends TestCase
         $this->actingAs($user);
 
         $exerciseData = [
-            'title' => $this->faker->sentence(3),
+            'name' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $response = $this->post(route('exercises.store'), $exerciseData);
@@ -33,7 +33,7 @@ class ExerciseManagementTest extends TestCase
         $response->assertSessionHas('success', 'Exercise created successfully.');
         $this->assertDatabaseHas('exercises', [
             'user_id' => $user->id,
-            'title' => $exerciseData['title'],
+            'name' => $exerciseData['name'],
             'description' => $exerciseData['description'],
         ]);
     }
@@ -45,14 +45,14 @@ class ExerciseManagementTest extends TestCase
         $this->actingAs($user);
 
         $exerciseData = [
-            'title' => '', // Missing title
+            'name' => '', // Missing title
             'description' => $this->faker->paragraph(),
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $response = $this->post(route('exercises.store'), $exerciseData);
 
-        $response->assertSessionHasErrors('title');
+        $response->assertSessionHasErrors('name');
     }
 
     /** @test */
@@ -60,7 +60,7 @@ class ExerciseManagementTest extends TestCase
     {
         // Create global exercise
         Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => null,
         ]);
 
@@ -68,14 +68,14 @@ class ExerciseManagementTest extends TestCase
         $this->actingAs($user);
 
         $exerciseData = [
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'description' => 'User trying to create duplicate',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $response = $this->post(route('exercises.store'), $exerciseData);
 
-        $response->assertSessionHasErrors('title');
+        $response->assertSessionHasErrors('name');
     }
 
     /** @test */
@@ -85,14 +85,14 @@ class ExerciseManagementTest extends TestCase
         $this->actingAs($user);
 
         $userExercise = Exercise::factory()->create([
-            'title' => 'Original Title',
+            'name' => 'Original Title',
             'user_id' => $user->id,
         ]);
 
         $updatedData = [
-            'title' => 'Updated Title',
+            'name' => 'Updated Title',
             'description' => 'Updated description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $response = $this->put(route('exercises.update', $userExercise), $updatedData);
@@ -101,7 +101,7 @@ class ExerciseManagementTest extends TestCase
         $response->assertSessionHas('success', 'Exercise updated successfully.');
         $this->assertDatabaseHas('exercises', [
             'id' => $userExercise->id,
-            'title' => 'Updated Title',
+            'name' => 'Updated Title',
             'user_id' => $user->id,
         ]);
     }
@@ -114,12 +114,12 @@ class ExerciseManagementTest extends TestCase
         $this->actingAs($user);
 
         $otherUserExercise = Exercise::factory()->create([
-            'title' => 'Other User Exercise',
+            'name' => 'Other User Exercise',
             'user_id' => $otherUser->id,
         ]);
 
         $updatedData = [
-            'title' => 'Hacked Title',
+            'name' => 'Hacked Title',
             'description' => 'Hacked description',
         ];
 
@@ -171,13 +171,13 @@ class ExerciseManagementTest extends TestCase
 
         // Create global exercise
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
         // Create user exercise
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $user->id,
         ]);
 
@@ -208,14 +208,14 @@ class ExerciseManagementTest extends TestCase
         $this->actingAs($admin);
 
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Original Title',
+            'name' => 'Original Title',
             'user_id' => null,
         ]);
 
         $updatedData = [
-            'title' => 'Updated Global Title',
+            'name' => 'Updated Global Title',
             'description' => 'Updated description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ];
 
         $response = $this->put(route('exercises.update', $globalExercise), $updatedData);
@@ -224,7 +224,7 @@ class ExerciseManagementTest extends TestCase
         $response->assertSessionHas('success', 'Exercise updated successfully.');
         $this->assertDatabaseHas('exercises', [
             'id' => $globalExercise->id,
-            'title' => 'Updated Global Title',
+            'name' => 'Updated Global Title',
             'user_id' => null,
         ]);
     }
@@ -236,12 +236,12 @@ class ExerciseManagementTest extends TestCase
         $this->actingAs($user);
 
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
         $updatedData = [
-            'title' => 'Hacked Title',
+            'name' => 'Hacked Title',
             'description' => 'Hacked description',
         ];
 
@@ -260,7 +260,7 @@ class ExerciseManagementTest extends TestCase
 
         $userExercise = Exercise::factory()->create([
             'user_id' => $admin->id,
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
         ]);
 
         $response = $this->post(route('exercises.promote', $userExercise));
@@ -283,7 +283,7 @@ class ExerciseManagementTest extends TestCase
 
         // Create a global exercise with lift logs from admin (to determine original owner)
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
         
@@ -315,17 +315,17 @@ class ExerciseManagementTest extends TestCase
         // Create a user exercise owned by the regular user
         $userExercise = Exercise::factory()->create([
             'user_id' => $regularUser->id,
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'description' => 'Original description',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Admin edits the exercise (without changing global status)
         $this->actingAs($admin);
         $response = $this->put(route('exercises.update', $userExercise), [
-            'title' => 'Updated User Exercise',
+            'name' => 'Updated User Exercise',
             'description' => 'Updated description',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $response->assertRedirect(route('exercises.edit', $userExercise));
@@ -335,7 +335,7 @@ class ExerciseManagementTest extends TestCase
         $userExercise->refresh();
         $this->assertEquals($regularUser->id, $userExercise->user_id);
         $this->assertFalse($userExercise->isGlobal());
-        $this->assertEquals('Updated User Exercise', $userExercise->title);
+        $this->assertEquals('Updated User Exercise', $userExercise->name);
         $this->assertEquals('Updated description', $userExercise->description);
     }
 
@@ -371,13 +371,13 @@ class ExerciseManagementTest extends TestCase
 
         // Create a global exercise
         Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => null,
         ]);
 
         // Create a user exercise with the same name
         $userExercise = Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => $admin->id,
         ]);
 

@@ -84,15 +84,15 @@ class BandedResistanceExerciseTypeTest extends TestCase
     public function it_processes_exercise_data_correctly()
     {
         $inputData = [
-            'title' => 'Banded Squat',
+            'name' => 'Banded Squat',
             // Should be set to false when band_type is set,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ];
 
         $processedData = $this->strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Banded Squat', $processedData['title']);
-        $this->assertEquals('banded_resistance', $processedData['exercise_type']);
+        $this->assertEquals('Banded Squat', $processedData['name']);
+        $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 
     /** @test */
@@ -118,7 +118,7 @@ class BandedResistanceExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_weight_display_correctly()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_resistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -135,7 +135,7 @@ class BandedResistanceExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_empty_band_color_display()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_resistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -164,7 +164,7 @@ class BandedResistanceExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_progression_suggestion_for_high_reps()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_resistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -181,7 +181,7 @@ class BandedResistanceExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_null_progression_suggestion_for_low_reps()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_resistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -198,7 +198,7 @@ class BandedResistanceExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_null_progression_suggestion_for_highest_band()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_resistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,

@@ -21,7 +21,7 @@ class ExerciseLogsBackButtonTest extends TestCase
         parent::setUp();
         
         $this->user = User::factory()->create();
-        $this->exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $this->exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // Create some lift logs for the exercise
         $liftLog = LiftLog::factory()->create([

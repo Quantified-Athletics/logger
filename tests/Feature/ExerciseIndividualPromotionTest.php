@@ -34,7 +34,7 @@ class ExerciseIndividualPromotionTest extends TestCase
     {
         // Create user exercise for promotion
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $this->regularUser->id,
         ]);
 
@@ -49,7 +49,7 @@ class ExerciseIndividualPromotionTest extends TestCase
         // Assert exercise is now global (user_id is null)
         $this->assertDatabaseHas('exercises', [
             'id' => $userExercise->id,
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => null,
         ]);
     }
@@ -59,7 +59,7 @@ class ExerciseIndividualPromotionTest extends TestCase
     {
         // Create user exercise
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $this->regularUser->id,
         ]);
 
@@ -81,7 +81,7 @@ class ExerciseIndividualPromotionTest extends TestCase
     public function individual_promotion_fails_when_trying_to_promote_already_global_exercise()
     {
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
@@ -115,7 +115,7 @@ class ExerciseIndividualPromotionTest extends TestCase
     {
         // Create user exercise with lift logs
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise With Logs',
+            'name' => 'User Exercise With Logs',
             'user_id' => $this->regularUser->id,
         ]);
         
@@ -162,12 +162,12 @@ class ExerciseIndividualPromotionTest extends TestCase
     {
         // Create user exercise with specific metadata
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'description' => 'Original description',
             'user_id' => $this->regularUser->id,
             'created_at' => now()->subDays(5),
             'updated_at' => now()->subDays(3),
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $originalCreatedAt = $userExercise->created_at;
@@ -186,9 +186,9 @@ class ExerciseIndividualPromotionTest extends TestCase
 
         // Assert metadata is preserved
         $this->assertNull($userExercise->user_id); // Now global
-        $this->assertEquals('User Exercise', $userExercise->title);
+        $this->assertEquals('User Exercise', $userExercise->name);
         $this->assertEquals('Original description', $userExercise->description);
-        $this->assertEquals('bodyweight', $userExercise->exercise_type);
+        $this->assertEquals('bodyweight', $userExercise->strategyTypeName());
         $this->assertEquals($originalCreatedAt->format('Y-m-d H:i:s'), $userExercise->created_at->format('Y-m-d H:i:s'));
         // Updated_at should change due to the promotion
         $this->assertNotEquals($originalUpdatedAt->format('Y-m-d H:i:s'), $userExercise->updated_at->format('Y-m-d H:i:s'));
@@ -199,7 +199,7 @@ class ExerciseIndividualPromotionTest extends TestCase
     {
         // Create user exercise
         $userExercise = Exercise::factory()->create([
-            'title' => 'Soon To Be Global Exercise',
+            'name' => 'Soon To Be Global Exercise',
             'user_id' => $this->regularUser->id,
         ]);
 
@@ -213,7 +213,7 @@ class ExerciseIndividualPromotionTest extends TestCase
         // Verify the exercise is now global in the database
         $this->assertDatabaseHas('exercises', [
             'id' => $userExercise->id,
-            'title' => 'Soon To Be Global Exercise',
+            'name' => 'Soon To Be Global Exercise',
             'user_id' => null, // Now global
         ]);
 
@@ -229,7 +229,7 @@ class ExerciseIndividualPromotionTest extends TestCase
     {
         // Create user exercise
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $this->regularUser->id,
         ]);
 
@@ -251,7 +251,7 @@ class ExerciseIndividualPromotionTest extends TestCase
     {
         // Create user exercises owned by admin (so they can see them)
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $this->adminUser->id,
         ]);
 
@@ -275,7 +275,7 @@ class ExerciseIndividualPromotionTest extends TestCase
     {
         // Create user exercises owned by regular user
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $this->regularUser->id,
         ]);
 
@@ -299,7 +299,7 @@ class ExerciseIndividualPromotionTest extends TestCase
     {
         // Create global exercise
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
@@ -320,7 +320,7 @@ class ExerciseIndividualPromotionTest extends TestCase
     {
         // Create user exercise
         $userExercise = Exercise::factory()->create([
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => 'Test description',
             'user_id' => $this->regularUser->id,
         ]);
@@ -337,7 +337,7 @@ class ExerciseIndividualPromotionTest extends TestCase
         // Assert exercise is now global
         $this->assertDatabaseHas('exercises', [
             'id' => $userExercise->id,
-            'title' => 'Test Exercise',
+            'name' => 'Test Exercise',
             'description' => 'Test description',
             'user_id' => null,
         ]);
@@ -348,7 +348,7 @@ class ExerciseIndividualPromotionTest extends TestCase
     {
         // Create global exercise
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
 
@@ -362,7 +362,7 @@ class ExerciseIndividualPromotionTest extends TestCase
         // Assert exercise remains global
         $this->assertDatabaseHas('exercises', [
             'id' => $globalExercise->id,
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
     }

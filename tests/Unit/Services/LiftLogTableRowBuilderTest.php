@@ -40,7 +40,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_builds_rows_with_default_configuration()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id,
@@ -54,14 +54,14 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
 
         $this->assertCount(1, $rows);
         $this->assertEquals($liftLog->id, $rows[0]['id']);
-        $this->assertEquals($exercise->title, $rows[0]['line1']);
+        $this->assertEquals($exercise->name, $rows[0]['line1']);
         $this->assertNull($rows[0]['line2']); // Comments never in line2
         $this->assertTrue($rows[0]['compact']);
         $this->assertTrue($rows[0]['wrapActions']);
@@ -83,7 +83,7 @@ class LiftLogTableRowBuilderTest extends TestCase
         Carbon::setTestNow(Carbon::create(2024, 5, 26, 12, 0, 0));
 
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id,
@@ -93,7 +93,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -124,7 +124,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_excludes_date_badge_when_configured()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id
@@ -133,7 +133,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -149,7 +149,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_includes_view_logs_action_when_configured()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id
@@ -158,7 +158,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -177,7 +177,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_includes_delete_action_when_configured()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id
@@ -186,7 +186,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -211,7 +211,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_excludes_delete_action_when_not_configured()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id
@@ -220,7 +220,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -237,7 +237,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_shows_comments_in_subitem_when_present()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id,
@@ -251,7 +251,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
@@ -272,7 +272,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_shows_na_in_subitem_when_no_comments()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id,
@@ -286,7 +286,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
@@ -308,7 +308,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_shows_na_for_empty_string_comments()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id,
@@ -322,7 +322,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
@@ -344,7 +344,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_shows_na_for_whitespace_only_comments()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id,
@@ -358,7 +358,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
@@ -380,7 +380,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_never_shows_comments_in_line2()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id,
@@ -390,7 +390,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]));
@@ -402,7 +402,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_respects_wrap_actions_configuration()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id
@@ -411,7 +411,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -425,7 +425,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_includes_checkbox_when_configured()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id
@@ -434,7 +434,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -448,7 +448,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_styles_badges_with_correct_colors()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id
@@ -461,7 +461,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -486,8 +486,8 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_handles_multiple_lift_logs()
     {
         $user = User::factory()->create();
-        $exercise1 = Exercise::factory()->create(['exercise_type' => 'weighted']);
-        $exercise2 = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise1 = Exercise::factory()->create(['log_type' => 'barbell']);
+        $exercise2 = Exercise::factory()->create(['log_type' => 'bodyweight']);
         
         $liftLog1 = LiftLog::factory()->create([
             'user_id' => $user->id,
@@ -503,7 +503,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->twice()
-            ->andReturn($exercise1->title, $exercise2->title);
+            ->andReturn($exercise1->name, $exercise2->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog1, $liftLog2]));
@@ -517,7 +517,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_identifies_pr_logs_correctly()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // Create lift logs with different weights for 1 rep
         $log1 = LiftLog::factory()->create([
@@ -561,7 +561,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->times(3)
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log1, $log2, $log3]));
@@ -588,7 +588,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_identifies_pr_based_on_highest_estimated_1rm()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // 275 lbs × 1 rep = 275 lbs estimated 1RM (PR at the time - first lift)
         $log1 = LiftLog::factory()->create([
@@ -634,7 +634,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->times(3)
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log1, $log2, $log3]));
@@ -649,7 +649,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_does_not_mark_non_regular_exercises_as_pr()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
+        $exercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
         
         $log = LiftLog::factory()->create([
             'user_id' => $user->id,
@@ -665,7 +665,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log]));
@@ -682,7 +682,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_considers_all_rep_ranges_for_pr_calculation()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // 300 lbs × 5 reps = 349.95 lbs estimated 1RM (PR at the time - first lift)
         $log1 = LiftLog::factory()->create([
@@ -715,7 +715,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->times(2)
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log1, $log2]));
@@ -731,7 +731,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_handles_tied_prs_correctly()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // First PR
         $log1 = LiftLog::factory()->create([
@@ -763,7 +763,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->times(2)
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log1, $log2]));
@@ -778,7 +778,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_handles_log_with_multiple_sets_where_one_is_pr()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         $log = LiftLog::factory()->create([
             'user_id' => $user->id,
@@ -806,7 +806,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$log]));
@@ -819,7 +819,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_includes_from_parameter_in_view_logs_url_when_redirect_context_is_mobile_entry_lifts()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id
@@ -828,7 +828,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -847,7 +847,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_includes_date_parameter_in_view_logs_url_when_selected_date_provided()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id
@@ -856,7 +856,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -877,7 +877,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_does_not_include_from_parameter_when_redirect_context_is_not_mobile_entry_lifts()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'weighted']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $user->id,
             'exercise_id' => $exercise->id
@@ -886,7 +886,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$liftLog]), [
@@ -906,7 +906,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_does_not_show_pr_records_table_by_default()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // Create a previous lift
         $oldLog = LiftLog::factory()->create([
@@ -938,7 +938,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$newLog]));
@@ -956,7 +956,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_shows_pr_records_table_when_flag_is_enabled_for_pr_lifts()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // Create a previous lift
         $oldLog = LiftLog::factory()->create([
@@ -999,7 +999,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$newLog]), [
@@ -1024,7 +1024,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_shows_pr_records_table_when_flag_is_enabled_for_non_pr_lifts()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // Create a previous PR lift
         $oldLog = LiftLog::factory()->create([
@@ -1066,7 +1066,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$newLog]), [
@@ -1091,7 +1091,7 @@ class LiftLogTableRowBuilderTest extends TestCase
     public function it_does_not_show_pr_records_table_when_flag_is_explicitly_disabled()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // Create a previous lift
         $oldLog = LiftLog::factory()->create([
@@ -1123,7 +1123,7 @@ class LiftLogTableRowBuilderTest extends TestCase
 
         $this->aliasService->shouldReceive('getDisplayName')
             ->once()
-            ->andReturn($exercise->title);
+            ->andReturn($exercise->name);
 
         $this->actingAs($user);
         $rows = $this->builder->buildRows(collect([$newLog]), [

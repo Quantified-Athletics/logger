@@ -28,8 +28,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Back Squat',
+            'log_type' => 'barbell',
+            'name' => 'Back Squat',
         ]);
 
         // Create lift logs with different rep ranges
@@ -54,8 +54,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Bench Press',
+            'log_type' => 'barbell',
+            'name' => 'Bench Press',
         ]);
 
         // Create a 1-rep max lift log
@@ -84,8 +84,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'dumbbell',
-            'title' => 'Dumbbell Press',
+            'log_type' => 'dumbbell',
+            'name' => 'Dumbbell Press',
         ]);
 
         // Create lift logs
@@ -104,8 +104,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'cardio',
-            'title' => 'Running',
+            'log_type' => 'cardio-distance',
+            'name' => 'Running',
         ]);
 
         // Create lift logs
@@ -123,8 +123,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Deadlift',
+            'log_type' => 'barbell',
+            'name' => 'Deadlift',
         ]);
 
         // Create lift logs with specific weights
@@ -153,8 +153,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Overhead Press',
+            'log_type' => 'barbell',
+            'name' => 'Overhead Press',
         ]);
 
         // Create a 1-rep max of 100 lbs for easy calculation
@@ -183,8 +183,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Front Squat',
+            'log_type' => 'barbell',
+            'name' => 'Front Squat',
         ]);
 
         // Only create a 1-rep max, no 2 or 3 rep data
@@ -207,8 +207,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Clean and Jerk',
+            'log_type' => 'barbell',
+            'name' => 'Clean and Jerk',
         ]);
 
         // No lift logs created
@@ -250,8 +250,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Deadlift',
+            'log_type' => 'barbell',
+            'name' => 'Deadlift',
         ]);
 
         // Create lift logs with only higher rep ranges (no 1-3 rep tests)
@@ -291,8 +291,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Squat',
+            'log_type' => 'barbell',
+            'name' => 'Squat',
         ]);
 
         // Create both low rep tests and higher rep sets
@@ -318,8 +318,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Overhead Press',
+            'log_type' => 'barbell',
+            'name' => 'Overhead Press',
         ]);
 
         // Create a PR that's 7 months old (stale - older than 6 months)
@@ -342,8 +342,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Front Squat',
+            'log_type' => 'barbell',
+            'name' => 'Front Squat',
         ]);
 
         // Create a PR that's 2 months old (recent)
@@ -384,8 +384,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Bench Press',
+            'log_type' => 'barbell',
+            'name' => 'Bench Press',
         ]);
 
         // Create PRs with specific dates
@@ -409,8 +409,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Deadlift',
+            'log_type' => 'barbell',
+            'name' => 'Deadlift',
         ]);
 
         // Create PRs from several months ago
@@ -431,8 +431,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Squat',
+            'log_type' => 'barbell',
+            'name' => 'Squat',
         ]);
 
         // Create a PR from today
@@ -453,8 +453,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Clean',
+            'log_type' => 'barbell',
+            'name' => 'Clean',
         ]);
 
         // Create only a 1-rep PR, leaving 2 and 3 rep empty
@@ -476,8 +476,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Overhead Press',
+            'log_type' => 'barbell',
+            'name' => 'Overhead Press',
         ]);
 
         // Create multiple lifts, but only the heaviest (155) should be shown with its date
@@ -507,8 +507,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Back Squat',
+            'log_type' => 'barbell',
+            'name' => 'Back Squat',
         ]);
 
         // Create PRs with various time periods
@@ -531,8 +531,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Bench Press',
+            'log_type' => 'barbell',
+            'name' => 'Bench Press',
         ]);
 
         // Create PRs with different dates - the most recent should be highlighted even if it's old
@@ -559,8 +559,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Squat',
+            'log_type' => 'barbell',
+            'name' => 'Squat',
         ]);
 
         // Create only one PR that's very old - it should still be highlighted as the "most recent"
@@ -584,8 +584,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Clean',
+            'log_type' => 'barbell',
+            'name' => 'Clean',
         ]);
 
         // No lift logs created
@@ -608,8 +608,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Deadlift',
+            'log_type' => 'barbell',
+            'name' => 'Deadlift',
         ]);
 
         // Create initial PRs
@@ -642,8 +642,8 @@ class ExercisePRCardsIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Overhead Press',
+            'log_type' => 'barbell',
+            'name' => 'Overhead Press',
         ]);
 
         // Create PRs for only some rep ranges (gaps in data)

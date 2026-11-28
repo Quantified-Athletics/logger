@@ -55,15 +55,7 @@ class ChangesController
                 $logType = $liftLog->exercise->log_type;
             }
             if (! $logType) {
-                // Final fallback: derive from coarse exercise_type
-                $exerciseType = $liftLog->exercise->exercise_type ?? 'regular';
-                $logType = match ($exerciseType) {
-                    'cardio' => 'cardio',
-                    'static_hold', 'static-hold' => 'static-hold',
-                    'banded_resistance', 'banded_assistance', 'banded' => 'banded',
-                    'bodyweight' => 'bodyweight-reps',
-                    default => 'barbell',
-                };
+                $logType = 'barbell';
             }
 
             // Skip logs with no live sets: they carry no unit and would otherwise
@@ -81,7 +73,7 @@ class ChangesController
             $logData = [
                 'id' => $liftLog->id,
                 'exerciseId' => $liftLog->exercise->canonical_name,
-                'exerciseName' => $liftLog->exercise->title,
+                'exerciseName' => $liftLog->exercise->name,
                 'date' => $liftLog->logged_at->toDateString(),
                 'logType' => $logType,
                 'sets' => $sets,
@@ -162,15 +154,15 @@ class ChangesController
     {
         $exercises = \App\Models\Exercise::where('user_id', $user->id)
             ->whereNull('deleted_at')
-            ->orderBy('title', 'asc')
+            ->orderBy('name', 'asc')
             ->get();
 
         return $exercises->map(function ($exercise) {
             return [
                 'id' => $exercise->canonical_name,
-                'name' => $exercise->title,
-                'logType' => $exercise->log_type ?? 'barbell',
-                'exerciseType' => $exercise->exercise_type ?? 'regular',
+                'name' => $exercise->name,
+                'logType' => $exercise->log_type ?: 'barbell',
+                'exerciseType' => $exercise->strategyTypeName(),
             ];
         })->values()->toArray();
     }

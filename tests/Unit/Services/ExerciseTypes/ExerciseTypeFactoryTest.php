@@ -4,6 +4,7 @@ namespace Tests\Unit\Services\ExerciseTypes;
 
 use Tests\TestCase;
 use App\Services\ExerciseTypes\ExerciseTypeFactory;
+use App\Services\ExerciseTypes\LogTypeTable;
 use App\Services\ExerciseTypes\RegularExerciseType;
 use App\Services\ExerciseTypes\BandedExerciseType;
 use App\Services\ExerciseTypes\BandedResistanceExerciseType;
@@ -31,7 +32,7 @@ class ExerciseTypeFactoryTest extends TestCase
     public function it_creates_regular_exercise_type_for_standard_exercise()
     {
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -44,7 +45,7 @@ class ExerciseTypeFactoryTest extends TestCase
     public function it_creates_banded_resistance_exercise_type_for_resistance_band_exercise()
     {
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -54,23 +55,24 @@ class ExerciseTypeFactoryTest extends TestCase
     }
 
     /** @test */
-    public function it_creates_banded_assistance_exercise_type_for_assistance_band_exercise()
+    public function it_creates_banded_resistance_exercise_type_for_an_exercise_written_as_banded_assistance()
     {
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_assistance',
+            'log_type' => 'banded',
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
 
-        $this->assertInstanceOf(BandedAssistanceExerciseType::class, $strategy);
-        $this->assertEquals('banded_assistance', $strategy->getTypeName());
+        $this->assertSame('banded', $exercise->log_type);
+        $this->assertInstanceOf(BandedResistanceExerciseType::class, $strategy);
+        $this->assertEquals('banded_resistance', $strategy->getTypeName());
     }
 
     /** @test */
     public function it_creates_bodyweight_exercise_type_for_bodyweight_exercise()
     {
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -83,7 +85,7 @@ class ExerciseTypeFactoryTest extends TestCase
     public function it_creates_cardio_exercise_type_for_cardio_exercise()
     {
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio',
+            'log_type' => 'cardio-distance',
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -96,7 +98,7 @@ class ExerciseTypeFactoryTest extends TestCase
     public function it_uses_exercise_type_field_directly()
     {
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -111,7 +113,7 @@ class ExerciseTypeFactoryTest extends TestCase
         config(['exercise_types.factory.cache_strategies' => true]);
         
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $strategy1 = ExerciseTypeFactory::create($exercise);
@@ -126,7 +128,7 @@ class ExerciseTypeFactoryTest extends TestCase
         config(['exercise_types.factory.cache_strategies' => false]);
         
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $strategy1 = ExerciseTypeFactory::create($exercise);
@@ -140,11 +142,11 @@ class ExerciseTypeFactoryTest extends TestCase
     public function it_creates_different_cache_keys_for_different_exercises()
     {
         $exercise1 = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $exercise2 = Exercise::factory()->create([
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
 
         $strategy1 = ExerciseTypeFactory::create($exercise1);
@@ -159,7 +161,7 @@ class ExerciseTypeFactoryTest extends TestCase
     public function it_clears_cache_successfully()
     {
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $strategy1 = ExerciseTypeFactory::create($exercise);
@@ -200,7 +202,7 @@ class ExerciseTypeFactoryTest extends TestCase
         config(['exercise_types.types.regular' => null]);
 
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         try {
@@ -223,7 +225,7 @@ class ExerciseTypeFactoryTest extends TestCase
         config(['exercise_types.types.regular.class' => 'NonExistentClass']);
 
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         try {
@@ -246,7 +248,7 @@ class ExerciseTypeFactoryTest extends TestCase
         config(['exercise_types.types.regular.class' => \stdClass::class]);
 
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         try {
@@ -272,7 +274,7 @@ class ExerciseTypeFactoryTest extends TestCase
         config(['exercise_types.types.banded_resistance.class' => 'NonExistentClass']);
 
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_resistance',
+            'log_type' => 'banded',
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -287,15 +289,15 @@ class ExerciseTypeFactoryTest extends TestCase
     public function it_generates_unique_cache_keys_for_different_exercise_properties()
     {
         $exercise1 = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $exercise2 = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $exercise3 = Exercise::factory()->create([
-            'exercise_type' => 'bodyweight',
+            'log_type' => 'bodyweight',
         ]);
 
         $strategy1 = ExerciseTypeFactory::create($exercise1);
@@ -317,7 +319,7 @@ class ExerciseTypeFactoryTest extends TestCase
     public function it_handles_exercise_type_in_cache_key_generation()
     {
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $strategy1 = ExerciseTypeFactory::create($exercise);
@@ -331,7 +333,7 @@ class ExerciseTypeFactoryTest extends TestCase
     public function it_handles_invalid_exercise_type_gracefully()
     {
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'invalid_type',
+            'log_type' => 'invalid_type',
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -342,10 +344,10 @@ class ExerciseTypeFactoryTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_missing_exercise_type_gracefully()
+    public function it_handles_missing_log_type_gracefully()
     {
-        $exercise = Exercise::factory()->create([
-            'exercise_type' => null,
+        $exercise = Exercise::factory()->make([
+            'log_type' => null,
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -356,10 +358,10 @@ class ExerciseTypeFactoryTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_empty_exercise_type_gracefully()
+    public function it_handles_empty_log_type_gracefully()
     {
-        $exercise = Exercise::factory()->create([
-            'exercise_type' => '',
+        $exercise = Exercise::factory()->make([
+            'log_type' => '',
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -373,22 +375,22 @@ class ExerciseTypeFactoryTest extends TestCase
     public function it_creates_correct_strategy_for_all_exercise_type_values()
     {
         $testCases = [
-            'regular' => RegularExerciseType::class,
-            'bodyweight' => BodyweightExerciseType::class,
-            'banded_resistance' => BandedResistanceExerciseType::class,
-            'banded_assistance' => BandedAssistanceExerciseType::class,
-            'cardio' => CardioExerciseType::class,
+            'regular' => [RegularExerciseType::class, 'regular'],
+            'bodyweight' => [BodyweightExerciseType::class, 'bodyweight'],
+            'banded_resistance' => [BandedResistanceExerciseType::class, 'banded_resistance'],
+            'banded_assistance' => [BandedResistanceExerciseType::class, 'banded_resistance'],
+            'cardio' => [CardioExerciseType::class, 'cardio'],
         ];
 
-        foreach ($testCases as $exerciseType => $expectedClass) {
+        foreach ($testCases as $exerciseType => [$expectedClass, $expectedTypeName]) {
             $exercise = Exercise::factory()->create([
-                'exercise_type' => $exerciseType,
+                'log_type' => LogTypeTable::logTypeForExerciseType($exerciseType),
             ]);
 
             $strategy = ExerciseTypeFactory::create($exercise);
 
             $this->assertInstanceOf($expectedClass, $strategy, "Failed for exercise_type: {$exerciseType}");
-            $this->assertEquals($exerciseType, $strategy->getTypeName(), "Type name mismatch for exercise_type: {$exerciseType}");
+            $this->assertEquals($expectedTypeName, $strategy->getTypeName(), "Type name mismatch for exercise_type: {$exerciseType}");
         }
     }
 
@@ -398,9 +400,9 @@ class ExerciseTypeFactoryTest extends TestCase
         config(['exercise_types.factory.cache_strategies' => true]);
 
         // Create exercises with same type but different IDs
-        $exercise1 = Exercise::factory()->create(['exercise_type' => 'banded_resistance']);
-        $exercise2 = Exercise::factory()->create(['exercise_type' => 'banded_resistance']);
-        $exercise3 = Exercise::factory()->create(['exercise_type' => 'banded_assistance']);
+        $exercise1 = Exercise::factory()->create(['log_type' => 'banded']);
+        $exercise2 = Exercise::factory()->create(['log_type' => 'banded']);
+        $exercise3 = Exercise::factory()->create(['log_type' => 'banded']);
 
         $strategy1 = ExerciseTypeFactory::create($exercise1);
         $strategy2 = ExerciseTypeFactory::create($exercise2);
@@ -418,7 +420,7 @@ class ExerciseTypeFactoryTest extends TestCase
         // Verify correct types
         $this->assertInstanceOf(BandedResistanceExerciseType::class, $strategy1);
         $this->assertInstanceOf(BandedResistanceExerciseType::class, $strategy2);
-        $this->assertInstanceOf(BandedAssistanceExerciseType::class, $strategy3);
+        $this->assertInstanceOf(BandedResistanceExerciseType::class, $strategy3);
     }
 
     /** @test */
@@ -426,7 +428,7 @@ class ExerciseTypeFactoryTest extends TestCase
     {
         // Test with invalid exercise type
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'completely_invalid_type',
+            'log_type' => 'completely_invalid_type',
         ]);
 
         $strategy = ExerciseTypeFactory::createSafe($exercise);
@@ -439,9 +441,9 @@ class ExerciseTypeFactoryTest extends TestCase
     /** @test */
     public function it_validates_exercise_data_with_appropriate_strategy()
     {
-        $regularExercise = Exercise::factory()->create(['exercise_type' => 'regular']);
-        $bodyweightExercise = Exercise::factory()->create(['exercise_type' => 'bodyweight']);
-        $bandedExercise = Exercise::factory()->create(['exercise_type' => 'banded_resistance']);
+        $regularExercise = Exercise::factory()->create(['log_type' => 'barbell']);
+        $bodyweightExercise = Exercise::factory()->create(['log_type' => 'bodyweight']);
+        $bandedExercise = Exercise::factory()->create(['log_type' => 'banded']);
 
         $regularRules = ExerciseTypeFactory::validateExerciseData($regularExercise, []);
         $bodyweightRules = ExerciseTypeFactory::validateExerciseData($bodyweightExercise, []);
@@ -463,8 +465,7 @@ class ExerciseTypeFactoryTest extends TestCase
     {
         // Create exercise using legacy fields (simulating old data)
         $exercise = Exercise::factory()->make([
-            'exercise_type' => null,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $strategy = ExerciseTypeFactory::create($exercise);
@@ -482,8 +483,7 @@ class ExerciseTypeFactoryTest extends TestCase
         // Test resistance band fallback - create with different ID to avoid cache collision
         $resistanceExercise = Exercise::factory()->make([
             'id' => 999,
-            'exercise_type' => null,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $resistanceStrategy = ExerciseTypeFactory::create($resistanceExercise);
@@ -496,12 +496,11 @@ class ExerciseTypeFactoryTest extends TestCase
         // Test assistance band fallback - create with different ID
         $assistanceExercise = Exercise::factory()->make([
             'id' => 998,
-            'exercise_type' => null,
-            'exercise_type' => 'banded_assistance'
+            'log_type' => 'banded'
         ]);
 
         $assistanceStrategy = ExerciseTypeFactory::create($assistanceExercise);
-        $this->assertInstanceOf(BandedAssistanceExerciseType::class, $assistanceStrategy);
-        $this->assertEquals('banded_assistance', $assistanceStrategy->getTypeName());
+        $this->assertInstanceOf(BandedResistanceExerciseType::class, $assistanceStrategy);
+        $this->assertEquals('banded_resistance', $assistanceStrategy->getTypeName());
     }
 }

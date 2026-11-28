@@ -27,7 +27,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
         
         // Refresh to ensure we have the latest data
@@ -39,7 +39,7 @@ class LiftLogCreateTest extends TestCase
         ]));
 
         $response->assertStatus(200);
-        $response->assertSee('Log ' . $exercise->title);
+        $response->assertSee('Log ' . $exercise->name);
     }
 
     /** @test */
@@ -328,7 +328,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Back Squat'
+            'name' => 'Back Squat'
         ]);
         
         // Create an alias for this exercise
@@ -353,7 +353,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $response = $this->get(route('lift-logs.create', [
@@ -362,7 +362,7 @@ class LiftLogCreateTest extends TestCase
         ]));
 
         $response->assertStatus(200);
-        $response->assertSee('Log ' . $exercise->title);
+        $response->assertSee('Log ' . $exercise->name);
     }
 
     /** @test */
@@ -370,7 +370,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded'
+            'log_type' => 'banded'
         ]);
 
         $response = $this->get(route('lift-logs.create', [
@@ -379,7 +379,7 @@ class LiftLogCreateTest extends TestCase
         ]));
 
         $response->assertStatus(200);
-        $response->assertSee('Log ' . $exercise->title);
+        $response->assertSee('Log ' . $exercise->name);
     }
 
     /** @test */
@@ -582,7 +582,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded'
+            'log_type' => 'banded'
         ]);
         $date = Carbon::today();
 
@@ -608,7 +608,7 @@ class LiftLogCreateTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Bench Press'
+            'name' => 'Bench Press'
         ]);
         $date = Carbon::today();
 

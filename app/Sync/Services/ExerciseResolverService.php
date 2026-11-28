@@ -3,6 +3,7 @@
 namespace App\Sync\Services;
 
 use App\Models\Exercise;
+use App\Services\ExerciseTypes\LogTypeTable;
 use App\Models\ExerciseAlias;
 use App\Models\User;
 use Illuminate\Support\Str;
@@ -24,8 +25,8 @@ class ExerciseResolverService
 
         if ($exercise) {
             $updates = [];
-            if ($exercise->title !== $exerciseName) {
-                $updates['title'] = $exerciseName;
+            if ($exercise->name !== $exerciseName) {
+                $updates['name'] = $exerciseName;
             }
             // Populate log_type if not already set and we have one from the sync payload
             if ($logType && !$exercise->log_type) {
@@ -38,16 +39,16 @@ class ExerciseResolverService
             return $exercise;
         }
 
-        // 2. Case-insensitive match on exercises.title (scoped to global only)
+        // 2. Case-insensitive match on exercises.name (scoped to global only)
         $exercise = Exercise::query()
             ->whereNull('user_id')
-            ->whereRaw('LOWER(title) = ?', [strtolower($exerciseName)])
+            ->whereRaw('LOWER(name) = ?', [strtolower($exerciseName)])
             ->first();
 
         if ($exercise) {
             $updates = [];
-            if ($exercise->title !== $exerciseName) {
-                $updates['title'] = $exerciseName;
+            if ($exercise->name !== $exerciseName) {
+                $updates['name'] = $exerciseName;
             }
             if ($logType && !$exercise->log_type) {
                 $updates['log_type'] = $logType;
@@ -69,8 +70,8 @@ class ExerciseResolverService
             $exercise = $alias->exercise;
             if ($exercise && $exercise->user_id === null) {
                 $updates = [];
-                if ($exercise->title !== $exerciseName) {
-                    $updates['title'] = $exerciseName;
+                if ($exercise->name !== $exerciseName) {
+                    $updates['name'] = $exerciseName;
                 }
                 if ($logType && !$exercise->log_type) {
                     $updates['log_type'] = $logType;
@@ -91,8 +92,8 @@ class ExerciseResolverService
 
         if ($existingUserOwned) {
             $updates = ['user_id' => null];
-            if ($existingUserOwned->title !== $exerciseName) {
-                $updates['title'] = $exerciseName;
+            if ($existingUserOwned->name !== $exerciseName) {
+                $updates['name'] = $exerciseName;
             }
             if ($logType && !$existingUserOwned->log_type) {
                 $updates['log_type'] = $logType;
@@ -102,36 +103,12 @@ class ExerciseResolverService
             return $existingUserOwned;
         }
 
-        $derivedType = $this->deriveExerciseType($logType);
-
         return Exercise::create([
-            'title' => $exerciseName,
+            'name' => $exerciseName,
             'canonical_name' => $canonical,
-            'exercise_type' => $derivedType,
-            'log_type' => $logType,
+            'log_type' => $logType ?: LogTypeTable::DEFAULT_LOG_TYPE,
             'user_id' => null,
             'show_in_feed' => true,
         ]);
-    }
-
-    /**
-     * Derive exercise type from log type.
-     */
-    private function deriveExerciseType(?string $logType): string
-    {
-        if (! $logType) {
-            return 'regular';
-        }
-
-        return match ($logType) {
-            'barbell', 'barbell-complex', 'single-dumbbell', 'dual-dumbbell', 'kettlebell', 'ball', 'machine' => 'regular',
-            'weighted-carry', 'sled', 'weighted-carry-1-kb', 'weighted-carry-2-kb', 'weighted-carry-1-db', 'weighted-carry-2-db', 'weighted-carry-ball' => 'load_output',
-            'static-hold' => 'static_hold',
-            'timed-reps' => 'timed_output',
-            'bodyweight', 'bodyweight-reps', 'added-weight' => 'bodyweight',
-            'banded' => 'banded_resistance',
-            'cardio', 'cardio-calories', 'cardio-distance' => 'cardio',
-            default => 'regular',
-        };
     }
 }

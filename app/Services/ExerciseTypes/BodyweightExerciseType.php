@@ -106,9 +106,6 @@ class BodyweightExerciseType extends BaseExerciseType
     {
         $processedData = $data;
         
-        // For bodyweight exercises, ensure exercise_type is set correctly
-        $processedData['exercise_type'] = 'bodyweight';
-        
         // Bodyweight exercises are bodyweight exercises and don't use bands
         $processedData['is_bodyweight'] = true;
         
@@ -277,18 +274,7 @@ class BodyweightExerciseType extends BaseExerciseType
         
         return round($converted) . ' ' . $unit . ' (est. incl. BW)';
     }
-    
-    /**
-     * Get exercise type display name and icon for bodyweight exercises
-     */
-    public function getTypeDisplayInfo(): array
-    {
-        return [
-            'icon' => 'fas fa-user',
-            'name' => 'Bodyweight'
-        ];
-    }
-    
+
     /**
      * Get chart title for bodyweight exercises
      */

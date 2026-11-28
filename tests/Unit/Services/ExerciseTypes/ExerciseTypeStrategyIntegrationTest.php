@@ -45,7 +45,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $liftLog = LiftLog::factory()->create([
@@ -74,7 +74,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $liftLog = LiftLog::factory()->create([
@@ -104,7 +104,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $liftLog = LiftLog::factory()->create([
@@ -135,7 +135,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         $liftLog = LiftLog::factory()->create([
@@ -166,22 +166,22 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
     {
         $regularExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $bandedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $bodyweightExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $cardioExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         $regularStrategy = ExerciseTypeFactory::create($regularExercise);
@@ -201,22 +201,22 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
     {
         $regularExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $bandedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $bodyweightExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $cardioExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         $regularStrategy = ExerciseTypeFactory::create($regularExercise);
@@ -242,7 +242,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
         // Regular exercise
         $regularExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $regularLiftLog = LiftLog::factory()->create([
@@ -263,7 +263,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
         // Banded exercise
         $bandedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $bandedLiftLog = LiftLog::factory()->create([
@@ -285,7 +285,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
         // Bodyweight exercise
         $bodyweightExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $bodyweightLiftLog = LiftLog::factory()->create([
@@ -306,7 +306,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
         // Cardio exercise
         $cardioExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         $cardioLiftLog = LiftLog::factory()->create([
@@ -331,25 +331,25 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
     {
         $bandedResistanceExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $bandedAssistanceExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_assistance'
+            'log_type' => 'banded'
         ]);
 
         $regularExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         // Test backward compatibility methods still work
         $this->assertTrue($bandedResistanceExercise->isBandedResistance());
         $this->assertFalse($bandedResistanceExercise->isBandedAssistance());
         
-        $this->assertTrue($bandedAssistanceExercise->isBandedAssistance());
-        $this->assertFalse($bandedAssistanceExercise->isBandedResistance());
+        $this->assertFalse($bandedAssistanceExercise->isBandedAssistance());
+        $this->assertTrue($bandedAssistanceExercise->isBandedResistance());
         
         $this->assertFalse($regularExercise->isBandedResistance());
         $this->assertFalse($regularExercise->isBandedAssistance());
@@ -360,7 +360,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
         $regularStrategy = ExerciseTypeFactory::create($regularExercise);
 
         $this->assertEquals('banded_resistance', $resistanceStrategy->getTypeName());
-        $this->assertEquals('banded_assistance', $assistanceStrategy->getTypeName());
+        $this->assertEquals('banded_resistance', $assistanceStrategy->getTypeName());
         $this->assertEquals('regular', $regularStrategy->getTypeName());
     }
 
@@ -370,7 +370,7 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
         // Exercise with both bodyweight and band_type (band_type should take precedence)
         $mixedExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $strategy = ExerciseTypeFactory::create($mixedExercise);
@@ -384,19 +384,19 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
     public function it_processes_lift_data_correctly_across_all_exercise_types()
     {
         $regularExercise = Exercise::factory()->create([
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
 
         $bandedExercise = Exercise::factory()->create([
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]);
 
         $bodyweightExercise = Exercise::factory()->create([
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $cardioExercise = Exercise::factory()->create([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]);
 
         $regularStrategy = ExerciseTypeFactory::create($regularExercise);
@@ -439,43 +439,43 @@ class ExerciseTypeStrategyIntegrationTest extends TestCase
         // Clear cache before each strategy creation to avoid cache key conflicts
         ExerciseTypeFactory::clearCache();
         $regularStrategy = ExerciseTypeFactory::create(Exercise::factory()->make([
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]));
 
         ExerciseTypeFactory::clearCache();
         $bandedStrategy = ExerciseTypeFactory::create(Exercise::factory()->make([
-            'exercise_type' => 'banded_resistance'
+            'log_type' => 'banded'
         ]));
 
         ExerciseTypeFactory::clearCache();
         $bodyweightStrategy = ExerciseTypeFactory::create(Exercise::factory()->make([
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]));
 
         ExerciseTypeFactory::clearCache();
         $cardioStrategy = ExerciseTypeFactory::create(Exercise::factory()->make([
-            'exercise_type' => 'cardio'
+            'log_type' => 'cardio-distance'
         ]));
 
         $inputData = [
-            'title' => 'Test Exercise',
-            'exercise_type' => 'banded_resistance'
+            'name' => 'Test Exercise',
+            'log_type' => 'banded'
         ];
 
         // Regular exercise should set exercise_type to regular
         $regularProcessed = $regularStrategy->processExerciseData($inputData);
-        $this->assertEquals('regular', $regularProcessed['exercise_type']);
+        $this->assertArrayNotHasKey('exercise_type', $regularProcessed);
 
         // Banded exercise
         $bandedProcessed = $bandedStrategy->processExerciseData($inputData);
-        $this->assertEquals('banded_resistance', $bandedProcessed['exercise_type']);
+        $this->assertArrayNotHasKey('exercise_type', $bandedProcessed);
 
         // Bodyweight exercise
         $bodyweightProcessed = $bodyweightStrategy->processExerciseData($inputData);
-        $this->assertEquals('bodyweight', $bodyweightProcessed['exercise_type']);
+        $this->assertArrayNotHasKey('exercise_type', $bodyweightProcessed);
 
         // Cardio exercise
         $cardioProcessed = $cardioStrategy->processExerciseData($inputData);
-        $this->assertEquals('cardio', $cardioProcessed['exercise_type']);
+        $this->assertArrayNotHasKey('exercise_type', $cardioProcessed);
     }
 }

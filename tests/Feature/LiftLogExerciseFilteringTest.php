@@ -18,8 +18,8 @@ class LiftLogExerciseFilteringTest extends TestCase
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
 
-        $exercise1 = Exercise::factory()->create(['user_id' => $user1->id, 'title' => 'User1 Exercise']);
-        $exercise2 = Exercise::factory()->create(['user_id' => $user2->id, 'title' => 'User2 Exercise']);
+        $exercise1 = Exercise::factory()->create(['user_id' => $user1->id, 'name' => 'User1 Exercise']);
+        $exercise2 = Exercise::factory()->create(['user_id' => $user2->id, 'name' => 'User2 Exercise']);
 
         \App\Models\LiftLog::factory()->create(['user_id' => $user1->id, 'exercise_id' => $exercise1->id]);
 
@@ -28,8 +28,8 @@ class LiftLogExerciseFilteringTest extends TestCase
         $response = $this->get(route('lift-logs.index'));
 
         $response->assertOk();
-        $response->assertSee($exercise1->title);
-        $response->assertDontSee($exercise2->title);
+        $response->assertSee($exercise1->name);
+        $response->assertDontSee($exercise2->name);
     }
 
 

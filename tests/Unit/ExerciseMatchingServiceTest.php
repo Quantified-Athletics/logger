@@ -25,7 +25,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_exact_match_case_insensitive()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'user_id' => $this->user->id
         ]);
 
@@ -38,7 +38,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_exact_match_with_different_case()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Pull-ups',
+            'name' => 'Pull-ups',
             'user_id' => $this->user->id
         ]);
 
@@ -51,12 +51,12 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_prefers_exact_match_over_partial()
     {
         $exactMatch = Exercise::factory()->create([
-            'title' => 'Squat',
+            'name' => 'Squat',
             'user_id' => $this->user->id
         ]);
         
         $partialMatch = Exercise::factory()->create([
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'user_id' => $this->user->id
         ]);
 
@@ -69,7 +69,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_handles_hyphen_variations()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Pull-ups',
+            'name' => 'Pull-ups',
             'user_id' => $this->user->id
         ]);
 
@@ -87,7 +87,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_handles_plural_variations()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Push-up',
+            'name' => 'Push-up',
             'user_id' => $this->user->id
         ]);
 
@@ -100,12 +100,12 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_prefers_starts_with_match()
     {
         $startsWithMatch = Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => $this->user->id
         ]);
         
         $containsMatch = Exercise::factory()->create([
-            'title' => 'Incline Bench Press',
+            'name' => 'Incline Bench Press',
             'user_id' => $this->user->id
         ]);
 
@@ -118,7 +118,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_handles_abbreviations()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Dumbbell Row',
+            'name' => 'Dumbbell Row',
             'user_id' => $this->user->id
         ]);
 
@@ -131,7 +131,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_returns_null_when_no_match()
     {
         Exercise::factory()->create([
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'user_id' => $this->user->id
         ]);
 
@@ -146,7 +146,7 @@ class ExerciseMatchingServiceTest extends TestCase
         $otherUser = User::factory()->create();
         
         $otherUserExercise = Exercise::factory()->create([
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'user_id' => $otherUser->id
         ]);
 
@@ -158,7 +158,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_finds_global_exercises()
     {
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'user_id' => null // Global exercise
         ]);
 
@@ -171,7 +171,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_handles_extra_whitespace()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Back Squat',
+            'name' => 'Back Squat',
             'user_id' => $this->user->id
         ]);
 
@@ -184,12 +184,12 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_prefers_whole_word_match()
     {
         $wholeWordMatch = Exercise::factory()->create([
-            'title' => 'Press',
+            'name' => 'Press',
             'user_id' => $this->user->id
         ]);
         
         $partialWordMatch = Exercise::factory()->create([
-            'title' => 'Pressing Movement',
+            'name' => 'Pressing Movement',
             'user_id' => $this->user->id
         ]);
 
@@ -202,7 +202,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_handles_compound_exercise_names()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Barbell Back Squat',
+            'name' => 'Barbell Back Squat',
             'user_id' => $this->user->id
         ]);
 
@@ -229,7 +229,7 @@ class ExerciseMatchingServiceTest extends TestCase
 
         foreach ($exercises as $fullName => $abbreviations) {
             $exercise = Exercise::factory()->create([
-                'title' => $fullName,
+                'name' => $fullName,
                 'user_id' => $this->user->id
             ]);
 
@@ -258,7 +258,7 @@ class ExerciseMatchingServiceTest extends TestCase
 
         foreach ($exercises as $fullName => $abbreviations) {
             $exercise = Exercise::factory()->create([
-                'title' => $fullName,
+                'name' => $fullName,
                 'user_id' => $this->user->id
             ]);
 
@@ -274,7 +274,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_abbreviations_work_in_compound_names()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Dumbbell Row',
+            'name' => 'Dumbbell Row',
             'user_id' => $this->user->id
         ]);
 
@@ -289,12 +289,12 @@ class ExerciseMatchingServiceTest extends TestCase
     {
         // Create exercises that could conflict
         Exercise::factory()->create([
-            'title' => 'Push Up',
+            'name' => 'Push Up',
             'user_id' => $this->user->id
         ]);
         
         $pushPress = Exercise::factory()->create([
-            'title' => 'Push Press',
+            'name' => 'Push Press',
             'user_id' => $this->user->id
         ]);
 
@@ -308,7 +308,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_abbreviation_expansion_with_plurals()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Kettlebell Swing',
+            'name' => 'Kettlebell Swing',
             'user_id' => $this->user->id
         ]);
 
@@ -323,13 +323,13 @@ class ExerciseMatchingServiceTest extends TestCase
     {
         // Create an exercise with the abbreviation as its actual name
         $kbSwings = Exercise::factory()->create([
-            'title' => 'KB Swings',
+            'name' => 'KB Swings',
             'user_id' => $this->user->id
         ]);
 
         // Also create the expanded version
         $kettlebellSwing = Exercise::factory()->create([
-            'title' => 'Kettlebell Swing',
+            'name' => 'Kettlebell Swing',
             'user_id' => $this->user->id
         ]);
 
@@ -343,7 +343,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_abbreviation_does_not_expand_within_words()
     {
         $muscleSnatch = Exercise::factory()->create([
-            'title' => 'Muscle Snatch',
+            'name' => 'Muscle Snatch',
             'user_id' => $this->user->id
         ]);
 
@@ -357,7 +357,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_standalone_abbreviation_expands_correctly()
     {
         $muscleUp = Exercise::factory()->create([
-            'title' => 'Muscle Up',
+            'name' => 'Muscle Up',
             'user_id' => $this->user->id
         ]);
 
@@ -371,7 +371,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_abbreviation_expansion_in_compound_names()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Dumbbell Muscle Snatch',
+            'name' => 'Dumbbell Muscle Snatch',
             'user_id' => $this->user->id
         ]);
 
@@ -385,7 +385,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_database_alias_matching()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Glute Ham Developer Sit-up',
+            'name' => 'Glute Ham Developer Sit-up',
             'user_id' => $this->user->id
         ]);
 
@@ -406,12 +406,12 @@ class ExerciseMatchingServiceTest extends TestCase
     {
         // Create two exercises
         $kbSwing = Exercise::factory()->create([
-            'title' => 'Kettlebell Swing',
+            'name' => 'Kettlebell Swing',
             'user_id' => $this->user->id
         ]);
 
         $customExercise = Exercise::factory()->create([
-            'title' => 'Custom KB Exercise',
+            'name' => 'Custom KB Exercise',
             'user_id' => $this->user->id
         ]);
 
@@ -431,7 +431,7 @@ class ExerciseMatchingServiceTest extends TestCase
     public function test_database_alias_case_insensitive()
     {
         $exercise = Exercise::factory()->create([
-            'title' => 'Toes to Bar',
+            'name' => 'Toes to Bar',
             'user_id' => $this->user->id
         ]);
 

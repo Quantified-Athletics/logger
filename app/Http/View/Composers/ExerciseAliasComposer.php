@@ -39,7 +39,7 @@ class ExerciseAliasComposer
             // Re-sort by display name (title after alias application) while maintaining global/user grouping
             $exercisesWithAliases = $exercisesWithAliases->sortBy([
                 ['user_id', 'asc'], // Global exercises (null) first
-                ['title', 'asc']    // Then alphabetically by display name
+                ['name', 'asc']    // Then alphabetically by display name
             ])->values(); // Reset keys
             
             $view->with('exercises', $exercisesWithAliases);
@@ -53,7 +53,7 @@ class ExerciseAliasComposer
             // Re-sort by display name
             $allExercisesWithAliases = $allExercisesWithAliases->sortBy([
                 ['user_id', 'asc'],
-                ['title', 'asc']
+                ['name', 'asc']
             ])->values();
             
             $view->with('allExercises', $allExercisesWithAliases);
@@ -70,7 +70,7 @@ class ExerciseAliasComposer
         $exercise = $viewData['exercise'] ?? null;
         if ($exercise instanceof \App\Models\Exercise) {
             $displayName = $this->aliasService->getDisplayName($exercise, auth()->user());
-            $exercise->title = $displayName;
+            $exercise->name = $displayName;
             $view->with('exercise', $exercise);
         }
 
@@ -82,7 +82,7 @@ class ExerciseAliasComposer
                 if (is_object($liftLog) && method_exists($liftLog, 'relationLoaded')) {
                     if ($liftLog->relationLoaded('exercise') && $liftLog->exercise) {
                         $displayName = $this->aliasService->getDisplayName($liftLog->exercise, auth()->user());
-                        $liftLog->exercise->title = $displayName;
+                        $liftLog->exercise->name = $displayName;
                     }
                 }
             });
@@ -94,7 +94,7 @@ class ExerciseAliasComposer
             // The items array contains exercise names that need alias application
             // We need to apply aliases to the 'name' field in each item
             // Note: This is already handled by the view composer since exercises are loaded with aliases
-            // and the service uses $exercise->title which will already have the alias applied
+            // and the service uses $exercise->name which will already have the alias applied
         }
     }
 }

@@ -46,7 +46,7 @@ return [
             'icon' => 'fa-dumbbell',
             'route' => 'mobile-entry.lifts',
             'patterns' => [ // Patterns for main item active state and sub-menu dispatch
-                'lift-logs.*', 'recommendations.*', 'mobile-entry.lifts', 'workouts.*', 'exercises.show-logs',
+                'lift-logs.*', 'mobile-entry.lifts', 'workouts.*', 'exercises.show-logs',
             ],
             'children' => [ // Lifts Sub-Menu Items
                 [
@@ -136,7 +136,7 @@ return [
             'label' => null,
             'icon' => 'fa-cog',
             'route' => 'profile.edit', // Default route - profile for all users
-            'patterns' => ['users.*', 'exercises.index', 'exercises.create', 'exercises.edit', 'exercises.destroy', 'recommendations.*', 'profile.edit', 'profile.edit-preferences', 'connections.index'],
+            'patterns' => ['users.*', 'exercises.index', 'exercises.create', 'exercises.edit', 'exercises.destroy', 'profile.edit', 'profile.edit-preferences', 'connections.index'],
             'style' => 'padding: 14px 8px',
             'children' => [
                 // Admin-only items
@@ -150,14 +150,6 @@ return [
                     'label' => 'Exercises',
                     'route' => 'exercises.index',
                     'patterns' => ['exercises.index', 'exercises.create', 'exercises.edit', 'exercises.destroy'],
-                    'roles' => ['Admin'],
-                ],
-                [
-                    'label' => null,
-                    'icon' => 'fa-star',
-                    'route' => 'recommendations.index',
-                    'title' => 'Recommendations',
-                    'patterns' => ['recommendations.*'],
                     'roles' => ['Admin'],
                 ],
                 // Available to all users

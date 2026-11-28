@@ -64,7 +64,7 @@ class FeedControllerTest extends TestCase
 
         $response->assertStatus(200);
         // Should see recent PR's exercise
-        $response->assertSee($exercise->title);
+        $response->assertSee($exercise->name);
     }
 
     /** @test */
@@ -72,13 +72,13 @@ class FeedControllerTest extends TestCase
     {
         $exerciseWithFeed = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Squat',
+            'name' => 'Squat',
             'show_in_feed' => true,
         ]);
 
         $exerciseWithoutFeed = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Curl',
+            'name' => 'Curl',
             'show_in_feed' => false,
         ]);
 
@@ -118,13 +118,13 @@ class FeedControllerTest extends TestCase
     {
         $exerciseWithFeed = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Deadlift',
+            'name' => 'Deadlift',
             'show_in_feed' => true,
         ]);
 
         $exerciseWithoutFeed = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'Tricep Extension',
+            'name' => 'Tricep Extension',
             'show_in_feed' => false,
         ]);
 
@@ -213,7 +213,7 @@ class FeedControllerTest extends TestCase
         $response->assertStatus(200);
         // Should see "You" instead of user's name
         $response->assertSee('You');
-        $response->assertSee($exercise->title);
+        $response->assertSee($exercise->name);
     }
 
     /** @test */
@@ -284,7 +284,7 @@ class FeedControllerTest extends TestCase
     /** @test */
     public function it_shows_recent_prs_on_user_profile()
     {
-        $exercise = Exercise::factory()->create(['user_id' => null, 'show_in_feed' => true, 'title' => 'Deadlift']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'show_in_feed' => true, 'name' => 'Deadlift']);
         $liftLog = LiftLog::factory()->create([
             'user_id' => $this->otherUser->id,
             'exercise_id' => $exercise->id,
@@ -499,8 +499,8 @@ class FeedControllerTest extends TestCase
     /** @test */
     public function it_groups_prs_by_user_and_date()
     {
-        $exercise1 = Exercise::factory()->create(['user_id' => null, 'show_in_feed' => true, 'title' => 'Squat']);
-        $exercise2 = Exercise::factory()->create(['user_id' => null, 'show_in_feed' => true, 'title' => 'Bench Press']);
+        $exercise1 = Exercise::factory()->create(['user_id' => null, 'show_in_feed' => true, 'name' => 'Squat']);
+        $exercise2 = Exercise::factory()->create(['user_id' => null, 'show_in_feed' => true, 'name' => 'Bench Press']);
 
         // Follow the other user
         $this->user->follow($this->otherUser);
@@ -2237,9 +2237,9 @@ class FeedControllerTest extends TestCase
         // Create a static hold exercise (L-sit)
         $exercise = Exercise::factory()->create([
             'user_id' => null,
-            'title' => 'L-Sit',
+            'name' => 'L-Sit',
             'show_in_feed' => true,
-            'exercise_type' => 'static_hold',
+            'log_type' => 'static-hold',
         ]);
 
         // Follow the other user

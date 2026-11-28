@@ -120,7 +120,7 @@ class ExerciseMatchingAliasController extends Controller
             ->first();
         
         if ($existingAlias) {
-            $message = 'Alias "' . $aliasName . '" already exists for ' . $exercise->title . '!';
+            $message = 'Alias "' . $aliasName . '" already exists for ' . $exercise->name . '!';
         } else {
             // Check if alias exists for a different exercise
             $aliasForDifferentExercise = ExerciseMatchingAlias::where('alias', $aliasName)
@@ -130,14 +130,14 @@ class ExerciseMatchingAliasController extends Controller
             if ($aliasForDifferentExercise) {
                 // Update existing alias to point to new exercise
                 $aliasForDifferentExercise->update(['exercise_id' => $exerciseId]);
-                $message = 'Alias "' . $aliasName . '" updated to link to ' . $exercise->title . '!';
+                $message = 'Alias "' . $aliasName . '" updated to link to ' . $exercise->name . '!';
             } else {
                 // Create new alias
                 ExerciseMatchingAlias::create([
                     'exercise_id' => $exerciseId,
                     'alias' => $aliasName,
                 ]);
-                $message = 'Alias "' . $aliasName . '" created for ' . $exercise->title . '!';
+                $message = 'Alias "' . $aliasName . '" created for ' . $exercise->name . '!';
             }
         }
         
@@ -163,7 +163,7 @@ class ExerciseMatchingAliasController extends Controller
         $aliasName = $request->input('alias_name');
         
         // Check if exercise already exists
-        $existingExercise = Exercise::where('title', $request->input('exercise_name'))
+        $existingExercise = Exercise::where('name', $request->input('exercise_name'))
             ->availableToUser(Auth::id())
             ->first();
         
@@ -181,9 +181,9 @@ class ExerciseMatchingAliasController extends Controller
         
         // Create the new exercise
         $exercise = Exercise::create([
-            'title' => $request->input('exercise_name'),
+            'name' => $request->input('exercise_name'),
             'user_id' => Auth::id(),
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
             'canonical_name' => $canonicalName
         ]);
         
@@ -199,7 +199,7 @@ class ExerciseMatchingAliasController extends Controller
             : route('workouts.index');
         
         return redirect($redirectUrl)
-            ->with('success', 'Exercise "' . $exercise->title . '" created and linked to "' . $aliasName . '"!');
+            ->with('success', 'Exercise "' . $exercise->name . '" created and linked to "' . $aliasName . '"!');
     }
     
     /**

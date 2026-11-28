@@ -17,7 +17,7 @@ class CalculateHistoricalPRsCommandTest extends TestCase
     public function it_calculates_prs_for_all_historical_lift_logs()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
 
         // Create 3 lift logs without triggering PR detection
         $log1 = LiftLog::factory()->create([
@@ -72,7 +72,7 @@ class CalculateHistoricalPRsCommandTest extends TestCase
     public function it_supports_dry_run_mode()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
 
         $log = LiftLog::factory()->create([
             'user_id' => $user->id,
@@ -98,7 +98,7 @@ class CalculateHistoricalPRsCommandTest extends TestCase
     {
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
 
         // Create logs for both users
         $log1 = LiftLog::factory()->create([
@@ -131,8 +131,8 @@ class CalculateHistoricalPRsCommandTest extends TestCase
     public function it_can_calculate_prs_for_specific_exercise()
     {
         $user = User::factory()->create();
-        $exercise1 = Exercise::factory()->create(['exercise_type' => 'regular']);
-        $exercise2 = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise1 = Exercise::factory()->create(['log_type' => 'barbell']);
+        $exercise2 = Exercise::factory()->create(['log_type' => 'barbell']);
 
         // Create logs for both exercises
         $log1 = LiftLog::factory()->create([
@@ -173,7 +173,7 @@ class CalculateHistoricalPRsCommandTest extends TestCase
     public function it_recalculates_prs_under_canonical_factor_for_mixed_unit_logs()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular', 'log_type' => 'weightlifting']);
+        $exercise = Exercise::factory()->create(['log_type' => 'weightlifting']);
 
         // Log 1: 220.0 lbs set
         $log1 = LiftLog::factory()->create([

@@ -22,9 +22,9 @@ class PRDetectionLoggingTest extends TestCase
         
         $this->user = User::factory()->create();
         $this->exercise = Exercise::factory()->create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'user_id' => null,
-            'exercise_type' => 'weighted',
+            'log_type' => 'barbell',
         ]);
     }
 

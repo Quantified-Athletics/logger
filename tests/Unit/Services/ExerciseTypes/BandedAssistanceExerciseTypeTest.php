@@ -84,14 +84,14 @@ class BandedAssistanceExerciseTypeTest extends TestCase
     public function it_processes_exercise_data_correctly()
     {
         $inputData = [
-            'title' => 'Assisted Pull-up',
-            'exercise_type' => 'banded_assistance'
+            'name' => 'Assisted Pull-up',
+            'log_type' => 'banded'
         ];
 
         $processedData = $this->strategy->processExerciseData($inputData);
 
-        $this->assertEquals('Assisted Pull-up', $processedData['title']);
-        $this->assertEquals('banded_assistance', $processedData['exercise_type']);
+        $this->assertEquals('Assisted Pull-up', $processedData['name']);
+        $this->assertArrayNotHasKey('exercise_type', $processedData);
     }
 
     /** @test */
@@ -117,7 +117,7 @@ class BandedAssistanceExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_weight_display_correctly_with_assistance_indicator()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_assistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -134,7 +134,7 @@ class BandedAssistanceExerciseTypeTest extends TestCase
     /** @test */
     public function it_formats_empty_band_color_display()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_assistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -163,7 +163,7 @@ class BandedAssistanceExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_progression_suggestion_for_high_reps_to_lighter_band()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_assistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -180,7 +180,7 @@ class BandedAssistanceExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_progression_suggestion_to_no_assistance_for_lightest_band()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_assistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,
@@ -197,7 +197,7 @@ class BandedAssistanceExerciseTypeTest extends TestCase
     /** @test */
     public function it_returns_null_progression_suggestion_for_low_reps()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'banded_assistance']);
+        $exercise = Exercise::factory()->create(['log_type' => 'banded']);
         $liftLog = LiftLog::factory()->create(['exercise_id' => $exercise->id]);
         LiftSet::factory()->create([
             'lift_log_id' => $liftLog->id,

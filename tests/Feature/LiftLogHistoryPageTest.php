@@ -18,8 +18,8 @@ class LiftLogHistoryPageTest extends TestCase
         $user = User::factory()->create();
         
         // Create exercises
-        $exerciseWithLogs = Exercise::factory()->create(['title' => 'Bench Press']);
-        $exerciseWithoutLogs = Exercise::factory()->create(['title' => 'Squat']);
+        $exerciseWithLogs = Exercise::factory()->create(['name' => 'Bench Press']);
+        $exerciseWithoutLogs = Exercise::factory()->create(['name' => 'Squat']);
         
         // Create lift logs only for the first exercise
         LiftLog::factory()->count(3)->create([
@@ -43,8 +43,8 @@ class LiftLogHistoryPageTest extends TestCase
     {
         $user = User::factory()->create();
         
-        $exercise1 = Exercise::factory()->create(['title' => 'Bench Press']);
-        $exercise2 = Exercise::factory()->create(['title' => 'Deadlift']);
+        $exercise1 = Exercise::factory()->create(['name' => 'Bench Press']);
+        $exercise2 = Exercise::factory()->create(['name' => 'Deadlift']);
         
         // Create 5 logs for exercise 1
         LiftLog::factory()->count(5)->create([
@@ -75,8 +75,8 @@ class LiftLogHistoryPageTest extends TestCase
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
         
-        $exercise1 = Exercise::factory()->create(['title' => 'User 1 Exercise']);
-        $exercise2 = Exercise::factory()->create(['title' => 'User 2 Exercise']);
+        $exercise1 = Exercise::factory()->create(['name' => 'User 1 Exercise']);
+        $exercise2 = Exercise::factory()->create(['name' => 'User 2 Exercise']);
         
         // User 1 has logs for exercise 1
         LiftLog::factory()->count(2)->create([
@@ -109,7 +109,7 @@ class LiftLogHistoryPageTest extends TestCase
         $user = User::factory()->create();
         
         // Create an exercise but no logs
-        Exercise::factory()->create(['title' => 'Bench Press']);
+        Exercise::factory()->create(['name' => 'Bench Press']);
         
         $response = $this->actingAs($user)->get(route('lift-logs.index'));
         
@@ -128,7 +128,7 @@ class LiftLogHistoryPageTest extends TestCase
     {
         $user = User::factory()->create();
         
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press']);
         
         LiftLog::factory()->count(2)->create([
             'user_id' => $user->id,
@@ -149,9 +149,9 @@ class LiftLogHistoryPageTest extends TestCase
     {
         $user = User::factory()->create();
         
-        $exerciseZ = Exercise::factory()->create(['title' => 'Zebra Lift']);
-        $exerciseA = Exercise::factory()->create(['title' => 'Apple Lift']);
-        $exerciseM = Exercise::factory()->create(['title' => 'Mango Lift']);
+        $exerciseZ = Exercise::factory()->create(['name' => 'Zebra Lift']);
+        $exerciseA = Exercise::factory()->create(['name' => 'Apple Lift']);
+        $exerciseM = Exercise::factory()->create(['name' => 'Mango Lift']);
         
         // Create logs with different dates
         // All within last 4 weeks = all "recent", so should be alphabetical
@@ -193,7 +193,7 @@ class LiftLogHistoryPageTest extends TestCase
     {
         $user = User::factory()->create();
         
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press']);
         
         // Create an alias for this user
         $exercise->aliases()->create([
@@ -220,7 +220,7 @@ class LiftLogHistoryPageTest extends TestCase
     {
         $user = User::factory()->create();
         
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press']);
         LiftLog::factory()->create(['user_id' => $user->id, 'exercise_id' => $exercise->id]);
         
         $response = $this->actingAs($user)->get(route('lift-logs.index'));
@@ -234,7 +234,7 @@ class LiftLogHistoryPageTest extends TestCase
     {
         $user = User::factory()->create();
         
-        $exercise = Exercise::factory()->create(['title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['name' => 'Bench Press']);
         LiftLog::factory()->create(['user_id' => $user->id, 'exercise_id' => $exercise->id]);
         
         $response = $this->actingAs($user)->get(route('lift-logs.index'));

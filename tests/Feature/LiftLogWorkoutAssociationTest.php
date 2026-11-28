@@ -148,7 +148,7 @@ class LiftLogWorkoutAssociationTest extends TestCase
     public function simple_workout_play_button_includes_workout_id_in_url()
     {
         $user = User::factory()->create();
-        $exercise = Exercise::factory()->create(['user_id' => null, 'title' => 'Bench Press']);
+        $exercise = Exercise::factory()->create(['user_id' => null, 'name' => 'Bench Press']);
         
         $workout = Workout::factory()->create([
             'user_id' => $user->id,

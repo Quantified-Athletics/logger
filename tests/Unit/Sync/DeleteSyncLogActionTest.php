@@ -25,9 +25,9 @@ class DeleteSyncLogActionTest extends TestCase
         $this->action = new DeleteSyncLogAction();
         $this->user = User::factory()->create();
         $this->exercise = Exercise::create([
-            'title' => 'Squat',
+            'name' => 'Squat',
             'canonical_name' => 'squat',
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
     }
 

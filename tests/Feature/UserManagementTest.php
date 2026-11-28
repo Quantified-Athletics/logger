@@ -265,13 +265,13 @@ class UserManagementTest extends TestCase
         $this->assertGreaterThan(0, $availableExercises->count());
         
         // Verify global exercises exist and are accessible
-        $this->assertDatabaseHas('exercises', ['user_id' => null, 'title' => 'Back Squat']);
-        $this->assertDatabaseHas('exercises', ['user_id' => null, 'title' => 'Bench Press']);
-        $this->assertDatabaseHas('exercises', ['user_id' => null, 'title' => 'Deadlift']);
-        $this->assertDatabaseHas('exercises', ['user_id' => null, 'title' => 'Strict Press']);
-        $this->assertDatabaseHas('exercises', ['user_id' => null, 'title' => 'Power Clean']);
-        $this->assertDatabaseHas('exercises', ['user_id' => null, 'title' => 'Push-Up']);
-        $this->assertDatabaseHas('exercises', ['user_id' => null, 'title' => 'Chin-Up']);
-        $this->assertDatabaseHas('exercises', ['user_id' => null, 'title' => 'Pull-Up']);
+        $this->assertDatabaseHas('exercises', ['user_id' => null, 'name' => 'Back Squat']);
+        $this->assertDatabaseHas('exercises', ['user_id' => null, 'name' => 'Bench Press']);
+        $this->assertDatabaseHas('exercises', ['user_id' => null, 'name' => 'Deadlift']);
+        $this->assertDatabaseHas('exercises', ['user_id' => null, 'name' => 'Strict Press']);
+        $this->assertDatabaseHas('exercises', ['user_id' => null, 'name' => 'Power Clean']);
+        $this->assertDatabaseHas('exercises', ['user_id' => null, 'name' => 'Push-Up']);
+        $this->assertDatabaseHas('exercises', ['user_id' => null, 'name' => 'Chin-Up']);
+        $this->assertDatabaseHas('exercises', ['user_id' => null, 'name' => 'Pull-Up']);
     }
 }

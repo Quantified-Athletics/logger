@@ -35,7 +35,7 @@ class TimedRepsSyncTest extends TestCase
 
         $exBoth = Exercise::where('canonical_name', 'glute_bridge_march_both')->first();
         $this->assertNotNull($exBoth);
-        $this->assertEquals('timed_output', $exBoth->exercise_type);
+        $this->assertEquals('timed_output', $exBoth->strategyTypeName());
         $this->assertEquals('timed-reps', $exBoth->log_type);
 
         $prsBoth = PersonalRecord::where('exercise_id', $exBoth->id)->where('user_id', $user->id)->pluck('pr_type')->toArray();
@@ -61,7 +61,7 @@ class TimedRepsSyncTest extends TestCase
 
         $exReps = Exercise::where('canonical_name', 'glute_bridge_march_reps')->first();
         $this->assertNotNull($exReps);
-        $this->assertEquals('timed_output', $exReps->exercise_type);
+        $this->assertEquals('timed_output', $exReps->strategyTypeName());
 
         $prsReps = PersonalRecord::where('exercise_id', $exReps->id)->where('user_id', $user->id)->pluck('pr_type')->toArray();
         $this->assertNotContains('time', $prsReps);
@@ -85,7 +85,7 @@ class TimedRepsSyncTest extends TestCase
 
         $exDur = Exercise::where('canonical_name', 'glute_bridge_march_dur')->first();
         $this->assertNotNull($exDur);
-        $this->assertEquals('timed_output', $exDur->exercise_type);
+        $this->assertEquals('timed_output', $exDur->strategyTypeName());
 
         $prsDur = PersonalRecord::where('exercise_id', $exDur->id)->where('user_id', $user->id)->pluck('pr_type')->toArray();
         $this->assertContains('time', $prsDur);
@@ -156,7 +156,6 @@ class TimedRepsSyncTest extends TestCase
     {
         $user = User::factory()->create();
         $exercise = Exercise::factory()->create([
-            'exercise_type' => 'timed_output',
             'log_type' => 'timed-reps',
         ]);
 

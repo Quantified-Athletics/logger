@@ -27,19 +27,19 @@ class AdminExerciseVisibilityTest extends TestCase
 
         // Create exercises from different users
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
         $adminExercise = Exercise::factory()->create([
-            'title' => 'Admin Exercise',
+            'name' => 'Admin Exercise',
             'user_id' => $admin->id,
         ]);
         $user1Exercise = Exercise::factory()->create([
-            'title' => 'User 1 Exercise',
+            'name' => 'User 1 Exercise',
             'user_id' => $user1->id,
         ]);
         $user2Exercise = Exercise::factory()->create([
-            'title' => 'User 2 Exercise',
+            'name' => 'User 2 Exercise',
             'user_id' => $user2->id,
         ]);
 
@@ -65,15 +65,15 @@ class AdminExerciseVisibilityTest extends TestCase
 
         // Create exercises
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $user->id,
         ]);
         $otherUserExercise = Exercise::factory()->create([
-            'title' => 'Other User Exercise',
+            'name' => 'Other User Exercise',
             'user_id' => $otherUser->id,
         ]);
 
@@ -97,11 +97,11 @@ class AdminExerciseVisibilityTest extends TestCase
 
         // Create exercises
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $user->id,
         ]);
 
@@ -126,11 +126,11 @@ class AdminExerciseVisibilityTest extends TestCase
 
         // Create exercises
         $globalExercise = Exercise::factory()->create([
-            'title' => 'Global Exercise',
+            'name' => 'Global Exercise',
             'user_id' => null,
         ]);
         $adminExercise = Exercise::factory()->create([
-            'title' => 'Admin Exercise',
+            'name' => 'Admin Exercise',
             'user_id' => $admin->id,
         ]);
 
@@ -159,27 +159,27 @@ class AdminExerciseVisibilityTest extends TestCase
 
         // Create mixed dataset
         $globalExercise1 = Exercise::factory()->create([
-            'title' => 'Global Bench Press',
+            'name' => 'Global Bench Press',
             'user_id' => null,
         ]);
         $globalExercise2 = Exercise::factory()->create([
-            'title' => 'Global Squat',
+            'name' => 'Global Squat',
             'user_id' => null,
         ]);
         $adminExercise = Exercise::factory()->create([
-            'title' => 'Admin Deadlift',
+            'name' => 'Admin Deadlift',
             'user_id' => $admin->id,
         ]);
         $user1Exercise1 = Exercise::factory()->create([
-            'title' => 'User1 Push-ups',
+            'name' => 'User1 Push-ups',
             'user_id' => $user1->id,
         ]);
         $user1Exercise2 = Exercise::factory()->create([
-            'title' => 'User1 Pull-ups',
+            'name' => 'User1 Pull-ups',
             'user_id' => $user1->id,
         ]);
         $user2Exercise = Exercise::factory()->create([
-            'title' => 'User2 Dips',
+            'name' => 'User2 Dips',
             'user_id' => $user2->id,
         ]);
 
@@ -214,23 +214,23 @@ class AdminExerciseVisibilityTest extends TestCase
 
         // Create mixed dataset
         $globalExercise1 = Exercise::factory()->create([
-            'title' => 'Global Bench Press',
+            'name' => 'Global Bench Press',
             'user_id' => null,
         ]);
         $globalExercise2 = Exercise::factory()->create([
-            'title' => 'Global Squat',
+            'name' => 'Global Squat',
             'user_id' => null,
         ]);
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $user->id,
         ]);
         $otherUser1Exercise = Exercise::factory()->create([
-            'title' => 'Other User 1 Exercise',
+            'name' => 'Other User 1 Exercise',
             'user_id' => $otherUser1->id,
         ]);
         $otherUser2Exercise = Exercise::factory()->create([
-            'title' => 'Other User 2 Exercise',
+            'name' => 'Other User 2 Exercise',
             'user_id' => $otherUser2->id,
         ]);
 
@@ -254,11 +254,11 @@ class AdminExerciseVisibilityTest extends TestCase
         
         // Create exercises including edge cases
         $exerciseWithNullUser = Exercise::factory()->create([
-            'title' => 'Exercise with Null User',
+            'name' => 'Exercise with Null User',
             'user_id' => null,
         ]);
         $exerciseWithUserWithoutName = Exercise::factory()->create([
-            'title' => 'Exercise by User Without Name',
+            'name' => 'Exercise by User Without Name',
             'user_id' => $userWithoutName->id,
         ]);
 
@@ -282,7 +282,7 @@ class AdminExerciseVisibilityTest extends TestCase
         // Create regular user and their exercise
         $user = User::factory()->create();
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $user->id,
         ]);
 
@@ -302,7 +302,7 @@ class AdminExerciseVisibilityTest extends TestCase
         // Create another user and their exercise
         $otherUser = User::factory()->create();
         $otherUserExercise = Exercise::factory()->create([
-            'title' => 'Other User Exercise',
+            'name' => 'Other User Exercise',
             'user_id' => $otherUser->id,
         ]);
 
@@ -323,7 +323,7 @@ class AdminExerciseVisibilityTest extends TestCase
         // Create regular user and their exercise
         $user = User::factory()->create();
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $user->id,
         ]);
 
@@ -334,16 +334,16 @@ class AdminExerciseVisibilityTest extends TestCase
 
         // Admin should be able to update other user's exercise
         $response = $this->put(route('exercises.update', $userExercise), [
-            'title' => 'Updated User Exercise',
+            'name' => 'Updated User Exercise',
             'description' => 'Updated description',
-            'exercise_type' => 'regular'
+            'log_type' => 'barbell'
         ]);
         $response->assertRedirect(route('exercises.edit', $userExercise));
         $response->assertSessionHas('success');
 
         $this->assertDatabaseHas('exercises', [
             'id' => $userExercise->id,
-            'title' => 'Updated User Exercise',
+            'name' => 'Updated User Exercise',
             'description' => 'Updated description',
         ]);
     }
@@ -358,7 +358,7 @@ class AdminExerciseVisibilityTest extends TestCase
         // Create another user and their exercise
         $otherUser = User::factory()->create();
         $otherUserExercise = Exercise::factory()->create([
-            'title' => 'Other User Exercise',
+            'name' => 'Other User Exercise',
             'user_id' => $otherUser->id,
         ]);
 
@@ -368,7 +368,7 @@ class AdminExerciseVisibilityTest extends TestCase
 
         // Regular user should not be able to update other user's exercise
         $response = $this->put(route('exercises.update', $otherUserExercise), [
-            'title' => 'Hacked Exercise',
+            'name' => 'Hacked Exercise',
         ]);
         $response->assertStatus(403);
     }
@@ -385,7 +385,7 @@ class AdminExerciseVisibilityTest extends TestCase
         // Create regular user and their exercise
         $user = User::factory()->create();
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $user->id,
         ]);
 
@@ -407,7 +407,7 @@ class AdminExerciseVisibilityTest extends TestCase
         // Create another user and their exercise
         $otherUser = User::factory()->create();
         $otherUserExercise = Exercise::factory()->create([
-            'title' => 'Other User Exercise',
+            'name' => 'Other User Exercise',
             'user_id' => $otherUser->id,
         ]);
 
@@ -434,7 +434,7 @@ class AdminExerciseVisibilityTest extends TestCase
         // Create regular user and their exercise
         $user = User::factory()->create();
         $userExercise = Exercise::factory()->create([
-            'title' => 'User Exercise',
+            'name' => 'User Exercise',
             'user_id' => $user->id,
         ]);
 
@@ -460,7 +460,7 @@ class AdminExerciseVisibilityTest extends TestCase
         // Create another user and their exercise
         $otherUser = User::factory()->create();
         $otherUserExercise = Exercise::factory()->create([
-            'title' => 'Other User Exercise',
+            'name' => 'Other User Exercise',
             'user_id' => $otherUser->id,
         ]);
 

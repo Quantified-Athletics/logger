@@ -126,7 +126,7 @@ class SimpleWorkoutController extends Controller
         foreach ($workout->exercises as $workoutExercise) {
             if ($workoutExercise->exercise) {
                 $displayName = $aliasService->getDisplayName($workoutExercise->exercise, $user);
-                $workoutExercise->exercise->title = $displayName;
+                $workoutExercise->exercise->name = $displayName;
             }
         }
 
@@ -326,8 +326,8 @@ class SimpleWorkoutController extends Controller
 
         // Find or create exercise
         $exercise = \App\Models\Exercise::firstOrCreate(
-            ['title' => $validated['exercise_name']],
-            ['user_id' => Auth::id()]
+            ['name' => $validated['exercise_name']],
+            ['user_id' => Auth::id(), 'log_type' => 'barbell']
         );
 
         // Create workout if it doesn't exist (first exercise being added)

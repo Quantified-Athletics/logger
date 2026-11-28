@@ -28,8 +28,8 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Bench Press',
+            'log_type' => 'barbell',
+            'name' => 'Bench Press',
         ]);
 
         // Create multiple PRs with different dates
@@ -58,8 +58,8 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Squat',
+            'log_type' => 'barbell',
+            'name' => 'Squat',
         ]);
 
         // Create a single PR to make testing easier
@@ -85,8 +85,8 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Clean',
+            'log_type' => 'barbell',
+            'name' => 'Clean',
         ]);
 
         // No lift logs created
@@ -110,8 +110,8 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Deadlift',
+            'log_type' => 'barbell',
+            'name' => 'Deadlift',
         ]);
 
         // Initial state: 1-rep PR is most recent
@@ -139,8 +139,8 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Overhead Press',
+            'log_type' => 'barbell',
+            'name' => 'Overhead Press',
         ]);
 
         // Create PRs
@@ -168,8 +168,8 @@ class ExercisePRCardHighlightingTest extends TestCase
         // Test that the highlighting logic works for regular exercises
         $regularExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Bench Press',
+            'log_type' => 'barbell',
+            'name' => 'Bench Press',
         ]);
 
         $this->createLiftLogWithDate($regularExercise, 1, 225, Carbon::now()->subDays(5));
@@ -183,8 +183,8 @@ class ExercisePRCardHighlightingTest extends TestCase
         // Test that non-regular exercises don't show PR cards at all
         $bodyweightExercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight',
-            'title' => 'Push-ups',
+            'log_type' => 'bodyweight',
+            'name' => 'Push-ups',
         ]);
 
         $this->createLiftLogWithDate($bodyweightExercise, 1, 0, Carbon::now()->subDays(5));
@@ -202,8 +202,8 @@ class ExercisePRCardHighlightingTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
-            'title' => 'Squat',
+            'log_type' => 'barbell',
+            'name' => 'Squat',
         ]);
 
         // Test with same-day PRs (should pick one consistently)

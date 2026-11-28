@@ -21,20 +21,17 @@
         <div class="form-container">
             <h3>Source Exercise</h3>
             <div style="background-color: #3a3a3a; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
-                <h4 style="margin-top: 0; color: #f2f2f2;">{{ $exercise->title }}</h4>
+                <h4 style="margin-top: 0; color: #f2f2f2;">{{ $exercise->name }}</h4>
                 @if($exercise->description)
                     <p style="color: #ccc; margin: 5px 0;">{{ $exercise->description }}</p>
                 @endif
                 <div style="display: flex; gap: 15px; margin: 10px 0; font-size: 0.9em; color: #aaa;">
-                    <span>{{ ucfirst(str_replace('_', ' ', $exercise->exercise_type)) }}</span>
+                    <span>{{ ucfirst(str_replace('_', ' ', $exercise->strategyTypeName())) }}</span>
                     <span>Owner: {{ $exercise->user->name }}</span>
                 </div>
                 <div style="display: flex; gap: 20px; margin: 10px 0; font-size: 0.9em; color: #ddd;">
                     <span><strong>{{ $sourceStats['lift_logs_count'] }}</strong> lift logs</span>
                     <span><strong>{{ $sourceStats['users_count'] }}</strong> users</span>
-                    @if($sourceStats['has_intelligence'])
-                        <span style="color: #4CAF50;"><i class="fas fa-brain"></i> Has AI insights</span>
-                    @endif
                 </div>
             </div>
 
@@ -63,7 +60,7 @@
                                 
                                 <div style="flex: 1;">
                                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
-                                        <h4 style="margin: 0; color: #f2f2f2;">{{ $target->title }}</h4>
+                                        <h4 style="margin: 0; color: #f2f2f2;">{{ $target->name }}</h4>
                                         <span class="badge" style="background-color: #4CAF50; color: white; padding: 2px 6px; border-radius: 3px; font-size: 0.7em;">Global</span>
                                     </div>
                                     
@@ -72,15 +69,12 @@
                                     @endif
                                     
                                     <div style="display: flex; gap: 15px; margin: 8px 0; font-size: 0.85em; color: #aaa;">
-                                        <span>{{ ucfirst(str_replace('_', ' ', $target->exercise_type)) }}</span>
+                                        <span>{{ ucfirst(str_replace('_', ' ', $target->strategyTypeName())) }}</span>
                                     </div>
                                     
                                     <div style="display: flex; gap: 20px; margin: 8px 0; font-size: 0.85em; color: #ddd;">
                                         <span><strong>{{ $stats['lift_logs_count'] }}</strong> lift logs</span>
                                         <span><strong>{{ $stats['users_count'] }}</strong> users</span>
-                                        @if($stats['has_intelligence'])
-                                            <span style="color: #4CAF50;"><i class="fas fa-brain"></i> Has AI insights</span>
-                                        @endif
                                     </div>
                                     
                                     @if(!empty($compatibility['warnings']))
@@ -105,7 +99,7 @@
                             <div>
                                 <strong style="color: #f2f2f2;">Create alias for exercise owner</strong>
                                 <p style="color: #aaa; margin: 5px 0 0 0; font-size: 0.9em;">
-                                    The owner will continue to see "{{ $exercise->title }}" instead of the target exercise name
+                                    The owner will continue to see "{{ $exercise->name }}" instead of the target exercise name
                                 </p>
                             </div>
                         </label>

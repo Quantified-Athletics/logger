@@ -23,7 +23,7 @@ class LiftLogSeeder extends Seeder
         while (($data = fgetcsv($csvFile, 2000, ",")) !== FALSE) {
             if (!$firstline) {
                 $exerciseTitle = $data[2];
-                $exercise = \App\Models\Exercise::where('title', $exerciseTitle)->first();
+                $exercise = \App\Models\Exercise::where('name', $exerciseTitle)->first();
 
                 if ($exercise) {
                     $liftLog = LiftLog::create([

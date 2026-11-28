@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Models\Exercise;
 use App\Models\User;
 use App\Services\ComponentBuilder as C;
-use App\Services\ExerciseTypes\ExerciseTypeFactory;
+use App\Services\ExerciseTypes\LogTypeTable;
 
 class ExerciseFormService
 {
@@ -25,11 +25,10 @@ class ExerciseFormService
             $form->hiddenField('_method', $method);
         }
         
-        // Title field
         $form->textField(
-            'title',
+            'name',
             'Exercise Name',
-            old('title', $exercise->title ?? ''),
+            old('name', $exercise->name ?? ''),
             'Enter the exercise name'
         );
         
@@ -41,13 +40,12 @@ class ExerciseFormService
             'Optional description of the exercise'
         );
         
-        // Exercise type field
-        $exerciseTypes = $this->getExerciseTypeOptions();
+        // Log type field
         $form->selectField(
-            'exercise_type',
-            'Exercise Type',
-            $exerciseTypes,
-            old('exercise_type', $exercise->exercise_type ?? '')
+            'log_type',
+            'Log Type',
+            $this->getLogTypeOptions(),
+            old('log_type', $exercise->exists ? ($exercise->log_type ?? '') : '')
         );
         
         // Show in feed checkbox
@@ -68,64 +66,35 @@ class ExerciseFormService
     }
     
     /**
-     * Get exercise type options for select field
+     * The log type options for the select field, in the table's order.
+     *
+     * @return list<array{value: string, label: string}>
      */
-    private function getExerciseTypeOptions(): array
+    private function getLogTypeOptions(): array
     {
-        $options = [];
-        $typeConfigs = config('exercise_types.types', []);
-        
-        // Add empty option
-        $options[] = [
-            'value' => '',
-            'label' => 'Select Exercise Type'
-        ];
-        
-        foreach ($typeConfigs as $key => $config) {
-            // Skip deprecated types
-            if (isset($config['deprecated']) && $config['deprecated']) {
-                continue;
-            }
-            
-            $options[] = [
-                'value' => $key,
-                'label' => $this->getExerciseTypeLabel($key)
-            ];
+        $options = [['value' => '', 'label' => 'Select Log Type']];
+
+        foreach (LogTypeTable::logTypes() as $logType) {
+            $options[] = ['value' => $logType, 'label' => LogTypeTable::labelFor($logType)];
         }
-        
+
         return $options;
     }
-    
-    /**
-     * Get human-readable label for exercise type
-     */
-    private function getExerciseTypeLabel(string $type): string
-    {
-        $labels = [
-            'regular' => 'Regular (Weighted)',
-            'bodyweight' => 'Bodyweight',
-            'banded_resistance' => 'Banded Resistance',
-            'banded_assistance' => 'Banded Assistance',
-            'cardio' => 'Cardio'
-        ];
-        
-        return $labels[$type] ?? ucfirst(str_replace('_', ' ', $type));
-    }
-    
+
     /**
      * Add validation error messages to the form
      */
     private function addValidationErrors($form): void
     {
         if ($errors = session('errors')) {
-            if ($errors->has('title')) {
-                $form->message('error', $errors->first('title'));
+            if ($errors->has('name')) {
+                $form->message('error', $errors->first('name'));
             }
             if ($errors->has('description')) {
                 $form->message('error', $errors->first('description'));
             }
-            if ($errors->has('exercise_type')) {
-                $form->message('error', $errors->first('exercise_type'));
+            if ($errors->has('log_type')) {
+                $form->message('error', $errors->first('log_type'));
             }
             if ($errors->has('show_in_feed')) {
                 $form->message('error', $errors->first('show_in_feed'));

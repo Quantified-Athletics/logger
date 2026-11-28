@@ -91,8 +91,8 @@ class WorkoutSeeder extends Seeder
             foreach ($workoutData['exercises'] as $index => $exerciseName) {
                 // Find or create exercise
                 $exercise = \App\Models\Exercise::firstOrCreate(
-                    ['title' => $exerciseName],
-                    ['user_id' => $user->id]
+                    ['name' => $exerciseName],
+                    ['user_id' => $user->id, 'log_type' => 'barbell']
                 );
 
                 \App\Models\WorkoutExercise::create([

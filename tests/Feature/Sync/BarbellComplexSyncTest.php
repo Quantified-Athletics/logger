@@ -35,10 +35,10 @@ class BarbellComplexSyncTest extends TestCase
         $response = $this->withHeaders($headers)->postJson('/api/sync/logs', $payload);
         $response->assertStatus(200)->assertJson(['status' => 'ok']);
 
-        // Assert auto-created exercise has exercise_type = regular
+        // Assert auto-created exercise uses the regular strategy
         $exercise = Exercise::where('canonical_name', 'bear_complex')->first();
         $this->assertNotNull($exercise);
-        $this->assertEquals('regular', $exercise->exercise_type);
+        $this->assertEquals('regular', $exercise->strategyTypeName());
         $this->assertEquals('barbell-complex', $exercise->log_type);
 
         // Assert lift set persisted weight = 135 and reps = null (not weight:0 or dropped)

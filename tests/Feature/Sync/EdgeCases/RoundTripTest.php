@@ -68,9 +68,8 @@ class RoundTripTest extends TestCase
     {
         // Create a log directly (simulating Logger web UI — no track/block/movement)
         $exercise = Exercise::create([
-            'title' => 'Bench Press',
+            'name' => 'Bench Press',
             'canonical_name' => 'bench_press',
-            'exercise_type' => 'regular',
             'log_type' => 'barbell',
         ]);
 

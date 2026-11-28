@@ -69,7 +69,7 @@ class LiftLogLoggingTest extends TestCase {
         
         // Check that we have a celebratory success message containing the exercise name and workout details
         $successMessage = session('success');
-        $this->assertStringContainsString($exercise->title, $successMessage);
+        $this->assertStringContainsString($exercise->name, $successMessage);
         $this->assertStringContainsString('100 lbs', $successMessage);
         $this->assertStringContainsString('5 reps', $successMessage);
     }
@@ -140,7 +140,7 @@ class LiftLogLoggingTest extends TestCase {
     /** @test */
     public function a_user_can_view_lift_logs_on_exercise_logs_page()
     {
-        $backSquat = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'title' => 'Back Squat']);
+        $backSquat = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'name' => 'Back Squat']);
 
         $liftLog1 = \App\Models\LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -178,7 +178,7 @@ class LiftLogLoggingTest extends TestCase {
         $response->assertStatus(200);
 
         // Assert Back Squat lift log details
-        $response->assertSee($backSquat->title);
+        $response->assertSee($backSquat->name);
         $response->assertSee($liftLog1->display_weight . ' lbs');
         $response->assertSee($liftLog1->display_rounds . ' x ' . $liftLog1->display_reps);
         $response->assertSee($liftLog1->comments);
@@ -190,7 +190,7 @@ class LiftLogLoggingTest extends TestCase {
     /** @test */
     public function a_user_can_create_a_bodyweight_lift_log()
     {
-        $exercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'exercise_type' => 'bodyweight']);
+        $exercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'log_type' => 'bodyweight']);
 
         $now = now();
         $testTime = '09:15'; // Use a time that's already on 15-minute interval
@@ -228,14 +228,14 @@ class LiftLogLoggingTest extends TestCase {
         
         // Check that we have a celebratory success message containing the exercise name and workout details
         $successMessage = session('success');
-        $this->assertStringContainsString($exercise->title, $successMessage);
+        $this->assertStringContainsString($exercise->name, $successMessage);
         $this->assertStringContainsString('8 reps', $successMessage);
     }
 
     /** @test */
     public function a_user_can_update_a_bodyweight_lift_log()
     {
-        $exercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'exercise_type' => 'bodyweight']);
+        $exercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'log_type' => 'bodyweight']);
         $liftLog = \App\Models\LiftLog::factory()->create([
             'user_id' => $this->user->id,
             'exercise_id' => $exercise->id,
@@ -247,7 +247,7 @@ class LiftLogLoggingTest extends TestCase {
             'notes' => 'Original bodyweight comments',
         ]);
 
-        $updatedExercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'exercise_type' => 'bodyweight']);
+        $updatedExercise = \App\Models\Exercise::factory()->create(['user_id' => $this->user->id, 'log_type' => 'bodyweight']);
         $updatedLiftLogData = [
             'exercise_id' => $updatedExercise->id,
             'weight' => 0,
@@ -285,8 +285,8 @@ class LiftLogLoggingTest extends TestCase {
     {
         $exercise = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id, 
-            'title' => 'Chin-Ups', 
-            'exercise_type' => 'bodyweight'
+            'name' => 'Chin-Ups', 
+            'log_type' => 'bodyweight'
         ]);
         $liftLog = \App\Models\LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -303,7 +303,7 @@ class LiftLogLoggingTest extends TestCase {
 
         $response->assertStatus(200);
         // The flexible view uses badges for display, so check for the exercise title and reps
-        $response->assertSee($exercise->title);
+        $response->assertSee($exercise->name);
         $response->assertSee('1 x 5'); // Badge format: rounds x reps
     }
 
@@ -312,8 +312,8 @@ class LiftLogLoggingTest extends TestCase {
     {
         $exercise = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Chin-Ups',
-            'exercise_type' => 'bodyweight'
+            'name' => 'Chin-Ups',
+            'log_type' => 'bodyweight'
         ]);
         $liftLog = \App\Models\LiftLog::factory()->create([
             'user_id' => $this->user->id,
@@ -338,8 +338,8 @@ class LiftLogLoggingTest extends TestCase {
     {
         $exercise = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'static_hold',
-            'title' => 'L-sit'
+            'log_type' => 'static-hold',
+            'name' => 'L-sit'
         ]);
 
         $now = now();
@@ -379,7 +379,7 @@ class LiftLogLoggingTest extends TestCase {
         
         // Check success message contains exercise name and duration
         $successMessage = session('success');
-        $this->assertStringContainsString($exercise->title, $successMessage);
+        $this->assertStringContainsString($exercise->name, $successMessage);
         $this->assertStringContainsString('45s hold', $successMessage);
     }
 
@@ -388,8 +388,8 @@ class LiftLogLoggingTest extends TestCase {
     {
         $exercise = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'static_hold',
-            'title' => 'Plank'
+            'log_type' => 'static-hold',
+            'name' => 'Plank'
         ]);
         
         $liftLog = \App\Models\LiftLog::factory()->create([
@@ -583,7 +583,7 @@ class LiftLogLoggingTest extends TestCase {
     {
         $exercise = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'bodyweight'
+            'log_type' => 'bodyweight'
         ]);
 
         $liftLogData = [
@@ -663,11 +663,11 @@ class LiftLogLoggingTest extends TestCase {
         // Create two different exercises
         $backSquat = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Back Squat'
+            'name' => 'Back Squat'
         ]);
         $strictPress = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Strict Press'
+            'name' => 'Strict Press'
         ]);
 
         // Log Back Squat at 300 lbs (heavy exercise)
@@ -709,11 +709,11 @@ class LiftLogLoggingTest extends TestCase {
         // Create two exercises
         $backSquat = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Back Squat'
+            'name' => 'Back Squat'
         ]);
         $strictPress = \App\Models\Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'title' => 'Strict Press'
+            'name' => 'Strict Press'
         ]);
 
         // Log previous lifts for both exercises

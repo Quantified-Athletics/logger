@@ -52,7 +52,7 @@ class PRRecalculationService
             // per-save detectPRsWithDetails path is untouched.
             $exercise = $logs->first()->exercise;
             $family = $exercise
-                ? $this->prEngine->resolveFamily($exercise->log_type, $exercise->exercise_type)
+                ? $this->prEngine->resolveFamilyForLogType($exercise->log_type)
                 : null;
 
             if (!$family) {
@@ -185,7 +185,7 @@ class PRRecalculationService
             ->orderBy('lift_logs.id')
             ->select([
                 'lift_logs.id', 'lift_logs.user_id', 'lift_logs.exercise_id', 'lift_logs.logged_at',
-                'exercises.log_type', 'exercises.exercise_type',
+                'exercises.log_type',
             ]);
         if ($exerciseIds !== null) {
             $logQuery->whereIn('lift_logs.exercise_id', $exerciseIds);
@@ -217,7 +217,7 @@ class PRRecalculationService
             $first = $logRows[$i];
             $userId = $first->user_id;
             $exerciseId = $first->exercise_id;
-            $family = $this->prEngine->resolveFamily($first->log_type, $first->exercise_type);
+            $family = $this->prEngine->resolveFamilyForLogType($first->log_type);
 
             $group = [];
             while ($i < $n && $logRows[$i]->user_id === $userId && $logRows[$i]->exercise_id === $exerciseId) {

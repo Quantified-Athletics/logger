@@ -20,10 +20,9 @@ class CarryLogTypeMigrationTest extends TestCase
 
         // 1. Existing carry exercise (non-split)
         $farmersEx = Exercise::create([
-            'title' => "Farmer's Carry",
+            'name' => "Farmer's Carry",
             'canonical_name' => 'farmers_carry',
             'log_type' => 'weighted-carry',
-            'exercise_type' => 'static_hold',
         ]);
 
         $farmersLog = LiftLog::create([
@@ -51,10 +50,9 @@ class CarryLogTypeMigrationTest extends TestCase
 
         // 2. Retired original split exercise
         $retiredEx = Exercise::create([
-            'title' => 'Mixed Rack Carry',
+            'name' => 'Mixed Rack Carry',
             'canonical_name' => 'mixed_rack_carry',
             'log_type' => 'weighted-carry',
-            'exercise_type' => 'static_hold',
         ]);
 
         $retiredLog = LiftLog::create([
@@ -73,10 +71,9 @@ class CarryLogTypeMigrationTest extends TestCase
 
         // 3. Genuine static hold (must be UNTOUCHED)
         $plankEx = Exercise::create([
-            'title' => 'Plank',
+            'name' => 'Plank',
             'canonical_name' => 'plank',
             'log_type' => 'static-hold',
-            'exercise_type' => 'static_hold',
         ]);
 
         $plankLog = LiftLog::create([
@@ -98,7 +95,7 @@ class CarryLogTypeMigrationTest extends TestCase
 
         // (a) farmers_carry re-typed to load_output + weighted-carry-2-kb
         $farmersEx->refresh();
-        $this->assertEquals('load_output', $farmersEx->exercise_type);
+        $this->assertEquals('load_output', $farmersEx->strategyTypeName());
         $this->assertEquals('weighted-carry-2-kb', $farmersEx->log_type);
 
         // (b) The six split defs are NO LONGER created by this migration. They were moved to
@@ -119,7 +116,7 @@ class CarryLogTypeMigrationTest extends TestCase
 
         // (d) Genuine static hold UNTOUCHED
         $plankEx->refresh();
-        $this->assertEquals('static_hold', $plankEx->exercise_type);
+        $this->assertEquals('static_hold', $plankEx->strategyTypeName());
         $this->assertEquals('static-hold', $plankEx->log_type);
         $this->assertNotSoftDeleted('lift_logs', ['id' => $plankLog->id]);
         $this->assertNotSoftDeleted('lift_sets', ['id' => $plankSet->id]);

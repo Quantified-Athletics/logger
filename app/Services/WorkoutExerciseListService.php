@@ -53,7 +53,7 @@ class WorkoutExerciseListService
         foreach ($workout->exercises as $workoutExercise) {
             if ($workoutExercise->exercise) {
                 $displayName = $this->aliasService->getDisplayName($workoutExercise->exercise, $user);
-                $workoutExercise->exercise->title = $displayName;
+                $workoutExercise->exercise->name = $displayName;
             }
         }
 
@@ -90,7 +90,7 @@ class WorkoutExerciseListService
         $exerciseCount = $workout->exercises->count();
 
         foreach ($workout->exercises as $index => $exercise) {
-            $line1 = $exercise->exercise->title;
+            $line1 = $exercise->exercise->name;
             
             // Check if this exercise was logged today
             $isLoggedToday = isset($loggedExerciseData[$exercise->exercise_id]);
@@ -297,7 +297,7 @@ class WorkoutExerciseListService
             $displayName = $this->aliasService->getDisplayName($exercise, $user);
             
             // If the WOD name differs from the exercise title, show both
-            if (strtolower($exerciseName) !== strtolower($exercise->title)) {
+            if (strtolower($exerciseName) !== strtolower($exercise->name)) {
                 $line1 = $exerciseName . ' → ' . $displayName;
             } else {
                 $line1 = $displayName;

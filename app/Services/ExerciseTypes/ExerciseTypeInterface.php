@@ -109,8 +109,8 @@ interface ExerciseTypeInterface
      * 
      * @example
      * // Regular exercise processing
-     * $input = ['title' => 'Bench Press', 'exercise_type' => 'bodyweight'];
-     * $output = ['title' => 'Bench Press', 'exercise_type' => 'regular'];
+     * $input = ['name' => 'Bench Press', 'log_type' => 'barbell'];
+     * $output = ['name' => 'Bench Press', 'log_type' => 'barbell', 'is_bodyweight' => false];
      */
     public function processExerciseData(array $data): array;
     
@@ -462,22 +462,7 @@ interface ExerciseTypeInterface
      * // Bodyweight exercise: "200 lbs (est. incl. BW)"
      */
     public function format1RMTableCellDisplay(LiftLog $liftLog): string;
-    
-    /**
-     * Get exercise type display name and icon
-     * 
-     * Returns a formatted display name with icon for showing exercise type
-     * in recommendations, exercise lists, and other UI elements.
-     * 
-     * @return array Array with 'icon' and 'name' keys
-     * 
-     * @example
-     * // Regular exercise: ['icon' => 'fas fa-dumbbell', 'name' => 'Weighted']
-     * // Cardio exercise: ['icon' => 'fas fa-running', 'name' => 'Cardio']
-     * // Bodyweight exercise: ['icon' => 'fas fa-user', 'name' => 'Bodyweight']
-     */
-    public function getTypeDisplayInfo(): array;
-    
+
     /**
      * Get chart title for exercise logs page
      * 

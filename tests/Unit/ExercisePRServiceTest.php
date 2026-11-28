@@ -29,7 +29,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function supportsPRTracking_returns_true_for_barbell()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         $this->assertTrue($this->service->supportsPRTracking($exercise));
     }
@@ -37,7 +37,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function supportsPRTracking_returns_false_for_dumbbell()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'dumbbell']);
+        $exercise = Exercise::factory()->create(['log_type' => 'dumbbell']);
         
         $this->assertFalse($this->service->supportsPRTracking($exercise));
     }
@@ -45,7 +45,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function supportsPRTracking_returns_false_for_cardio()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'cardio']);
+        $exercise = Exercise::factory()->create(['log_type' => 'cardio-distance']);
         
         $this->assertFalse($this->service->supportsPRTracking($exercise));
     }
@@ -53,7 +53,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function getPRData_returns_null_for_unsupported_exercise()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'dumbbell']);
+        $exercise = Exercise::factory()->create(['log_type' => 'dumbbell']);
         
         $result = $this->service->getPRData($exercise, $this->user);
         
@@ -63,7 +63,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function getPRData_returns_correct_PRs_for_each_rep_range()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // Create lift logs with different rep ranges
         $liftLog1 = LiftLog::factory()->create([
@@ -113,7 +113,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function getPRData_handles_no_lift_logs()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         $result = $this->service->getPRData($exercise, $this->user);
         
@@ -123,7 +123,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function getPRData_handles_partial_data_missing_rep_ranges()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // Create lift log with only 1 rep data
         $liftLog = LiftLog::factory()->create([
@@ -148,7 +148,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function getPRData_selects_highest_weight_when_multiple_logs_exist()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         // Create multiple lift logs with 1 rep sets
         $liftLog1 = LiftLog::factory()->create([
@@ -194,7 +194,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function getCalculatorGrid_generates_correct_percentages()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         $prData = [
             'rep_1' => ['weight' => 242, 'lift_log_id' => 1, 'date' => '2024-01-15', 'is_estimated' => false],
@@ -217,7 +217,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function getCalculatorGrid_rounds_weights_correctly()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         $prData = [
             'rep_1' => ['weight' => 242, 'lift_log_id' => 1, 'date' => '2024-01-15', 'is_estimated' => false],
@@ -246,7 +246,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function getCalculatorGrid_handles_three_columns()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         $prData = [
             'rep_1' => ['weight' => 242, 'lift_log_id' => 1, 'date' => '2024-01-15', 'is_estimated' => false],
@@ -273,7 +273,7 @@ class ExercisePRServiceTest extends TestCase
     /** @test */
     public function getCalculatorGrid_returns_null_when_no_PR_data()
     {
-        $exercise = Exercise::factory()->create(['exercise_type' => 'regular']);
+        $exercise = Exercise::factory()->create(['log_type' => 'barbell']);
         
         $prData = [
             'rep_1' => null,
@@ -291,7 +291,7 @@ class ExercisePRServiceTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $result = $this->service->getEstimated1RM($exercise, $this->user);
@@ -304,7 +304,7 @@ class ExercisePRServiceTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         // Create lift logs with various rep ranges (no 1-3 rep tests)
@@ -348,7 +348,7 @@ class ExercisePRServiceTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $estimated1RM = [
@@ -379,7 +379,7 @@ class ExercisePRServiceTest extends TestCase
     {
         $exercise = Exercise::factory()->create([
             'user_id' => $this->user->id,
-            'exercise_type' => 'regular',
+            'log_type' => 'barbell',
         ]);
 
         $prData = [
