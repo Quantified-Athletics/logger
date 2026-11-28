@@ -4,7 +4,7 @@
       "op": "merge",
       "id": "2_db_press",
       "into": "db_strict_press",
-      "reason": "plan §5.2: Logger's 2_db_press (2-DB Press) is db_strict_press by name"
+      "reason": "plan §5.5: 2_db_press is a formerId of db_strict_press"
     },
     {
       "op": "update",
@@ -12,19 +12,8 @@
       "set": {
         "name": "Seated AB Twists",
         "aliases": [
-          "db_ab_twists",
-          "heavy_ab_twists",
-          "plate_twist",
-          "plate_twists",
-          "seated_ab_twists",
-          "seated_ab_twist",
           "seated_ab_twists_caps",
-          "seated_plate_twist",
-          "seated_plate_twists",
-          "seated_twists",
           "weighted_ab_twists",
-          "weighted_trunk_twists",
-          "ab_twist",
           "Ab Twists",
           "Ab Twist",
           "Plate Twists",
@@ -84,7 +73,6 @@
       "id": "ab_wheel_rollout",
       "set": {
         "aliases": [
-          "ab_wheel_rollouts",
           "tempo_ab_wheel_rollout"
         ],
         "equipment": [
@@ -118,11 +106,11 @@
       "reason": "plan §5.2: the canonical record's aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "air_squat",
       "set": {
+        "name": "Air Squats",
         "aliases": [
-          "air_squats",
           "Air Squat"
         ],
         "formerIds": [
@@ -152,16 +140,15 @@
           "9",
           "15",
           "100"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's aliases, formerIds, logType, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: air_squat is a record Logger lacks; air_squats merge into it"
     },
     {
       "op": "merge",
       "id": "air_squats",
       "into": "air_squat",
-      "reason": "plan §5.2: Logger's air_squats (Air Squats) is air_squat by name"
+      "reason": "plan §5.5: air_squats is a formerId of air_squat"
     },
     {
       "op": "update",
@@ -203,11 +190,7 @@
       "id": "back_rack_lunge",
       "set": {
         "aliases": [
-          "back_rack_or_db_lunges",
-          "barbell_lunge",
-          "barbell_lunges",
           "Barbell Lunge",
-          "Back Rack or DB Lunges",
           "Barbell Lunges"
         ],
         "equipment": [
@@ -255,15 +238,12 @@
       "id": "back_squat",
       "set": {
         "aliases": [
-          "back_squats",
           "barbell_back_squat",
-          "back_or_front_squat",
-          "no_pause_back_squats",
-          "1_and_a_quarter_back_squat",
           "Back Squats",
           "Back or Front Squat",
           "1 and a Quarter Back Squat",
-          "No-Pause Back Squats"
+          "No-Pause Back Squats",
+          "Front or Back Squat"
         ],
         "equipment": [
           "barbell",
@@ -311,12 +291,8 @@
       "id": "ball_slam",
       "set": {
         "aliases": [
-          "ball_slams",
           "med_ball_slam",
-          "slam_ball",
           "slams",
-          "slam_balls",
-          "ball_slams_or_d_ball_to_shoulder",
           "Ball Slam",
           "Slam Balls",
           "Slams",
@@ -340,9 +316,6 @@
           "anterior-shoulder": "heavy",
           "hips": "heavy"
         },
-        "primaryMovements": [
-          "hinge"
-        ],
         "motion": "ballistic",
         "modalities": [
           "strength",
@@ -363,26 +336,13 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
       "id": "banded_chop",
       "set": {
         "aliases": [
-          "banded_chops",
-          "band_chops",
-          "band_cable_chop",
-          "band_or_plate_chop",
-          "banded_cable_chop",
-          "banded_or_cable_chop",
-          "banded_or_cable_chops",
-          "banded_cable_or_plate_chops",
-          "banded_or_cable_or_plate_chop",
-          "banded_or_cable_or_plate_chops",
-          "banded_or_plate_chop",
-          "banded_or_plate_chops",
-          "chop_banded",
           "Band or Plate Chops",
           "Banded/Cable or Plate Chops",
           "Banded Chops",
@@ -441,8 +401,6 @@
       "id": "banded_fire_hydrant",
       "set": {
         "aliases": [
-          "fire_hydrant",
-          "fire_hydrants",
           "Banded Fire Hydrants",
           "Fire Hydrant",
           "Fire Hydrants"
@@ -476,7 +434,6 @@
       "id": "banded_sa_lat_pulldown",
       "set": {
         "aliases": [
-          "lat_pulldown_banded_sa",
           "Banded SA Lat Pulldown"
         ],
         "equipment": [
@@ -514,9 +471,6 @@
       "id": "banded_tricep_extension",
       "set": {
         "aliases": [
-          "banded_cable_tricep_extension",
-          "banded_or_cable_tricep_extension",
-          "tricep_extension_banded_or_cable",
           "Banded Cable Tricep Extension",
           "Banded or Cable Tricep Extension",
           "Banded/Cable Tricep Extension"
@@ -558,16 +512,6 @@
       "id": "banded_tricep_pressdown",
       "set": {
         "aliases": [
-          "banded_tricep_pressdowns",
-          "band_tricep_pressdowns",
-          "banded_or_cable_tricep_pressdown",
-          "cable_tricep_pressdown",
-          "cable_tricep_pushdown",
-          "banded_tricep_pushdown",
-          "tricep_extension_banded",
-          "tricep_pressdown_banded_or_cable",
-          "tricep_pressdowns",
-          "banded_cable_tricep_pressdown",
           "Banded Tricep Pressdowns",
           "Band Tricep Pressdowns",
           "Banded Or Cable Tricep Pressdown",
@@ -620,17 +564,13 @@
       "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "bar_muscle_ups",
       "set": {
         "name": "Bar Muscle-Up",
         "aliases": [
           "bmu",
           "mus",
-          "muscle_ups",
-          "muscle_up",
-          "bar_mu",
-          "bar_muscle_up",
           "Bar Muscle-Ups",
           "BMU",
           "Bar MU",
@@ -676,31 +616,23 @@
         "generatorEligible": false,
         "historicReps": [
           "3-5"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: bar_muscle_ups is a record Logger lacks; muscle_up merge into it"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "barbell_bicep_curl",
       "set": {
         "name": "Barbell Bicep Curl",
         "aliases": [
-          "barbell_curl",
-          "bicep_curl",
-          "bicep_curls",
           "bicep_curl_barbell_1",
-          "bb_bicep_curls",
-          "barbell_bicep_curls",
-          "empty_barbell_bicep_curl",
           "Bicep Curls",
           "Bicep Curl",
           "Barbell Bicep Curls",
           "Barbell Curl",
           "BB Bicep Curls",
           "Empty Bicep Curls (Barbell)",
-          "empty_bicep_curls_barbell",
           "Empty Barbell Bicep Curls",
           "Bicep Curl (Barbell)"
         ],
@@ -708,6 +640,7 @@
           "bicep_curl_barbell_1",
           "empty_barbell_bicep_curls"
         ],
+        "logType": "barbell",
         "equipment": [
           "barbell"
         ],
@@ -738,10 +671,9 @@
           "10-15",
           "12-15",
           "15"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: barbell_bicep_curl is a record Logger lacks; bicep_curl_barbell_1 merge into it"
     },
     {
       "op": "update",
@@ -749,14 +681,9 @@
       "set": {
         "name": "Front Rack Lunges",
         "aliases": [
-          "front_rack_lunge",
-          "front_rack_lunges",
-          "bb_front_rack_lunge",
-          "front_rack",
           "Front Rack Lunge",
           "Front-rack Lunge",
           "BB Front Rack Lunge",
-          "Front Rack",
           "Front-Rack Lunge"
         ],
         "equipment": [
@@ -805,14 +732,7 @@
       "set": {
         "name": "Barbell Bent Over Row",
         "aliases": [
-          "barbell_bent_over_row",
-          "bb_bent_row",
           "bent_over_row_pronated",
-          "bent_row",
-          "bent_over_row",
-          "bent_rows",
-          "bent_over_barbell_row",
-          "barbell_rows",
           "Bent Over Row (Barbell)",
           "BB Bent Row",
           "Bent Over Row",
@@ -901,9 +821,6 @@
       "set": {
         "name": "Bearhug March",
         "aliases": [
-          "bearhug_march",
-          "bear_hug_march_in_place",
-          "bearhug_walk_or_march",
           "Bear Hug March",
           "Bear Hug March In Place",
           "Bearhug Walk or March"
@@ -940,13 +857,11 @@
       "id": "bearhug_carry",
       "set": {
         "aliases": [
-          "bear_hug_carry",
-          "bearhug_dball_carry",
           "bearhug_carry_ball",
-          "bearhug_walk",
           "Bear Hug Carry",
           "Bearhug Dball Carry",
-          "Bearhug Walk"
+          "Bearhug Walk",
+          "Candy Bag Carry"
         ],
         "equipment": [
           "slam-ball"
@@ -982,9 +897,6 @@
       "set": {
         "aliases": [
           "barbell_bench_press",
-          "bench",
-          "flat_bench_press",
-          "Bench",
           "Flat Bench Press"
         ],
         "formerIds": [
@@ -1039,55 +951,55 @@
       "op": "merge",
       "id": "bench_press_2_db_seesaw",
       "into": "db_seesaw_press",
-      "reason": "plan §5.2: Logger's bench_press_2_db_seesaw (Bench Press (2-DB Seesaw)) is db_seesaw_press by name"
+      "reason": "plan §5.5: bench_press_2_db_seesaw is a formerId of db_seesaw_press"
     },
     {
       "op": "merge",
       "id": "bench_supported_row_1_db",
       "into": "chest_supported_row",
-      "reason": "plan §5.2: Logger's bench_supported_row_1_db (Bench-Supported Row (1-DB)) is chest_supported_row by name"
+      "reason": "plan §5.5: bench_supported_row_1_db is a formerId of chest_supported_row"
     },
     {
       "op": "merge",
       "id": "bent_over_lateral_raise",
       "into": "db_bent_over_lateral_raise",
-      "reason": "plan §5.2: Logger's bent_over_lateral_raise (Bent Over Lateral Raise) is db_bent_over_lateral_raise by name"
+      "reason": "plan §5.5: bent_over_lateral_raise is a formerId of db_bent_over_lateral_raise"
     },
     {
       "op": "merge",
       "id": "bent_over_row_1_kb",
       "into": "kb_bent_over_row",
-      "reason": "plan §5.2: Logger's bent_over_row_1_kb (Bent-Over Row (1-KB)) is kb_bent_over_row by name"
+      "reason": "plan §5.5: bent_over_row_1_kb is a formerId of kb_bent_over_row"
     },
     {
       "op": "merge",
       "id": "bent_over_row_pronated",
       "into": "barbell_row",
-      "reason": "plan §5.2: Logger's bent_over_row_pronated (Bent-Over Row) is barbell_row by name"
+      "reason": "plan §5.5: bent_over_row_pronated is a formerId of barbell_row"
     },
     {
       "op": "merge",
       "id": "bent_over_row_supinated",
       "into": "supinated_bent_over_row",
-      "reason": "plan §5.2: Logger's bent_over_row_supinated (Bent-Over Row (Supinated)) is supinated_bent_over_row by name"
+      "reason": "plan §5.5: bent_over_row_supinated is a formerId of supinated_bent_over_row"
     },
     {
       "op": "merge",
       "id": "bent_row",
       "into": "barbell_row",
-      "reason": "plan §5.2: Logger's bent_row (Bent Over Row) is barbell_row by name"
+      "reason": "plan §5.5: bent_row is a formerId of barbell_row"
     },
     {
       "op": "merge",
       "id": "bicep_curl_2_db",
       "into": "db_bicep_curl",
-      "reason": "plan §5.2: Logger's bicep_curl_2_db (Bicep Curl (2-DB)) is db_bicep_curl by name"
+      "reason": "plan §5.5: bicep_curl_2_db is a formerId of db_bicep_curl"
     },
     {
       "op": "merge",
       "id": "bicep_curl_barbell_1",
       "into": "barbell_bicep_curl",
-      "reason": "plan §5.2: Logger's bicep_curl_barbell_1 (Bicep Curl (Barbell)) is barbell_bicep_curl by name"
+      "reason": "plan §5.5: bicep_curl_barbell_1 is a formerId of barbell_bicep_curl"
     },
     {
       "op": "update",
@@ -1097,9 +1009,6 @@
           "assault_bike_calories",
           "bike_erg_intervals",
           "bike",
-          "bike_for_cals",
-          "cal_bike",
-          "cals_bike",
           "Bike",
           "Bike for Cals",
           "Cal Bike"
@@ -1150,7 +1059,6 @@
       "set": {
         "name": "Box Jump",
         "aliases": [
-          "box_jumps",
           "Box Jumps"
         ],
         "logType": "bodyweight",
@@ -1199,7 +1107,6 @@
       "id": "box_jump_overs",
       "set": {
         "aliases": [
-          "box_jump_over",
           "Box Jump Overs",
           "Box Jump Over"
         ],
@@ -1239,7 +1146,6 @@
       "id": "box_pike_hspu",
       "set": {
         "aliases": [
-          "box_pike_hspu_30",
           "Box Pike Hspu 30",
           "Box Pike HSPU (30”) - Paralettes"
         ],
@@ -1286,17 +1192,13 @@
       "op": "merge",
       "id": "box_pike_hspu_30",
       "into": "box_pike_hspu",
-      "reason": "plan §5.2: Logger's box_pike_hspu_30 (Box Pike HSPU (30”) - Paralettes) is box_pike_hspu by name"
+      "reason": "plan §5.5: box_pike_hspu_30 is a formerId of box_pike_hspu"
     },
     {
       "op": "update",
       "id": "box_push_offs",
       "set": {
         "aliases": [
-          "box_pushoffs",
-          "lateral_push_offs",
-          "push_offs",
-          "box_jumps_push_offs",
           "lateral_box_push_offs",
           "Box Pushoffs",
           "Push-Offs",
@@ -1377,17 +1279,14 @@
       "op": "merge",
       "id": "box_squat_safety_bar",
       "into": "safety_bar_box_squat",
-      "reason": "plan §5.2: Logger's box_squat_safety_bar (Box Squat (Safety Bar)) is safety_bar_box_squat by name"
+      "reason": "plan §5.5: box_squat_safety_bar is a formerId of safety_bar_box_squat"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "broad_jump",
       "set": {
         "name": "Broad Jump",
         "aliases": [
-          "broad_jumps",
-          "burpee_broad_jump",
-          "standing_broad_jump",
           "Broad Jumps",
           "Standing Broad Jump",
           "Burpee Broad Jump"
@@ -1419,10 +1318,9 @@
         "historicReps": [
           "3-5",
           "5"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: broad_jump is a record Logger lacks; burpee_broad_jump merge into it"
     },
     {
       "op": "update",
@@ -1456,8 +1354,6 @@
       "id": "bulgarian_split_squat",
       "set": {
         "aliases": [
-          "bulgarian_split_squat_2_db",
-          "split_squat_hungarian_2_db",
           "Bulgarian Split Squat 2 Db",
           "Split Squat Hungarian 2 Db",
           "Bulgarian Split Squat"
@@ -1500,7 +1396,7 @@
       "op": "merge",
       "id": "burpee_broad_jump",
       "into": "broad_jump",
-      "reason": "plan §5.2: Logger's burpee_broad_jump (Burpee Broad Jump) is broad_jump by name"
+      "reason": "plan §5.5: burpee_broad_jump is a formerId of broad_jump"
     },
     {
       "op": "update",
@@ -1538,7 +1434,6 @@
       "set": {
         "aliases": [
           "burpee",
-          "bur_r_pees",
           "Burpee",
           "BUR-R-PEES"
         ],
@@ -1584,7 +1479,6 @@
       "id": "burpees_over_the_bar",
       "set": {
         "aliases": [
-          "bar_facing_burpees",
           "Bar Facing Burpees"
         ],
         "primaryMuscles": [
@@ -1617,9 +1511,6 @@
       "op": "update",
       "id": "cable_bicep_curl",
       "set": {
-        "aliases": [
-          "bicep_curl_cable"
-        ],
         "equipment": [
           "cable-machine"
         ],
@@ -1642,15 +1533,13 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
       "id": "cable_chest_fly",
       "set": {
         "aliases": [
-          "chest_fly_cable",
-          "cable_fly",
           "Cable Fly"
         ],
         "formerIds": [
@@ -1681,8 +1570,6 @@
       "id": "cable_lat_pulldown",
       "set": {
         "aliases": [
-          "lat_pull_down_machine",
-          "lat_pulldown_cable",
           "Lat Pull Down Machine",
           "Lat Pull-Down (Cable Machine)"
         ],
@@ -1716,7 +1603,6 @@
       "set": {
         "name": "Cable Row",
         "aliases": [
-          "cable_rows",
           "Row (Cable)",
           "Cable Rows"
         ],
@@ -1755,7 +1641,6 @@
       "set": {
         "aliases": [
           "rowing_intervals",
-          "rowing_calories",
           "Rowing (calories)"
         ],
         "formerIds": [
@@ -1831,21 +1716,8 @@
       "id": "cardio",
       "set": {
         "aliases": [
-          "cal_cardio",
-          "cal_cardio_sprint",
-          "cal_sprint",
           "calories",
           "cals",
-          "cardio_cal",
-          "cardio_cals",
-          "aerobic_calories",
-          "calories_cardio",
-          "cardio_1",
-          "cardio_2",
-          "cardio_for_calories",
-          "cardio_re_test",
-          "cardio_sprint",
-          "max_effort_cardio",
           "sprint",
           "Cardio Cal",
           "Cardio Cals",
@@ -1927,7 +1799,7 @@
       "op": "merge",
       "id": "chest_fly_2_db",
       "into": "two_db_chest_fly",
-      "reason": "plan §5.2: Logger's chest_fly_2_db (Chest Flyes (2-DB)) is two_db_chest_fly by name"
+      "reason": "plan §5.5: chest_fly_2_db is a formerId of two_db_chest_fly"
     },
     {
       "op": "update",
@@ -1960,15 +1832,7 @@
         "name": "Chest Elevated 2-DB Row",
         "aliases": [
           "chest_elevated_2db_row",
-          "seal_row",
-          "seal_rows",
-          "incline_prone_row",
           "incline_dumbbell_row",
-          "chest_elevated_2_db_row",
-          "prone_db_row",
-          "chest_supported_db_row",
-          "bench_supported_row_1_db",
-          "chest_supported_row_2_db",
           "Chest-Supported Row (2-DB)",
           "Incline Prone Row",
           "Prone DB Row",
@@ -2021,9 +1885,6 @@
       "id": "chest_supported_row_barbell",
       "set": {
         "aliases": [
-          "chest_supported_barbell_row",
-          "barbell_chest_supported_row",
-          "seal_row_barbell",
           "Chest Supported Barbell Row",
           "Barbell Chest Supported Row",
           "Seal Row (Barbell)"
@@ -2066,8 +1927,6 @@
       "id": "chest_supported_row_machine",
       "set": {
         "aliases": [
-          "incline_lever_row",
-          "incline_leverage_row",
           "Incline Lever Row",
           "Incline Leverage Row"
         ],
@@ -2100,9 +1959,6 @@
         "aliases": [
           "c2b",
           "ctb",
-          "ctb_pull_ups",
-          "chest_to_bar_scaled_strict",
-          "chest_to_bar_pull_up",
           "Chest-to-Bars",
           "C2B",
           "Chest to Bar",
@@ -2145,13 +2001,13 @@
       "op": "merge",
       "id": "chest_to_bar_scaled_strict",
       "into": "chest_to_bar",
-      "reason": "plan §5.2: Logger's chest_to_bar_scaled_strict (Chest To Bar (Scaled, Strict)) is chest_to_bar by name"
+      "reason": "plan §5.5: chest_to_bar_scaled_strict is a formerId of chest_to_bar"
     },
     {
       "op": "merge",
       "id": "chin_over_bar_hold_supinated",
       "into": "supinated_chin_over_bar_hold",
-      "reason": "plan §5.2: Logger's chin_over_bar_hold_supinated (Chin Over Bar Hold (Supinated)) is supinated_chin_over_bar_hold by name"
+      "reason": "plan §5.5: chin_over_bar_hold_supinated is a formerId of supinated_chin_over_bar_hold"
     },
     {
       "op": "update",
@@ -2192,7 +2048,6 @@
       "id": "chin_up_assisted",
       "set": {
         "aliases": [
-          "chin_up_assis",
           "Chin Up Assis"
         ],
         "equipment": [
@@ -2220,16 +2075,14 @@
       "op": "merge",
       "id": "chin_ups",
       "into": "strict_chin_up",
-      "reason": "plan §5.2: Logger's chin_ups (Chin-Up) is strict_chin_up by name"
+      "reason": "plan §5.5: chin_ups is a formerId of strict_chin_up"
     },
     {
       "op": "update",
       "id": "clamshells",
       "set": {
         "aliases": [
-          "banded_clamshell",
           "clamshell",
-          "banded_clamshells",
           "Clamshell",
           "Banded Clamshell",
           "Banded Clamshells"
@@ -2263,7 +2116,6 @@
       "id": "clean_and_jerk",
       "set": {
         "aliases": [
-          "clean_and_jerks",
           "clean_jerk",
           "db_clean_jerk",
           "c_j",
@@ -2340,9 +2192,6 @@
       "op": "update",
       "id": "clean_complex_4",
       "set": {
-        "aliases": [
-          "clean_deadlift_clean_pull_power_cleans"
-        ],
         "equipment": [
           "barbell"
         ],
@@ -2373,15 +2222,12 @@
         ],
         "bucket": "clean_complex"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt, members, bucket"
+      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt, members, bucket"
     },
     {
       "op": "update",
       "id": "clean_complex_5",
       "set": {
-        "aliases": [
-          "clean_pull_hang_power_cleans_power_cleans"
-        ],
         "equipment": [
           "barbell"
         ],
@@ -2412,7 +2258,7 @@
         ],
         "bucket": "clean_complex"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt, members, bucket"
+      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt, members, bucket"
     },
     {
       "op": "update",
@@ -2458,7 +2304,6 @@
       "id": "close_grip_push_ups",
       "set": {
         "aliases": [
-          "close_grip_push_up",
           "Close Grip Push Up",
           "Close Grip Push-Up",
           "Close-Grip Push-Up",
@@ -2501,15 +2346,13 @@
       "op": "merge",
       "id": "clusters",
       "into": "db_clusters",
-      "reason": "plan §5.2: Logger's clusters (Cluster) is db_clusters by name"
+      "reason": "plan §5.5: clusters is a formerId of db_clusters"
     },
     {
       "op": "update",
       "id": "copenhagen_plank",
       "set": {
         "aliases": [
-          "copenhagen_plank_hold",
-          "side_or_copenhagen_plank",
           "Copenhagen Plank Hold",
           "Side or Copenhagen Plank"
         ],
@@ -2557,8 +2400,6 @@
       "id": "cossack_squat",
       "set": {
         "aliases": [
-          "cossack_squats",
-          "goblet_cossack_squats",
           "Cossack Squats",
           "Goblet Cossack Squat"
         ],
@@ -2601,8 +2442,6 @@
       "set": {
         "name": "Cross-body V-Ups",
         "aliases": [
-          "crossbody_v_up",
-          "crossbody_v_ups",
           "Cross-Body V-Ups",
           "Crossbody V-Up",
           "Crossbody V-Ups"
@@ -2650,13 +2489,13 @@
       "op": "merge",
       "id": "crossbody_v_ups",
       "into": "cross_body_v_ups",
-      "reason": "plan §5.2: Logger's crossbody_v_ups (Crossbody V-Ups) is cross_body_v_ups by name"
+      "reason": "plan §5.5: crossbody_v_ups is a formerId of cross_body_v_ups"
     },
     {
       "op": "merge",
       "id": "crush_press_2_db",
       "into": "db_crush_press",
-      "reason": "plan §5.2: Logger's crush_press_2_db (Crush Press (2-DB)) is db_crush_press by name"
+      "reason": "plan §5.5: crush_press_2_db is a formerId of db_crush_press"
     },
     {
       "op": "update",
@@ -2664,14 +2503,6 @@
       "set": {
         "name": "Goblet Cyclist Squat",
         "aliases": [
-          "cyclist_squats",
-          "cylist_squat",
-          "goblet_cyclist_squat",
-          "heels_elevated_cyclist_squat",
-          "tempo_db_kb_cyclist_squat",
-          "cyclist_squat_barbell_back_rack",
-          "cyclist_squat_barbell_front_rack",
-          "db_kb_cyclist_squat",
           "Cyclist Squat",
           "Cyclist Squats",
           "Cylist Squat",
@@ -2725,21 +2556,19 @@
       "op": "merge",
       "id": "cyclist_squat_barbell_back_rack",
       "into": "cyclist_squat",
-      "reason": "plan §5.2: Logger's cyclist_squat_barbell_back_rack (Cyclist Squat (Barbell, Back Rack)) is cyclist_squat by name"
+      "reason": "plan §5.5: cyclist_squat_barbell_back_rack is a formerId of cyclist_squat"
     },
     {
       "op": "merge",
       "id": "cyclist_squat_barbell_front_rack",
       "into": "cyclist_squat",
-      "reason": "plan §5.2: Logger's cyclist_squat_barbell_front_rack (Cyclist Squat (Barbell, Front Rack)) is cyclist_squat by name"
+      "reason": "plan §5.5: cyclist_squat_barbell_front_rack is a formerId of cyclist_squat"
     },
     {
       "op": "update",
       "id": "db_arnold_press",
       "set": {
         "aliases": [
-          "arnold_press",
-          "alt_arnold_press",
           "Alt. Arnold Press",
           "DB Arnold Press"
         ],
@@ -2787,8 +2616,6 @@
       "set": {
         "name": "B-Stance RDL",
         "aliases": [
-          "b_stance_rdl",
-          "b_stance_single_leg_rdl",
           "B-Stance Romanian Deadlift (DB)",
           "B-Stance Single Leg RDL",
           "DB B-Stance RDL"
@@ -2831,15 +2658,6 @@
       "set": {
         "name": "Bent Over Lateral Raise",
         "aliases": [
-          "bent_over_lateral_db_raise",
-          "db_bent_over_lateral_raises",
-          "dumbbell_bent_over_lateral_raise",
-          "sa_bent_over_lateral_raise",
-          "bent_over_lateral_raise",
-          "bent_over_lateral_raises",
-          "db_or_plate_bent_lateral_raise",
-          "plate_bent_lateral_raise",
-          "bent_over_lateral_raise_2_db",
           "Bent Over Lateral Raise (2-DB)",
           "DB or Plate Bent Lateral Raise",
           "Bent Over Lateral Raises",
@@ -2893,11 +2711,7 @@
       "set": {
         "name": "DB Bicep Curl",
         "aliases": [
-          "db_bicep_curls",
           "dumbbell_bicep_curls",
-          "bicep_curl_2_db",
-          "db_curl",
-          "db_curls",
           "Bicep Curl (DB)",
           "DB Bicep Curls",
           "DB Curls",
@@ -2942,15 +2756,6 @@
       "set": {
         "name": "Weighted Step-Up",
         "aliases": [
-          "db_box_step_ups",
-          "weighted_step_up",
-          "weighted_step_ups",
-          "weighted_box_step_up",
-          "db_step_up",
-          "db_kb_box_step_ups",
-          "box_step_up_2_db",
-          "box_step_ups_2_db",
-          "wtd_step_ups",
           "Box Step-Up (2-DB)",
           "Weighted Step-Ups",
           "DB Step-Up",
@@ -3007,13 +2812,12 @@
       "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "db_clusters",
       "set": {
         "name": "Clusters (2-DB)",
         "aliases": [
           "clusters",
-          "clusters_2_db",
           "Clusters",
           "DB Clusters",
           "Cluster"
@@ -3047,18 +2851,15 @@
         "generatorEligible": false,
         "historicReps": [
           "10"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: db_clusters is a record Logger lacks; clusters merge into it"
     },
     {
       "op": "update",
       "id": "db_concentration_curl",
       "set": {
         "aliases": [
-          "concentration_curl",
-          "concentration_curl_db",
           "Concentration Curl",
           "DB Concentration Curl",
           "Concentration Curls"
@@ -3095,11 +2896,11 @@
       "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "db_crush_press",
       "set": {
+        "name": "Crush Press (2-DB)",
         "aliases": [
-          "crush_press_2_db",
           "Crush Press 2 Db",
           "DB Crush Press"
         ],
@@ -3131,17 +2932,15 @@
         "historicReps": [
           "10",
           "12"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: db_crush_press is a record Logger lacks; crush_press_2_db merge into it"
     },
     {
       "op": "update",
       "id": "db_front_raise",
       "set": {
         "aliases": [
-          "front_raise_2_db",
           "DB Front Raise"
         ],
         "equipment": [
@@ -3175,21 +2974,11 @@
       "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "db_glute_bridge",
       "set": {
         "name": "Glute Bridge (DB)",
         "aliases": [
-          "single_db_glute_bridge",
-          "feet_elevated_glute_bridge_db",
-          "banded_db_glute_bridge",
-          "banded_glute_bridge_hold",
-          "db_banded_glute_bridge",
-          "db_glute_bridge_hold",
-          "glute_bridge",
-          "glute_bridge_db",
-          "glute_bridge_hold",
-          "glute_bridges",
           "Single Db Glute Bridge",
           "Feet Elevated Glute Bridge Db",
           "DB Glute Bridge",
@@ -3208,6 +2997,7 @@
           "feet_elevated_glute_bridge_db",
           "glute_bridge"
         ],
+        "logType": "single-dumbbell",
         "equipment": [
           "dumbbells"
         ],
@@ -3220,7 +3010,6 @@
           "hands": "light"
         },
         "primaryMovements": [
-          "hinge",
           "hip_extension"
         ],
         "motion": "grind",
@@ -3236,17 +3025,15 @@
           "10",
           "10-15",
           "12-15"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: db_glute_bridge is a record Logger lacks; feet_elevated_glute_bridge_db merge into it"
     },
     {
       "op": "update",
       "id": "db_hang_snatch",
       "set": {
         "aliases": [
-          "hang_snatch_db",
           "DB Hang Snatch"
         ],
         "equipment": [
@@ -3289,10 +3076,6 @@
       "set": {
         "name": "Lateral Lunge",
         "aliases": [
-          "lateral_db_lunge",
-          "lateral_lunge",
-          "lateral_lunges",
-          "lateral_lunges_2_db",
           "Lateral Lunges (2-DB)",
           "Lateral Lunges",
           "DB Lateral Lunge",
@@ -3354,15 +3137,6 @@
       "id": "db_lunge",
       "set": {
         "aliases": [
-          "db_lunges",
-          "dumbbell_lunge",
-          "dumbbell_lunges",
-          "weighted_lunges",
-          "two_db_kb_lunges",
-          "2_db_kb_lunges",
-          "db_kb_lunges",
-          "alt_db_lunges",
-          "lunges_2_db",
           "Db Lunges",
           "Dumbbell Lunge",
           "Dumbbell Lunges",
@@ -3375,7 +3149,8 @@
           "Alt. DB Lunges",
           "DB Lunge",
           "DB Lunges",
-          "DB/KB Lunges"
+          "DB/KB Lunges",
+          "Back Rack Or Db Lunges"
         ],
         "equipment": [
           "dumbbells"
@@ -3422,7 +3197,6 @@
       "id": "db_overhead_lunge",
       "set": {
         "aliases": [
-          "overhead_lunges_db",
           "DB Overhead Lunge"
         ],
         "equipment": [
@@ -3469,10 +3243,6 @@
       "id": "db_pike_leg_lift_over",
       "set": {
         "aliases": [
-          "pike_leg_lift_over_db",
-          "kb_leg_lift_over",
-          "kb_pike_leg_lift_over",
-          "kb_pike_leg_lift_overs",
           "DB Pike Leg Lift Over",
           "KB Pike Leg Lift Over",
           "KB Leg Lift Over",
@@ -3513,11 +3283,6 @@
       "set": {
         "name": "Plank Pull Throughs",
         "aliases": [
-          "plank_pull_throughs",
-          "plank_pull_through",
-          "db_pull_through",
-          "db_pull_throughs",
-          "plank_pull_through_db",
           "Plank Pull Through (DB)",
           "Plank Pull Through",
           "Plank Pull-Throughs",
@@ -3569,14 +3334,11 @@
       "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, families, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "db_preacher_curl",
       "set": {
         "name": "Preacher Curls (DB)",
         "aliases": [
-          "preacher_curl_db",
-          "isolated_bicep_db",
-          "preacher_curls_db",
           "Preacher Curl (DB)",
           "Isolated Bicep Db",
           "DB Preacher Curl"
@@ -3584,6 +3346,7 @@
         "formerIds": [
           "preacher_curl_db"
         ],
+        "logType": "single-dumbbell",
         "equipment": [
           "dumbbells"
         ],
@@ -3607,26 +3370,17 @@
         "historicReps": [
           "8-10"
         ],
-        "modifier": "/side",
-        "createdAt": null
+        "modifier": "/side"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: db_preacher_curl is a record Logger lacks; preacher_curl_db merge into it"
     },
     {
       "op": "update",
       "id": "db_pullover",
       "set": {
         "aliases": [
-          "dumbbell_pullover",
           "pullovers",
-          "db_bench_pullover",
-          "dumbbell_bench_pull_over",
-          "bench_pull_over",
-          "bench_pullover",
-          "pullover_db",
           "pullover",
-          "db_pullovers",
-          "pullovers_db",
           "Dumbbell Pullover",
           "Pullovers",
           "Db Bench Pullover",
@@ -3683,9 +3437,6 @@
       "id": "db_reverse_lunge",
       "set": {
         "aliases": [
-          "two_db_reverse_lunge",
-          "2_db_reverse_lunge",
-          "reverse_lunges_2_db",
           "Two Db Reverse Lunge",
           "2 Db Reverse Lunge",
           "DB Reverse Lunge",
@@ -3729,13 +3480,6 @@
       "id": "db_seesaw_press",
       "set": {
         "aliases": [
-          "seesaw_press",
-          "bench_press_2_db_seesaw",
-          "seesaw_press_seated_2_db",
-          "strict_press_2_db_seesaw",
-          "db_seesaw_bench_press",
-          "seesaw_press_2_db",
-          "db_kb_seesaw_press",
           "Seesaw Press",
           "Bench Press 2 Db Seesaw",
           "Seesaw Press Seated 2 Db",
@@ -3795,12 +3539,6 @@
           "dumbbell_snatch",
           "dbsn",
           "snatch_single_arm_db",
-          "alt_db_snatch",
-          "alternating_db_snatch",
-          "alt_db_snatches",
-          "db_snatches",
-          "alternating_db_snatches",
-          "snatches_db",
           "Snatch (DB)",
           "alt. DB Snatch",
           "Alternating DB Snatch",
@@ -3865,19 +3603,13 @@
       "reason": "plan §5.5 class A (same name): db_snatches merges into db_snatch"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "db_split_squat",
       "set": {
         "name": "2-DB Split Squat",
         "aliases": [
-          "db_split_squats",
-          "split_squat",
           "db_split_squat_2db",
-          "2_db_split_squat",
           "two_db_or_goblet_split_squat",
-          "split_squat_2_db",
-          "2_db_or_goblet_split_squat",
-          "split_squats",
           "Split Squat (2-DB)",
           "DB Split Squat",
           "Split Squat",
@@ -3923,23 +3655,17 @@
           "8-10",
           "8"
         ],
-        "modifier": "/side",
-        "createdAt": null
+        "modifier": "/side"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: db_split_squat is a record Logger lacks; split_squat, split_squat_2_db merge into it"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "db_step_back_lunge",
       "set": {
         "name": "Step Back Lunges (2-DB)",
         "aliases": [
-          "lunge_step_back",
           "two_db_step_back_lunge",
-          "lunge_step_back_2_db",
-          "step_back_lunges",
-          "step_back_lunges_2_db",
-          "step_back_lunge",
           "Lunge Step Back",
           "Lunge Step Back 2 Db",
           "Step Back Lunges",
@@ -3980,10 +3706,9 @@
         "historicReps": [
           "8-10"
         ],
-        "modifier": "/side",
-        "createdAt": null
+        "modifier": "/side"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: db_step_back_lunge is a record Logger lacks; lunge_step_back, lunge_step_back_2_db merge into it"
     },
     {
       "op": "update",
@@ -3991,14 +3716,6 @@
       "set": {
         "name": "2-DB Strict Press",
         "aliases": [
-          "2_db_strict_press",
-          "2_db_press",
-          "dumbbell_strict_press",
-          "db_press",
-          "dual_db_strict_press",
-          "two_db_strict_press",
-          "dumbbell_shoulder_press",
-          "strict_press_2_db",
           "Strict Press (2-DB)",
           "Dual DB Strict Press",
           "Two DB Strict Press",
@@ -4051,7 +3768,6 @@
       "id": "db_sumo_squat",
       "set": {
         "aliases": [
-          "sumo_squat_2_db",
           "DB Sumo Squat"
         ],
         "equipment": [
@@ -4092,32 +3808,19 @@
       "set": {
         "name": "DB Tripod Row",
         "aliases": [
-          "db_tripod_rows",
           "three_point_row",
-          "3_point_row",
           "three_point_db_row",
-          "3_point_db_row",
-          "tripod_row",
-          "db_kb_tripod_row",
-          "tripod_row_db_kb",
           "bent_over_row_dumbbell",
-          "kb_tripod_row",
           "Tripod Row (DB/KB)",
           "Tripod Row",
           "3 Point Row",
           "KB Tripod Row",
           "Single Arm Bent Over DB/KB Row",
           "Single Arm Bent Over Row",
-          "single_arm_bent_over_row",
-          "single_arm_bent_over_db_kb_row",
-          "singles_arm_bent_over_db_kb_row",
           "Single Arm DB Row",
-          "single_arm_db_row",
           "Single-Arm Row",
-          "single_arm_row",
           "DB/KB Tripod Row",
           "3 Point DB Row",
-          "single_arm_db_bent_over_row",
           "3-Point DB Row",
           "3-Point Row",
           "DB Tripod Rows",
@@ -4171,17 +3874,11 @@
       "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, modifier, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "db_walking_lunge",
       "set": {
         "name": "Walking Lunges (2-DB)",
         "aliases": [
-          "walking_db_lunges",
-          "two_db_suitcase_walking_lunge",
-          "2_db_suitcase_walking_lunge",
-          "lunge_walking_2_db",
-          "walking_lunges_2_db",
-          "bodyweight_or_2_db_walking_lunge",
           "Walking Db Lunges",
           "Suitcase Walking Lunges",
           "Two Db Suitcase Walking Lunge",
@@ -4228,24 +3925,20 @@
           "10",
           "10-12"
         ],
-        "modifier": "/side",
-        "createdAt": null
+        "modifier": "/side"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, laterality, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: db_walking_lunge is a record Logger lacks; lunge_walking_2_db merge into it"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "db_z_press",
       "set": {
         "name": "2-DB Z-Press",
         "aliases": [
           "two_db_z_press",
-          "2_db_z_press",
-          "z_press_hold",
           "Z-Press (2-DB)",
           "2-DB Z Press",
-          "Z-Press Hold",
-          "z_press_2_db"
+          "Z-Press Hold"
         ],
         "formerIds": [
           "z_press_2_db"
@@ -4279,10 +3972,9 @@
           "5-6",
           "6-8",
           "8-10"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: db_z_press is a record Logger lacks; z_press_2_db merge into it"
     },
     {
       "op": "update",
@@ -4290,9 +3982,7 @@
       "set": {
         "name": "D-Ball to Shoulder",
         "aliases": [
-          "d_ball_to_shoulder",
           "dball_to_shoulder_v2",
-          "ball_to_shoulder",
           "med_ball_clean",
           "Ball to Shoulder",
           "DBall to Shoulder",
@@ -4349,14 +4039,7 @@
       "id": "dead_bug",
       "set": {
         "aliases": [
-          "weighted_deadbug",
-          "weighted_deadbugs",
           "deadbug",
-          "weighted_dead_bug_w_pullover",
-          "weighted_deadbug_hold",
-          "alt_deadbug",
-          "banded_dead_bug",
-          "alternating_deadbug",
           "Weighted Deadbug",
           "Alt. Deadbug",
           "Alternating Deadbug",
@@ -4398,7 +4081,6 @@
       "set": {
         "aliases": [
           "deadlifts",
-          "barbell_deadlift",
           "Deadlifts",
           "Barbell Deadlift"
         ],
@@ -4449,7 +4131,6 @@
       "set": {
         "name": "Trap Bar Deadlift",
         "aliases": [
-          "trap_bar_deadlift",
           "Deadlift (Trap Bar)"
         ],
         "equipment": [
@@ -4482,8 +4163,6 @@
       "id": "deficit_hspu",
       "set": {
         "aliases": [
-          "hspu_on_2_db_50lbs",
-          "hpsu_tempo_negative_50lbs_db",
           "Hspu On 2 Db 50lbs",
           "Hpsu Tempo Negative 50lbs Db",
           "HSPU Tempo Negative (50lbs DB)"
@@ -4559,15 +4238,12 @@
       "reason": "plan §5.2: the canonical record's name, aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "deficit_push_ups",
       "set": {
         "name": "Deficit Push-Up",
         "aliases": [
-          "deficit_push_up",
           "push_up_deficit_paralelites",
-          "deficit_or_regular_push_up",
-          "deficit_or_regular_push_ups",
           "Deficit Push Ups",
           "Deficit Push-Ups",
           "Deficit or Regular Push-Up",
@@ -4599,21 +4275,16 @@
         "historicReps": [
           "8-10",
           "10-15"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: deficit_push_ups is a record Logger lacks; push_up_deficit_paralelites merge into it"
     },
     {
       "op": "update",
       "id": "dips",
       "set": {
         "aliases": [
-          "matador_ring_bench_dips",
           "weighted_dips",
-          "pulsing_dips",
-          "matador_dip",
-          "matador_dips",
           "chest_dips",
           "Matador Dips",
           "Matador/Ring/Bench Dips",
@@ -4660,7 +4331,6 @@
       "id": "double_under",
       "set": {
         "aliases": [
-          "double_unders",
           "dus",
           "du",
           "Double Under",
@@ -4708,17 +4378,12 @@
       "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, historicReps, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "dumbbell_bench_press",
       "set": {
         "name": "2-DB Bench Press",
         "aliases": [
-          "db_bench_press",
-          "db_bench",
           "db_bench_press_2db",
-          "2_db_bench_press",
-          "single_arm_db_bench_press",
-          "bench_press_2_db",
           "Bench Press (2-DB)",
           "DB Bench Press",
           "DB Bench",
@@ -4760,10 +4425,9 @@
           "10",
           "10-12",
           "10-15"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: dumbbell_bench_press is a record Logger lacks; bench_press_2_db merge into it"
     },
     {
       "op": "update",
@@ -4771,11 +4435,7 @@
       "set": {
         "name": "2-DB Floor Press",
         "aliases": [
-          "db_floor_press",
-          "floor_press",
           "two_db_floor_press",
-          "2_db_floor_press",
-          "db_kb_floor_press",
           "Floor Press (2-DB)",
           "DB Floor Press",
           "Floor Press",
@@ -4819,13 +4479,6 @@
       "set": {
         "name": "DB Lateral Raise",
         "aliases": [
-          "db_lateral_raise",
-          "db_lateral_raises",
-          "dumbbell_lateral_raise",
-          "lateral_raise",
-          "lateral_db_raise",
-          "lateral_db_raises",
-          "lateral_raises_2_db",
           "Lateral Raises (2-DB)",
           "Lateral Raise",
           "DB Lateral Raises",
@@ -4873,8 +4526,6 @@
       "set": {
         "name": "2-DB Push Press",
         "aliases": [
-          "db_push_press",
-          "2_db_push_press",
           "db_push_press_2",
           "Push Press (2-DB)",
           "DB Push Press"
@@ -4923,30 +4574,13 @@
       "op": "merge",
       "id": "face_pull_cable_machine",
       "into": "face_pulls",
-      "reason": "plan §5.2: Logger's face_pull_cable_machine (Face Pull (Cable Machine)) is face_pulls by name"
+      "reason": "plan §5.5: face_pull_cable_machine is a formerId of face_pulls"
     },
     {
       "op": "update",
       "id": "face_pulls",
       "set": {
         "aliases": [
-          "banded_face_pulls",
-          "banded_cable_facepull",
-          "cable_facepull",
-          "banded_or_cable_facepulls",
-          "banded_or_cable_lat_facepull",
-          "cable_lat_facepull",
-          "seated_banded_facepull",
-          "seated_face_pull",
-          "seated_banded_or_cable_facepull",
-          "face_pull_cable_machine",
-          "banded_facepull",
-          "banded_facepulls",
-          "banded_or_cable_facepull",
-          "face_pulls_banded_or_cable",
-          "banded_cable_face_pull",
-          "banded_or_cable_face_pulls",
-          "cable_face_pulls",
           "Banded Facepulls",
           "Banded Facepull",
           "Banded Face-Pulls",
@@ -5019,19 +4653,8 @@
       "set": {
         "name": "KB Farmer Carry",
         "aliases": [
-          "kb_farmer_carry",
-          "farmer_carry",
-          "db_kb_farmer_carry",
           "two_kb_farmer_walk",
           "two_kb_farmers_carry",
-          "kb_farmers_carry",
-          "2_kb_farmer_carry",
-          "2_kb_farmer_walk",
-          "2_kb_farmers_carry",
-          "candy_bag_carry",
-          "carry",
-          "famers_carry",
-          "farmer_or_bear_hug_carry",
           "Farmer's Carry",
           "Farmer Carry",
           "Farmers Carry",
@@ -5040,7 +4663,6 @@
           "2-KB Farmer's Carry",
           "DB/KB Farmer Carry",
           "Farmer or Bear Hug Carry",
-          "Candy Bag Carry",
           "KB Farmer's Carry"
         ],
         "equipment": [
@@ -5070,7 +4692,6 @@
       "id": "feet_elevated_glute_bridge",
       "set": {
         "aliases": [
-          "glute_bridge_feet_elevated",
           "Feet Elevated Glute Bridge"
         ],
         "equipment": [
@@ -5088,7 +4709,6 @@
           "knees": "light"
         },
         "primaryMovements": [
-          "hinge",
           "hip_extension"
         ],
         "motion": "grind",
@@ -5111,17 +4731,13 @@
       "op": "merge",
       "id": "feet_elevated_glute_bridge_db",
       "into": "db_glute_bridge",
-      "reason": "plan §5.2: Logger's feet_elevated_glute_bridge_db (Feet Elevated Glute Bridge (DB)) is db_glute_bridge by name"
+      "reason": "plan §5.5: feet_elevated_glute_bridge_db is a formerId of db_glute_bridge"
     },
     {
       "op": "update",
       "id": "feet_elevated_ring_row",
       "set": {
         "aliases": [
-          "feet_elevated_ring_rows",
-          "fe_ring_rows",
-          "elevated_ring_row",
-          "feet_up_ring_row",
           "Elevated Ring Row",
           "Feet-Up Ring Row",
           "Feet Elevated Ring Rows",
@@ -5163,8 +4779,6 @@
       "id": "floor_chest_fly",
       "set": {
         "aliases": [
-          "db_floor_flys",
-          "chest_flyes_2_db_floor",
           "Db Floor Flys",
           "DB Floor Flys"
         ],
@@ -5202,14 +4816,9 @@
       "id": "front_squat",
       "set": {
         "aliases": [
-          "front_squats",
-          "front_or_back_squat",
-          "front_or_goblet_squat",
-          "front_or_goblet_squats",
           "Front Squats",
           "Front squats",
           "Front or Goblet Squat",
-          "Front or Back Squat",
           "Front or Goblet Squats"
         ],
         "equipment": [
@@ -5295,7 +4904,6 @@
       "id": "ghd_sit_up",
       "set": {
         "aliases": [
-          "ghd_sit_ups",
           "Ghd Sit Ups"
         ],
         "logType": "bodyweight",
@@ -5339,7 +4947,6 @@
           "hands": "light"
         },
         "primaryMovements": [
-          "hinge",
           "hip_extension"
         ],
         "motion": "grind",
@@ -5358,8 +4965,6 @@
       "id": "glute_bridge_march",
       "set": {
         "aliases": [
-          "glute_bridge_marching",
-          "mini_band_glute_bridge_march",
           "Glute Bridge Marching",
           "Mini Band Glute Bridge March"
         ],
@@ -5396,7 +5001,6 @@
           "hamstrings"
         ],
         "primaryMovements": [
-          "hinge",
           "hip_extension"
         ],
         "motion": "grind",
@@ -5422,7 +5026,6 @@
           "hamstrings"
         ],
         "primaryMovements": [
-          "hinge",
           "hip_extension"
         ],
         "motion": "grind",
@@ -5441,9 +5044,6 @@
       "id": "goblet_bulgarian_split_squat",
       "set": {
         "aliases": [
-          "goblet_bulgarian_split_squats",
-          "kb_goblet_bulgarian_split_squat",
-          "bulgarian_split_squat_goblet",
           "Goblet Bulgarian Split Squats",
           "Kb Goblet Bulgarian Split Squat"
         ],
@@ -5481,12 +5081,6 @@
       "id": "goblet_squat",
       "set": {
         "aliases": [
-          "goblet_squats",
-          "goblet_front_squats",
-          "kb_goblet_squat",
-          "db_goblet_squat",
-          "goblet_b_stance_squats",
-          "goblet_squat_hold",
           "Goblet Squats",
           "Goblet Front Squats",
           "DB Goblet Squat",
@@ -5544,9 +5138,6 @@
       "set": {
         "name": "Good Morning",
         "aliases": [
-          "barbell_good_morning",
-          "good_morning",
-          "good_mornings_barbell",
           "Good Mornings (Barbell)",
           "Good Mornings",
           "Barbell Good Morning"
@@ -5587,10 +5178,6 @@
       "id": "gorilla_row",
       "set": {
         "aliases": [
-          "gorilla_rows",
-          "kb_gorilla_row",
-          "alt_kb_gorilla_row",
-          "alt_gorilla_rows",
           "Gorilla Rows",
           "KB Gorilla Row",
           "Alt. KB Gorilla Row",
@@ -5639,8 +5226,6 @@
       "id": "half_kneeled_shoulder_press",
       "set": {
         "aliases": [
-          "half_kneeling_shoulder_press",
-          "half_kneeling_press",
           "Half Kneeling Press",
           "Half Kneeled Shoulder Press"
         ],
@@ -5675,15 +5260,13 @@
       "op": "merge",
       "id": "half_kneeling",
       "into": "landmine_press",
-      "reason": "plan §5.2: Logger's half_kneeling (Half-Kneeling Landmine Press) is landmine_press by name"
+      "reason": "plan §5.5: half_kneeling is a formerId of landmine_press"
     },
     {
       "op": "update",
       "id": "half_kneeling_banded_cable_chop",
       "set": {
         "aliases": [
-          "half_kneeling_cable_or_plate_chop",
-          "half_kneeling_chop_banded_cable_or_plate",
           "Half Kneeling Cable Or Plate Chop",
           "Half-Kneeling Cable or Plate Chop"
         ],
@@ -5724,22 +5307,15 @@
       "op": "merge",
       "id": "half_kneeling_db_press",
       "into": "kb_half_kneeling_press",
-      "reason": "plan §5.2: Logger's half_kneeling_db_press (Half-Kneeling DB Press) is kb_half_kneeling_press by name"
+      "reason": "plan §5.5: half_kneeling_db_press is a formerId of kb_half_kneeling_press"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "hammer_curl",
       "set": {
         "name": "2-DB Hammer Curls",
         "aliases": [
-          "db_hammer_curl",
-          "dumbbell_hammer_curl",
-          "hammer_curls",
-          "db_hammer_curls",
-          "2_db_hammer_curl",
-          "2_db_hammer_curls",
           "two_db_hammer_curl",
-          "alternating_db_hammer_curl",
           "hammerhead_curl",
           "Hammer Curl",
           "2-DB Hammer Curl",
@@ -5783,37 +5359,36 @@
           "10-12",
           "10-15",
           "12-15"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: hammer_curl is a record Logger lacks; hammerhead_curl merge into it"
     },
     {
       "op": "merge",
       "id": "hammerhead_curl",
       "into": "hammer_curl",
-      "reason": "plan §5.2: Logger's hammerhead_curl (Hammer Curl) is hammer_curl by name"
+      "reason": "plan §5.5: hammerhead_curl is a formerId of hammer_curl"
     },
     {
       "op": "merge",
       "id": "handstand",
       "into": "handstand_hold",
-      "reason": "plan §5.2: Logger's handstand (Handstand) is handstand_hold by name"
+      "reason": "plan §5.5: handstand is a formerId of handstand_hold"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "handstand_hold",
       "set": {
         "name": "Handstand Hold",
         "aliases": [
           "handstand",
-          "hs_hold",
           "Handstand",
           "HS Hold"
         ],
         "formerIds": [
           "handstand"
         ],
+        "logType": "static-hold",
         "equipment": [
           "wall"
         ],
@@ -5840,10 +5415,9 @@
         ],
         "category": "Gymnastics · Strength",
         "maxPerWeek": 3,
-        "generatorEligible": true,
-        "createdAt": null
+        "generatorEligible": true
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, coreMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: handstand_hold is a record Logger lacks; handstand merge into it"
     },
     {
       "op": "update",
@@ -5884,17 +5458,14 @@
       "op": "merge",
       "id": "handstand_push_up_wall",
       "into": "hspu",
-      "reason": "plan §5.2: Logger's handstand_push_up_wall (Handstand Push-Up (Wall)) is hspu by name"
+      "reason": "plan §5.5: handstand_push_up_wall is a formerId of hspu"
     },
     {
       "op": "update",
       "id": "hang_power_clean",
       "set": {
         "aliases": [
-          "hang_power_cleans",
           "hpcs",
-          "ak_hang_power_clean",
-          "bk_hang_power_clean",
           "Hang Power Clean",
           "HPCs",
           "AK Hang Power Clean",
@@ -5947,7 +5518,6 @@
       "id": "hang_power_snatch",
       "set": {
         "aliases": [
-          "hang_power_snatch_barbell",
           "Hang Power Snatch",
           "Snatch",
           "snatch"
@@ -5991,12 +5561,6 @@
       "set": {
         "name": "Leg Raise",
         "aliases": [
-          "hanging_leg_raises",
-          "hanging_leg",
-          "strict_hanging_leg",
-          "strict_hanging_leg_raise",
-          "leg_raise",
-          "leg_raises",
           "Hanging Leg Raise",
           "Leg Raises",
           "Hanging Leg Raises",
@@ -6113,7 +5677,7 @@
       "op": "merge",
       "id": "hip_thrust_barbell",
       "into": "hip_thrusts",
-      "reason": "plan §5.2: Logger's hip_thrust_barbell (Hip Thrust (Barbell)) is hip_thrusts by name"
+      "reason": "plan §5.5: hip_thrust_barbell is a formerId of hip_thrusts"
     },
     {
       "op": "update",
@@ -6121,9 +5685,6 @@
       "set": {
         "name": "Hip Thrust",
         "aliases": [
-          "barbell_hip_thrust",
-          "hip_thrust",
-          "hip_thrust_barbell",
           "Hip Thrusts",
           "Barbell Hip Thrust",
           "Hip Thrust (Barbell)"
@@ -6142,7 +5703,6 @@
           "hands": "light"
         },
         "primaryMovements": [
-          "hinge",
           "hip_extension"
         ],
         "motion": "grind",
@@ -6170,9 +5730,6 @@
       "id": "hip_to_halo",
       "set": {
         "aliases": [
-          "kb_or_plate_hip_to_halo",
-          "kb_plate_hip_to_halo",
-          "plate_kb_hip_to_halo",
           "KB/Plate Hip to Halo",
           "KB or Plate Hip to Halo",
           "Plate/KB Hip to Halo"
@@ -6216,10 +5773,6 @@
       "id": "hollow_body_flutter_kicks",
       "set": {
         "aliases": [
-          "flutter_kicks",
-          "flutter_kick",
-          "hollow_body_flutter_kick",
-          "hollow_body_flutters_kicks",
           "Flutter Kicks",
           "Hollow Body Flutter Kick",
           "Hollow Body Flutters Kicks"
@@ -6255,7 +5808,6 @@
       "id": "hollow_body_hold",
       "set": {
         "aliases": [
-          "hollow_hold",
           "Hollow Hold"
         ],
         "coreMuscles": [
@@ -6292,7 +5844,6 @@
       "set": {
         "name": "Hollow Body Pullover",
         "aliases": [
-          "hollow_body_pullovers",
           "Hollow Body Pullovers",
           "Hollow Body Pullover (Banded)"
         ],
@@ -6336,14 +5887,13 @@
       "op": "merge",
       "id": "hpsu_tempo_negative_50lbs_db",
       "into": "deficit_hspu",
-      "reason": "plan §5.2: Logger's hpsu_tempo_negative_50lbs_db (HSPU Tempo Negative (50lbs DB)) is deficit_hspu by name"
+      "reason": "plan §5.5: hpsu_tempo_negative_50lbs_db is a formerId of deficit_hspu"
     },
     {
       "op": "update",
       "id": "hs_walk",
       "set": {
         "aliases": [
-          "handstand_walk",
           "HS Walk"
         ],
         "equipment": [
@@ -6383,10 +5933,7 @@
       "set": {
         "aliases": [
           "hspus",
-          "strict_hspu",
           "strict_handstand_push_up",
-          "handstand_push_up_wall",
-          "handstand_push_up",
           "HSPUs",
           "HSPU",
           "HSPU's",
@@ -6444,9 +5991,6 @@
       "id": "incline_2_db_bench_press",
       "set": {
         "aliases": [
-          "incline_db_bench_press",
-          "incline_dumbbell_press",
-          "incline_bench_press_2_db",
           "Incline Db Bench Press",
           "Incline Dumbbell Press",
           "Incline 2-DB Bench Press",
@@ -6527,7 +6071,6 @@
       "id": "incline_curl_2_db",
       "set": {
         "aliases": [
-          "incline_dumbbell_curl",
           "Incline Dumbbell Curl"
         ],
         "equipment": [
@@ -6556,14 +6099,11 @@
       "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "jumping_air_squat",
       "set": {
         "name": "Jump Squats",
         "aliases": [
-          "jump_squats",
-          "squat_jumps",
-          "jumping_squats",
           "Jumping Air Squats",
           "Squat Jumps",
           "Squat Jump",
@@ -6591,20 +6131,16 @@
         ],
         "category": "Conditioning · Plyometric",
         "maxPerWeek": 3,
-        "generatorEligible": true,
-        "createdAt": null
+        "generatorEligible": true
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: jumping_air_squat is a record Logger lacks; squat_jumps merge into it"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "kb_bent_over_row",
       "set": {
         "name": "Bent Over Row (KB)",
         "aliases": [
-          "bent_over_kb_row",
-          "bent_over_row_1_kb",
-          "bent_over_row_kb",
           "Bent Over Kb Row",
           "Bent Over Row 1 Kb",
           "KB Bent Over Row",
@@ -6641,19 +6177,16 @@
         "historicReps": [
           "10-12"
         ],
-        "modifier": "/side",
-        "createdAt": null
+        "modifier": "/side"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: kb_bent_over_row is a record Logger lacks; bent_over_row_1_kb merge into it"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "kb_half_kneeling_press",
       "set": {
         "name": "Half Kneeling Press (KB)",
         "aliases": [
-          "half_kneeling_db_press",
-          "half_kneeling_press_kb",
           "Half Kneeling Db Press",
           "KB Half Kneeling Press",
           "Half-Kneeling DB Press",
@@ -6694,18 +6227,13 @@
         "modifier": "/side",
         "createdAt": "2026-05-30T07:31:03.554Z"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, coreMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, modifier, createdAt"
+      "reason": "plan §5.2: kb_half_kneeling_press is a record Logger lacks; half_kneeling_db_press merge into it"
     },
     {
       "op": "update",
       "id": "kb_horn_grip_press_out",
       "set": {
         "aliases": [
-          "horn_grip_press_out",
-          "horn_grip_press_out_kb",
-          "horn_grip_press_outs",
-          "kneeling_kb_horn_grip_press_outs",
-          "kneeling_kb_horn_grip_press_out",
           "Horn Grip Press Out",
           "Kneeling KB Horn Grip Press Out",
           "Kneeling KB Horn Grip Press Outs"
@@ -6743,8 +6271,6 @@
       "id": "kb_side_bend",
       "set": {
         "aliases": [
-          "kb_side_bends",
-          "side_bend_kb",
           "Kb Side Bends",
           "KB Side Bend",
           "KB Side Bends"
@@ -6780,14 +6306,13 @@
       "op": "merge",
       "id": "kb_swings",
       "into": "kettlebell_swings",
-      "reason": "plan §5.2: Logger's kb_swings (KB Swings) is kettlebell_swings by name"
+      "reason": "plan §5.5: kb_swings is a formerId of kettlebell_swings"
     },
     {
       "op": "update",
       "id": "kettlebell_deadlift",
       "set": {
         "aliases": [
-          "deadlift_kettlebell",
           "Deadlift Kettlebell"
         ],
         "equipment": [
@@ -6820,7 +6345,7 @@
       "op": "merge",
       "id": "kettlebell_swing",
       "into": "kettlebell_swings",
-      "reason": "plan §5.2: Logger's kettlebell_swing (Kettlebell Swing) is kettlebell_swings by name"
+      "reason": "plan §5.5: kettlebell_swing is a formerId of kettlebell_swings"
     },
     {
       "op": "update",
@@ -6828,11 +6353,6 @@
       "set": {
         "name": "KB Swings",
         "aliases": [
-          "kb_swing",
-          "kettlebell_swing",
-          "kettlebell_swings",
-          "eye_level_kb_swings",
-          "kb_swings",
           "Kettlebell Swings",
           "Kettlebell Swing",
           "KBS",
@@ -6934,9 +6454,6 @@
       "op": "update",
       "id": "kipping_leg_raise",
       "set": {
-        "aliases": [
-          "kipping_leg_raises"
-        ],
         "equipment": [
           "pull-up-bar"
         ],
@@ -6964,21 +6481,20 @@
         "generatorEligible": false,
         "createdAt": "2026-04-24T22:49:34.637Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's equipment, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, video, generatorEligible, createdAt"
     },
     {
       "op": "merge",
       "id": "kipping_pull_up",
       "into": "kipping_pull_ups",
-      "reason": "plan §5.2: Logger's kipping_pull_up (Kipping Pull-Up) is kipping_pull_ups by name"
+      "reason": "plan §5.5: kipping_pull_up is a formerId of kipping_pull_ups"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "kipping_pull_ups",
       "set": {
         "name": "Kipping Pull-Ups",
         "aliases": [
-          "kipping_pull_up",
           "Kipping Pull-Up"
         ],
         "formerIds": [
@@ -7015,20 +6531,15 @@
         "generatorEligible": false,
         "historicReps": [
           "21"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: kipping_pull_ups is a record Logger lacks; kipping_pull_up merge into it"
     },
     {
       "op": "update",
       "id": "kneeling_rotational_ball_slam",
       "set": {
         "aliases": [
-          "kneeling_rotational_ball_slams",
-          "tall_kneeling_rotational_ball_slams",
-          "smashing_pumpkins",
-          "smashing_pumpkins_kneeling_rotational_ball_slam",
           "Kneeling Rotational Ball Slams",
           "Tall Kneeling Rotational Ball Slams",
           "Smashing Pumpkins Kneeling Rotational Ball Slam",
@@ -7065,18 +6576,18 @@
       "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "l_sit",
       "set": {
         "name": "L-Sit",
         "aliases": [
-          "l_sit_tucked_floor",
           "L Sit Tucked Floor",
           "L-Sit (Tucked, Floor)"
         ],
         "formerIds": [
           "l_sit_tucked_floor"
         ],
+        "logType": "static-hold",
         "coreMuscles": [
           "rectus_abdominis"
         ],
@@ -7096,17 +6607,15 @@
         ],
         "category": "Core · Strength",
         "maxPerWeek": 3,
-        "generatorEligible": true,
-        "createdAt": null
+        "generatorEligible": true
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: l_sit is a record Logger lacks; l_sit_tucked_floor merge into it"
     },
     {
       "op": "update",
       "id": "l_sit_hold_parallettes",
       "set": {
         "aliases": [
-          "l_sit_parallettes",
           "L Sit Parallettes",
           "L-Sit (Parallettes)"
         ],
@@ -7145,19 +6654,19 @@
       "op": "merge",
       "id": "l_sit_parallettes",
       "into": "l_sit_hold_parallettes",
-      "reason": "plan §5.2: Logger's l_sit_parallettes (L-Sit (Parallettes)) is l_sit_hold_parallettes by name"
+      "reason": "plan §5.5: l_sit_parallettes is a formerId of l_sit_hold_parallettes"
     },
     {
       "op": "merge",
       "id": "l_sit_tucked_floor",
       "into": "l_sit",
-      "reason": "plan §5.2: Logger's l_sit_tucked_floor (L-Sit (Tucked, Floor)) is l_sit by name"
+      "reason": "plan §5.5: l_sit_tucked_floor is a formerId of l_sit"
     },
     {
       "op": "merge",
       "id": "l_sit_tucked_parallelites",
       "into": "l_sit_tucked_parallettes",
-      "reason": "plan §5.2: Logger's l_sit_tucked_parallelites (L-Sit (Tucked, Parallettes)) is l_sit_tucked_parallettes by name"
+      "reason": "plan §5.5: l_sit_tucked_parallelites is a formerId of l_sit_tucked_parallettes"
     },
     {
       "op": "update",
@@ -7204,8 +6713,6 @@
       "id": "landmine_hack_squat",
       "set": {
         "aliases": [
-          "landmine_hack_squats",
-          "landmine_hack",
           "Landmine Hack Squats",
           "Landmine Hack"
         ],
@@ -7247,10 +6754,6 @@
       "id": "landmine_press",
       "set": {
         "aliases": [
-          "landmine_shoulder_press",
-          "landmine_sa_press",
-          "single_arm_landmine_press",
-          "half_kneeling_landmine_press",
           "Landmine Shoulder Press",
           "Landmine SA Press",
           "Half Kneeling Landmine Press",
@@ -7297,7 +6800,6 @@
       "id": "landmine_row",
       "set": {
         "aliases": [
-          "landmine_bent_row",
           "Landmine Bent Row"
         ],
         "equipment": [
@@ -7339,13 +6841,13 @@
       "op": "merge",
       "id": "lat_pull_down_kneeled",
       "into": "lat_pulldown",
-      "reason": "plan §5.2: Logger's lat_pull_down_kneeled (Lat Pull-Down (Banded, Kneeled)) is lat_pulldown by name"
+      "reason": "plan §5.5: lat_pull_down_kneeled is a formerId of lat_pulldown"
     },
     {
       "op": "merge",
       "id": "lat_pull_down_machine",
       "into": "cable_lat_pulldown",
-      "reason": "plan §5.2: Logger's lat_pull_down_machine (Lat Pull-Down (Cable Machine)) is cable_lat_pulldown by name"
+      "reason": "plan §5.5: lat_pull_down_machine is a formerId of cable_lat_pulldown"
     },
     {
       "op": "update",
@@ -7353,25 +6855,10 @@
       "set": {
         "name": "Banded or Cable Lat Pulldown",
         "aliases": [
-          "banded_lat_pull_down",
-          "banded_lat_pulldown",
-          "banded_lat_pulldowns",
-          "lat_pull_down",
-          "lat_pull_downs",
           "lat_pull_downs_lc",
-          "lat_pulldowns",
-          "banded_or_cable_lat_pulldown",
-          "banded_cable_lat_pulldown",
-          "cable_or_banded_lat_pulldown",
-          "lat_pulldown_3",
-          "cable_pulldown",
-          "banded_pulldowns",
           "lat_pull_down_kneeled",
-          "banded_or_cable_lat_pulldowns",
-          "cable_or_banded_lat_pulldowns",
           "pulldowns",
           "pulldown",
-          "lat_pulldown_banded_or_cable",
           "Lat Pulldown (Banded or Cable)",
           "Banded Lat Pulldown",
           "Cable Lat Pulldown",
@@ -7483,9 +6970,6 @@
       "set": {
         "name": "Lateral Step-Up",
         "aliases": [
-          "lateral_box_step_ups",
-          "lateral_step_ups",
-          "lateral_step_up",
           "Lateral Box Step-Up",
           "Lateral Step-Ups",
           "Lateral Box Step Up",
@@ -7536,8 +7020,6 @@
       "id": "lateral_medball_toss",
       "set": {
         "aliases": [
-          "lateral_ball_toss",
-          "lateral_medicine_ball_toss",
           "Lateral Medball Toss",
           "Lateral Medicine Ball Toss"
         ],
@@ -7582,7 +7064,6 @@
       "id": "lateral_raise_2_db",
       "set": {
         "aliases": [
-          "lateral_raise_dumbbell",
           "Lateral Raise Dumbbell"
         ],
         "equipment": [
@@ -7614,7 +7095,6 @@
       "id": "lean_away_db_lateral_raise",
       "set": {
         "aliases": [
-          "lean_away_lateral_raise_db",
           "Lean Away DB Lateral Raise"
         ],
         "equipment": [
@@ -7678,8 +7158,6 @@
       "id": "leg_press_machine",
       "set": {
         "aliases": [
-          "angled_leg_press",
-          "leg_press",
           "Angled Leg Press",
           "Leg Press"
         ],
@@ -7711,19 +7189,19 @@
       "op": "merge",
       "id": "lunge_step_back",
       "into": "db_step_back_lunge",
-      "reason": "plan §5.2: Logger's lunge_step_back (Lunge (Step-Back)) is db_step_back_lunge by name"
+      "reason": "plan §5.5: lunge_step_back is a formerId of db_step_back_lunge"
     },
     {
       "op": "merge",
       "id": "lunge_step_back_2_db",
       "into": "db_step_back_lunge",
-      "reason": "plan §5.2: Logger's lunge_step_back_2_db (Lunge (Step-Back, 2-DB)) is db_step_back_lunge by name"
+      "reason": "plan §5.5: lunge_step_back_2_db is a formerId of db_step_back_lunge"
     },
     {
       "op": "merge",
       "id": "lunge_walking_2_db",
       "into": "db_walking_lunge",
-      "reason": "plan §5.2: Logger's lunge_walking_2_db (Lunge, Walking (2-DB)) is db_walking_lunge by name"
+      "reason": "plan §5.5: lunge_walking_2_db is a formerId of db_walking_lunge"
     },
     {
       "op": "update",
@@ -7731,8 +7209,6 @@
       "set": {
         "name": "Mixed Rack Carry (2-DB)",
         "aliases": [
-          "mixed_rack_carry_2_db",
-          "mixed_rack_2_db_kb_farmer_carry",
           "Mixed Rack 2-DB/KB Farmer Carry",
           "Mixed Rack Carry (DB)"
         ],
@@ -7769,7 +7245,6 @@
       "set": {
         "name": "Mixed Rack Carry",
         "aliases": [
-          "mixed_rack_carry",
           "Mixed Rack Carry (2-KB)",
           "Mixed Rack Carry (KB)"
         ],
@@ -7809,7 +7284,6 @@
       "set": {
         "name": "Muscle Snatch (Barbell)",
         "aliases": [
-          "muscle_snatch_barbell",
           "Muscle Snatch"
         ],
         "equipment": [
@@ -7840,14 +7314,13 @@
       "op": "merge",
       "id": "muscle_up",
       "into": "bar_muscle_ups",
-      "reason": "plan §5.2: Logger's muscle_up (Muscle-Up) is bar_muscle_ups by name"
+      "reason": "plan §5.5: muscle_up is a formerId of bar_muscle_ups"
     },
     {
       "op": "update",
       "id": "overhead_squat",
       "set": {
         "aliases": [
-          "overhead_squats",
           "ohs",
           "Overhead Squats",
           "OHS"
@@ -7898,9 +7371,6 @@
       "id": "pallof_press",
       "set": {
         "aliases": [
-          "banded_pallof_press",
-          "pallof_press_banded_or_cable",
-          "banded_or_cable_pallof_press",
           "Banded Pallof Press",
           "Banded or Cable Pallof Press",
           "Pallof Press"
@@ -7945,9 +7415,6 @@
       "op": "update",
       "id": "parallette_push_up_feet_elevated",
       "set": {
-        "aliases": [
-          "push_up_parallettes_feet_elevated"
-        ],
         "equipment": [
           "parallettes"
         ],
@@ -7972,14 +7439,13 @@
         "generatorEligible": true,
         "createdAt": "2026-07-03T18:12:34.415Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "update",
       "id": "partner_medball_toss",
       "set": {
         "aliases": [
-          "partner_ball_toss",
           "Partner Medball Toss"
         ],
         "equipment": [
@@ -8050,12 +7516,6 @@
       "set": {
         "name": "Pike Leg Lift Overs",
         "aliases": [
-          "alt_pike_leg_lift_overs",
-          "pike_leg_lift",
-          "kb_leg_liftover",
-          "pike_leg_lift_over",
-          "pike_leg_lifts",
-          "pike_leg_overs",
           "Pike Leg Lift-Overs",
           "Pike Leg Lift-Over",
           "Pike Leg Lift",
@@ -8097,7 +7557,6 @@
       "set": {
         "aliases": [
           "pistol",
-          "pistol_squats",
           "Pistols"
         ],
         "primaryMuscles": [
@@ -8135,8 +7594,6 @@
         "aliases": [
           "max_plank_hold",
           "plank",
-          "weighted_plank",
-          "weighted_plank_hold",
           "Weighted Plank",
           "Weighted Plank Hold",
           "Plank Hold"
@@ -8180,11 +7637,6 @@
       "set": {
         "name": "Shoulder Taps in Plank Position",
         "aliases": [
-          "plank_shoulder_tap",
-          "plank_hold_shoulder_taps",
-          "shoulder_taps_in_plank_position",
-          "shoulder_taps",
-          "shoulder_tap",
           "Plank Shoulder Taps",
           "Shoulder Taps",
           "Plank Hold Shoulder Taps"
@@ -8267,7 +7719,6 @@
       "id": "plate_oh_alt_lunges",
       "set": {
         "aliases": [
-          "overhead_lunges_plate",
           "Plate OH Alt. Lunges"
         ],
         "equipment": [
@@ -8311,13 +7762,6 @@
       "set": {
         "name": "Plate Overhead Sit-Ups",
         "aliases": [
-          "plate_overhead_sit_ups",
-          "oh_plate_sit_ups",
-          "oh_sit_ups",
-          "plate_oh_situps",
-          "plate_oh_sit_ups",
-          "weighted_oh_sit_up",
-          "plate_oh_situp",
           "Plate Overhead Sit-Up",
           "Plate OH Situp",
           "OH Sit-Ups",
@@ -8366,7 +7810,6 @@
       "id": "plate_sit_up",
       "set": {
         "aliases": [
-          "plate_sit_ups",
           "Plate Sit Ups",
           "Plate Sit-Ups"
         ],
@@ -8405,15 +7848,12 @@
       "id": "power_clean",
       "set": {
         "aliases": [
-          "power_cleans",
           "power_clean_drills",
-          "cleans_from_the_ground",
-          "cleans_from_the_hip",
-          "cleans_from_the_knees",
           "Power Clean",
           "Cleans from the Ground",
           "Cleans from the Hip",
-          "Cleans from the Knees"
+          "Cleans from the Knees",
+          "3-Position Clean"
         ],
         "equipment": [
           "barbell"
@@ -8460,7 +7900,6 @@
       "id": "power_snatch",
       "set": {
         "aliases": [
-          "power_snatches_barbell",
           "Power Snatch"
         ],
         "equipment": [
@@ -8498,7 +7937,6 @@
       "id": "preacher_curl",
       "set": {
         "aliases": [
-          "isolated_bicep_curl",
           "Isolated Bicep Curl"
         ],
         "equipment": [
@@ -8529,15 +7967,13 @@
       "op": "merge",
       "id": "preacher_curl_db",
       "into": "db_preacher_curl",
-      "reason": "plan §5.2: Logger's preacher_curl_db (Preacher Curl (DB)) is db_preacher_curl by name"
+      "reason": "plan §5.5: preacher_curl_db is a formerId of db_preacher_curl"
     },
     {
       "op": "update",
       "id": "preacher_hammer_curl",
       "set": {
         "aliases": [
-          "isolated_hammerhead_curl",
-          "preacher_hammer_curl_db",
           "Isolated Hammerhead Curl"
         ],
         "equipment": [
@@ -8600,20 +8036,19 @@
       "op": "merge",
       "id": "pullover_db",
       "into": "db_pullover",
-      "reason": "plan §5.2: Logger's pullover_db (Pullover (DB)) is db_pullover by name"
+      "reason": "plan §5.5: pullover_db is a formerId of db_pullover"
     },
     {
       "op": "merge",
       "id": "push_jerk",
       "into": "push_jerks",
-      "reason": "plan §5.2: Logger's push_jerk (Push Jerk) is push_jerks by name"
+      "reason": "plan §5.5: push_jerk is a formerId of push_jerks"
     },
     {
       "op": "update",
       "id": "push_jerks",
       "set": {
         "aliases": [
-          "push_jerk",
           "jerk",
           "Push Jerk",
           "Jerk"
@@ -8657,7 +8092,6 @@
       "id": "push_press",
       "set": {
         "aliases": [
-          "barbell_push_press",
           "Barbell Push Press",
           "Push-Press"
         ],
@@ -8712,15 +8146,8 @@
       "id": "push_up",
       "set": {
         "aliases": [
-          "push_ups",
-          "regular_push_up",
-          "pulsing_push_ups",
           "pushup",
           "pushups",
-          "ub_push_ups",
-          "unbroken_push_ups",
-          "unbroken_pushups",
-          "unweighted_push_ups",
           "Push-Ups",
           "Pushup",
           "Pushups",
@@ -8731,7 +8158,8 @@
           "UB Push-Ups",
           "Unbroken Push-Ups",
           "Unbroken Pushups",
-          "Unweighted Push-Ups"
+          "Unweighted Push-Ups",
+          "Weighted or Banded Push-Ups"
         ],
         "logType": "bodyweight",
         "primaryMuscles": [
@@ -8776,19 +8204,15 @@
       "op": "merge",
       "id": "push_up_deficit_paralelites",
       "into": "deficit_push_ups",
-      "reason": "plan §5.2: Logger's push_up_deficit_paralelites (Push-Up (Deficit, Parallettes)) is deficit_push_ups by name"
+      "reason": "plan §5.5: push_up_deficit_paralelites is a formerId of deficit_push_ups"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "rdl",
       "set": {
         "name": "Barbell RDL",
         "aliases": [
-          "barbell_rdl",
-          "barbell_rdls",
           "rdls",
-          "romanian_deadlift",
-          "bb_rdl",
           "Romanian Deadlift",
           "Barbell RDLs",
           "BB RDL",
@@ -8798,6 +8222,7 @@
         "formerIds": [
           "romanian_deadlift"
         ],
+        "logType": "barbell",
         "equipment": [
           "barbell"
         ],
@@ -8827,19 +8252,15 @@
           "8",
           "8-10",
           "10"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: rdl is a record Logger lacks; romanian_deadlift merge into it"
     },
     {
       "op": "update",
       "id": "renegade_row",
       "set": {
         "aliases": [
-          "renegade_rows",
-          "alt_renegade_row",
-          "db_renegade_row",
           "Renegade Rows",
           "Alt Renegade Row",
           "Db Renegade Row",
@@ -8900,13 +8321,11 @@
       "id": "reverse_fly_2_db",
       "set": {
         "aliases": [
-          "rear_deltoid_fly",
           "bent_over_fly",
-          "bent_reverse_fly",
-          "2_db_rear_delt_fly",
           "Rear Deltoid Fly",
           "2-DB Rear Delt Fly",
-          "Bent Reverse Fly"
+          "Bent Reverse Fly",
+          "Bent Flys"
         ],
         "equipment": [
           "dumbbells"
@@ -8938,7 +8357,6 @@
       "id": "reverse_plank_hold",
       "set": {
         "aliases": [
-          "reverse_plank",
           "Reverse Plank"
         ],
         "primaryMuscles": [
@@ -8972,12 +8390,10 @@
       "reason": "plan §5.2: the canonical record's aliases, primaryMuscles, coreMuscles, regionsLoaded, coreMovements, motion, modalities, kinds, families, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "ring_dip",
       "set": {
-        "aliases": [
-          "ring_dips"
-        ],
+        "name": "Ring Dips",
         "formerIds": [
           "ring_dips"
         ],
@@ -9011,26 +8427,21 @@
         "generatorEligible": true,
         "historicReps": [
           "6-8"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's aliases, formerIds, logType, equipment, primaryMuscles, coreMuscles, primaryMovements, motion, modalities, kinds, category, maxPerWeek, repeatCooldown, video, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: ring_dip is a record Logger lacks; ring_dips merge into it"
     },
     {
       "op": "merge",
       "id": "ring_dips",
       "into": "ring_dip",
-      "reason": "plan §5.2: Logger's ring_dips (Ring Dips) is ring_dip by name"
+      "reason": "plan §5.5: ring_dips is a formerId of ring_dip"
     },
     {
       "op": "update",
       "id": "ring_or_cable_row",
       "set": {
         "aliases": [
-          "ring_or_cable_rows",
-          "ring_cable_rows",
-          "horizontal_rows",
-          "row_ring_cable",
           "Ring Or Cable Rows",
           "Ring Cable Rows",
           "Horizontal Rows",
@@ -9078,11 +8489,6 @@
       "id": "ring_row",
       "set": {
         "aliases": [
-          "ring_rows",
-          "pulsing_ring_rows",
-          "ring",
-          "inverted_row",
-          "trx_row",
           "Ring Rows",
           "Pulsing Ring Rows",
           "Inverted Row",
@@ -9139,14 +8545,13 @@
       "op": "merge",
       "id": "romanian_deadlift",
       "into": "rdl",
-      "reason": "plan §5.2: Logger's romanian_deadlift (Romanian Deadlift) is rdl by name"
+      "reason": "plan §5.5: romanian_deadlift is a formerId of rdl"
     },
     {
       "op": "update",
       "id": "rotational_ball_slam",
       "set": {
         "aliases": [
-          "rotational_ball_slams",
           "standing_rotational_ball_slams",
           "Rotational Ball Slams"
         ],
@@ -9194,7 +8599,6 @@
       "set": {
         "aliases": [
           "rower",
-          "row_machine",
           "rows",
           "Rows",
           "Rower",
@@ -9233,7 +8637,7 @@
       "op": "merge",
       "id": "row_machine",
       "into": "row",
-      "reason": "plan §5.2: Logger's row_machine (Row Machine) is row by name"
+      "reason": "plan §5.5: row_machine is a formerId of row"
     },
     {
       "op": "update",
@@ -9241,9 +8645,6 @@
       "set": {
         "aliases": [
           "hamstring_curls_on_rower",
-          "rower_seat_hamstring_curls",
-          "rower_hamstring_curl",
-          "rower_seat",
           "Rower Seat Hamstring Curls",
           "Rower Hamstring Curl",
           "Rower Seat",
@@ -9285,12 +8686,11 @@
       "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "run",
       "set": {
+        "name": "Run",
         "aliases": [
-          "mile_run",
-          "partner_run",
           "running",
           "runs",
           "run",
@@ -9302,6 +8702,7 @@
         "formerIds": [
           "running"
         ],
+        "logType": "cardio-distance",
         "equipment": [
           "open-space"
         ],
@@ -9329,24 +8730,21 @@
         "historicReps": [
           "30-40",
           "200"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's aliases, formerIds, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: run is a record Logger lacks; running merge into it"
     },
     {
       "op": "merge",
       "id": "running",
       "into": "run",
-      "reason": "plan §5.2: Logger's running (Run) is run by name"
+      "reason": "plan §5.5: running is a formerId of run"
     },
     {
       "op": "update",
       "id": "sa_db_strict_press",
       "set": {
         "aliases": [
-          "single_arm_db_strict_press",
-          "strict_press_db",
           "Single Arm Db Strict Press",
           "DB Strict Press",
           "SA DB Press",
@@ -9392,11 +8790,6 @@
       "set": {
         "name": "Single Arm Farmer Carry",
         "aliases": [
-          "single_arm_farmer_carry",
-          "single_arm_farmers_carry",
-          "sa_kb_farmer_carry",
-          "single_arm_kb_carry",
-          "farmers_carry_single_arm",
           "Farmer's Carry (Single-Arm)",
           "Single Arm Farmer's Carry",
           "SA KB Farmer Carry",
@@ -9431,13 +8824,11 @@
       "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, coreMuscles, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, modifier, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "safety_bar_box_squat",
       "set": {
         "name": "Safety Bar Box Squat",
         "aliases": [
-          "ssb_box_squat",
-          "box_squat_safety_bar",
           "Ssb Box Squat",
           "Box Squat Safety Bar",
           "Box Squat (Safety Bar)"
@@ -9445,6 +8836,7 @@
         "formerIds": [
           "box_squat_safety_bar"
         ],
+        "logType": "barbell",
         "equipment": [
           "box",
           "safety-squat-bar",
@@ -9481,18 +8873,13 @@
         ],
         "createdAt": "2026-07-05T19:10:05.222Z"
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: safety_bar_box_squat is a record Logger lacks; box_squat_safety_bar merge into it"
     },
     {
       "op": "update",
       "id": "seated_db_strict_press",
       "set": {
         "aliases": [
-          "two_db_seated_strict_press",
-          "2_db_seated_strict_press",
-          "db_seated_press",
-          "seated_press_2_db",
-          "seated_strict_press",
           "Two Db Seated Strict Press",
           "2 Db Seated Strict Press",
           "Db Seated Press",
@@ -9536,7 +8923,6 @@
       "id": "seated_row_machine",
       "set": {
         "aliases": [
-          "seated_row",
           "Seated Row"
         ],
         "equipment": [
@@ -9564,7 +8950,7 @@
       "op": "merge",
       "id": "seesaw_press_seated_2_db",
       "into": "db_seesaw_press",
-      "reason": "plan §5.2: Logger's seesaw_press_seated_2_db (Seesaw Press (Seated, 2-DB)) is db_seesaw_press by name"
+      "reason": "plan §5.5: seesaw_press_seated_2_db is a formerId of db_seesaw_press"
     },
     {
       "op": "update",
@@ -9574,10 +8960,6 @@
         "aliases": [
           "shoulder_to_overhead_caps",
           "s2oh",
-          "shoulder_to_oh",
-          "push_s2o",
-          "push_s2oh",
-          "push_shoulder_to_overhead",
           "Shoulder to Overhead",
           "S2OH",
           "Shoulder to OH",
@@ -9637,10 +9019,6 @@
       "id": "shoulder_to_overhead_sa",
       "set": {
         "aliases": [
-          "1_db_s2oh",
-          "one_db_s2oh",
-          "sa_db_stoh",
-          "sa_shoulder_to_overhead",
           "1 Db S2oh",
           "One Db S2oh",
           "Sa Db Stoh",
@@ -9685,8 +9063,6 @@
       "id": "side_plank_hip_tap",
       "set": {
         "aliases": [
-          "side_plank_hip_taps",
-          "side_plank_dip",
           "Side Plank Hip Taps",
           "Side Plank Dip"
         ],
@@ -9727,8 +9103,6 @@
       "id": "side_plank_hold",
       "set": {
         "aliases": [
-          "side_plank",
-          "alternating_side_plank",
           "Side Plank Hold",
           "Alternating Side Plank"
         ],
@@ -9814,7 +9188,6 @@
       "set": {
         "name": "Single Arm OH Carry (1-DB)",
         "aliases": [
-          "single_arm_oh_carry_1_db",
           "Single-Arm Overhead Carry (DB)"
         ],
         "equipment": [
@@ -9854,9 +9227,6 @@
       "set": {
         "name": "Single Arm OH Carry",
         "aliases": [
-          "single_arm_oh_carry",
-          "kb_single_arm_oh_carry",
-          "kb_single_arm_oh_or_front_rack_carry",
           "Single Arm OH Carry (1-KB)",
           "KB Single Arm OH Carry",
           "KB Single Arm OH or Front Rack Carry",
@@ -9906,8 +9276,6 @@
       "id": "single_arm_overhead_sit_up",
       "set": {
         "aliases": [
-          "single_arm_oh_sit_ups",
-          "single_arm_oh_sit_up",
           "Single Arm OH Sit-Ups",
           "Single Arm OH Sit-Up"
         ],
@@ -9951,7 +9319,6 @@
       "id": "single_leg_crossbody_t2b",
       "set": {
         "aliases": [
-          "single_leg_cross_body_toes_to_bar",
           "Single Leg Crossbody T2B"
         ],
         "equipment": [
@@ -9990,11 +9357,11 @@
       "id": "single_leg_kb_rdl",
       "set": {
         "aliases": [
-          "kb_single_leg_rdl",
-          "single_leg_romanian_deadlift_kb",
           "KB Single Leg RDL",
           "Single Leg KB RDL",
-          "Single-Leg KB RDL"
+          "Single-Leg KB RDL",
+          "Single Leg Deadlift",
+          "SL Deadlifts"
         ],
         "equipment": [
           "kettlebell"
@@ -10067,17 +9434,14 @@
       "op": "merge",
       "id": "sit_ups",
       "into": "situps",
-      "reason": "plan §5.2: Logger's sit_ups (Sit Up) is situps by name"
+      "reason": "plan §5.5: sit_ups is a formerId of situps"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "situps",
       "set": {
         "name": "Sit-Up",
         "aliases": [
-          "sit_ups",
-          "abmat_sit_ups",
-          "sit_up",
           "situp",
           "Sit-Ups",
           "Situp",
@@ -10113,17 +9477,15 @@
           "10-15",
           "12-15",
           "15"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, coreMuscles, regionsLoaded, coreMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: situps is a record Logger lacks; sit_ups merge into it"
     },
     {
       "op": "update",
       "id": "ski",
       "set": {
         "aliases": [
-          "ski_erg",
           "Ski Erg",
           "Ski ERG"
         ],
@@ -10157,7 +9519,7 @@
       "op": "merge",
       "id": "ski_erg",
       "into": "ski",
-      "reason": "plan §5.2: Logger's ski_erg (Ski ERG) is ski by name"
+      "reason": "plan §5.5: ski_erg is a formerId of ski"
     },
     {
       "op": "update",
@@ -10165,13 +9527,7 @@
       "set": {
         "name": "DB Skull Crushers",
         "aliases": [
-          "skull_crushers",
           "skullcrushers",
-          "db_skullcrusher",
-          "db_skull_crusher",
-          "db_skull_crushers",
-          "single_db_skullcrusher",
-          "barbell_skull_crusher",
           "skull_crusher_barbell",
           "skull_crusher_db",
           "Skull Crushers",
@@ -10222,7 +9578,6 @@
       "id": "sl_glute_bridge",
       "set": {
         "aliases": [
-          "single_leg_glute_bridge",
           "Single-Leg Glute Bridge",
           "SL Glute Bridge"
         ],
@@ -10235,7 +9590,6 @@
           "knees": "light"
         },
         "primaryMovements": [
-          "hinge",
           "hip_extension"
         ],
         "motion": "grind",
@@ -10261,7 +9615,6 @@
       "set": {
         "name": "Single Leg RDL",
         "aliases": [
-          "single_leg_rdl",
           "Single Leg Romanian Deadlift",
           "Single-Leg RDL",
           "SL RDL"
@@ -10358,9 +9711,6 @@
       "op": "update",
       "id": "snatch",
       "set": {
-        "aliases": [
-          "snatches_barbell"
-        ],
         "equipment": [
           "barbell"
         ],
@@ -10394,7 +9744,7 @@
         ],
         "createdAt": null
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, families, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
       "op": "update",
@@ -10468,7 +9818,7 @@
       "op": "merge",
       "id": "snatch_single_arm_db",
       "into": "db_snatch",
-      "reason": "plan §5.2: Logger's snatch_single_arm_db (DB Snatch) is db_snatch by name"
+      "reason": "plan §5.5: snatch_single_arm_db is a formerId of db_snatch"
     },
     {
       "op": "update",
@@ -10509,26 +9859,25 @@
       "op": "merge",
       "id": "split_squat",
       "into": "db_split_squat",
-      "reason": "plan §5.2: Logger's split_squat (Split Squat) is db_split_squat by name"
+      "reason": "plan §5.5: split_squat is a formerId of db_split_squat"
     },
     {
       "op": "merge",
       "id": "split_squat_2_db",
       "into": "db_split_squat",
-      "reason": "plan §5.2: Logger's split_squat_2_db (Split Squat (2-DB)) is db_split_squat by name"
+      "reason": "plan §5.5: split_squat_2_db is a formerId of db_split_squat"
     },
     {
       "op": "merge",
       "id": "split_squat_hungarian_2_db",
       "into": "bulgarian_split_squat",
-      "reason": "plan §5.2: Logger's split_squat_hungarian_2_db (Bulgarian Split Squat (2-DB)) is bulgarian_split_squat by name"
+      "reason": "plan §5.5: split_squat_hungarian_2_db is a formerId of bulgarian_split_squat"
     },
     {
       "op": "update",
       "id": "squat_clean",
       "set": {
         "aliases": [
-          "squat_cleans",
           "Squat Clean"
         ],
         "equipment": [
@@ -10562,21 +9911,14 @@
       "op": "merge",
       "id": "squat_jumps",
       "into": "jumping_air_squat",
-      "reason": "plan §5.2: Logger's squat_jumps (Squat Jump) is jumping_air_squat by name"
+      "reason": "plan §5.5: squat_jumps is a formerId of jumping_air_squat"
     },
     {
       "op": "update",
       "id": "strict_chin_up",
       "set": {
         "aliases": [
-          "strict_chin_ups",
-          "weighted_strict_chin_up",
-          "weighted_strict_chin_ups",
-          "strict_chinup",
-          "chin_up",
-          "chin_ups",
           "chinups",
-          "weighted_chin_up",
           "Chin-Up",
           "Strict Chin-Ups",
           "Chin-Ups",
@@ -10584,7 +9926,8 @@
           "Weighted Strict Chin-Ups",
           "Weighted Chin-Up",
           "Chinups",
-          "Weighted Strict Chin-Up"
+          "Weighted Strict Chin-Up",
+          "Negative Chin-Ups"
         ],
         "formerIds": [
           "chin_ups",
@@ -10632,12 +9975,9 @@
       "id": "strict_press",
       "set": {
         "aliases": [
-          "barbell_strict_press",
           "overhead_press",
           "barbell_overhead_press",
           "press",
-          "military_press",
-          "strict_or_push_press",
           "Barbell Strict Press",
           "Military Press",
           "Press",
@@ -10696,25 +10036,15 @@
       "op": "merge",
       "id": "strict_press_2_db_seesaw",
       "into": "db_seesaw_press",
-      "reason": "plan §5.2: Logger's strict_press_2_db_seesaw (Strict Press (2-DB Seesaw)) is db_seesaw_press by name"
+      "reason": "plan §5.5: strict_press_2_db_seesaw is a formerId of db_seesaw_press"
     },
     {
       "op": "update",
       "id": "strict_pull_up",
       "set": {
         "aliases": [
-          "pull_ups",
-          "pull_up",
-          "strict_pull_ups",
-          "strict",
           "weighted_pull_up_negatives",
-          "weighted_strict_pull_up",
-          "weighted_strict_pull_ups",
           "pullups",
-          "strict_pullups",
-          "strict_pullup",
-          "pull_up_w_3sec_lowering_phase",
-          "strict_weighted_kipping_pull_ups",
           "pull-up",
           "Pull-Ups",
           "Weighted Strict Pull-Up",
@@ -10784,7 +10114,6 @@
       "set": {
         "name": "Suitcase March (1-DB)",
         "aliases": [
-          "suitcase_march_1_db",
           "Suitcase March (DB)"
         ],
         "equipment": [
@@ -10813,8 +10142,6 @@
       "set": {
         "name": "Suitcase March (1-KB)",
         "aliases": [
-          "suitcase_march",
-          "suitcase_march_1_kb",
           "Suitcase March",
           "Suitcase March (KB)"
         ],
@@ -10907,13 +10234,7 @@
       "set": {
         "name": "Supinated Bent Over Barbell Row",
         "aliases": [
-          "supinated_bent_over_barbell_row",
-          "bent_over_row_supinated",
-          "supinated_bent_row",
-          "supinated_barbell_bent_row",
-          "supinated_barbell_row",
           "reverse_grip_barbell_row",
-          "supinated_bent_over_row_barbell",
           "Supinated Bent Over Row (Barbell)",
           "Supinated Barbell Bent Row",
           "Supinated Bent Row",
@@ -10959,18 +10280,18 @@
       "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, repeatCooldown, generatorEligible, historicReps, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "supinated_chin_over_bar_hold",
       "set": {
         "name": "Supinated Chin Over Bar Hold",
         "aliases": [
-          "chin_over_bar_hold_supinated",
           "Chin Over Bar Hold Supinated",
           "Chin Over Bar Hold (Supinated)"
         ],
         "formerIds": [
           "chin_over_bar_hold_supinated"
         ],
+        "logType": "static-hold",
         "equipment": [
           "pull-up-bar"
         ],
@@ -10995,10 +10316,9 @@
         ],
         "category": "Gymnastics · Strength",
         "maxPerWeek": 3,
-        "generatorEligible": true,
-        "createdAt": null
+        "generatorEligible": true
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: supinated_chin_over_bar_hold is a record Logger lacks; chin_over_bar_hold_supinated merge into it"
     },
     {
       "op": "update",
@@ -11006,7 +10326,6 @@
       "set": {
         "name": "Supinated Ring Rows",
         "aliases": [
-          "supinated_ring_rows",
           "Supinated Ring Row"
         ],
         "equipment": [
@@ -11067,11 +10386,7 @@
       "id": "three_position_power_clean",
       "set": {
         "aliases": [
-          "3_position_power_clean",
-          "3_position_clean",
-          "3-Position Clean",
-          "3 Position Power Clean",
-          "3 Position Clean"
+          "3 Position Power Clean"
         ],
         "primaryMuscles": [
           "glutes",
@@ -11142,11 +10457,8 @@
       "id": "toes_to_bar",
       "set": {
         "aliases": [
-          "toes_to_bars",
           "t2b",
           "ttb",
-          "kipping_toes_to_bar",
-          "kipping_ttb",
           "TTB",
           "T2B",
           "Toes to Bar",
@@ -11210,17 +10522,16 @@
       "op": "merge",
       "id": "tricep_extension_banded",
       "into": "banded_tricep_pressdown",
-      "reason": "plan §5.2: Logger's tricep_extension_banded (Tricep Pushdown (Banded)) is banded_tricep_pressdown by name"
+      "reason": "plan §5.5: tricep_extension_banded is a formerId of banded_tricep_pressdown"
     },
     {
       "op": "update",
       "id": "tricep_kickback",
       "set": {
         "aliases": [
-          "tricep_kickbacks",
-          "db_kickback",
           "Tricep Kickbacks",
-          "Db Kickback"
+          "Db Kickback",
+          "Db Tricep Kickbacks"
         ],
         "equipment": [
           "dumbbells"
@@ -11256,10 +10567,7 @@
       "id": "tricep_kickback_db",
       "set": {
         "aliases": [
-          "tricep_dumbbell_kickback",
-          "db_tricep_kickbacks",
-          "Tricep Dumbbell Kickback",
-          "DB Tricep Kickbacks"
+          "Tricep Dumbbell Kickback"
         ],
         "equipment": [
           "dumbbells"
@@ -11293,7 +10601,6 @@
       "id": "tricep_pushdown_cable",
       "set": {
         "aliases": [
-          "tricep_pushdown",
           "Tricep Pushdown"
         ],
         "equipment": [
@@ -11324,9 +10631,6 @@
       "op": "update",
       "id": "tricep_rope_pushdown",
       "set": {
-        "aliases": [
-          "tricep_pushdown_cable_rope"
-        ],
         "equipment": [
           "cable-machine"
         ],
@@ -11349,21 +10653,19 @@
         "generatorEligible": true,
         "createdAt": "2026-07-16T17:52:45.997Z"
       },
-      "reason": "plan §5.2: the canonical record's aliases, equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
+      "reason": "plan §5.2: the canonical record's equipment, primaryMuscles, regionsLoaded, motion, modalities, kinds, category, maxPerWeek, generatorEligible, createdAt"
     },
     {
       "op": "merge",
       "id": "tripod_row",
       "into": "db_tripod_row",
-      "reason": "plan §5.2: Logger's tripod_row (Tripod Row) is db_tripod_row by name"
+      "reason": "plan §5.5: tripod_row is a formerId of db_tripod_row"
     },
     {
       "op": "update",
       "id": "turkish_situp",
       "set": {
         "aliases": [
-          "turkish_sit_up",
-          "turkish_sit_ups",
           "turkish sit-up",
           "Turkish Sit-Up"
         ],
@@ -11409,15 +10711,7 @@
       "set": {
         "name": "2-DB Bent Over Row",
         "aliases": [
-          "2_db_bent_over_row",
-          "dual_dumbbell_bent_row",
-          "db_bent_over_row",
-          "bent_over_db_row",
-          "db_bent_over_rows",
-          "bent_db_rows",
-          "db_kb_bent_row",
           "dumbbell_row",
-          "bent_over_row_2_db",
           "Bent Over Row (2-DB)",
           "Bent DB Rows",
           "Dual Dumbbell Bent Row",
@@ -11465,22 +10759,14 @@
       "reason": "plan §5.2: the canonical record's name, aliases, formerIds, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, category, maxPerWeek, generatorEligible, historicReps, createdAt"
     },
     {
-      "op": "update",
+      "op": "add",
       "id": "two_db_chest_fly",
       "set": {
         "name": "2-DB Chest Fly",
         "aliases": [
-          "2_db_chest_fly",
-          "db_chest_fly",
           "chest_fly_db",
-          "dumbbell_bench_fly",
-          "db_pec_fly",
           "db_fly",
           "chest_fly_2_db",
-          "chest_flyes_2_db",
-          "db_bench_flies",
-          "db_bench_fly",
-          "db_bench_flys",
           "Chest Flyes (2-DB)",
           "DB Chest Fly",
           "DB Pec Fly",
@@ -11524,18 +10810,15 @@
           "8-10",
           "10-12",
           "10-15"
-        ],
-        "createdAt": null
+        ]
       },
-      "reason": "plan §5.2: the canonical record's name, aliases, formerIds, logType, equipment, primaryMuscles, regionsLoaded, primaryMovements, motion, modalities, kinds, category, maxPerWeek, generatorEligible, historicReps, createdAt"
+      "reason": "plan §5.2: two_db_chest_fly is a record Logger lacks; chest_fly_2_db merge into it"
     },
     {
       "op": "update",
       "id": "two_db_front_rack_walking_lunges",
       "set": {
         "aliases": [
-          "2_db_front_rack_walking_lunges",
-          "front_rack_walking_lunges_2_db",
           "2 Db Front Rack Walking Lunges",
           "2-DB Front Rack Walking Lunges"
         ],
@@ -11576,11 +10859,6 @@
       "id": "two_kb_front_rack_carry",
       "set": {
         "aliases": [
-          "2_kb_front_rack_carry",
-          "double_kb_front_rack_carry",
-          "front_rack_carry",
-          "kb_front_rack_carry",
-          "front_rack_carry_2_kb",
           "2 Kb Front Rack Carry",
           "Double Kb Front Rack Carry",
           "Front Rack Carry",
@@ -11620,13 +10898,8 @@
       "set": {
         "name": "Dual Kettlebell RDL",
         "aliases": [
-          "2_kb_rdl",
-          "dual_kettlebell_rdl",
-          "kettlebell_rdl",
-          "romanian_deadlift_2_kb",
           "Romanian Deadlift (2-KB)",
-          "2-KB RDL",
-          "Kettlebell RDL"
+          "2-KB RDL"
         ],
         "formerIds": [
           "romanian_deadlift_2_kb"
@@ -11665,7 +10938,6 @@
       "id": "v_up",
       "set": {
         "aliases": [
-          "v_ups",
           "V-Up"
         ],
         "coreMuscles": [
@@ -11750,8 +11022,6 @@
       "id": "wall_ball",
       "set": {
         "aliases": [
-          "wall_balls",
-          "wall",
           "Wall Ball"
         ],
         "equipment": [
@@ -11835,7 +11105,6 @@
       "id": "wall_sit",
       "set": {
         "aliases": [
-          "wall_sit_w_plate",
           "Wall Sit w/Plate"
         ],
         "formerIds": [
@@ -11873,7 +11142,6 @@
       "id": "wall_walk",
       "set": {
         "aliases": [
-          "wall_walks",
           "Wall Walks"
         ],
         "equipment": [
@@ -11930,11 +11198,6 @@
       "id": "weighted_hollow_flutter_kicks",
       "set": {
         "aliases": [
-          "hollow_body_weighted_flutter_kicks",
-          "weighted_hollow_body_flutter_kick",
-          "weighted_hollow_body_flutter_kicks",
-          "weighted_hollow_flutters",
-          "weighted_flutter_kicks",
           "Hollow Body Weighted Flutter Kicks",
           "Weighted Hollow Body Flutter Kick",
           "Weighted Hollow Body Flutter Kicks",
@@ -11973,7 +11236,6 @@
       "id": "weighted_pull_up",
       "set": {
         "aliases": [
-          "weighted_pull_ups",
           "Weighted Pull-Up"
         ],
         "equipment": [
@@ -12010,7 +11272,7 @@
       "op": "merge",
       "id": "weighted_step_up",
       "into": "db_box_step_up",
-      "reason": "plan §5.2: Logger's weighted_step_up (Weighted Step-Up) is db_box_step_up by name"
+      "reason": "plan §5.5: weighted_step_up is a formerId of db_box_step_up"
     },
     {
       "op": "update",
