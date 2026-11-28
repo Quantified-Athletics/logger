@@ -1,0 +1,29 @@
+{
+  "_comment": "The log types (docs/cue.md §15.6). A log type says what one set records, and so what a number means; a record's logType alone decides each app's form, charts and PR family (L1). exercise_type is the Logger column each log type fixes; nothing reads it, and none means no form.",
+  "logTypes": [
+    { "id": "barbell", "records": "weight, reps", "exercise_type": "regular" },
+    { "id": "barbell-complex", "records": "weight", "exercise_type": "regular" },
+    { "id": "single-dumbbell", "records": "weight (one dumbbell), reps", "exercise_type": "regular" },
+    { "id": "dual-dumbbell", "records": "weight (each dumbbell), reps", "exercise_type": "regular" },
+    { "id": "kettlebell", "records": "KB weight, reps", "exercise_type": "regular" },
+    { "id": "machine", "records": "weight, reps", "exercise_type": "regular" },
+    { "id": "ball", "records": "ball weight, reps", "exercise_type": "regular" },
+    { "id": "banded", "records": "band color, reps", "exercise_type": "banded_resistance" },
+    { "id": "bodyweight", "records": "reps, optional added weight", "exercise_type": "bodyweight" },
+    { "id": "bodyweight-reps", "records": "reps only", "exercise_type": "bodyweight" },
+    { "id": "added-weight", "records": "reps, added weight", "exercise_type": "bodyweight" },
+    { "id": "static-hold", "records": "seconds", "exercise_type": "static_hold" },
+    { "id": "timed-reps", "records": "seconds or reps", "exercise_type": "timed_output" },
+    { "id": "weighted-carry", "records": "weight, distance, time", "exercise_type": "load_output" },
+    { "id": "weighted-carry-1-kb", "records": "KB weight, distance, time", "exercise_type": "load_output" },
+    { "id": "weighted-carry-2-kb", "records": "KB weight, distance, time", "exercise_type": "load_output" },
+    { "id": "weighted-carry-1-db", "records": "weight, distance, time", "exercise_type": "load_output" },
+    { "id": "weighted-carry-2-db", "records": "weight, distance, time", "exercise_type": "load_output" },
+    { "id": "weighted-carry-ball", "records": "ball weight, distance, time", "exercise_type": "load_output" },
+    { "id": "sled", "records": "weight, distance, time", "exercise_type": "load_output" },
+    { "id": "cardio", "records": "distance, time, calories", "exercise_type": "cardio" },
+    { "id": "cardio-calories", "records": "calories", "exercise_type": "cardio" },
+    { "id": "cardio-distance", "records": "distance, time", "exercise_type": "cardio" },
+    { "id": "none", "records": "nothing (Rest)", "exercise_type": null }
+  ]
+}
