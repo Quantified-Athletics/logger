@@ -9,10 +9,12 @@ use App\Models\ExerciseMergeLog;
 use App\Models\LiftLog;
 use App\Models\RehydrationSignal;
 use App\Models\User;
+use App\Sync\Services\RehydrationService;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Attributes\Test;
+use RuntimeException;
 use Spatie\Activitylog\Models\Activity;
 use Tests\TestCase;
 
@@ -303,5 +305,26 @@ class AlignStandardExercisesMigrationTest extends TestCase
         }
 
         $this->assertSame(0, RehydrationSignal::query()->count());
+    }
+
+    #[Test]
+    public function a_failed_rehydration_signal_rolls_the_merges_back(): void
+    {
+        $this->seedStandardRowsWithBystanders();
+        $before = $this->databaseSnapshot();
+        $this->mock(RehydrationService::class)
+            ->shouldReceive('raiseForUsers')
+            ->once()
+            ->andThrow(new RuntimeException('The signal could not be saved.'));
+
+        try {
+            $this->migration()->up();
+            $this->fail('The migration swallowed a failed rehydration signal.');
+        } catch (RuntimeException $exception) {
+            $this->assertSame('The signal could not be saved.', $exception->getMessage());
+        }
+
+        $this->assertSame(0, ExerciseMergeLog::query()->count(), 'The merges were kept without their signal.');
+        $this->assertSame($before, $this->databaseSnapshot());
     }
 }
