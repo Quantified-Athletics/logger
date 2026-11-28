@@ -1,0 +1,26 @@
+{
+  "_comment": "The category values of an exercise record (docs/cue.md §15.2): Athlete's. Every app carries category, and a bulk edit refuses a value outside this list (E6).",
+  "categories": [
+    "Compound · Back", "Accessory · Carry", "Accessory · Knee Health", "Activation · Full Body",
+    "Activation · Lower Body", "Bodyweight · Lower Body", "Bodyweight · Upper Body", "Calisthenics · Hold",
+    "Compound · Accessory", "Compound · Back (per side)", "Compound · Chest", "Compound · Conditioning",
+    "Compound · Full Body", "Compound · Glutes", "Compound · Legs", "Compound · Lower Body",
+    "Compound · Posterior Chain", "Compound · Power", "Compound · Quad Dominant", "Compound · Shoulders",
+    "Compound · Strength", "Compound · Upper Body", "Conditioning · Aerobic", "Conditioning · Agility",
+    "Conditioning · Core", "Conditioning · Engine", "Conditioning · Full Body", "Conditioning · Lower Body",
+    "Conditioning · Plyometric", "Conditioning · Power", "Conditioning · Skill", "Core · Anti-Extension",
+    "Core · Anti-Rotation", "Core · Conditioning", "Core · Flexion", "Core · Gymnastics", "Core · Posterior",
+    "Core · Power", "Core · Rotation", "Core · Rotational", "Core · Stability", "Core · Strength",
+    "Corrective · Lower Body", "Corrective · Posterior Chain", "Corrective · Shoulders", "Functional · Core",
+    "Functional · Full Body", "Functional · Grip", "Functional · Shoulders", "Functional · Stability",
+    "Functional · Strength", "Gymnastics · Activation", "Gymnastics · Compound", "Gymnastics · Core",
+    "Gymnastics · Core · Strength", "Gymnastics · Foundation", "Gymnastics · Skill", "Gymnastics · Stability",
+    "Gymnastics · Strength", "Gymnastics · Upper Body", "Isolation · Accessory", "Isolation · Back",
+    "Isolation · Chest", "Isolation · Glutes", "Isolation · Hamstrings", "Isolation · Lower Body",
+    "Isolation · Posterior Chain", "Isolation · Shoulders", "Isolation · Strength", "Isolation · Upper Body",
+    "Isometric · Lower Body", "Mobility · Lower Body", "Olympic · Complex", "Olympic · Full Body", "Olympic · Power",
+    "Olympic · Strength", "Olympic · Unilateral", "Plyometric · Lower Body", "Plyometric · Power", "Power · Core",
+    "Power · Full Body", "Power · Posterior Chain", "Recovery", "Soft Tissue", "Unilateral · Full Body",
+    "Unilateral · Lower Body", "Unilateral · Posterior Chain", "Unilateral · Stability", "Upper Body · Push"
+  ]
+}
